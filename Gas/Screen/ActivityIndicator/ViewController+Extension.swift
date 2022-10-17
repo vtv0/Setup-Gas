@@ -6,32 +6,37 @@
 //
 
 import UIKit
+import Alamofire
+
 
 extension UIViewController  {
     
     func showActivity() {
-       let activityIndicator = UIActivityIndicatorView(frame: CGRectMake(0,0,50,50))
+        var activityIndicator = UIActivityIndicatorView(frame: CGRect(x: 0,y: 0,width: 50,height: 50))
         activityIndicator.center = self.view.center
         activityIndicator.hidesWhenStopped = true
-        activityIndicator.style = UIActivityIndicatorView.Style.gray
+        activityIndicator.style = UIActivityIndicatorView.Style.medium
         view.addSubview(activityIndicator)
         activityIndicator.startAnimating()
-       // disableUserInteraction()
+        // disableUserInteraction()
         
-       let greyView = UIView()
-        greyView.frame = CGRectMake(0, 0, self.view.bounds.width, self.view.bounds.height)
+        let greyView = UIView()
+        greyView.frame = CGRect(x: 0, y: 0, width: self.view.bounds.width, height: self.view.bounds.height)
         greyView.backgroundColor = UIColor.black
         greyView.alpha = 0.5
         self.view.addSubview(greyView)
     }
     
-    func hiddenActivity() {
-        let activityIndicator = UIActivityIndicatorView(frame: CGRectMake(0,0,50,50))
-         //activityIndicator.center = self.view.center
+    func hideActivity() {
+        var activityIndicator = UIActivityIndicatorView(frame: CGRect(x: 0,y: 0,width: 50,height: 50))
+        //activityIndicator.center = self.view.center
         // activityIndicator.hidesWhenStopped = true
-         
-         view.addSubview(activityIndicator)
+        
+        //self.activ
+        
+        view.addSubview(activityIndicator)
         activityIndicator.stopAnimating()
+        activityIndicator.removeFromSuperview()
     }
 }
 

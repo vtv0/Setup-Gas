@@ -27,6 +27,7 @@
 		75BF3A1328E161A900BC0F0C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 75BF3A1128E161A900BC0F0C /* LaunchScreen.storyboard */; };
 		75BF3A1E28E2883100BC0F0C /* DeliveryListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BF3A1D28E2883100BC0F0C /* DeliveryListController.swift */; };
 		75C0F47628F425A50091FB84 /* CustomAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75C0F47528F425A50091FB84 /* CustomAlertViewController.swift */; };
+		75CB4D4928FD160400D9599A /* Login.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75CB4D4828FD160400D9599A /* Login.swift */; };
 		75D2CE7928F7ADAD00B51CED /* ReusableImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75D2CE7828F7ADAD00B51CED /* ReusableImage.swift */; };
 		75D2CE7B28F7ADD800B51CED /* ReusableImage.xib in Resources */ = {isa = PBXBuildFile; fileRef = 75D2CE7A28F7ADD800B51CED /* ReusableImage.xib */; };
 		75D2CE7D28F8038D00B51CED /* UIApplacation+TopVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75D2CE7C28F8038D00B51CED /* UIApplacation+TopVC.swift */; };
@@ -69,6 +70,7 @@
 		75BF3A1428E161A900BC0F0C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		75BF3A1D28E2883100BC0F0C /* DeliveryListController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeliveryListController.swift; sourceTree = "<group>"; };
 		75C0F47528F425A50091FB84 /* CustomAlertViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAlertViewController.swift; sourceTree = "<group>"; };
+		75CB4D4828FD160400D9599A /* Login.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Login.swift; sourceTree = "<group>"; };
 		75D2CE7828F7ADAD00B51CED /* ReusableImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReusableImage.swift; sourceTree = "<group>"; };
 		75D2CE7A28F7ADD800B51CED /* ReusableImage.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReusableImage.xib; sourceTree = "<group>"; };
 		75D2CE7C28F8038D00B51CED /* UIApplacation+TopVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplacation+TopVC.swift"; sourceTree = "<group>"; };
@@ -218,6 +220,7 @@
 			isa = PBXGroup;
 			children = (
 				75BF3A0A28E161A800BC0F0C /* LoginController.swift */,
+				75CB4D4828FD160400D9599A /* Login.swift */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -421,6 +424,7 @@
 				7598E46128EFC4DC00EA9FA9 /* PageDetailCollectionViewCell.swift in Sources */,
 				75BF3A1E28E2883100BC0F0C /* DeliveryListController.swift in Sources */,
 				75D2CE8528F80F1C00B51CED /* FacilityImageView.swift in Sources */,
+				75CB4D4928FD160400D9599A /* Login.swift in Sources */,
 				75BF3A0728E161A800BC0F0C /* AppDelegate.swift in Sources */,
 				750B39D028E3036300210AB9 /* ReplanController.swift in Sources */,
 				75A1E17F28F3AB6300EA17A2 /* RerouteViewController.swift in Sources */,

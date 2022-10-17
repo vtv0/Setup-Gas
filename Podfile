@@ -6,5 +6,7 @@ target 'Gas' do
   use_frameworks!
 
   pod 'FloatingPanel'
+  pod 'Alamofire'
+  pod 'SwiftyJSON'
 
 end
