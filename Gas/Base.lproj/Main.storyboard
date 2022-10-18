@@ -97,9 +97,9 @@
                     <connections>
                         <outlet property="btnSaveAccount" destination="uHf-fk-OVi" id="W9O-51-K3f"/>
                         <outlet property="imgIcon" destination="fN0-O8-wQE" id="Dvc-N9-OoT"/>
-                        <outlet property="txtEmail" destination="RKu-eJ-GM4" id="eG0-PF-khF"/>
                         <outlet property="txtId" destination="Ahi-Vd-OGs" id="AGB-GL-Q2c"/>
                         <outlet property="txtPass" destination="bbM-C8-LcT" id="wAI-uY-AJI"/>
+                        <outlet property="txtUserName" destination="RKu-eJ-GM4" id="muI-3Y-cg4"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
