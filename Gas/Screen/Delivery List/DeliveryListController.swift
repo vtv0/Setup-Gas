@@ -32,6 +32,18 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
     @IBOutlet weak var pickerDriver: UIPickerView!
     let driver = ["n1", "n2", "n3"]
     
+    //    func getLatestWorkerRouteLocationList() {
+    //        let dateFormatterGet = DateFormatter()
+    //        let workDate = dateFormatterGet.string(from: Date())
+    //        urlGetLatestWorkerRouteLocationList = urlGetLatestWorkerRouteLocationList + "\(UserDefaults.standard.string(forKey: "tenantId"))/latest_route/worker_users/\(UserDefaults.standard.string(forKey: "userId"))?workDate=\(workDate)"
+    //        AF.request(self.urlGetLatestWorkerRouteLocationList, method: .get, parameters: nil, encoding: JSONEncoding.default,headers: self.makeHeaders(token: token))
+    //            .responseDecodable(of: GetMeInfo.self) { response in
+    //
+    //
+    //            }
+    //    }
+
+    
     override func viewDidLoad() {
         super.viewDidLoad()
        // title = "Delivery List"
@@ -57,6 +69,8 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
         
     }
+    
+    
     
     @IBAction func btnSetting(_ sender: Any) {
         let screenSetting = storyboard?.instantiateViewController(withIdentifier: "SettingController") as! SettingController
