@@ -6,13 +6,13 @@
 //
 
 import UIKit
-import Alamofire
+
 
 
 extension UIViewController  {
     
     func showActivity() {
-        var activityIndicator = UIActivityIndicatorView(frame: CGRect(x: 0,y: 0,width: 50,height: 50))
+        let activityIndicator = UIActivityIndicatorView(frame: CGRect(x: 0,y: 0,width: 50,height: 50))
         activityIndicator.center = self.view.center
         activityIndicator.hidesWhenStopped = true
         activityIndicator.style = UIActivityIndicatorView.Style.medium
@@ -28,15 +28,16 @@ extension UIViewController  {
     }
     
     func hideActivity() {
-        var activityIndicator = UIActivityIndicatorView(frame: CGRect(x: 0,y: 0,width: 50,height: 50))
-        //activityIndicator.center = self.view.center
-        // activityIndicator.hidesWhenStopped = true
-        
+        let activityIndicator = UIActivityIndicatorView(frame: CGRect(x: 0,y: 0,width: 50,height: 50))
+        activityIndicator.center = self.view.center
+         activityIndicator.hidesWhenStopped = true
+        activityIndicator.isHidden = true
         //self.activ
         
-        view.addSubview(activityIndicator)
-        activityIndicator.stopAnimating()
+        //self.view.addSubview(activityIndicator)
+      //  activityIndicator.hidesWhenStopped = true
         activityIndicator.removeFromSuperview()
+       
     }
 }
 

@@ -45,7 +45,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
     
     @IBOutlet weak var txtUserName: UITextField!
     @IBOutlet weak var txtPass: UITextField!
-    @IBOutlet weak var txtId: UITextField!
+    @IBOutlet weak var txtcompanyCode: UITextField!
     
     
     var bRec:Bool = true
@@ -56,13 +56,13 @@ class ViewController: UIViewController, UITextFieldDelegate {
             self.btnSaveAccount.setImage(UIImage(named: "checkmarkEmpty"), for: .normal)
             UserDefaults.standard.removeObject(forKey: "userName")
             UserDefaults.standard.removeObject(forKey: "pass")
-            UserDefaults.standard.removeObject(forKey: "id")
+            UserDefaults.standard.removeObject(forKey: "companyCode")
         } else {
             self.btnSaveAccount.setImage(UIImage(named: "checkmark"), for: .normal)
             
             UserDefaults.standard.set(txtUserName.text, forKey: "userName")
             UserDefaults.standard.set(txtPass.text, forKey: "pass")
-            UserDefaults.standard.set(txtId.text, forKey: "id")
+            UserDefaults.standard.set(txtcompanyCode.text, forKey: "companyCode")
             
         }
     }
@@ -72,51 +72,50 @@ class ViewController: UIViewController, UITextFieldDelegate {
     @IBAction func btnLogin(_ sender: UITextField) {
         let showUserName = UserDefaults.standard.string(forKey: "userName")
         let showPass = UserDefaults.standard.string(forKey: "pass")
-        let showId = UserDefaults.standard.string(forKey: "id")
+        let showcompanyCode = UserDefaults.standard.string(forKey: "companyCode")
         print("\(String(describing: showUserName))")
         print("\(String(describing: showPass))")
-        print("\(String(describing: showId))")
+        print("\(String(describing: showcompanyCode))")
         
         //        if txtUserName.text!.isEmpty || txtPass.text!.isEmpty || txtId.text!.isEmpty {
         //
         //        }
         
-        _ = storyboard?.instantiateViewController(identifier:  "DeliveryListController") as! DeliveryListController
+        // _ = storyboard?.instantiateViewController(identifier:  "DeliveryListController") as! DeliveryListController
         postGetToken()
-        // post()
-        //        self.showActivity()
+        
+        //self.showActivity()
         //        let delay1 = 3
         //        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(delay1)) { [self] in
         //            self.hideActivity()
-        //            self.navigationController?.pushViewController(mhDeliveryList, animated: true)
+        //            //            self.navigationController?.pushViewController(mhDeliveryList, animated: true)
         //        }
     }
     
-    let url = "https://am-stg-iw01j.kiiapps.com/am/api/oauth2/token"
-   
-    var urlGetLatestWorkerRouteLocationList = "https://am-stg-iw01j.kiiapps.com/am/exapi/vrp/tenants/"
+    //  let url = "https://am-stg-iw01j.kiiapps.com/am/api/oauth2/token"
+    
+    //  var urlGetLatestWorkerRouteLocationList = "https://am-stg-iw01j.kiiapps.com/am/exapi/vrp/tenants/"
     var token = UserDefaults.standard.string(forKey: "response") ?? ""
-    //    let expiredDate =Calendar.current.date(byAdding: .hour, value: 12, to: Date())!
+    let expiredDate = Calendar.current.date(byAdding: .hour, value: 12, to: Date())!
     
-//    let parameters: [String: Any] = ["username": "dev_driver1@dev1.test", "password": "dev123456", "companyCode": "am-stg-iw01j", "expiresAt": Int64(Calendar.current.date(byAdding: .hour, value: 12, to: Date())!.timeIntervalSince1970 * 1000), "grant_type": "password" ]
-    
-        
+    //    let parameters: [String: Any] = ["username": "dev_driver1@dev1.test", "password": "dev123456", "companyCode": "am-stg-iw01j", "expiresAt": Int64(Calendar.current.date(byAdding: .hour, value: 12, to: Date())!.timeIntervalSince1970 * 1000), "grant_type": "password" ]
     
     
-    //    dateFormatterGet.dateFormat = "yyyy-MM-dd HH:mm:ss"
-    //    let date: NSDate? = dateFormatterGet.dateFromString("2016-02-29 12:24:26")
+    
+    
+    // dateFormatterGet.dateFormat = "yyyy-MM-dd HH:mm:ss"
+    // let date: NSDate? = dateFormatterGet.dateFromString("2016-02-29 12:24:26")
     
     var showUserName = UserDefaults.standard.string(forKey: "userName")
     let showPass = UserDefaults.standard.string(forKey: "pass")
-    let showId = UserDefaults.standard.string(forKey: "id")
+    let showcompanyCode = UserDefaults.standard.string(forKey: "companyCode")
+    
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        AF.request("https://am-stg-iw01j.kiiapps.com/am/api/oauth2/token")
-//            .response {  response in
-//                let status = response.response?.statusCode
-//                print("STATUS: \(status)")
-//            }
+        
+        navigationItem.hidesBackButton = true
         
         bRec = !bRec
         if (bRec ){
@@ -126,10 +125,10 @@ class ViewController: UIViewController, UITextFieldDelegate {
             self.btnSaveAccount.setImage(UIImage(named: "checkmark"), for: .normal)
             txtUserName.text = showUserName
             txtPass.text = showPass
-            txtId.text = showId
+            txtcompanyCode.text = showcompanyCode
         }
         
-        if txtUserName.text!.isEmpty || txtPass.text!.isEmpty || txtId.text!.isEmpty {
+        if txtUserName.text!.isEmpty || txtPass.text!.isEmpty || txtcompanyCode.text!.isEmpty {
             print ("nhap TK")
             //                    btnLogin.isEnabled = false
             //                    btnLogin.isUserInteractionEnabled = false
@@ -144,9 +143,9 @@ class ViewController: UIViewController, UITextFieldDelegate {
         
         imgIcon.image = UIImage(named:"icon.jpg")
         
-        let usernName = txtUserName.addTarget(self, action:  #selector(self.onInputUserName(_:)), for: .editingChanged)
+        let userName = txtUserName.addTarget(self, action:  #selector(self.onInputUserName(_:)), for: .editingChanged)
         txtPass.addTarget(self, action:  #selector(self.onInputPass(_:)), for: .editingChanged)
-        txtId.addTarget(self, action:  #selector(self.onInputId(_:)), for: .editingChanged)
+        txtcompanyCode.addTarget(self, action:  #selector(self.onInputId(_:)), for: .editingChanged)
         
         let defaults = UserDefaults.standard
         defaults.set(txtUserName.text, forKey: "usernName")
@@ -163,8 +162,8 @@ class ViewController: UIViewController, UITextFieldDelegate {
     }
     @objc
     func onInputId(_ sender: UITextField) {
-        print("Id", sender.text ?? "")
-        txtId.text = sender.text ?? ""
+        print("companyCode", sender.text ?? "")
+        txtcompanyCode.text = sender.text ?? ""
     }
     
     func makeHeaders(token: String) -> HTTPHeaders {
@@ -207,55 +206,90 @@ class ViewController: UIViewController, UITextFieldDelegate {
         present(alert, animated: true)
     }
     
-    
     func postGetToken() {
         let parameters: [String: Any] = ["username": txtUserName.text!, "password": txtPass.text!, "expiresAt": Int64(Calendar.current.date(byAdding: .hour, value: 12, to: Date())!.timeIntervalSince1970 * 1000), "grant_type": "password" ]
-        let url = "https://\(txtId.text!).kiiapps.com/am/api/oauth2/token"
+        
+        let url = "https://\(txtcompanyCode.text!).kiiapps.com/am/api/oauth2/token"
         AF.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default)
         
             .responseDecodable (of: AccountInfo.self) {  response in
-               // print("\(response)")
+                // print("\(response)")
                 switch response.result {
-                case .success(_):
+                case .success( _):
                     let token = response.value?.access_token ?? ""
                     UserDefaults.standard.set(token, forKey: "accessToken")
+                    
                     self.getMe()
-                    
-                    
                 case .failure(let error):
+                    self.showAlert(message: "Sai thông tin đăng nhập")
+                    self.hideActivity()
                     print("Failed with error: \(error)")
-                    
                 }
             }
-        
     }
     
     func getMe() {
-        let urlGetMe = "https://\(txtId.text!).kiiapps.com/am/api/me"
+        let urlGetMe = "https://\(txtcompanyCode.text!).kiiapps.com/am/api/me"
         let token = UserDefaults.standard.string(forKey: "accessToken") ?? ""
+        print("\(token)")
+        
+        //hroDyoJlR8Ok5fzZNEWbrOez3KYGZL22
+        
         AF.request(urlGetMe, method: .get, parameters: nil, encoding: JSONEncoding.default,headers: self.makeHeaders(token: token))
-            
             .responseDecodable(of: GetMeInfo.self) { response1 in
-                
                 switch response1.result {
                 case .success(let getMeInfo):
                     UserDefaults.standard.set(getMeInfo.tenants[0].id, forKey: "tenantId")
                     UserDefaults.standard.set(getMeInfo.id, forKey: "userId")
-                    
-//                    let str = UIStoryboard.init(name: "ViewController", bundle: nil)
-//
-//                    let vc = UINavigationController(rootViewController: str.instantiateViewController(withIdentifier: "LoginViewController"))
-//                    UIApplication.shared.windows.first?.rootViewController = vc
-                    
+                    print("userID: \(getMeInfo.id)")
                     print("tenantID: \(getMeInfo.tenants[0].id)")
+                    
+                    self.statusCode()
+                    // self.statusCode()
+                    print(" ok dung")
+                    //                    let str = UIStoryboard.init(name: "ViewController", bundle: nil)
+                    //
+                    //                    let vc = UINavigationController(rootViewController: str.instantiateViewController(withIdentifier: "LoginViewController"))
+                    //                    UIApplication.shared.windows.first?.rootViewController = vc
+                    if let httpURLResponse = response1.response {
+                        if httpURLResponse.statusCode == 200 {
+                            let mhDeliveryList = self.storyboard?.instantiateViewController(identifier:  "DeliveryListController") as! DeliveryListController
+                            self.showActivity()
+                            let delay1 = 3
+                            
+                            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(delay1)) { [self] in
+                                self.hideActivity()
+                                self.navigationController?.pushViewController(mhDeliveryList, animated: true)
+                            }
+                            
+                        } else if (httpURLResponse.statusCode == 403) {
+                            self.showAlert(message: "Error 403")
+                        } else if (httpURLResponse.statusCode == 401) {
+                            self.showAlert(message: "Token Out of Date")
+                            let passScreen = self.storyboard?.instantiateViewController(withIdentifier: "LoginViewController") as! ViewController
+                            self.navigationController?.pushViewController(passScreen, animated: false)
+                        } else {
+                            self.showAlert(message: "Có lỗi xảy ra")
+                        }
+                    }
                 case .failure(let error):
                     print("Failed with error: \(error)")
+                    self.showAlert(message:"lỗi xảy ra")
                 }
                 //print("Token: \(response1.request?.headers)")
                 // print("ID: \(response1.value?.id)")
                 //                        let id = response1.value?.id
                 //                        UserDefaults.standard.set(id, forKey: "userId")
                 
+            }
+    }
+    
+    func statusCode() {
+        let urlGetMe = "https://\(txtcompanyCode.text!).kiiapps.com/am/api/me"
+        AF.request(urlGetMe)/////////////////////////////////////////////////////////////////
+            .response {  response in
+                let status = response.response?.statusCode
+                print("STATUS: \(String(describing: status))")
             }
     }
 }
