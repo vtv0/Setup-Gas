@@ -17,7 +17,7 @@ class FloatingPanelDeliveryVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "FloatingPanel PageVC"
-        navigationController?.navigationBar.backgroundColor = .systemBlue
+       // navigationController?.navigationBar.backgroundColor = .systemBlue
         navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
         setupTabs()
         

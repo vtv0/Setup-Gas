@@ -7,6 +7,7 @@
 
 import UIKit
 import FloatingPanel
+import Alamofire
 
 class DeliveryListController: UIViewController , FloatingPanelControllerDelegate {
     
@@ -32,20 +33,24 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
     @IBOutlet weak var pickerDriver: UIPickerView!
     let driver = ["n1", "n2", "n3"]
     
-    //    func getLatestWorkerRouteLocationList() {
-    //        let dateFormatterGet = DateFormatter()
-    //        let workDate = dateFormatterGet.string(from: Date())
-    //        urlGetLatestWorkerRouteLocationList = urlGetLatestWorkerRouteLocationList + "\(UserDefaults.standard.string(forKey: "tenantId"))/latest_route/worker_users/\(UserDefaults.standard.string(forKey: "userId"))?workDate=\(workDate)"
-    //        AF.request(self.urlGetLatestWorkerRouteLocationList, method: .get, parameters: nil, encoding: JSONEncoding.default,headers: self.makeHeaders(token: token))
-    //            .responseDecodable(of: GetMeInfo.self) { response in
-    //
-    //
-    //            }
-    //    }
+        func getLatestWorkerRouteLocationList() {
+            let dateFormatterGet = DateFormatter()
+            let workDate = dateFormatterGet.string(from: Date())
+            
+            //{{exBaseUrl}}/vrp/tenants/{{tenantID}}/latest_route/worker_users/{{userID}}?workDate={{workDate}}
+            let url: String = "https://am-stg-iw01j.kiiapps.com/am/exapi/vrp/tenants/18/latest_route/worker_users/39?workDate=2022-10-21"
+           //let  urlGetLatestWorkerRouteLocationList = urlGetLatestWorkerRouteLocationList + "\(UserDefaults.standard.string(forKey: "tenantId"))/latest_route/worker_users/\(UserDefaults.standard.string(forKey: "userId"))?workDate=\(workDate)"
+            AF.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default)
+                .responseDecodable(of: GetMeInfo.self) { response in
+                   print("jjj\(response.response?.statusCode)")
+    
+                }
+        }
 
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        getLatestWorkerRouteLocationList()
        // title = "Delivery List"
         let fpc = FloatingPanelController()
         fpc.delegate = self

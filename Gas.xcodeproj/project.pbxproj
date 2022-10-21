@@ -14,8 +14,11 @@
 		750B39CD28E2F8D800210AB9 /* SettingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750B39CC28E2F8D800210AB9 /* SettingController.swift */; };
 		750B39D028E3036300210AB9 /* ReplanController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750B39CF28E3036300210AB9 /* ReplanController.swift */; };
 		750B39D228E3E71900210AB9 /* ContentReplanController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750B39D128E3E71900210AB9 /* ContentReplanController.swift */; };
+		75123F6829027ABD00A08972 /* Navigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75123F6729027ABD00A08972 /* Navigation.swift */; };
+		75123F6A29027E3D00A08972 /* PassScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75123F6929027E3D00A08972 /* PassScreenViewController.swift */; };
 		7517A0F028F660FE00994CBD /* CustomAlertReplanVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7517A0EF28F660FE00994CBD /* CustomAlertReplanVC.swift */; };
 		754B942028EAE8CB0059D4F2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 754B941F28EAE8CB0059D4F2 /* Assets.xcassets */; };
+		7591151D2902AA68007CF850 /* ActivityIndicatorViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7591151B2902AA68007CF850 /* ActivityIndicatorViewController.xib */; };
 		7598E46128EFC4DC00EA9FA9 /* PageDetailCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7598E46028EFC4DC00EA9FA9 /* PageDetailCollectionViewCell.swift */; };
 		75A1E17C28EFE6F200EA17A2 /* ContentReplanTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75A1E17B28EFE6F200EA17A2 /* ContentReplanTableViewCell.swift */; };
 		75A1E17F28F3AB6300EA17A2 /* RerouteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75A1E17E28F3AB6300EA17A2 /* RerouteViewController.swift */; };
@@ -27,7 +30,6 @@
 		75BF3A1328E161A900BC0F0C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 75BF3A1128E161A900BC0F0C /* LaunchScreen.storyboard */; };
 		75BF3A1E28E2883100BC0F0C /* DeliveryListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BF3A1D28E2883100BC0F0C /* DeliveryListController.swift */; };
 		75C0F47628F425A50091FB84 /* CustomAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75C0F47528F425A50091FB84 /* CustomAlertViewController.swift */; };
-		75CB4D4928FD160400D9599A /* Login.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75CB4D4828FD160400D9599A /* Login.swift */; };
 		75D2CE7928F7ADAD00B51CED /* ReusableImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75D2CE7828F7ADAD00B51CED /* ReusableImage.swift */; };
 		75D2CE7B28F7ADD800B51CED /* ReusableImage.xib in Resources */ = {isa = PBXBuildFile; fileRef = 75D2CE7A28F7ADD800B51CED /* ReusableImage.xib */; };
 		75D2CE7D28F8038D00B51CED /* UIApplacation+TopVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75D2CE7C28F8038D00B51CED /* UIApplacation+TopVC.swift */; };
@@ -43,7 +45,6 @@
 		75FDF73B28EAB6B300AADB99 /* CustomerLocationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75FDF73A28EAB6B300AADB99 /* CustomerLocationController.swift */; };
 		75FDF73D28EABABA00AADB99 /* EditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75FDF73C28EABABA00AADB99 /* EditViewController.swift */; };
 		8A4064A728F86F5F0011DA9A /* ActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4064A628F86F5F0011DA9A /* ActivityIndicator.swift */; };
-		8A4064AA28F86F9C0011DA9A /* ActivityIndicator.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8A4064A928F86F9C0011DA9A /* ActivityIndicator.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -55,8 +56,11 @@
 		750B39CC28E2F8D800210AB9 /* SettingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingController.swift; sourceTree = "<group>"; };
 		750B39CF28E3036300210AB9 /* ReplanController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplanController.swift; sourceTree = "<group>"; };
 		750B39D128E3E71900210AB9 /* ContentReplanController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentReplanController.swift; sourceTree = "<group>"; };
+		75123F6729027ABD00A08972 /* Navigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Navigation.swift; sourceTree = "<group>"; };
+		75123F6929027E3D00A08972 /* PassScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassScreenViewController.swift; sourceTree = "<group>"; };
 		7517A0EF28F660FE00994CBD /* CustomAlertReplanVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAlertReplanVC.swift; sourceTree = "<group>"; };
 		754B941F28EAE8CB0059D4F2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		7591151B2902AA68007CF850 /* ActivityIndicatorViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ActivityIndicatorViewController.xib; sourceTree = "<group>"; };
 		7598E46028EFC4DC00EA9FA9 /* PageDetailCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageDetailCollectionViewCell.swift; sourceTree = "<group>"; };
 		75A1E17B28EFE6F200EA17A2 /* ContentReplanTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentReplanTableViewCell.swift; sourceTree = "<group>"; };
 		75A1E17E28F3AB6300EA17A2 /* RerouteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RerouteViewController.swift; sourceTree = "<group>"; };
@@ -70,7 +74,6 @@
 		75BF3A1428E161A900BC0F0C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		75BF3A1D28E2883100BC0F0C /* DeliveryListController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeliveryListController.swift; sourceTree = "<group>"; };
 		75C0F47528F425A50091FB84 /* CustomAlertViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAlertViewController.swift; sourceTree = "<group>"; };
-		75CB4D4828FD160400D9599A /* Login.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Login.swift; sourceTree = "<group>"; };
 		75D2CE7828F7ADAD00B51CED /* ReusableImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReusableImage.swift; sourceTree = "<group>"; };
 		75D2CE7A28F7ADD800B51CED /* ReusableImage.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReusableImage.xib; sourceTree = "<group>"; };
 		75D2CE7C28F8038D00B51CED /* UIApplacation+TopVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplacation+TopVC.swift"; sourceTree = "<group>"; };
@@ -86,7 +89,6 @@
 		75FDF73A28EAB6B300AADB99 /* CustomerLocationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomerLocationController.swift; sourceTree = "<group>"; };
 		75FDF73C28EABABA00AADB99 /* EditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditViewController.swift; sourceTree = "<group>"; };
 		8A4064A628F86F5F0011DA9A /* ActivityIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityIndicator.swift; sourceTree = "<group>"; };
-		8A4064A928F86F9C0011DA9A /* ActivityIndicator.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ActivityIndicator.xib; sourceTree = "<group>"; };
 		EC88900838B06591DC5107A1 /* Pods-Gas.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Gas.debug.xcconfig"; path = "Target Support Files/Pods-Gas/Pods-Gas.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -195,6 +197,7 @@
 				75BF3A1C28E2877900BC0F0C /* Screen */,
 				75BF3A0628E161A800BC0F0C /* AppDelegate.swift */,
 				75BF3A0828E161A800BC0F0C /* SceneDelegate.swift */,
+				75123F6929027E3D00A08972 /* PassScreenViewController.swift */,
 				75BF3A0C28E161A800BC0F0C /* Main.storyboard */,
 				75BF3A1128E161A900BC0F0C /* LaunchScreen.storyboard */,
 				75BF3A1428E161A900BC0F0C /* Info.plist */,
@@ -220,7 +223,6 @@
 			isa = PBXGroup;
 			children = (
 				75BF3A0A28E161A800BC0F0C /* LoginController.swift */,
-				75CB4D4828FD160400D9599A /* Login.swift */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -229,6 +231,7 @@
 			isa = PBXGroup;
 			children = (
 				75BF3A1D28E2883100BC0F0C /* DeliveryListController.swift */,
+				75123F6729027ABD00A08972 /* Navigation.swift */,
 				757F496B28E3FD23008B8C05 /* FloatingPanel_Delivery */,
 			);
 			path = "Delivery List";
@@ -262,8 +265,8 @@
 			isa = PBXGroup;
 			children = (
 				8A4064A628F86F5F0011DA9A /* ActivityIndicator.swift */,
-				8A4064A928F86F9C0011DA9A /* ActivityIndicator.xib */,
 				75B2664128F9536C00947D70 /* ViewController+Extension.swift */,
+				7591151B2902AA68007CF850 /* ActivityIndicatorViewController.xib */,
 			);
 			path = ActivityIndicator;
 			sourceTree = "<group>";
@@ -346,10 +349,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				75BF3A1328E161A900BC0F0C /* LaunchScreen.storyboard in Resources */,
+				7591151D2902AA68007CF850 /* ActivityIndicatorViewController.xib in Resources */,
 				754B942028EAE8CB0059D4F2 /* Assets.xcassets in Resources */,
 				75BF3A0E28E161A800BC0F0C /* Main.storyboard in Resources */,
 				75D2CE7B28F7ADD800B51CED /* ReusableImage.xib in Resources */,
-				8A4064AA28F86F9C0011DA9A /* ActivityIndicator.xib in Resources */,
 				75D2CE8728F80F3400B51CED /* ImageLabelView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -418,17 +421,18 @@
 				7517A0F028F660FE00994CBD /* CustomAlertReplanVC.swift in Sources */,
 				7501250828ED2272003AC9EB /* PageDetailVC.swift in Sources */,
 				75FDF73B28EAB6B300AADB99 /* CustomerLocationController.swift in Sources */,
+				75123F6A29027E3D00A08972 /* PassScreenViewController.swift in Sources */,
 				75FDF73D28EABABA00AADB99 /* EditViewController.swift in Sources */,
 				75FDF73928EAB69700AADB99 /* ParkingLocationController.swift in Sources */,
 				75D2CE8928F80F7200B51CED /* ImageLabelView.swift in Sources */,
 				7598E46128EFC4DC00EA9FA9 /* PageDetailCollectionViewCell.swift in Sources */,
 				75BF3A1E28E2883100BC0F0C /* DeliveryListController.swift in Sources */,
 				75D2CE8528F80F1C00B51CED /* FacilityImageView.swift in Sources */,
-				75CB4D4928FD160400D9599A /* Login.swift in Sources */,
 				75BF3A0728E161A800BC0F0C /* AppDelegate.swift in Sources */,
 				750B39D028E3036300210AB9 /* ReplanController.swift in Sources */,
 				75A1E17F28F3AB6300EA17A2 /* RerouteViewController.swift in Sources */,
 				75FDF73028EAB0F700AADB99 /* TabsView.swift in Sources */,
+				75123F6829027ABD00A08972 /* Navigation.swift in Sources */,
 				75FDF73728EAB65800AADB99 /* GeneralInfoController.swift in Sources */,
 				8A4064A728F86F5F0011DA9A /* ActivityIndicator.swift in Sources */,
 				7501250528EC3904003AC9EB /* FloatingPanelDeliveryPVC.swift in Sources */,

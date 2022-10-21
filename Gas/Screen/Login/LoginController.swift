@@ -7,6 +7,9 @@
 
 import UIKit
 import Alamofire
+import Network
+import SystemConfiguration
+
 
 struct AccountInfo: Decodable {
     var access_token: String
@@ -37,9 +40,12 @@ struct GetLatestWorkerRouteLocationList : Decodable {
 //
 //}
 
+
+
+
 class ViewController: UIViewController, UITextFieldDelegate {
     
-    var viewActivity: ActivityIndicator!
+  //  var viewActivity: ActivityIndicator!
     
     @IBOutlet weak var imgIcon: UIImageView!
     
@@ -57,13 +63,14 @@ class ViewController: UIViewController, UITextFieldDelegate {
             UserDefaults.standard.removeObject(forKey: "userName")
             UserDefaults.standard.removeObject(forKey: "pass")
             UserDefaults.standard.removeObject(forKey: "companyCode")
+            UserDefaults.standard.removeObject(forKey: "accessToken")
         } else {
             self.btnSaveAccount.setImage(UIImage(named: "checkmark"), for: .normal)
             
             UserDefaults.standard.set(txtUserName.text, forKey: "userName")
             UserDefaults.standard.set(txtPass.text, forKey: "pass")
             UserDefaults.standard.set(txtcompanyCode.text, forKey: "companyCode")
-            
+            UserDefaults.standard.set(token, forKey: "accessToken")
         }
     }
     
@@ -77,14 +84,18 @@ class ViewController: UIViewController, UITextFieldDelegate {
         print("\(String(describing: showPass))")
         print("\(String(describing: showcompanyCode))")
         
-        //        if txtUserName.text!.isEmpty || txtPass.text!.isEmpty || txtId.text!.isEmpty {
-        //
-        //        }
-        
+                if txtUserName.text!.isEmpty || txtPass.text!.isEmpty || txtcompanyCode.text!.isEmpty {
+                    self.showAlert(message: "Nhập đầy đủ thông tin tài khoản")
+                } else  {
+                    self.postGetToken()
+                   
+                }
         // _ = storyboard?.instantiateViewController(identifier:  "DeliveryListController") as! DeliveryListController
-        postGetToken()
+      //  postGetToken()
+       // self.checkConnectInternet()
+  //      if (
         
-        //self.showActivity()
+        
         //        let delay1 = 3
         //        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(delay1)) { [self] in
         //            self.hideActivity()
@@ -110,33 +121,71 @@ class ViewController: UIViewController, UITextFieldDelegate {
     let showPass = UserDefaults.standard.string(forKey: "pass")
     let showcompanyCode = UserDefaults.standard.string(forKey: "companyCode")
     
+    func saveLoggedState() {
+
+        let def = UserDefaults.standard
+        def.set(true, forKey: "is_authenticated") // save true flag to UserDefaults
+        def.synchronize()
+
+    }
     
-    
+    func isInternetAvailable() -> Bool {
+            var zeroAddress = sockaddr_in()
+            zeroAddress.sin_len = UInt8(MemoryLayout.size(ofValue: zeroAddress))
+            zeroAddress.sin_family = sa_family_t(AF_INET)
+
+            let defaultRouteReachability = withUnsafePointer(to: &zeroAddress) {
+                $0.withMemoryRebound(to: sockaddr.self, capacity: 1) {zeroSockAddress in
+                    SCNetworkReachabilityCreateWithAddress(nil, zeroSockAddress)
+                }
+            }
+
+            var flags = SCNetworkReachabilityFlags()
+            if !SCNetworkReachabilityGetFlags(defaultRouteReachability!, &flags) {
+                return false
+            }
+            let isReachable = flags.contains(.reachable)
+            let needsConnection = flags.contains(.connectionRequired)
+            return (isReachable && !needsConnection)
+        }
+
+        func showAlertInternet() {
+            if !isInternetAvailable() {
+                let alert = UIAlertController(title: "Warning", message: "The Internet is not available", preferredStyle: .alert)
+                let action = UIAlertAction(title: "Dismiss", style: .default, handler: nil)
+                alert.addAction(action)
+                present(alert, animated: true, completion: nil)
+            }
+        }
     override func viewDidLoad() {
         super.viewDidLoad()
+      //  self.checkConnectInternet()
+        self.isInternetAvailable()
         
+        //        monitor.pathUpdateHandler = { pathUpdateHandler in
+        //                    if pathUpdateHandler.status == .satisfied {
+        //                        print("Internet connection is on.")
+        //                    } else {
+        //                        print("There's no internet connection.")
+        //                    }
+        //                }
+        //
+        //                monitor.start(queue: queue)
+    
         navigationItem.hidesBackButton = true
         
-        bRec = !bRec
-        if (bRec ){
-            self.btnSaveAccount.setImage(UIImage(named: "checkmarkEmpty"), for: .normal)
-            
-        } else {
-            self.btnSaveAccount.setImage(UIImage(named: "checkmark"), for: .normal)
-            txtUserName.text = showUserName
-            txtPass.text = showPass
-            txtcompanyCode.text = showcompanyCode
-        }
+//        bRec = !bRec
+//        if (bRec ){
+//            self.btnSaveAccount.setImage(UIImage(named: "checkmarkEmpty"), for: .normal)
+//            
+//        } else {
+//            self.btnSaveAccount.setImage(UIImage(named: "checkmark"), for: .normal)
+//            txtUserName.text = showUserName
+//            txtPass.text = showPass
+//            txtcompanyCode.text = showcompanyCode
+//        }
         
-        if txtUserName.text!.isEmpty || txtPass.text!.isEmpty || txtcompanyCode.text!.isEmpty {
-            print ("nhap TK")
-            //                    btnLogin.isEnabled = false
-            //                    btnLogin.isUserInteractionEnabled = false
-        }
-        //else {
-        //            btnLogin.isEnabled = true
-        //            btnLogin.isUserInteractionEnabled = true
-        //        }
+        
         
         let dateFormatterGet = DateFormatter()
         let workDate = dateFormatterGet.string(from: Date())
@@ -151,7 +200,28 @@ class ViewController: UIViewController, UITextFieldDelegate {
         defaults.set(txtUserName.text, forKey: "usernName")
         
         
+        
+        
     }
+//    let monitor = NWPathMonitor(requiredInterfaceType: .cellular)
+//    let monitor = NWPathMonitor(requiredInterfaceType: .wifi)
+//    let monitor = NWPathMonitor()
+//    let queue = DispatchQueue(label: "InternetConnectionMonitor")
+//    func checkConnectInternet() {
+//        monitor.pathUpdateHandler = {  pathUpdateHandler in
+//            if pathUpdateHandler.status == .satisfied {
+//                print("Internet connection is on.")
+//           //     self.showAlert(message: "ok")
+//               // self.postGetToken()
+//            } else {
+//               // self.showAlert(message: "loi")
+//                print("There's no internet connection.")
+//            }
+//        }
+//
+//        monitor.start(queue: queue)
+//    }
+    
     @objc func onInputUserName(_ sender: UITextField) {
         print("name", sender.text ?? "")
         txtUserName.text = sender.text ?? ""
@@ -207,23 +277,62 @@ class ViewController: UIViewController, UITextFieldDelegate {
     }
     
     func postGetToken() {
+        //self.checkConnectInternet()
         let parameters: [String: Any] = ["username": txtUserName.text!, "password": txtPass.text!, "expiresAt": Int64(Calendar.current.date(byAdding: .hour, value: 12, to: Date())!.timeIntervalSince1970 * 1000), "grant_type": "password" ]
-        
+//   self.showActivity()
         let url = "https://\(txtcompanyCode.text!).kiiapps.com/am/api/oauth2/token"
-        AF.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default)
         
+        AF.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default)
             .responseDecodable (of: AccountInfo.self) {  response in
-                // print("\(response)")
+                print("\(String(describing: response.response?.statusCode))")
                 switch response.result {
                 case .success( _):
                     let token = response.value?.access_token ?? ""
                     UserDefaults.standard.set(token, forKey: "accessToken")
-                    
                     self.getMe()
+                    
+                    
+                    if let httpURLResponse = response.response {
+                        if(httpURLResponse.statusCode == 200) {
+                            let mhDeliveryList = self.storyboard?.instantiateViewController(identifier:  "DeliveryListController") as! DeliveryListController
+                            
+                            self.navigationController?.pushViewController(mhDeliveryList, animated: true)
+//                            let delay1 = 3
+//
+//                            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(delay1)) { [self] in
+//                                self.hideActivity()
+//
+//                            }
+                        }
+                    }
                 case .failure(let error):
-                    self.showAlert(message: "Sai thông tin đăng nhập")
-                    self.hideActivity()
-                    print("Failed with error: \(error)")
+                    //self.showAlertInternet()
+                    
+              //      self.checkConnectInternet()
+                    // self.showAlert(message: "Sai thông tin đăng nhập")
+//                    let statusCODE =  response.response?.statusCode
+//                    if (statusCODE == nil){
+//                        self.showAlert(message: "Lỗi kết nối Internet")
+//                        print("statusCODE nil")
+//                    }
+                   // print("status CODE: \(String(describing: statusCODE))")
+        //     self.hideActivity()
+                    if (response.response?.statusCode == 403) {
+                        self.showAlert(message: "Sai mk (Error: 403)")
+                        
+//                        } else if (httpURLResponse.statusCode == 401) {
+//                            self.showAlert(message: "Token Out of Date")
+//                            let passScreen = self.storyboard?.instantiateViewController(withIdentifier: "LoginViewController") as! ViewController
+//                            self.navigationController?.pushViewController(passScreen, animated: false)
+//                        } else if(httpURLResponse.statusCode == 400)  {
+//                            self.showAlert(message: "Nhập thiếu thông tin tài khoản")
+//
+                        
+                    } else if let urlError = error.underlyingError as? URLError , urlError.code == .cannotFindHost {
+                        self.showAlert(message: "Sai mật khẩu")
+                    } else {
+                        self.showAlert(message: "Lỗi xảy ra")
+                    }
                 }
             }
     }
@@ -233,7 +342,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
         let token = UserDefaults.standard.string(forKey: "accessToken") ?? ""
         print("\(token)")
         
-        //hroDyoJlR8Ok5fzZNEWbrOez3KYGZL22
+        
         
         AF.request(urlGetMe, method: .get, parameters: nil, encoding: JSONEncoding.default,headers: self.makeHeaders(token: token))
             .responseDecodable(of: GetMeInfo.self) { response1 in
@@ -244,34 +353,13 @@ class ViewController: UIViewController, UITextFieldDelegate {
                     print("userID: \(getMeInfo.id)")
                     print("tenantID: \(getMeInfo.tenants[0].id)")
                     
-                    self.statusCode()
+                    //  self.statusCode()
                     // self.statusCode()
-                    print(" ok dung")
+                 //   print(" ok dung")
                     //                    let str = UIStoryboard.init(name: "ViewController", bundle: nil)
                     //
                     //                    let vc = UINavigationController(rootViewController: str.instantiateViewController(withIdentifier: "LoginViewController"))
                     //                    UIApplication.shared.windows.first?.rootViewController = vc
-                    if let httpURLResponse = response1.response {
-                        if httpURLResponse.statusCode == 200 {
-                            let mhDeliveryList = self.storyboard?.instantiateViewController(identifier:  "DeliveryListController") as! DeliveryListController
-                            self.showActivity()
-                            let delay1 = 3
-                            
-                            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(delay1)) { [self] in
-                                self.hideActivity()
-                                self.navigationController?.pushViewController(mhDeliveryList, animated: true)
-                            }
-                            
-                        } else if (httpURLResponse.statusCode == 403) {
-                            self.showAlert(message: "Error 403")
-                        } else if (httpURLResponse.statusCode == 401) {
-                            self.showAlert(message: "Token Out of Date")
-                            let passScreen = self.storyboard?.instantiateViewController(withIdentifier: "LoginViewController") as! ViewController
-                            self.navigationController?.pushViewController(passScreen, animated: false)
-                        } else {
-                            self.showAlert(message: "Có lỗi xảy ra")
-                        }
-                    }
                 case .failure(let error):
                     print("Failed with error: \(error)")
                     self.showAlert(message:"lỗi xảy ra")
@@ -284,14 +372,14 @@ class ViewController: UIViewController, UITextFieldDelegate {
             }
     }
     
-    func statusCode() {
-        let urlGetMe = "https://\(txtcompanyCode.text!).kiiapps.com/am/api/me"
-        AF.request(urlGetMe)/////////////////////////////////////////////////////////////////
-            .response {  response in
-                let status = response.response?.statusCode
-                print("STATUS: \(String(describing: status))")
-            }
-    }
+//    func statusCode() {
+//        let urlGetMe = "https://\(txtcompanyCode.text!).kiiapps.com/am/api/me"
+//        AF.request(urlGetMe)/////////////////////////////////////////////////////////////////
+//            .response {  response in
+//                let status = response.response?.statusCode
+//                print("STATUS: \(String(describing: status))")
+//            }
+//    }
 }
 
 
