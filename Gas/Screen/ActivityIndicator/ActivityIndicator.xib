@@ -1,37 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21225" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_0" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21207"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ActivityIndicator" customModule="Gas" customModuleProvider="target">
-            <connections>
-                <outlet property="activityIndicator" destination="JwV-G8-unH" id="l1o-7N-1aK"/>
-            </connections>
-        </placeholder>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <view contentMode="scaleToFill" id="iN0-l3-epB">
-            <rect key="frame" x="0.0" y="0.0" width="150" height="150"/>
+        <view contentMode="scaleToFill" restorationIdentifier="ActivityIndicator" id="iN0-l3-epB" customClass="ActivityIndicator" customModule="Gas" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <activityIndicatorView contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="JwV-G8-unH">
-                    <rect key="frame" x="0.0" y="44" width="150" height="62"/>
+                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="77l-Qd-YFq">
+                    <rect key="frame" x="120" y="347" width="150" height="150"/>
+                    <color key="backgroundColor" systemColor="systemYellowColor"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="150" id="nzp-nZ-TZs"/>
+                        <constraint firstAttribute="height" constant="150" id="z4W-vl-jQc"/>
+                    </constraints>
                 </activityIndicatorView>
             </subviews>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
-            <color key="backgroundColor" red="0.43609927398989901" green="0.43609927398989901" blue="0.43609927398989901" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+            <color key="backgroundColor" red="0.68961095328282829" green="0.68961095328282829" blue="0.68961095328282829" alpha="0.61723923841059603" colorSpace="custom" customColorSpace="displayP3"/>
             <constraints>
-                <constraint firstItem="JwV-G8-unH" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="SAg-Lb-QEu"/>
-                <constraint firstItem="JwV-G8-unH" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="cZl-7e-pFM"/>
-                <constraint firstItem="JwV-G8-unH" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="fvR-8j-BOQ"/>
-                <constraint firstItem="JwV-G8-unH" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="owX-QR-S20"/>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="JwV-G8-unH" secondAttribute="trailing" id="p6O-Xj-ykJ"/>
+                <constraint firstItem="77l-Qd-YFq" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="Ell-jV-ewh"/>
+                <constraint firstItem="77l-Qd-YFq" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="IPI-34-LG8"/>
             </constraints>
-            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="-149.23076923076923" y="-263.74407582938386"/>
+            <connections>
+                <outlet property="activityIndicator" destination="77l-Qd-YFq" id="Udb-R3-S3z"/>
+            </connections>
+            <point key="canvasLocation" x="-365" y="21"/>
         </view>
     </objects>
+    <resources>
+        <systemColor name="systemYellowColor">
+            <color red="1" green="0.80000000000000004" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+    </resources>
 </document>

@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21225" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21207"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -10,6 +11,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ActivityIndicatorViewController" customModule="Gas" customModuleProvider="target">
             <connections>
+                <outlet property="uiviewcontroller" destination="i5M-Pr-FkT" id="bnx-fD-QFK"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -18,32 +20,20 @@
             <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vZK-3K-6qs">
-                    <rect key="frame" x="107" y="348" width="200" height="200"/>
-                    <subviews>
-                        <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="Bmk-2L-iJJ">
-                            <rect key="frame" x="25" y="25" width="150" height="150"/>
-                            <color key="backgroundColor" systemColor="systemYellowColor"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="150" id="Pyr-Uw-LZw"/>
-                                <constraint firstAttribute="width" constant="150" id="rmr-9U-dKq"/>
-                            </constraints>
-                        </activityIndicatorView>
-                    </subviews>
-                    <color key="backgroundColor" systemColor="systemOrangeColor"/>
+                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="Bmk-2L-iJJ">
+                    <rect key="frame" x="132" y="373" width="150" height="150"/>
+                    <color key="backgroundColor" systemColor="systemYellowColor"/>
                     <constraints>
-                        <constraint firstItem="Bmk-2L-iJJ" firstAttribute="centerX" secondItem="vZK-3K-6qs" secondAttribute="centerX" id="3Ct-hZ-Lke"/>
-                        <constraint firstItem="Bmk-2L-iJJ" firstAttribute="centerY" secondItem="vZK-3K-6qs" secondAttribute="centerY" id="7LF-0N-MEa"/>
-                        <constraint firstAttribute="height" constant="200" id="TeU-DG-snd"/>
-                        <constraint firstAttribute="width" constant="200" id="vBQ-GR-FxB"/>
+                        <constraint firstAttribute="height" constant="150" id="Pyr-Uw-LZw"/>
+                        <constraint firstAttribute="width" constant="150" id="rmr-9U-dKq"/>
                     </constraints>
-                </view>
+                </activityIndicatorView>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" red="0.7186119002525253" green="0.7186119002525253" blue="0.7186119002525253" alpha="0.63439052152317876" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstItem="vZK-3K-6qs" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="41c-iC-gsB"/>
-                <constraint firstItem="vZK-3K-6qs" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="MeW-1I-TTv"/>
+                <constraint firstItem="Bmk-2L-iJJ" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="D9A-bq-Evr"/>
+                <constraint firstItem="Bmk-2L-iJJ" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="aBk-QD-It3"/>
             </constraints>
             <connections>
                 <outlet property="activityIndicator" destination="Bmk-2L-iJJ" id="Ps3-bC-L3W"/>
@@ -52,9 +42,6 @@
         </view>
     </objects>
     <resources>
-        <systemColor name="systemOrangeColor">
-            <color red="1" green="0.58431372549019611" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </systemColor>
         <systemColor name="systemYellowColor">
             <color red="1" green="0.80000000000000004" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>

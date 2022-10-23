@@ -2,7 +2,7 @@
 //  ActivityIndicatorViewController.swift
 //  Gas
 //
-//  Created by Vuong The Vu on 21/10/2022.
+//  Created by vu the vuong on 23/10/2022.
 //
 
 import UIKit
@@ -12,9 +12,9 @@ class ActivityIndicatorViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+    
     }
-
+    
 
     /*
     // MARK: - Navigation
