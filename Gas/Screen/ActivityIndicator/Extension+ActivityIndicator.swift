@@ -16,7 +16,7 @@ extension UIViewController {
         greyView.frame = CGRect(x: 0, y: 0, width: self.view.bounds.width, height: self.view.bounds.height)
         greyView.backgroundColor = UIColor.black
         greyView.alpha = 0.5
-        greyView.tag = 1
+        greyView.tag = 999
         self.view.addSubview(greyView)
         
         let activityIndicator = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
@@ -28,9 +28,7 @@ extension UIViewController {
         activityIndicator.color = .white
         activityIndicator.startAnimating()
         //UIApplication.shared.beginIgnoringInteractionEvents()
-        
         activityIndicator.tag = 100 // 100 for example
-        
         // before adding it, you need to check if it is already has been added:
         for subview in view.subviews {
             if subview.tag == 100 {
@@ -38,7 +36,6 @@ extension UIViewController {
                 return
             }
         }
-        
         view.addSubview(activityIndicator)
         
     }
@@ -51,7 +48,7 @@ extension UIViewController {
         activityIndicator?.removeFromSuperview()
         activityIndicator?.removeFromSuperview()
         
-        let deleteView =  view.viewWithTag(1)
+        let deleteView =  view.viewWithTag(999)
         deleteView?.removeFromSuperview()
     }
 }
