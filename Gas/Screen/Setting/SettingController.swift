@@ -24,7 +24,7 @@ class SettingController: UIViewController {
     }
   
     @IBAction func btnLogOut(_ sender: Any) {
-      //  UserDefaults.standard.removeObject(forKey: "accessToken")
+        UserDefaults.standard.removeObject(forKey: "accessToken")
         
        // self.showActivity()
         //        navigationController?.navigationItem =

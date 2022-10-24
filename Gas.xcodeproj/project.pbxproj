@@ -190,10 +190,10 @@
 		75BF3A0528E161A800BC0F0C /* Gas */ = {
 			isa = PBXGroup;
 			children = (
+				75123F6929027E3D00A08972 /* PassScreenViewController.swift */,
 				75BF3A1C28E2877900BC0F0C /* Screen */,
 				75BF3A0628E161A800BC0F0C /* AppDelegate.swift */,
 				75BF3A0828E161A800BC0F0C /* SceneDelegate.swift */,
-				75123F6929027E3D00A08972 /* PassScreenViewController.swift */,
 				75BF3A0C28E161A800BC0F0C /* Main.storyboard */,
 				75BF3A1128E161A900BC0F0C /* LaunchScreen.storyboard */,
 				75BF3A1428E161A900BC0F0C /* Info.plist */,

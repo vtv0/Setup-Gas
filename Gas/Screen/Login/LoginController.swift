@@ -10,7 +10,6 @@ import Alamofire
 import Network
 import SystemConfiguration
 
-
 struct AccountInfo: Decodable {
     var access_token: String
     var expires_in: Int
@@ -27,25 +26,20 @@ struct  Tenant: Decodable {
     var id: Int
     var roleName: String
 }
-
-
 struct GetLatestWorkerRouteLocationList : Decodable {
     //    var
 }
-
-//struct Employee: Codable {
-//    var userName : String
-//    var pass : String
-//    var id : String
-//
-//}
-
-
 
 
 class ViewController: UIViewController, UITextFieldDelegate {
     
     //  var viewActivity: ActivityIndicator!
+    let showUserName = UserDefaults.standard.string(forKey: "userName")
+    let showPass = UserDefaults.standard.string(forKey: "pass")
+    let showcompanyCode = UserDefaults.standard.string(forKey: "companyCode")
+    var token = UserDefaults.standard.string(forKey: "response") ?? ""
+    let expiredDate = Calendar.current.date(byAdding: .hour, value: 12, to: Date())!
+    
     
     @IBOutlet weak var imgIcon: UIImageView!
     
@@ -90,24 +84,11 @@ class ViewController: UIViewController, UITextFieldDelegate {
             self.postGetToken()
             
         }
-        // _ = storyboard?.instantiateViewController(identifier:  "DeliveryListController") as! DeliveryListController
-        //  postGetToken()
-        // self.checkConnectInternet()
-        //      if (
-        
-        
-        //        let delay1 = 3
-        //        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(delay1)) { [self] in
-        //            self.hideActivity()
-        //            //            self.navigationController?.pushViewController(mhDeliveryList, animated: true)
-        //        }
     }
     
     //  let url = "https://am-stg-iw01j.kiiapps.com/am/api/oauth2/token"
     
     //  var urlGetLatestWorkerRouteLocationList = "https://am-stg-iw01j.kiiapps.com/am/exapi/vrp/tenants/"
-    var token = UserDefaults.standard.string(forKey: "response") ?? ""
-    let expiredDate = Calendar.current.date(byAdding: .hour, value: 12, to: Date())!
     
     //    let parameters: [String: Any] = ["username": "dev_driver1@dev1.test", "password": "dev123456", "companyCode": "am-stg-iw01j", "expiresAt": Int64(Calendar.current.date(byAdding: .hour, value: 12, to: Date())!.timeIntervalSince1970 * 1000), "grant_type": "password" ]
     
@@ -117,50 +98,47 @@ class ViewController: UIViewController, UITextFieldDelegate {
     // dateFormatterGet.dateFormat = "yyyy-MM-dd HH:mm:ss"
     // let date: NSDate? = dateFormatterGet.dateFromString("2016-02-29 12:24:26")
     
-    var showUserName = UserDefaults.standard.string(forKey: "userName")
-    let showPass = UserDefaults.standard.string(forKey: "pass")
-    let showcompanyCode = UserDefaults.standard.string(forKey: "companyCode")
     
-    func saveLoggedState() {
-        
-        let def = UserDefaults.standard
-        def.set(true, forKey: "is_authenticated") // save true flag to UserDefaults
-        def.synchronize()
-        
-    }
-    
-    func isInternetAvailable() -> Bool {
-        var zeroAddress = sockaddr_in()
-        zeroAddress.sin_len = UInt8(MemoryLayout.size(ofValue: zeroAddress))
-        zeroAddress.sin_family = sa_family_t(AF_INET)
-        
-        let defaultRouteReachability = withUnsafePointer(to: &zeroAddress) {
-            $0.withMemoryRebound(to: sockaddr.self, capacity: 1) {zeroSockAddress in
-                SCNetworkReachabilityCreateWithAddress(nil, zeroSockAddress)
-            }
-        }
-        
-        var flags = SCNetworkReachabilityFlags()
-        if !SCNetworkReachabilityGetFlags(defaultRouteReachability!, &flags) {
-            return false
-        }
-        let isReachable = flags.contains(.reachable)
-        let needsConnection = flags.contains(.connectionRequired)
-        return (isReachable && !needsConnection)
-    }
-    
-    func showAlertInternet() {
-        if !isInternetAvailable() {
-            let alert = UIAlertController(title: "Warning", message: "The Internet is not available", preferredStyle: .alert)
-            let action = UIAlertAction(title: "Dismiss", style: .default, handler: nil)
-            alert.addAction(action)
-            present(alert, animated: true, completion: nil)
-        }
-    }
+    //    func saveLoggedState() {
+    //
+    //        let def = UserDefaults.standard
+    //        def.set(true, forKey: "is_authenticated") // save true flag to UserDefaults
+    //        def.synchronize()
+    //
+    //    }
+    //
+    //    func isInternetAvailable() -> Bool {
+    //        var zeroAddress = sockaddr_in()
+    //        zeroAddress.sin_len = UInt8(MemoryLayout.size(ofValue: zeroAddress))
+    //        zeroAddress.sin_family = sa_family_t(AF_INET)
+    //
+    //        let defaultRouteReachability = withUnsafePointer(to: &zeroAddress) {
+    //            $0.withMemoryRebound(to: sockaddr.self, capacity: 1) {zeroSockAddress in
+    //                SCNetworkReachabilityCreateWithAddress(nil, zeroSockAddress)
+    //            }
+    //        }
+    //
+    //        var flags = SCNetworkReachabilityFlags()
+    //        if !SCNetworkReachabilityGetFlags(defaultRouteReachability!, &flags) {
+    //            return false
+    //        }
+    //        let isReachable = flags.contains(.reachable)
+    //        let needsConnection = flags.contains(.connectionRequired)
+    //        return (isReachable && !needsConnection)
+    //    }
+    //
+    //    func showAlertInternet() {
+    //        if !isInternetAvailable() {
+    //            let alert = UIAlertController(title: "Warning", message: "The Internet is not available", preferredStyle: .alert)
+    //            let action = UIAlertAction(title: "Dismiss", style: .default, handler: nil)
+    //            alert.addAction(action)
+    //            present(alert, animated: true, completion: nil)
+    //        }
+    //    }
     override func viewDidLoad() {
         super.viewDidLoad()
         //  self.checkConnectInternet()
-        self.isInternetAvailable()
+        //self.isInternetAvailable()
         
         
         //        monitor.pathUpdateHandler = { pathUpdateHandler in
@@ -175,33 +153,28 @@ class ViewController: UIViewController, UITextFieldDelegate {
         
         navigationItem.hidesBackButton = true
         
-                bRec = !bRec
-                if (bRec ){
-                    self.btnSaveAccount.setImage(UIImage(named: "checkmarkEmpty"), for: .normal)
-        
-                } else {
-                    self.btnSaveAccount.setImage(UIImage(named: "checkmark"), for: .normal)
-                    txtUserName.text = showUserName
-                    txtPass.text = showPass
-                    txtcompanyCode.text = showcompanyCode
-                }
-        
-        
+        //        bRec = !bRec
+        //        if (bRec ){
+        //            self.btnSaveAccount.setImage(UIImage(named: "checkmarkEmpty"), for: .normal)
+        //
+        //        } else {
+        //            self.btnSaveAccount.setImage(UIImage(named: "checkmark"), for: .normal)
+        //            txtUserName.text = showUserName
+        //            txtPass.text = showPass
+        //            txtcompanyCode.text = showcompanyCode
+        //        }
         
         let dateFormatterGet = DateFormatter()
         let workDate = dateFormatterGet.string(from: Date())
         
         imgIcon.image = UIImage(named:"icon.jpg")
         
-        let userName = txtUserName.addTarget(self, action:  #selector(self.onInputUserName(_:)), for: .editingChanged)
-        txtPass.addTarget(self, action:  #selector(self.onInputPass(_:)), for: .editingChanged)
-        txtcompanyCode.addTarget(self, action:  #selector(self.onInputId(_:)), for: .editingChanged)
-        
-        let defaults = UserDefaults.standard
-        defaults.set(txtUserName.text, forKey: "usernName")
-        
-        
-        
+        //        let userName = txtUserName.addTarget(self, action:  #selector(self.onInputUserName(_:)), for: .editingChanged)
+        //        txtPass.addTarget(self, action:  #selector(self.onInputPass(_:)), for: .editingChanged)
+        //        txtcompanyCode.addTarget(self, action:  #selector(self.onInputId(_:)), for: .editingChanged)
+        //        
+        //        let defaults = UserDefaults.standard
+        //        defaults.set(txtUserName.text, forKey: "usernName")
         
     }
     //    let monitor = NWPathMonitor(requiredInterfaceType: .cellular)
@@ -342,11 +315,6 @@ class ViewController: UIViewController, UITextFieldDelegate {
                     print("Failed with error: \(error)")
                     self.showAlert(message:"lỗi xảy ra")
                 }
-                //print("Token: \(response1.request?.headers)")
-                // print("ID: \(response1.value?.id)")
-                //                        let id = response1.value?.id
-                //                        UserDefaults.standard.set(id, forKey: "userId")
-                
             }
     }
     
