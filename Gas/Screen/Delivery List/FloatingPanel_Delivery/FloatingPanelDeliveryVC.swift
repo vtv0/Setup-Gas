@@ -10,8 +10,10 @@ import UIKit
 class FloatingPanelDeliveryVC: UIViewController {
  
     @IBOutlet weak var detailsTabsView: TabsView!
+    
     var currentIndex: Int = 0
     var pageController: UIPageViewController!
+    
     var data:[String] = []
     
     override func viewDidLoad() {
@@ -46,7 +48,7 @@ class FloatingPanelDeliveryVC: UIViewController {
         detailsTabsView.delegate = self
         
         // Set the selected Tab when the app starts
-        detailsTabsView.collectionView.selectItem(at: IndexPath(item: 0, section: 0), animated: true, scrollPosition: .centeredVertically)
+        detailsTabsView.collectionView.selectItem(at: IndexPath(item: 0, section: 0), animated: true, scrollPosition: .bottom)
     }
     
     func setupPageViewController() {

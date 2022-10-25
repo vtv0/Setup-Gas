@@ -83,10 +83,10 @@ class ViewController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.hidesBackButton = true
-        let dateFormatterGet = DateFormatter()
-        let workDate = dateFormatterGet.string(from: Date())
-        
-        imgIcon.image = UIImage(named:"icon.jpg")
+        //        let dateFormatterGet = DateFormatter()
+        //        let workDate = dateFormatterGet.string(from: Date())
+        //
+        //        imgIcon.image = UIImage(named:"icon.jpg")
         
     }
     
@@ -171,6 +171,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
             }
         self.hideActivity()
     }
+    
 }
 
 
