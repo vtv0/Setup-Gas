@@ -9,81 +9,6 @@ import UIKit
 import FloatingPanel
 import Alamofire
 
-//struct GetLatestWorkerRouteLocationListInfo: Decodable {
-//    var locations: [ObjectItem]?
-//    var workerRoute : workerRouteDetail
-//}
-//
-//struct ObjectItem : Decodable {
-//    var arrivalTime : arrivalTimeDetail?
-//    var breakTimeSec: Int
-//    var createdAt: String?
-//    var latitude : Double
-//    var loadCapacity: Int?
-//    var loadSupply: Int
-//    var location : locationDetail?
-//    var locationID: Int
-//    var locationOrder : Int
-//    var longitude : Double
-//    var metadata : metedateDetail
-//    var timeWindow : String?
-//    var travelTimeSecToNext : Int
-//    var waitingTimeSec: Int
-//    var workTimeSec: Int
-//    
-//}
-//
-//struct locationDetail : Decodable {
-//    var areaID: Int?
-//    var assetID: String?
-//    var comment : String?
-//    var createdAt : String?
-//    var id : Int?
-//    var importance : Int?
-//    var latitude: Double?
-//    var loadCapacity: Int?
-//    var loadConsumeMax: Int?
-//    var loadConsumeMin: Int?
-//    var locationType : String?
-//    var longitude: Double?
-//    var metadata : metedateDetail?
-//    var normalizedScore : Double?
-//    var priority: String?
-//    var tenantID: Int?
-//    var timeWindow: String?
-//    var updatedAt: Date?
-//    var vehicleLimit : Int?
-//    var workTimeSec: Int?
-//}
-//struct arrivalTimeDetail : Decodable {
-//    var hours : Int?
-//    var minutes : Int?
-//    var nanos : Int?
-//    var second : Int?
-//    
-//}
-//struct metedateDetail : Decodable {
-//    var KYOKYUSETSUBI_CODE : String?
-//    var display_data : display_dataDetail?
-//    var operators : [String]?
-//}
-//struct display_dataDetail : Decodable {
-//    var delivery_history: DateInfo?
-//    
-//}
-//struct DateInfo : Decodable {
-//    var dateDetail : String?
-//}
-//struct workerRouteDetail: Decodable {
-//         var  createdAt: String?
-//         var  id: Int
-//         var loadRemain: Int
-//         var  routeID: Int
-//         var totalTimeSec: Double
-//         var workDate: Date
-//         var workerID: Int
-//         var workerVehicleID: Int
-//}
 
 
 class DeliveryListController: UIViewController , FloatingPanelControllerDelegate {
@@ -132,41 +57,50 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
     let companyCode = UserDefaults.standard.string(forKey: "companyCode") ?? ""
     let tenantId = UserDefaults.standard.string(forKey: "tenantId") ?? ""
     let userId = UserDefaults.standard.string(forKey: "userId") ?? ""
-    //    let date = Date()
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        //        let dateFormatter = DateFormatter()
-        //        dateFormatter.dateFormat = "YYYY-MM-DD"
-        //        dateFormatter.timeStyle = .none
-        //dateFormatter.locale = Locale.current
-        
+
+    public func oneDay() {
         let date : Date = Date()
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
         dateFormatter.locale = Locale.current
         let todaysDate = dateFormatter.string(from: date)
-        
-        print("aa \(companyCode ?? "0")")
-        print("bb \(tenantId ?? "")")
-        print("cc \(userId ?? "")")
-        print("dd \(todaysDate)")
-        
+        print("today:\(todaysDate)")
+    }
+   
+    override func viewDidLoad() {
+        super.viewDidLoad()
         getLatestWorkerRouteLocationList()
+       // self.oneDay()
+        //1day
         
         
+        print("aa \(companyCode )")
+        print("bb \(tenantId )")
+        print("cc \(userId )")
+        
+        // 7day
+        let anchor = Date()
+        let calendar = Calendar.current
+        let formatter = DateFormatter()
+        formatter.dateStyle = .long
+        formatter.dateFormat = "yyyy-MM-dd"
+        for dayOffset in 0...6 {
+            if let date = calendar.date(byAdding: .day, value: dayOffset, to: anchor) {
+                let sevenday = formatter.string(from: date)
+                print("dddd:\(sevenday)")
+            }
+        }
+        
+       
         let fpc = FloatingPanelController()
         fpc.delegate = self
-        
         guard let contentDeliveryVC = storyboard?.instantiateViewController(withIdentifier: "FloatingPanelDeliveryVC") as? FloatingPanelDeliveryVC else { return }
         
         let countPage = ["a","c","3"]
         // let countPage = [UserDefaults.standard.string(forKey: "CountPage")]
         //print("\(UserDefaults.standard.string(forKey: "CountPage"))")
         
-        
         contentDeliveryVC.data = countPage
-        
         //UserDefaults.standard.value(forKey: "CountPage") as! [String]
         fpc.set(contentViewController: contentDeliveryVC)
         fpc.addPanel(toParent: self)
@@ -183,12 +117,15 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         
         view.bringSubviewToFront(btnShipping)
         navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
-        
     }
+    
     
     
     func getLatestWorkerRouteLocationList() {
         self.showActivity()
+        self.oneDay()
+        //self.print("today:\(todaysDate)")
+        
         let url:String = "https://\(companyCode).kiiapps.com/am/exapi/vrp/tenants/\(tenantId)/latest_route/worker_users/\(userId)?workDate=2022-10-26"
         let token = UserDefaults.standard.string(forKey: "accessToken") ?? ""
         AF.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default ,headers: self.makeHeaders(token: token))
@@ -205,6 +142,10 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
                     self.getGetAsset()
                    
                 case .failure(let error):
+                    if( response.response?.statusCode == 401) {
+                        let src = self.storyboard?.instantiateViewController(withIdentifier: "LoginViewController") as! ViewController
+                        self.navigationController?.pushViewController(src, animated: true)
+                    }
                     print("\(error)")
                     
                 }
@@ -217,7 +158,7 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
     func getGetAsset() {
         self.showActivity()
         let token = UserDefaults.standard.string(forKey: "accessToken") ?? ""
-        let urlGetAsset = "https://\(companyCode ?? "").kiiapps.com/am/api/assets/\(assetID)"
+        let urlGetAsset = "https://\(companyCode).kiiapps.com/am/api/assets/\(assetID)"
         AF.request(urlGetAsset,method: .get, parameters: nil, headers: self.makeHeaders(token: token)) .response { response1 in
             print("Status GetAsset:\( response1.response?.statusCode ?? 0)")
             switch response1.result {

@@ -403,3 +403,79 @@ class JSONAny: Decodable {
         }
     }
 }
+
+//struct GetLatestWorkerRouteLocationListInfo: Decodable {
+//    var locations: [ObjectItem]?
+//    var workerRoute : workerRouteDetail
+//}
+//
+//struct ObjectItem : Decodable {
+//    var arrivalTime : arrivalTimeDetail?
+//    var breakTimeSec: Int
+//    var createdAt: String?
+//    var latitude : Double
+//    var loadCapacity: Int?
+//    var loadSupply: Int
+//    var location : locationDetail?
+//    var locationID: Int
+//    var locationOrder : Int
+//    var longitude : Double
+//    var metadata : metedateDetail
+//    var timeWindow : String?
+//    var travelTimeSecToNext : Int
+//    var waitingTimeSec: Int
+//    var workTimeSec: Int
+//
+//}
+//
+//struct locationDetail : Decodable {
+//    var areaID: Int?
+//    var assetID: String?
+//    var comment : String?
+//    var createdAt : String?
+//    var id : Int?
+//    var importance : Int?
+//    var latitude: Double?
+//    var loadCapacity: Int?
+//    var loadConsumeMax: Int?
+//    var loadConsumeMin: Int?
+//    var locationType : String?
+//    var longitude: Double?
+//    var metadata : metedateDetail?
+//    var normalizedScore : Double?
+//    var priority: String?
+//    var tenantID: Int?
+//    var timeWindow: String?
+//    var updatedAt: Date?
+//    var vehicleLimit : Int?
+//    var workTimeSec: Int?
+//}
+//struct arrivalTimeDetail : Decodable {
+//    var hours : Int?
+//    var minutes : Int?
+//    var nanos : Int?
+//    var second : Int?
+//
+//}
+//struct metedateDetail : Decodable {
+//    var KYOKYUSETSUBI_CODE : String?
+//    var display_data : display_dataDetail?
+//    var operators : [String]?
+//}
+//struct display_dataDetail : Decodable {
+//    var delivery_history: DateInfo?
+//
+//}
+//struct DateInfo : Decodable {
+//    var dateDetail : String?
+//}
+//struct workerRouteDetail: Decodable {
+//         var  createdAt: String?
+//         var  id: Int
+//         var loadRemain: Int
+//         var  routeID: Int
+//         var totalTimeSec: Double
+//         var workDate: Date
+//         var workerID: Int
+//         var workerVehicleID: Int
+//}
