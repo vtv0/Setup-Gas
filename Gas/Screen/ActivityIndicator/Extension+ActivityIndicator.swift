@@ -18,6 +18,7 @@ extension UIViewController {
         greyView.alpha = 0.5
         greyView.tag = 999
         self.view.addSubview(greyView)
+        view.bringSubviewToFront(greyView)
         
         let activityIndicator = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
         activityIndicator.backgroundColor = UIColor(red:0.16, green:0.17, blue:0.21, alpha:1)
@@ -36,8 +37,9 @@ extension UIViewController {
                 return
             }
         }
-        view.addSubview(activityIndicator)
         
+        view.addSubview(activityIndicator)
+        view.bringSubviewToFront(activityIndicator)
     }
     
     func hideActivity() {
@@ -50,5 +52,6 @@ extension UIViewController {
         
         let deleteView =  view.viewWithTag(999)
         deleteView?.removeFromSuperview()
+        
     }
 }

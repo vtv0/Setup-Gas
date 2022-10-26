@@ -83,10 +83,13 @@ class ViewController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.hidesBackButton = true
+        txtUserName.text = showUserName
+        txtPass.text = showPass
+        txtcompanyCode.text = showcompanyCode
         //        let dateFormatterGet = DateFormatter()
         //        let workDate = dateFormatterGet.string(from: Date())
         //
-        //        imgIcon.image = UIImage(named:"icon.jpg")
+                imgIcon.image = UIImage(named:"icon.jpg")
         
     }
     
@@ -139,6 +142,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
                         self.navigationController?.pushViewController(mhDeliveryList, animated: true)
                     }
                 case .failure(let error):
+                    
                     if (response.response?.statusCode == 403) {
                         self.showAlert(message: "Sai mk (Error: 403)")
                     } else if let urlError = error.underlyingError as? URLError , urlError.code == .cannotFindHost {
@@ -160,13 +164,17 @@ class ViewController: UIViewController, UITextFieldDelegate {
             .responseDecodable(of: GetMeInfo.self) { response1 in
                 switch response1.result {
                 case .success(let getMeInfo):
+                    
                     UserDefaults.standard.set(getMeInfo.tenants[0].id, forKey: "tenantId")
                     UserDefaults.standard.set(getMeInfo.id, forKey: "userId")
                     print("userID: \(getMeInfo.id)")
                     print("tenantID: \(getMeInfo.tenants[0].id)")
+                    
                 case .failure(let error):
+                    
                     print("Failed with error: \(error)")
                     self.showAlert(message:"lỗi xảy ra")
+                    
                 }
             }
         self.hideActivity()

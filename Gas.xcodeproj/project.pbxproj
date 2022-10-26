@@ -15,6 +15,7 @@
 		750B39D028E3036300210AB9 /* ReplanController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750B39CF28E3036300210AB9 /* ReplanController.swift */; };
 		750B39D228E3E71900210AB9 /* ContentReplanController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750B39D128E3E71900210AB9 /* ContentReplanController.swift */; };
 		750C7E6529078E52009A9E27 /* ParseJsontoObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750C7E6429078E52009A9E27 /* ParseJsontoObject.swift */; };
+		750C7E6B2908ECA0009A9E27 /* Marker+ExtensionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750C7E6A2908ECA0009A9E27 /* Marker+ExtensionViewController.swift */; };
 		75123F6A29027E3D00A08972 /* PassScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75123F6929027E3D00A08972 /* PassScreenViewController.swift */; };
 		7517A0F028F660FE00994CBD /* CustomAlertReplanVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7517A0EF28F660FE00994CBD /* CustomAlertReplanVC.swift */; };
 		754B942028EAE8CB0059D4F2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 754B941F28EAE8CB0059D4F2 /* Assets.xcassets */; };
@@ -55,6 +56,7 @@
 		750B39CF28E3036300210AB9 /* ReplanController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplanController.swift; sourceTree = "<group>"; };
 		750B39D128E3E71900210AB9 /* ContentReplanController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentReplanController.swift; sourceTree = "<group>"; };
 		750C7E6429078E52009A9E27 /* ParseJsontoObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParseJsontoObject.swift; sourceTree = "<group>"; };
+		750C7E6A2908ECA0009A9E27 /* Marker+ExtensionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Marker+ExtensionViewController.swift"; sourceTree = "<group>"; };
 		75123F6929027E3D00A08972 /* PassScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassScreenViewController.swift; sourceTree = "<group>"; };
 		7517A0EF28F660FE00994CBD /* CustomAlertReplanVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAlertReplanVC.swift; sourceTree = "<group>"; };
 		754B941F28EAE8CB0059D4F2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -228,6 +230,7 @@
 			children = (
 				750C7E6429078E52009A9E27 /* ParseJsontoObject.swift */,
 				75BF3A1D28E2883100BC0F0C /* DeliveryListController.swift */,
+				750C7E6A2908ECA0009A9E27 /* Marker+ExtensionViewController.swift */,
 				757F496B28E3FD23008B8C05 /* FloatingPanel_Delivery */,
 			);
 			path = "Delivery List";
@@ -410,6 +413,7 @@
 				7501250328EC0FBE003AC9EB /* FloatingPanelDeliveryVC.swift in Sources */,
 				75FDF73228EAB18400AADB99 /* TabsPageViewController.swift in Sources */,
 				75D2CE7D28F8038D00B51CED /* UIApplacation+TopVC.swift in Sources */,
+				750C7E6B2908ECA0009A9E27 /* Marker+ExtensionViewController.swift in Sources */,
 				75BF3A0B28E161A800BC0F0C /* LoginController.swift in Sources */,
 				7517A0F028F660FE00994CBD /* CustomAlertReplanVC.swift in Sources */,
 				7501250828ED2272003AC9EB /* PageDetailVC.swift in Sources */,

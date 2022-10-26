@@ -20,7 +20,7 @@ struct LocationElement: Decodable {
     let createdAt: String
     let latitude: Double
     let loadCapacity, loadSupply: Int
-    let location: LocationLocation
+    let location: LocationLocation?
     let locationID, locationOrder: Int
     let longitude: Double
     let metadata: FluffyMetadata
@@ -52,7 +52,7 @@ struct LocationLocation: Decodable {
     let locationType: LocationType
     let longitude: Double
     let metadata: PurpleMetadata
-    let priority: Priority
+    let priority: String?
     let tenantID: Int
     let timeWindow: [TimeWindow]?
     let updatedAt: String
