@@ -106,7 +106,6 @@
 			isa = PBXGroup;
 			children = (
 				7501250728ED2272003AC9EB /* PageDetailVC.swift */,
-				7598E46028EFC4DC00EA9FA9 /* PageDetailCollectionViewCell.swift */,
 			);
 			path = PageViewControllerChild;
 			sourceTree = "<group>";
@@ -210,6 +209,7 @@
 				8A4064A828F86F710011DA9A /* ActivityIndicator */,
 				75BF3A1F28E2AE7900BC0F0C /* Login */,
 				75BF3A2228E2AF2F00BC0F0C /* Delivery List */,
+				7598E46028EFC4DC00EA9FA9 /* PageDetailCollectionViewCell.swift */,
 				750B39CE28E3034200210AB9 /* Replan */,
 				75A1E17D28F3AAD100EA17A2 /* Reroute */,
 				750B39CB28E2F6C900210AB9 /* Setting */,

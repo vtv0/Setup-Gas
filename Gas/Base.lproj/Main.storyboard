@@ -370,6 +370,14 @@
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="gtA-13-IuZ">
                                 <rect key="frame" x="0.0" y="229" width="375" height="583"/>
                             </mapView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HvG-NL-JHB">
+                                <rect key="frame" x="0.0" y="229" width="375" height="171"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" systemColor="systemMintColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="aGw-Ma-w39"/>
                         <color key="backgroundColor" systemColor="tintColor"/>
@@ -424,11 +432,12 @@
                         <outlet property="picker" destination="yXb-a1-Ac5" id="0BU-LY-aG6"/>
                         <outlet property="pickerDate" destination="csE-na-47a" id="qvW-uK-16x"/>
                         <outlet property="pickerDriver" destination="gzV-pr-QEL" id="een-fB-FGG"/>
+                        <outlet property="showDataDay" destination="HvG-NL-JHB" id="LZr-zf-8rN"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VVe-tY-k39" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1647" y="226"/>
+            <point key="canvasLocation" x="-1647.2" y="225.36945812807883"/>
         </scene>
         <!--Floating Panel DeliveryVC-->
         <scene sceneID="P02-lF-INh">

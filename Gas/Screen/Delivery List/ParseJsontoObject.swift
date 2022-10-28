@@ -5,27 +5,32 @@
 //  Created by Vuong The Vu on 25/10/2022.
 //
 
+// This file was generated from JSON Schema using quicktype, do not modify it directly.
+// To parse the JSON, add this file to your project and do:
+//
+//   let welcome = try? newJSONDecoder().decode(Welcome.self, from: jsonData)
+
 import Foundation
 
 // MARK: - Welcome
-struct GetLatestWorkerRouteLocationListInfo: Decodable {
-    let locations: [LocationElement]
-    let workerRoute: WorkerRoute
+struct GetLatestWorkerRouteLocationListInfo: Codable {
+    var locations: [LocationElement]?
+    var workerRoute: WorkerRoute?
 }
 
 // MARK: - LocationElement
-struct LocationElement: Decodable {
-    let arrivalTime: Time
-    let breakTimeSEC: Int
-    let createdAt: String
-    let latitude: Double
-    let loadCapacity, loadSupply: Int
-    let location: LocationLocation?
-    let locationID, locationOrder: Int
-    let longitude: Double
-    let metadata: FluffyMetadata
-    let timeWindow: [TimeWindow]?
-    let travelTimeSECToNext, waitingTimeSEC, workTimeSEC: Int
+struct LocationElement: Codable {
+    var arrivalTime: ArrivalTime?
+    var breakTimeSEC: Int?
+    var createdAt: String?
+    var latitude: Double?
+    var loadCapacity, loadSupply: Int?
+    var location: LocationLocation?
+    var locationID, locationOrder: Int?
+    var longitude: Double?
+    var metadata: FluffyMetadata?
+    var timeWindow: JSONNull?
+    var travelTimeSECToNext, waitingTimeSEC, workTimeSEC: Int?
 
     enum CodingKeys: String, CodingKey {
         case arrivalTime
@@ -37,30 +42,30 @@ struct LocationElement: Decodable {
     }
 }
 
-// MARK: - Time
-struct Time: Decodable {
-    let hours, minutes, nanos, seconds: Int
+// MARK: - ArrivalTime
+struct ArrivalTime: Codable {
+    var hours, minutes, nanos, seconds: Int?
 }
 
 // MARK: - LocationLocation
-struct LocationLocation: Decodable {
-    let areaID: Int
-    let comment, createdAt: String
-    let id, importance: Int
-    let latitude: Double
-    let loadConsumeMax, loadConsumeMin: Int
-    let locationType: LocationType
-    let longitude: Double
-    let metadata: PurpleMetadata
-    let priority: String?
-    let tenantID: Int
-    let timeWindow: [TimeWindow]?
-    let updatedAt: String
-    let workTimeSEC: Int
-    let assetID: String?
-    let loadCapacity: Int?
-    let normalizedScore: Double?
-    let vehicleLimit: Int?
+struct LocationLocation: Codable {
+    var areaID: Int?
+    var comment, createdAt: String?
+    var id, importance: Int?
+    var latitude: Double?
+    var loadConsumeMax, loadConsumeMin: Int?
+    var locationType: LocationType?
+    var longitude: Double?
+    var metadata: PurpleMetadata?
+    var priority: Priority?
+    var tenantID: Int?
+    var timeWindow: JSONNull?
+    var updatedAt: String?
+    var workTimeSEC: Int?
+    var assetID: String?
+    var loadCapacity: Int?
+    var normalizedScore: Double?
+    var vehicleLimit: Int?
 
     enum CodingKeys: String, CodingKey {
         case areaID, comment, createdAt, id, importance, latitude, loadConsumeMax, loadConsumeMin, locationType, longitude, metadata, priority, tenantID, timeWindow, updatedAt
@@ -69,16 +74,16 @@ struct LocationLocation: Decodable {
     }
 }
 
-enum LocationType: String, Decodable {
+enum LocationType: String, Codable {
     case customer = "customer"
     case supplier = "supplier"
 }
 
 // MARK: - PurpleMetadata
-struct PurpleMetadata: Decodable {
-    let kyokyusetsubiCode: String?
-    let displayData: DisplayData?
-    let operators: [JSONAny]?
+struct PurpleMetadata: Codable {
+    var kyokyusetsubiCode: String?
+    var displayData: DisplayData?
+    var operators: [JSONAny]?
 
     enum CodingKeys: String, CodingKey {
         case kyokyusetsubiCode = "KYOKYUSETSUBI_CODE"
@@ -88,20 +93,21 @@ struct PurpleMetadata: Decodable {
 }
 
 // MARK: - DisplayData
-struct DisplayData: Decodable {
-    let deliveryHistory: [String: DeliveryHistory]
-    let originRouteID: Int?
-    let excludeFirstday, moveToFirstday: Bool?
+struct DisplayData: Codable {
+    var deliveryHistory: [String: DeliveryHistory]?
+    var excludeFirstday: Bool?
+    var originRouteID: Int?
+    var moveToFirstday: Bool?
 
     enum CodingKeys: String, CodingKey {
         case deliveryHistory = "delivery_history"
-        case originRouteID = "origin_route_id"
         case excludeFirstday = "exclude_firstday"
+        case originRouteID = "origin_route_id"
         case moveToFirstday = "move_to_firstday"
     }
 }
 
-enum DeliveryHistory: String, Decodable {
+enum DeliveryHistory: String, Codable {
     case completed = "completed"
     case failed = "failed"
     case halfway = "halfway"
@@ -109,23 +115,18 @@ enum DeliveryHistory: String, Decodable {
     case waiting = "waiting"
 }
 
-enum Priority: String, Decodable {
+enum Priority: String, Codable {
     case normal = "normal"
     case priorityOptional = "optional"
 }
 
-// MARK: - TimeWindow
-struct TimeWindow: Decodable {
-    let endTime, startTime: Time
-}
-
 // MARK: - FluffyMetadata
-struct FluffyMetadata: Decodable {
-    let customerID, deliverType: String?
-    let facilityData: [FacilityDatum]?
-    let optionalDays: Int?
-    let optionalLocation: Bool?
-    let planID, plannedDate, prevDate: String?
+struct FluffyMetadata: Codable {
+    var customerID, deliverType: String?
+    var facilityData: [FacilityDatum]?
+    var optionalDays: Int?
+    var optionalLocation: Bool?
+    var planID, plannedDate, prevDate: String?
 
     enum CodingKeys: String, CodingKey {
         case customerID = "customer_id"
@@ -140,16 +141,16 @@ struct FluffyMetadata: Decodable {
 }
 
 // MARK: - FacilityDatum
-struct FacilityDatum: Decodable {
-    let count, type: Int
+struct FacilityDatum: Codable {
+    var count, type: Int?
 }
 
 // MARK: - WorkerRoute
-struct WorkerRoute: Decodable {
-    let createdAt: String
-    let id, loadRemain, routeID, totalTimeSEC: Int
-    let workDate: String
-    let workerID, workerVehicleID: Int
+struct WorkerRoute: Codable {
+    var createdAt: String?
+    var id, loadRemain, routeID, totalTimeSEC: Int?
+    var workDate: String?
+    var workerID, workerVehicleID: Int?
 
     enum CodingKeys: String, CodingKey {
         case createdAt, id, loadRemain, routeID
@@ -160,7 +161,7 @@ struct WorkerRoute: Decodable {
 
 // MARK: - Encode/decode helpers
 
-class JSONNull: Decodable, Hashable {
+class JSONNull: Codable, Hashable {
 
     public static func == (lhs: JSONNull, rhs: JSONNull) -> Bool {
         return true
@@ -209,7 +210,7 @@ class JSONCodingKey: CodingKey {
     }
 }
 
-class JSONAny: Decodable {
+class JSONAny: Codable {
 
     let value: Any
 
@@ -404,6 +405,7 @@ class JSONAny: Decodable {
     }
 }
 
+
 //struct GetLatestWorkerRouteLocationListInfo: Decodable {
 //    var locations: [ObjectItem]?
 //    var workerRoute : workerRouteDetail
@@ -478,4 +480,114 @@ class JSONAny: Decodable {
 //         var workDate: Date
 //         var workerID: Int
 //         var workerVehicleID: Int
+//}
+
+
+// This file was generated from JSON Schema using quicktype, do not modify it directly.
+// To parse the JSON, add this file to your project and do:
+//
+//   let welcome = try Welcome(json)
+
+//import Foundation
+//
+//// MARK: - Welcome
+//struct GetLatestWorkerRouteLocationListInfo: Decodable {
+//    var locations: [LocationElement]?
+//    var workerRoute: WorkerRoute?
+//}
+//
+//// MARK: - LocationElement
+//struct LocationElement: Decodable {
+//    var arrivalTime: ArrivalTime?
+//    var breakTimeSEC: Int?
+//    var createdAt: String?
+//    var latitude: Double?
+//    var loadCapacity, loadSupply: Int?
+//    var location: LocationLocation?
+//    var locationID, locationOrder: Int?
+//    var longitude: Double?
+//    var metadata: FluffyMetadata?
+//    var timeWindow: NSNull?
+//    var travelTimeSECToNext, waitingTimeSEC, workTimeSEC: Int?
+//}
+//
+//// MARK: - ArrivalTime
+//struct ArrivalTime: Decodable {
+//    var hours, minutes, nanos, seconds: Int?
+//}
+//
+//// MARK: - LocationLocation
+//struct LocationLocation: Decodable {
+//    var areaID: Int?
+//    var comment, createdAt: String?
+//    var id, importance: Int?
+//    var latitude: Double?
+//    var loadConsumeMax, loadConsumeMin: Int?
+//    var locationType: LocationType?
+//    var longitude: Double?
+//    var metadata: PurpleMetadata?
+//    var priority: Priority?
+//    var tenantID: Int?
+//    var timeWindow: NSNull?
+//    var updatedAt: String?
+//    var workTimeSEC: Int?
+//    var assetID: String?
+//    var loadCapacity: Int?
+//    var normalizedScore: Double?
+//    var vehicleLimit: Int?
+//}
+//
+//enum LocationType: Decodable {
+//    case customer
+//    case supplier
+//}
+//
+//// MARK: - PurpleMetadata
+//struct PurpleMetadata: Decodable {
+//    var kyokyusetsubiCode: String?
+//    var displayData: DisplayData?
+//    var operators: [Any?]?
+//}
+//
+//// MARK: - DisplayData
+//struct DisplayData: Decodable {
+//    var deliveryHistory: [String: DeliveryHistory]?
+//    var excludeFirstday: Bool?
+//    var originRouteID: Int?
+//    var moveToFirstday: Bool?
+//}
+//
+//enum DeliveryHistory: Decodable {
+//    case completed
+//    case failed
+//    case halfway
+//    case inprogress
+//    case waiting
+//}
+//
+//enum Priority: Decodable {
+//    case normal
+//    case priorityOptional
+//}
+//
+//// MARK: - FluffyMetadata
+//struct FluffyMetadata: Decodable {
+//    var customerID, deliverType: String?
+//    var facilityData: [FacilityDatum]?
+//    var optionalDays: Int?
+//    var optionalLocation: Bool?
+//    var planID, plannedDate, prevDate: String?
+//}
+//
+//// MARK: - FacilityDatum
+//struct FacilityDatum: Decodable {
+//    var count, type: Int?
+//}
+//
+//// MARK: - WorkerRoute
+//struct WorkerRoute: Decodable {
+//    var createdAt: String?
+//    var id, loadRemain, routeID, totalTimeSEC: Int?
+//    var workDate: String?
+//    var workerID, workerVehicleID: Int?
 //}

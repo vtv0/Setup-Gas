@@ -34,8 +34,10 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
     let tenantId = UserDefaults.standard.string(forKey: "tenantId") ?? ""
     let userId = UserDefaults.standard.string(forKey: "userId") ?? ""
     let driver = ["Xe1", "Xe2", "Xe3"]
-    var date: [String] = []
-    let status = ["chua", "tat ca"]
+    
+    //let status = ["chua", "tat ca"]
+    
+    //let locations  = UserDefaults.standard.object(forKey: "Locations") ?? []
     
     let pins: [MyPin] = [
         MyPin(coordinate: CLLocationCoordinate2D(latitude: 16.071763, longitude: 108.223963)),
@@ -44,17 +46,16 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         MyPin(coordinate: CLLocationCoordinate2D(latitude: 16.069783, longitude: 108.225086)),
         MyPin(coordinate: CLLocationCoordinate2D(latitude: 16.070629, longitude: 108.228563))
     ]
-    let OneDay = UserDefaults.standard.string(forKey: "OneDay") ?? ""
-    let SevenDay = UserDefaults.standard.stringArray(forKey: "SevenDay")
-    let assetID = UserDefaults.standard.string(forKey: "AssetID") ?? ""
     
+    //    var SevenDay = UserDefaults.standard.stringArray(forKey: "SevenDay")
+    var arrGetAsset:[String] = []
+    
+    @IBOutlet weak var showDataDay: UILabel!
     @IBOutlet weak var mapView: MKMapView!
     
     @IBOutlet weak var picker: UIPickerView!
     @IBOutlet weak var pickerDriver: UIPickerView!
     @IBOutlet weak var pickerDate: UIPickerView!
-    
-    
     @IBOutlet weak var datePicker: UIPickerView!
     @IBOutlet weak var driverPicker: UIPickerView!
     
@@ -65,7 +66,6 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         self.present(alert, animated: true, completion: nil)
     }
-    //static let image = #imageLiteral(resou
     
     @IBAction func btnSetting(_ sender: Any) {
         let screenSetting = storyboard?.instantiateViewController(withIdentifier: "SettingController") as! SettingController
@@ -81,31 +81,15 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         self.navigationController?.pushViewController(screenReroute, animated: true)
     }
     
-//    let dict : [String: [String]] = ["2022-11-01": ["th.7b3f20b00022-4abb-ce11-bebd-8ff430d9","th.bc65e7a00022-8048-ce11-bebd-616b79f9",
-//                                      "th.bc65e7a00022-8048-ce11-bebd-7c6fc30a"] ]
-//    UserDefaults.standard.setValue(dict, forKey: "Dict1")
-//    let data = UserDefaults.standard.string(forKey: "Dict1")
+    //    let dict : [String: [String]] = ["2022-11-01": ["th.7b3f20b00022-4abb-ce11-bebd-8ff430d9","th.bc65e7a00022-8048-ce11-bebd-616b79f9",
+    //                                      "th.bc65e7a00022-8048-ce11-bebd-7c6fc30a"] ]
+    //    UserDefaults.standard.setValue(dict, forKey: "Dict1")
+    //    let data = UserDefaults.standard.string(forKey: "Dict1")
     override func viewDidLoad() {
-        
-        
-
-        let dictionary: [String: [String]] = ["2022-11-01": ["th.7b3f20b00022-4abb-ce11-bebd-8ff430d9","th.bc65e7a00022-8048-ce11-bebd-616b79f9",
-                                                             "th.bc65e7a00022-8048-ce11-bebd-7c6fc30a"] ] //Dictionary which you want to save
-
-        UserDefaults.standard.setValue(dictionary, forKey: "DictValue") //Saved the Dictionary in user default
-
-        let dictValue = UserDefaults.standard.value(forKey: "DictValue") //Retrieving the value from user default
-
-       // print(dictValue)  // Printing the value
-        
-       
-        print("..........\(dictValue ?? [])")
-               
         super.viewDidLoad()
+        
         self.sevenDay()
         getLatestWorkerRouteLocationList()
-        getGetAsset()
-        
         print("aa \(companyCode )")
         print("bb \(tenantId )")
         print("cc \(userId )")
@@ -131,7 +115,7 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         
         view.bringSubviewToFront(btnShipping)
         
-         navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
+        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
         // Set initial location in Honolulu
         //let initialLocation = CLLocation(latitude: 18.683500, longitude: 105.485750)
         
@@ -139,6 +123,9 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         // mapView.centerToLocation(initialLocation)
         
         self.addAnnotation()
+        
+        
+        
     }
     
     func makeHeaders(token: String) -> HTTPHeaders {
@@ -157,124 +144,160 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         mapView.addAnnotations(pins)
     }
     
+    var dateYMD: [Date] = []
+    var dateMMdd : [String] = []
     func sevenDay() {
         // 7day
         let anchor = Date()
         let calendar = Calendar.current
         let mmdd = DateFormatter()
-        mmdd.dateFormat = "MM-dd"
-        
+        mmdd.dateFormat = "MM/dd"
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
-        //formatter.dateFormat = "MM/dd"
-        date = []
         
         for dayOffset in 0...6 {
             if let date1 = calendar.date(byAdding: .day, value: dayOffset, to: anchor) {
-                let day = formatter.string(from: date1)
-                date.append(day)
-                UserDefaults.standard.set(date, forKey: "SevenDay")
+                dateYMD.append(date1)
+                
+                let mmdd = mmdd.string(from: date1)
+                dateMMdd.append(mmdd)
             }
         }
-        print("001.\( UserDefaults.standard.stringArray(forKey: "SevenDay") ?? [])")
     }
     
+    var assetID: String = ""
+    var statusDelivery: String = ""
     
+    var locations: [LocationElement] = []
+    
+    var dataOneDay: [Date: [LocationElement]] = [:]
+    
+    //var valueDic : [LocationElement] = []
     
     func getLatestWorkerRouteLocationList() {
         self.showActivity()
         let token = UserDefaults.standard.string(forKey: "accessToken") ?? ""
-        for iday in SevenDay! {
-          //  print("==>\(iday)")
-            let url:String = "https://\(companyCode).kiiapps.com/am/exapi/vrp/tenants/\(tenantId)/latest_route/worker_users/\(userId)?workDate=\(iday)"
-           // let url:String = "https://\(companyCode).kiiapps.com/am/exapi/vrp/tenants/\(tenantId)/latest_route/worker_users/\(userId)?workDate=2022-10-27"
-        //    print(url)
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        
+        for iday in dateYMD {
+            let dateString: String = formatter.string(from: iday)
+            let url:String = "https://\(companyCode).kiiapps.com/am/exapi/vrp/tenants/\(tenantId)/latest_route/worker_users/\(userId)?workDate=\(dateString)"
             
             AF.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default ,headers: self.makeHeaders(token: token))
                 .responseDecodable (of: GetLatestWorkerRouteLocationListInfo.self) { response in
-                    print("Status code LatestWorkerRouteLocationList 7ngay:\( response.response?.statusCode ?? 0)")
-                    print("Ngay: ", url)
+                    print("\(url)::::>\( response.response?.statusCode ?? 0)")
                     
                     switch response.result {
                     case .success(_):
                         
-                        let countObject = response.value?.locations.count
+                        let countObject = response.value?.locations?.count
                         print("Có: \(countObject ?? 0) OBJECT")
-//                let assetID = response.value?.locations.location?.assetID
-//                UserDefaults.standard.set(assetID, forKey: "AssetID")
-                        let locations: [LocationElement] = response.value?.locations ?? []
+                        
+                        self.locations = response.value?.locations ?? []
+                        
                         
                         if countObject != 0 {
-                            for itemObject in  locations {
-                              //  print(item.location?.assetID)
+                            
+                            var locationElements: [LocationElement] = []
+                            
+                            for itemObject: LocationElement in self.locations {
+                                // Ngay nao
+                                // Mang locations
+                                //                             let litemObject: LocationElemen
+                                locationElements.append(itemObject)
                                 
-                                let assetID1 : String = itemObject.location?.assetID ?? ""
-                               // let assetID1  = itemObject.location?.assetID
-                                //print("Asset: \(assetID1)")// in ra assetID của từng object
+                                // lay lattitude, longtitude
+                                let lat = itemObject.location?.latitude
                                 
-//                                let status = item.location?.metadata.displayData?.deliveryHistory
-//                                print(status ?? "") //4 trạng thái inprogress, failed, complete , không có gì
-                                var arrayAssetID: [String] = []
-                               // print(self.array)
-                                if assetID1 != "" {
-                                    arrayAssetID.append(assetID1)
-                                    print("Array++: \(arrayAssetID)") // Muốn lưu thành mảng assetID theo từng ngày
-                                    
-                                    UserDefaults.standard.set(arrayAssetID,forKey: "ArrAssetID") //Lưu từng mảng theo ngày vào -> UserDefaults
-                                    
-                                    //print(arrayAssetID)
-                                   // assetIDCurently.append(item.location?.assetID ?? "")
-                                   // self.getGetAsset()
-                                   
+                                
+                                //  print("\(lat)")
+                                //lay assetID
+                                if (itemObject.location?.assetID != nil) {
+                                    self.getGetAsset(forAsset: (itemObject.location!.assetID)!)
                                 } else {
-                                    print("\(assetID1)-------------------------> nil ")//không có assetID(th.xxxxxxxx)
+                                    //   print("Khong co assetID")
                                 }
+                                if ((itemObject.location?.metadata?.displayData) != nil) {
+                                    //  print("tat ca")
+                                } else {
+                                    //  print("chua giao")
+                                }
+                                //                                }
+                                //                                    if ((itemObject.location?.locationType ) != nil) {
+                                //                                        print("\(itemObject.location?.locationType.self)")
+                                //                                    }
+                                
+                                let statusDelivery = itemObject.location?.metadata?.displayData?.deliveryHistory
+                                // print("ssssss:\(statusDelivery)")
+                                var t = 0
+                                if statusDelivery != nil {
+                                    t += 1
+                                    //  print("\(statusDelivery)")
+                                }
+                                
                             }
+                            
+                            self.dataOneDay[iday] = locationElements
+                            print("\(self.dataOneDay.values.description)")
+                            //Số lượng xe
+                            var xe = 0
+                            for vehicle in locationElements {
+                                if vehicle.location?.locationType?.rawValue == "supplier"  {
+                                    if self.locations[0].location?.locationType?.rawValue == "supplier"  {
+                                        self.locations.remove(at: 0)
+                                    } else {
+                                        xe = xe + 1
+                                    }
+                                }
+                                print("XE:\(xe)")
+                            }
+                            
+                            //trạng thái
+                            var status22: String = String()
+                            for statusShipping in locationElements {
+                               // status22 = statusShipping.location?.metadata?.displayData?.deliveryHistory?.debugDescription ?? ""
+                                print("STATUS::\(statusShipping.location?.metadata?.displayData?.deliveryHistory?.description  ??  "------------------------------------------------------->nil"   ) ")
+                            }
+                            
+                            
+                            
                         } else  {
-                            print("\(url) => Array Empty ")
+                            print(response.response?.statusCode as Any)
+                            print("\(url) =>> Array Empty ")
                         }
-
-                    case .failure(_):
+                        
+                    case .failure(_): // bị lặp lại 7 lần
+                        //     break
+                        
                         if( response.response?.statusCode == 401) {
+                            self.hideActivity()
                             let src = self.storyboard?.instantiateViewController(withIdentifier: "LoginViewController") as! ViewController
                             self.navigationController?.pushViewController(src, animated: true)
                         }
-                        print("loi: \(response.response?.statusCode ?? 0)")
+                        print("Error: \(response.response?.statusCode ?? 000000)")
                     }
-                    self.hideActivity()
                 }
         }
-      
-    }
-   
-    
-    let array = UserDefaults.standard.stringArray(forKey: "ArrAssetID") ?? [] // Lấy data từ UserDefaults.
-//
-    func getGetAsset() {
-
-        //self.showActivity()
-        for iassetID in array {
-            print("ZZZZZZZZZZZZZ: \(iassetID)")
-        }
-        let token = UserDefaults.standard.string(forKey: "accessToken") ?? ""
         
-        let urlGetAsset = "https://\(companyCode).kiiapps.com/am/api/assets/th.4fc297a00022-94d8-ce11-bebd-75c70db5"
-        print("assetID: \(assetID)")
+    }
+    
+    func getGetAsset(forAsset iassetID:String) {
+        let token = UserDefaults.standard.string(forKey: "accessToken") ?? ""
+        let urlGetAsset = "https://\(companyCode).kiiapps.com/am/api/assets/\(iassetID)"
         AF.request(urlGetAsset,method: .get, parameters: nil, headers: self.makeHeaders(token: token)) .response { response1 in
-            print("Status GetAsset:\( response1.response?.statusCode ?? 0)")
+            // print("\(urlGetAsset)")
+            // print("Status GetAsset:\( response1.response?.statusCode ?? 0)")
             switch response1.result {
             case.success(_):
-               
-                print("oooooooook: \(urlGetAsset)")
-                self.hideActivity()
+                // self.hideActivity()
+                print("--ok'''''\(urlGetAsset) ")
             case .failure(let error):
                 print("\(error)")
             }
-            
         }
-        
+        self.hideActivity()
     }
-    
     
     func showAlert(title: String? = "", message: String?, completion: (() -> Void)? = nil) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
@@ -286,29 +309,43 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
 }
 
 extension DeliveryListController: UIPickerViewDelegate, UIPickerViewDataSource {
+    
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
+    
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         if (pickerView.tag == 0) {
-            return status.count
+         //   return status22.count
         } else if (pickerView.tag == 1) {
             return driver.count
         } else if (pickerView.tag == 2) {
-            return date.count
+            return dateMMdd.count
         }
         return 1
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         if ( pickerView.tag == 0) {
-            return status[row]
+          //  return status22[row]
         } else if (pickerView.tag == 1) {
             return driver[row]
         } else if (pickerView.tag == 2) {
-            return date[row]
+            return dateMMdd[row]
         }
         return ""
     }
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        if (pickerView.tag == 2) {
+            
+            //  print("\(Itemobeject)")
+            // print("\(valueDic.count)")
+            print("dung pickerview")
+            //   showDataDay.text = locations
+            // showDataDay.text = dateYMD[row]
+            
+        }
+        
+        
+    }
 }
-
