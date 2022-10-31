@@ -50,7 +50,7 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
     //    var SevenDay = UserDefaults.standard.stringArray(forKey: "SevenDay")
     var arrGetAsset:[String] = []
     
-    @IBOutlet weak var showDataDay: UILabel!
+    //    @IBOutlet weak var showDataDay: UILabel!
     @IBOutlet weak var mapView: MKMapView!
     
     @IBOutlet weak var picker: UIPickerView!
@@ -185,7 +185,7 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
             let url:String = "https://\(companyCode).kiiapps.com/am/exapi/vrp/tenants/\(tenantId)/latest_route/worker_users/\(userId)?workDate=\(dateString)"
             
             AF.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default ,headers: self.makeHeaders(token: token))
-                .responseDecodable (of: GetLatestWorkerRouteLocationListInfo.self) { response in
+                .responseDecodable(of: GetLatestWorkerRouteLocationListInfo.self) { response in
                     print("\(url)::::>\( response.response?.statusCode ?? 0)")
                     
                     switch response.result {
@@ -228,10 +228,10 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
                                 //                                        print("\(itemObject.location?.locationType.self)")
                                 //                                    }
                                 
-                                let statusDelivery = itemObject.location?.metadata?.displayData?.deliveryHistory
+                                //let statusDelivery = itemObject.location?.metadata?.displayData?.deliveryHistory
                                 // print("ssssss:\(statusDelivery)")
                                 var t = 0
-                                if statusDelivery != nil {
+                                if self.statusDelivery != nil {
                                     t += 1
                                     //  print("\(statusDelivery)")
                                 }
@@ -239,43 +239,57 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
                             }
                             
                             self.dataOneDay[iday] = locationElements
-                            print("\(self.dataOneDay.values.description)")
+                            //  print("\(self.dataOneDay.values.description)")
                             //Số lượng xe
                             var xe = 0
                             for vehicle in locationElements {
-                                if vehicle.location?.locationType?.rawValue == "supplier"  {
-                                    if self.locations[0].location?.locationType?.rawValue == "supplier"  {
+                                if vehicle.location?.locationType?.description == "supplier"  {
+                                    if self.locations[0].location?.locationType?.description == "supplier"  {
                                         self.locations.remove(at: 0)
                                     } else {
                                         xe = xe + 1
                                     }
                                 }
-                                print("XE:\(xe)")
+                                // print("XE:\(xe)")
                             }
                             
                             //trạng thái
-                            var status22: String = String()
+                            var statusValue : String
+                            var arrKeyDate: [String] = []
+                            var dic: [String: String] = [String: String]()
                             for statusShipping in locationElements {
-                               // status22 = statusShipping.location?.metadata?.displayData?.deliveryHistory?.debugDescription ?? ""
-                                print("STATUS::\(statusShipping.location?.metadata?.displayData?.deliveryHistory?.description  ??  "------------------------------------------------------->nil"   ) ")
+                                dic = statusShipping.location?.metadata?.displayData?.deliveryHistory ?? [:]
+                                // print("222222::\(statusShipping.location?.metadata?.displayData?.deliveryHistory?.keys )")
+                                //  print("333333::\(statusShipping.location?.metadata?.displayData?.deliveryHistory?.keys.sorted() )")
+                                //  var keyy = statusShipping.location?.metadata?.displayData?.deliveryHistory?.keys.sorted()
+                                //  print("444444::\(statusShipping.location?.metadata?.displayData?.deliveryHistory?[keyy] )")
+                                for key in (dic.keys) {
+                                    arrKeyDate.append(key)
+                                    print("00000: \(arrKeyDate)")
+                                }
+                                
+                                let sortedArray = arrKeyDate.sorted {$0.compare($1, options: .numeric) == .orderedDescending}
+                                // print("jjjjjjjj:\( sortedArray)\n")
+                                
+                                //let firstKey = sortedArray.
+                                // print("ffffffff:\(firstKey ?? "")")
+                                //print("kkkkkkkk:\( statusShipping.location?.metadata?.displayData?.deliveryHistory?[firstKey ?? ""]) ")
+                                // statusValue = statusShipping.location?.metadata?.displayData?.deliveryHistory?[firstKey ?? ""] as? String ?? ""
+                                // print("STSTS:\(statusValue)")
                             }
-                            
-                            
-                            
                         } else  {
                             print(response.response?.statusCode as Any)
                             print("\(url) =>> Array Empty ")
                         }
                         
-                    case .failure(_): // bị lặp lại 7 lần
-                        //     break
-                        
+                    case .failure(let error): // bị lặp lại 7 lần
                         if( response.response?.statusCode == 401) {
                             self.hideActivity()
                             let src = self.storyboard?.instantiateViewController(withIdentifier: "LoginViewController") as! ViewController
                             self.navigationController?.pushViewController(src, animated: true)
                         }
                         print("Error: \(response.response?.statusCode ?? 000000)")
+                        print("\(error)")
                     }
                 }
         }
@@ -288,10 +302,17 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         AF.request(urlGetAsset,method: .get, parameters: nil, headers: self.makeHeaders(token: token)) .response { response1 in
             // print("\(urlGetAsset)")
             // print("Status GetAsset:\( response1.response?.statusCode ?? 0)")
+            //            var arr = response1.value?.properties?.values?.display_data.delivery_history
+            //            print("99999:\(arr)")
             switch response1.result {
             case.success(_):
+                //lấy trạng thái mới nhất của từng Object -> [tatca, chua giao]
+            
+                //for statusDeliveryHistory in response1.pro//
+                
                 // self.hideActivity()
                 print("--ok'''''\(urlGetAsset) ")
+                
             case .failure(let error):
                 print("\(error)")
             }
@@ -316,7 +337,7 @@ extension DeliveryListController: UIPickerViewDelegate, UIPickerViewDataSource {
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         if (pickerView.tag == 0) {
-         //   return status22.count
+            //   return status22.count
         } else if (pickerView.tag == 1) {
             return driver.count
         } else if (pickerView.tag == 2) {
@@ -327,7 +348,7 @@ extension DeliveryListController: UIPickerViewDelegate, UIPickerViewDataSource {
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         if ( pickerView.tag == 0) {
-          //  return status22[row]
+            //  return status22[row]
         } else if (pickerView.tag == 1) {
             return driver[row]
         } else if (pickerView.tag == 2) {
