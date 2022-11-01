@@ -62,7 +62,7 @@ struct Display_dataDetail: Decodable {
 }
 
 struct GeolocDetail: Decodable {
-    var coordinates : [Float]
+    var coordinates : [Double]?
     var type: String?
 }
 

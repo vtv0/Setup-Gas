@@ -87,7 +87,6 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
     //    let data = UserDefaults.standard.string(forKey: "Dict1")
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         self.sevenDay()
         getLatestWorkerRouteLocationList()
         print("aa \(companyCode )")
@@ -123,8 +122,6 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         // mapView.centerToLocation(initialLocation)
         
         self.addAnnotation()
-        
-        
         
     }
     
@@ -189,53 +186,25 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
                     print("\(url)::::>\( response.response?.statusCode ?? 0)")
                     
                     switch response.result {
-                    case .success(_):
+                    case .success(let status):
                         
                         let countObject = response.value?.locations?.count
                         print("Có: \(countObject ?? 0) OBJECT")
-                        
+                        print(status)
                         self.locations = response.value?.locations ?? []
-                        
-                        
                         if countObject != 0 {
-                            
                             var locationElements: [LocationElement] = []
-                            
                             for itemObject: LocationElement in self.locations {
-                                // Ngay nao
-                                // Mang locations
-                                //                             let litemObject: LocationElemen
                                 locationElements.append(itemObject)
-                                
                                 // lay lattitude, longtitude
                                 let lat = itemObject.location?.latitude
-                                
-                                
                                 //  print("\(lat)")
                                 //lay assetID
                                 if (itemObject.location?.assetID != nil) {
                                     self.getGetAsset(forAsset: (itemObject.location!.assetID)!)
                                 } else {
-                                    //   print("Khong co assetID")
+                                    print("Khong co assetID")
                                 }
-                                if ((itemObject.location?.metadata?.displayData) != nil) {
-                                    //  print("tat ca")
-                                } else {
-                                    //  print("chua giao")
-                                }
-                                //                                }
-                                //                                    if ((itemObject.location?.locationType ) != nil) {
-                                //                                        print("\(itemObject.location?.locationType.self)")
-                                //                                    }
-                                
-                                //let statusDelivery = itemObject.location?.metadata?.displayData?.deliveryHistory
-                                // print("ssssss:\(statusDelivery)")
-                                var t = 0
-                                if self.statusDelivery != nil {
-                                    t += 1
-                                    //  print("\(statusDelivery)")
-                                }
-                                
                             }
                             
                             self.dataOneDay[iday] = locationElements
@@ -252,31 +221,32 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
                                 }
                                 // print("XE:\(xe)")
                             }
-                            
                             //trạng thái
-                            var statusValue : String
-                            var arrKeyDate: [String] = []
+                           // var statusValue : Date
+                            //var arrKeyDate: [String] = []
                             var dic: [String: String] = [String: String]()
+                            //var stringValue: String
+                           
+                            var t1: Int = 0
+                            var t2: Int = 0
+                            
                             for statusShipping in locationElements {
-                                dic = statusShipping.location?.metadata?.displayData?.deliveryHistory ?? [:]
-                                // print("222222::\(statusShipping.location?.metadata?.displayData?.deliveryHistory?.keys )")
-                                //  print("333333::\(statusShipping.location?.metadata?.displayData?.deliveryHistory?.keys.sorted() )")
-                                //  var keyy = statusShipping.location?.metadata?.displayData?.deliveryHistory?.keys.sorted()
-                                //  print("444444::\(statusShipping.location?.metadata?.displayData?.deliveryHistory?[keyy] )")
-                                for key in (dic.keys) {
-                                    arrKeyDate.append(key)
-                                    print("00000: \(arrKeyDate)")
+                                dic = statusShipping.location?.metadata?.displayData?.delivery_history ?? [:]
+                                statusShipping.location?.metadata?.displayData?.valueDeliveryHistory()
+                                
+                                if (statusShipping.location?.metadata?.displayData?.valueDeliveryHistory()) != nil {
+                                    t1 += 1
+                                } else {
+                                    t2 += 1
                                 }
+                                print("t1:\(t1)")
+                                print("t2:\(t2)")
                                 
-                                let sortedArray = arrKeyDate.sorted {$0.compare($1, options: .numeric) == .orderedDescending}
-                                // print("jjjjjjjj:\( sortedArray)\n")
-                                
-                                //let firstKey = sortedArray.
-                                // print("ffffffff:\(firstKey ?? "")")
-                                //print("kkkkkkkk:\( statusShipping.location?.metadata?.displayData?.deliveryHistory?[firstKey ?? ""]) ")
-                                // statusValue = statusShipping.location?.metadata?.displayData?.deliveryHistory?[firstKey ?? ""] as? String ?? ""
-                                // print("STSTS:\(statusValue)")
                             }
+                            //tong = t1 + t2
+                            print("tong = \(t1) + \(t2)")
+                            
+                            
                         } else  {
                             print(response.response?.statusCode as Any)
                             print("\(url) =>> Array Empty ")
@@ -299,19 +269,19 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
     func getGetAsset(forAsset iassetID:String) {
         let token = UserDefaults.standard.string(forKey: "accessToken") ?? ""
         let urlGetAsset = "https://\(companyCode).kiiapps.com/am/api/assets/\(iassetID)"
-        AF.request(urlGetAsset,method: .get, parameters: nil, headers: self.makeHeaders(token: token)) .response { response1 in
+        AF.request(urlGetAsset,method: .get, parameters: nil, headers: self.makeHeaders(token: token))
+            .responseDecodable(of: GetAsset.self ) { response1 in
             // print("\(urlGetAsset)")
             // print("Status GetAsset:\( response1.response?.statusCode ?? 0)")
             //            var arr = response1.value?.properties?.values?.display_data.delivery_history
             //            print("99999:\(arr)")
             switch response1.result {
             case.success(_):
-                //lấy trạng thái mới nhất của từng Object -> [tatca, chua giao]
-            
+                
                 //for statusDeliveryHistory in response1.pro//
                 
                 // self.hideActivity()
-                print("--ok'''''\(urlGetAsset) ")
+                print("_ok'''''\(urlGetAsset) ")
                 
             case .failure(let error):
                 print("\(error)")
@@ -322,7 +292,7 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
     
     func showAlert(title: String? = "", message: String?, completion: (() -> Void)? = nil) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in
+        alert.addAction( UIAlertAction(title: "OK", style: .default, handler: { _ in
             completion?()
         }))
         present(alert, animated: true)

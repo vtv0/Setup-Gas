@@ -8,7 +8,7 @@
 // This file was generated from JSON Schema using quicktype, do not modify it directly.
 // To parse the JSON, add this file to your project and do:
 //
- //  let welcome = try? newJSONDecoder().decode(Welcome.self, from: jsonData)
+//  let welcome = try? newJSONDecoder().decode(Welcome.self, from: jsonData)
 
 import Foundation
 import UIKit
@@ -33,15 +33,15 @@ struct LocationElement: Decodable {
     var metadata: FluffyMetadata?
     //var timeWindow: JSONNull?
     var travelTimeSECToNext, waitingTimeSEC, workTimeSEC: Int?
-
-//    enum CodingKeys: String, CodingKey {
-//        case arrivalTime
-//        case breakTimeSEC = "breakTimeSec"
-//        case createdAt, latitude, loadCapacity, loadSupply, location, locationID, locationOrder, longitude, metadata, timeWindow
-//        case travelTimeSECToNext = "travelTimeSecToNext"
-//        case waitingTimeSEC = "waitingTimeSec"
-//        case workTimeSEC = "workTimeSec"
-//    }
+    
+    //    enum CodingKeys: String, CodingKey {
+    //        case arrivalTime
+    //        case breakTimeSEC = "breakTimeSec"
+    //        case createdAt, latitude, loadCapacity, loadSupply, location, locationID, locationOrder, longitude, metadata, timeWindow
+    //        case travelTimeSECToNext = "travelTimeSecToNext"
+    //        case waitingTimeSEC = "waitingTimeSec"
+    //        case workTimeSEC = "workTimeSec"
+    //    }
 }
 
 // MARK: - ArrivalTime
@@ -59,21 +59,21 @@ struct LocationLocation: Decodable {
     var locationType: String?
     var longitude: Double?
     var metadata: PurpleMetadata?
-    var priority: Priority?
+    var priority: String?
     var tenantID: Int?
-   // var timeWindow: JSONNull?
+    // var timeWindow: JSONNull?
     var updatedAt: String?
     var workTimeSEC: Int?
     var assetID: String?
     var loadCapacity: Int?
     var normalizedScore: Double?
     var vehicleLimit: Int?
-
-//    enum CodingKeys: String, CodingKey {
-//        case areaID, comment, createdAt, id, importance, latitude, loadConsumeMax, loadConsumeMin, locationType, longitude, metadata, priority, tenantID, timeWindow, updatedAt
-//        case workTimeSEC = "workTimeSec"
-//        case assetID, loadCapacity, normalizedScore, vehicleLimit
-//    }
+    
+    //    enum CodingKeys: String, CodingKey {
+    //        case areaID, comment, createdAt, id, importance, latitude, loadConsumeMax, loadConsumeMin, locationType, longitude, metadata, priority, tenantID, timeWindow, updatedAt
+    //        case workTimeSEC = "workTimeSec"
+    //        case assetID, loadCapacity, normalizedScore, vehicleLimit
+    //    }
 }
 
 //enum LocationType: String, Codable {
@@ -86,7 +86,7 @@ struct PurpleMetadata: Codable {
     var kyokyusetsubiCode: String?
     var displayData: DisplayData?
     var operators: [String?]?
-
+    
     enum CodingKeys: String, CodingKey {
         case kyokyusetsubiCode = "KYOKYUSETSUBI_CODE"
         case displayData = "display_data"
@@ -96,46 +96,91 @@ struct PurpleMetadata: Codable {
 
 // MARK: - DisplayData
 struct DisplayData: Codable {
-    var deliveryHistory: [String: String]?
+    var delivery_history: [String: String]?
     var excludeFirstday: Bool?
     var originRouteID: Int?
     var moveToFirstday: Bool?
-
     
-    func valueDeliveryHistory() -> String {
-        var oneKey: String?
-        var arrSort : [String] = []
-        //var value: String?
-        deliveryHistory?.keys.forEach { i in
-            arrSort.append(i)
+    enum DeliveryHistory: String, Codable {
+        case completed = "completed"
+        case failed = "failed"
+        case halfway = "halfway"
+        case inprogress = "inprogress"
+        case waiting = "waiting"
+    }
+    
+    struct DataHistory {
+        var date: String
+        var status: String
+    }
+    func valueDeliveryHistory() -> DeliveryHistory {
+        var arrStringDate: [String] = []
+        if let arrKey = delivery_history?.keys {
+            for i: String in arrKey {
+                arrStringDate.append(i)
+            }
         }
         
-        oneKey = arrSort.last ?? ""
-        deliveryHistory?[oneKey ?? ""]
+        var arr: [DataHistory] = []
         
-        print("aaaaa\(deliveryHistory?[oneKey ?? ""] ?? "")")
-    return ""
+        delivery_history?.keys.forEach({ key in
+            if let status = delivery_history?[key] {
+                let data = DataHistory.init(date: key, status: status)
+                arr.append(data)
+            }
+        })
+        arr.sort{ h1, h2 in
+            let df = DateFormatter()
+            df.dateFormat = "yyyy-MM-dd HH:mm"
+            if let d1 = df.date(from: h1.date), let d2 = df.date(from: h2.date) {
+                return d1 < d2
+            }
+            
+            return false
+        }
+        if let status = arr.last?.status {
+            return DeliveryHistory.init(rawValue: status) ?? .waiting
+        }
+        
+        return .waiting
+        
+        //        deliveryHistory?.keys.forEach { i in
+        //            arrStringDate.append(i)
+        //            print("qqqqqqqqqqqqqqqqqqq:\(i)")
+        //        }
+        //        let dateFormatter = DateFormatter()
+        //        //dateFormatter.timeZone = TimeZone(identifier: "UTC")
+        //        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm"
+        //        let dateObjects: [Date] = arrStringDate.compactMap{ dateFormatter.date(from: $0) } //loc cac phan tu nil trong [String] va chuyen [String] -> [Date]
+        //        var stringKey: String = String.init()
+        //        let recentDays = dateObjects.sorted(by: { $0.compare($1) == .orderedDescending }) //sap xep [Date]
+        //        if let mostRecentDay = recentDays.first{
+        //       //     print(mostRecentDay)  // lay ra phan tu Date gan day nhat
+        //
+        //            let today = mostRecentDay
+        //            let formatter1 = DateFormatter()
+        //            formatter1.timeZone = TimeZone(identifier: "UTC")
+        //            formatter1.dateFormat = "yyyy-MM-dd HH:mm"
+        //            stringKey = formatter1.string(from: today) //chuyen Date -> String
+        //
+        //
+        //        }
+        //        print("\(stringKey)::>\(delivery_history?["\(stringKey)"])")
+        //        return delivery_history?["\(stringKey )"] ?? ""
     }
-
+    
 }
-
 
 //struct DeliveryHistory : Decodable {
 //    statusValue : String?
 //}
 
-enum DeliveryHistory: String, Codable {
-    case completed = "completed"
-    case failed = "failed"
-    case halfway = "halfway"
-    case inprogress = "inprogress"
-    case waiting = "waiting"
-}
 
-enum Priority: String, Codable {
-    case normal = "normal"
-    case priorityOptional = "optional"
-}
+
+//enum Priority: String, Codable {
+//    case normal = "normal"
+//    case priorityOptional = "optional"
+//}
 
 // MARK: - FluffyMetadata
 struct FluffyMetadata: Decodable {
@@ -144,17 +189,17 @@ struct FluffyMetadata: Decodable {
     var optionalDays: Int?
     var optionalLocation: Bool?
     var planID, plannedDate, prevDate: String?
-
-//    enum CodingKeys: String, CodingKey {
-//        case customerID = "customer_id"
-//        case deliverType = "deliver_type"
-//        case facilityData = "facility_data"
-//        case optionalDays = "optional_days"
-//        case optionalLocation = "optional_location"
-//        case planID = "plan_id"
-//        case plannedDate = "planned_date"
-//        case prevDate = "prev_date"
-//    }
+    
+    //    enum CodingKeys: String, CodingKey {
+    //        case customerID = "customer_id"
+    //        case deliverType = "deliver_type"
+    //        case facilityData = "facility_data"
+    //        case optionalDays = "optional_days"
+    //        case optionalLocation = "optional_location"
+    //        case planID = "plan_id"
+    //        case plannedDate = "planned_date"
+    //        case prevDate = "prev_date"
+    //    }
 }
 
 // MARK: - FacilityDatum
@@ -168,7 +213,7 @@ struct WorkerRoute: Codable {
     var id, loadRemain, routeID, totalTimeSEC: Int?
     var workDate: String?
     var workerID, workerVehicleID: Int?
-
+    
     enum CodingKeys: String, CodingKey {
         case createdAt, id, loadRemain, routeID
         case totalTimeSEC = "totalTimeSec"
@@ -178,54 +223,54 @@ struct WorkerRoute: Codable {
 
 // MARK: - Encode/decode helpers
 
-class JSONNull: Codable, Hashable {
+//class JSONNull: Codable, Hashable {
+//
+//    public static func == (lhs: JSONNull, rhs: JSONNull) -> Bool {
+//        return true
+//    }
+//
+//    public var hashValue: Int {
+//        return 0
+//    }
+//
+//    public func hash(into hasher: inout Hasher) {
+//        // No-op
+//    }
+//
+//    public init() {}
+//
+//    public required init(from decoder: Decoder) throws {
+//        let container = try decoder.singleValueContainer()
+//        if !container.decodeNil() {
+//            throw DecodingError.typeMismatch(JSONNull.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Wrong type for JSONNull"))
+//        }
+//    }
+//
+//    public func encode(to encoder: Encoder) throws {
+//        var container = encoder.singleValueContainer()
+//        try container.encodeNil()
+//    }
+//}
 
-    public static func == (lhs: JSONNull, rhs: JSONNull) -> Bool {
-        return true
-    }
-
-    public var hashValue: Int {
-        return 0
-    }
-
-    public func hash(into hasher: inout Hasher) {
-        // No-op
-    }
-
-    public init() {}
-
-    public required init(from decoder: Decoder) throws {
-        let container = try decoder.singleValueContainer()
-        if !container.decodeNil() {
-            throw DecodingError.typeMismatch(JSONNull.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Wrong type for JSONNull"))
-        }
-    }
-
-    public func encode(to encoder: Encoder) throws {
-        var container = encoder.singleValueContainer()
-        try container.encodeNil()
-    }
-}
-
-class JSONCodingKey: CodingKey {
-    let key: String
-
-    required init?(intValue: Int) {
-        return nil
-    }
-
-    required init?(stringValue: String) {
-        key = stringValue
-    }
-
-    var intValue: Int? {
-        return nil
-    }
-
-    var stringValue: String {
-        return key
-    }
-}
+//class JSONCodingKey: CodingKey {
+//    let key: String
+//
+//    required init?(intValue: Int) {
+//        return nil
+//    }
+//
+//    required init?(stringValue: String) {
+//        key = stringValue
+//    }
+//
+//    var intValue: Int? {
+//        return nil
+//    }
+//
+//    var stringValue: String {
+//        return key
+//    }
+//}
 
 //class JSONAny: Codable {
 //
