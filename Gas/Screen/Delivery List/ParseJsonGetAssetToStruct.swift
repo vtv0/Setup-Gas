@@ -22,8 +22,8 @@ struct GetAsset: Decodable {
     var vendorThingID: String?
 }
 struct PropertiesDetail: Decodable {
-    var etag: Int?
-    var updatedAt: Date?
+    //var etag: Int?
+    var updatedAt: String?
     var values: ValuesDetail?
 }
 struct ValuesDetail: Decodable {
@@ -46,7 +46,7 @@ struct ValuesDetail: Decodable {
   //  var time_window: JSONNull
     var total_cylinder_count: Int?
     var vehicle_limit: Int?
-    var workable_day: [String?]
+    var parking_location: [Double]?
     
     
     

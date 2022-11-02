@@ -8,35 +8,29 @@
 import UIKit
 import MapKit
 
-class Marker_ExtensionViewController: UIViewController {
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
-    }
+class MyPinView: MKPinAnnotationView {
+    private var imageView: UIImageView!
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    override init(annotation: MKAnnotation?, reuseIdentifier: String?) {
+        super.init(annotation: annotation, reuseIdentifier: reuseIdentifier)
+        self.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
+        self.imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
+        self.imageView.image = UIImage(named: "marker")
+        self.addSubview(self.imageView)
+        self.imageView.layer.cornerRadius = 5.0
+        self.imageView.layer.masksToBounds = true
     }
-    */
-
-}
-public extension MKMapView {
-  func centerToLocation(
-    _ location: CLLocation,
-    regionRadius: CLLocationDistance = 1000
-  ) {
-    let coordinateRegion = MKCoordinateRegion(
-      center: location.coordinate,
-      latitudinalMeters: regionRadius,
-      longitudinalMeters: regionRadius)
-    setRegion(coordinateRegion, animated: true)
-  }
+    override var image: UIImage? {
+        get {
+            return self.imageView.image
+        }
+        set {
+            if let _ = imageView {
+                self.imageView.image = newValue
+            }
+        }
+    }
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 }

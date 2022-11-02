@@ -231,8 +231,8 @@
 			isa = PBXGroup;
 			children = (
 				750C7E6429078E52009A9E27 /* ParseJsontoObject.swift */,
-				75BF3A1D28E2883100BC0F0C /* DeliveryListController.swift */,
 				750C7E6C290FA4CE009A9E27 /* ParseJsonGetAssetToStruct.swift */,
+				75BF3A1D28E2883100BC0F0C /* DeliveryListController.swift */,
 				750C7E6A2908ECA0009A9E27 /* Marker+ExtensionViewController.swift */,
 				757F496B28E3FD23008B8C05 /* FloatingPanel_Delivery */,
 			);

@@ -106,7 +106,7 @@ struct DisplayData: Codable {
         case failed = "failed"
         case halfway = "halfway"
         case inprogress = "inprogress"
-        case waiting = "waiting"
+        case waiting = "waiting"  //chua giao
     }
     
     struct DataHistory {
