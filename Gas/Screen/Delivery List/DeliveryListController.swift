@@ -39,7 +39,7 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
     
     @IBOutlet weak var mapView: MKMapView!
     
-    @IBOutlet weak var picker: UIPickerView!
+    @IBOutlet weak var pickerStatus: UIPickerView!
     @IBOutlet weak var pickerDriver: UIPickerView!
     @IBOutlet weak var pickerDate: UIPickerView!
     
@@ -83,8 +83,8 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         //        fpc.addPanel(toParent: self)
         // fpc.trackingScrollView
         
-        picker.dataSource = self
-        picker.delegate = self
+        pickerStatus.dataSource = self
+        pickerStatus.delegate = self
         
         pickerDriver.dataSource = self
         pickerDriver.delegate = self
@@ -103,8 +103,8 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         
         
         let userCoordinate = CLLocationCoordinate2D(latitude: 35.73774428640241, longitude: 139.6194163709879)
-        let eyeCoordinate = CLLocationCoordinate2D(latitude: 35.73774428640241, longitude: 139.6194163709879)
-        let mapCamera = MKMapCamera(lookingAtCenter: userCoordinate, fromEyeCoordinate: userCoordinate, eyeAltitude: 00.0)
+        let eyeCoordinate = CLLocationCoordinate2D(latitude: 35, longitude: 139)
+        let mapCamera = MKMapCamera(lookingAtCenter: userCoordinate, fromEyeCoordinate: eyeCoordinate, eyeAltitude: 700.0)
         let annotation = MKPointAnnotation()
         
         //Setup our Map View
@@ -196,17 +196,7 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
                             //  print("\(self.dataOneDay.values.description)")
                             
                             //Số lượng xe
-                            var xe = 0
-                            for vehicle in locationElements {
-                                if vehicle.location?.locationType == "supplier"  {
-                                    if self.locations[0].location?.locationType == "supplier"  {
-                                        self.locations.remove(at: 0)
-                                    } else {
-                                        xe = xe + 1
-                                    }
-                                }
-                                //  print("XE:\(xe)")
-                            }
+                           
                             //trạng thái
                             // var statusValue : Date
                             //var arrKeyDate: [String] = []
@@ -259,14 +249,9 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
                 switch response1.result {
                 case .success(_):
                     self.coordinate = response1.value?.geoloc?.coordinates ?? []
-                    print("  \(self.coordinate[1]) , \(self.coordinate[0])   ")
-                    
                     let pinsGas1: MyPin = MyPin(coordinate: CLLocationCoordinate2D(latitude: self.coordinate[1], longitude: self.coordinate[0] ) )
                     self.pins.append(pinsGas1)
-                    //let t = self.pins.count
-                    // UserDefaults.standard.set(t, forKey: "PinsCount")
-                    //   self.mapView.addAnnotations(self.pins)
-                    
+
                 case .failure(let error):
                     print("\(error)")
                 }
@@ -279,11 +264,11 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        if (pickerView.tag == 0) {
+        if pickerView.tag == 0 {
             //   return status22.count
-        } else if (pickerView.tag == 1) {
+        } else if pickerView.tag == 1 {
             return driver.count
-        } else if (pickerView.tag == 2) {
+        } else if pickerView.tag == 2 {
             return dateYMD.count
         }
         return 1
@@ -295,6 +280,16 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         if pickerView.tag == 0 {
             //  return status22[row]
         } else if (pickerView.tag == 1) {
+            let date: Date! = dateYMD[row]
+            let valueADay: [LocationElement] = dataOneDay[date] ?? []
+            var xe: String
+            for vehicle in valueADay {
+                xe = (vehicle.location?.locationType)!
+                if xe == "supplier" {
+                   print(xe )
+                }
+            }
+            
             return driver[row]
         } else if (pickerView.tag == 2) {
             let formatter = DateFormatter()
@@ -308,49 +303,44 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
     var pinsADay: [MyPin] = []
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        if (pickerView.tag == 2) {
-            //            var lat: [Double]
-            //    var long: [Double]
+        if pickerView.tag == 2 {
             let date: Date! = dateYMD[row]
             let valueADay: [LocationElement] = dataOneDay[date] ?? []   // gia tri cua 1 ngay -> locations
             print(valueADay.count)
             let annotations = mapView.annotations
             mapView.removeAnnotations(mapView.annotations)
             pinsADay.removeAll()
-            
             if valueADay.count != 0 {
-                
                 for location in valueADay {
                     if location.latitude != nil, location.longitude != nil {
-                        
-                        let onePin = MyPin(coordinate: CLLocationCoordinate2D(latitude: location.latitude ?? 0 , longitude: location.longitude ?? 0 ))
-                        
+                        let onePin = MyPin(coordinate: CLLocationCoordinate2D(latitude: location.latitude ?? 0, longitude: location.longitude ?? 0 ))
                         pinsADay.append(onePin)
-                        
                     }
                 }
-                let oneObject: LocationElement = valueADay[1]
-                print(oneObject)
-                
-                //  self.mapView.removeAnnotations(self.mapView.annotations)
-                
             } else {
                 showAlert(message: "Không có khách hàng nào!")
             }
-            
             self.mapView.addAnnotations(self.pinsADay)
+        } else if pickerView.tag == 1 {
+
+      
+//            var xe = 0
+//            for vehicle in locationElements {
+//                if vehicle.location?.locationType == "supplier"  {
+//                    if self.locations[0].location?.locationType == "supplier"  {
+//                        self.locations.remove(at: 0)
+//                    } else {
+//                        xe = xe + 1
+//                    }
+//                }
+//                  print("XE:\(xe)")
+//            }
+            
+            
         }
-        if pickerView.tag == 1 {
-            let date: Date! = dateYMD[row]
-            let valueADay: [LocationElement] = dataOneDay[date] ?? []
-            var xe: String
-            for vehicle in valueADay {
-                xe = (vehicle.location?.locationType)!
-                if xe == "supplier" {
-                   print(xe )
-                }
-            }
-        }
+        
+
+        
     }
 }
 

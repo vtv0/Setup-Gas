@@ -22,27 +22,27 @@ class MyPinView: MKPinAnnotationView {
         //        self.imageView.largeContentTitle = "sfsdasfasdfsafs"
         imageView.image = UIImage(named: "marker")
         //var arr: [Int] = []
-     
-        let t: Int = UserDefaults.standard.integer(forKey: "PinsCount")
-       // var i: Int = 0
-      //  var number: Int = 0
-        for number in 1...t {
-//
-          //  print(number)
-           
-          
-        }
+        
+        // let t: Int = UserDefaults.standard.integer(forKey: "PinsCount")
+        // var i: Int = 0
+        //  var number: Int = 0
+        // for number in 1...t {
+        //
+        //  print(number)
+        
+        //}
+        
         lblView.text = "2"
         lblView.textAlignment = .center
-       // lblView.backgroundColor = .red
-     
+        // lblView.backgroundColor = .red
+        
         
         lblView.layer.cornerRadius = lblView.frame.size.width / 2
         lblView.layer.masksToBounds = true
-       // self.bringSubviewToFront(lblView)
+        // self.bringSubviewToFront(lblView)
         
-       // imageView.layer.cornerRadius = imageView.frame.size.width / 2
-       // imageView.layer.masksToBounds = true
+        // imageView.layer.cornerRadius = imageView.frame.size.width / 2
+        // imageView.layer.masksToBounds = true
         
         
         self.addSubview(self.imageView)
