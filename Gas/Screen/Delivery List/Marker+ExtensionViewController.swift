@@ -9,16 +9,45 @@ import UIKit
 import MapKit
 
 class MyPinView: MKPinAnnotationView {
-    private var imageView: UIImageView!
-    
+    var imageView: UIImageView!
+    var lblView: UILabel!
+    var numericalOrder = [Int]()
     override init(annotation: MKAnnotation?, reuseIdentifier: String?) {
         super.init(annotation: annotation, reuseIdentifier: reuseIdentifier)
-        self.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
-        self.imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
-        self.imageView.image = UIImage(named: "marker")
+        
+        frame = CGRect(x: 0, y: 0, width: 50, height: 50)
+        imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
+        lblView = UILabel(frame: CGRect(x: 10, y: 10, width: 30, height: 30))
+        
+        //        self.imageView.largeContentTitle = "sfsdasfasdfsafs"
+        imageView.image = UIImage(named: "marker")
+        //var arr: [Int] = []
+     
+        let t: Int = UserDefaults.standard.integer(forKey: "PinsCount")
+       // var i: Int = 0
+      //  var number: Int = 0
+        for number in 1...t {
+//
+          //  print(number)
+           
+          
+        }
+        lblView.text = "2"
+        lblView.textAlignment = .center
+       // lblView.backgroundColor = .red
+     
+        
+        lblView.layer.cornerRadius = lblView.frame.size.width / 2
+        lblView.layer.masksToBounds = true
+       // self.bringSubviewToFront(lblView)
+        
+       // imageView.layer.cornerRadius = imageView.frame.size.width / 2
+       // imageView.layer.masksToBounds = true
+        
+        
         self.addSubview(self.imageView)
-        self.imageView.layer.cornerRadius = 5.0
-        self.imageView.layer.masksToBounds = true
+        self.addSubview(self.lblView)
+        
     }
     override var image: UIImage? {
         get {

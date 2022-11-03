@@ -418,8 +418,6 @@
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="btnShipping" destination="Y2d-yK-TIm" id="4Mz-hq-YsO"/>
-                        <outlet property="datePicker" destination="csE-na-47a" id="QTh-JW-Qo3"/>
-                        <outlet property="driverPicker" destination="gzV-pr-QEL" id="tyw-cp-z1i"/>
                         <outlet property="mapView" destination="gtA-13-IuZ" id="b71-W4-yl2"/>
                         <outlet property="picker" destination="yXb-a1-Ac5" id="0BU-LY-aG6"/>
                         <outlet property="pickerDate" destination="csE-na-47a" id="qvW-uK-16x"/>
