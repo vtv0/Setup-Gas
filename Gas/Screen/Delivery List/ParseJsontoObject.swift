@@ -56,7 +56,7 @@ struct LocationLocation: Decodable {
     var id, importance: Int?
     var latitude: Double?
     var loadConsumeMax, loadConsumeMin: Int?
-    var locationType: String?
+    var locationType: LocationType?
     var longitude: Double?
     var metadata: PurpleMetadata?
     var priority: String?
@@ -69,6 +69,28 @@ struct LocationLocation: Decodable {
     var normalizedScore: Double?
     var vehicleLimit: Int?
     
+//    func status() -> LocationType? {
+//        if locationType == "supplier" {
+//            
+//        }
+//        
+//        return .customer
+//    }
+    enum LocationType: String, Codable, CaseIterable {
+        case customer = "customer"
+        case supplier = "supplier"
+    }
+    
+//    enum MyCode : String, CaseIterable {
+//
+//        case one   = "uno"
+//        case two   = "dos"
+//        case three = "tres"
+//
+//        static func withLabel(_ label: String) -> MyCode? {
+//            return self.allCases.first{ "\($0)" == label }
+//        }
+//    }
     //    enum CodingKeys: String, CodingKey {
     //        case areaID, comment, createdAt, id, importance, latitude, loadConsumeMax, loadConsumeMin, locationType, longitude, metadata, priority, tenantID, timeWindow, updatedAt
     //        case workTimeSEC = "workTimeSec"
@@ -76,10 +98,7 @@ struct LocationLocation: Decodable {
     //    }
 }
 
-//enum LocationType: String, Codable {
-//    case customer = "customer"
-//    case supplier = "supplier"
-//}
+
 
 // MARK: - PurpleMetadata
 struct PurpleMetadata: Codable {
@@ -109,10 +128,7 @@ struct DisplayData: Codable {
         case waiting = "waiting"  //chua giao
     }
     
-    struct DataHistory {
-        var date: String
-        var status: String
-    }
+    
     func valueDeliveryHistory() -> DeliveryHistory {
         var arrStringDate: [String] = []
         if let arrKey = delivery_history?.keys {
@@ -120,7 +136,10 @@ struct DisplayData: Codable {
                 arrStringDate.append(i)
             }
         }
-        
+        struct DataHistory {
+            var date: String
+            var status: String
+        }
         var arr: [DataHistory] = []
         
         delivery_history?.keys.forEach({ key in
