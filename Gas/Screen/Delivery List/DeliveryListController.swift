@@ -13,11 +13,11 @@ import Network
 
 class CustomPin: NSObject, MKAnnotation {
     let title: Int
-//let subtitle: String?
+    //let subtitle: String?
     let coordinate: CLLocationCoordinate2D
     init(title: Int, coordinate: CLLocationCoordinate2D) {
-                self.title = title
-              //  self.locationName = locationName
+        self.title = title
+        //  self.locationName = locationName
         self.coordinate = coordinate
         super.init()
     }
@@ -32,9 +32,26 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
     let userId = UserDefaults.standard.string(forKey: "userId") ?? ""
     //let driver = ["Xe1", "Xe2", "Xe3"]
     let statusDelivery = ["Not Delivery", "All"]
-    var arrGetAsset:[String] = []
+    var arrGetAsset: [String] = []
     var pins: [CustomPin] = []
     var coordinate: [Double] = []
+    var selectedIdxDate: Int = 0
+    var selectedIdxDriver: Int = 0
+    var arr: [Int] = []
+    var pinsADay: [CustomPin] = []
+  
+   // var dicADate : [Date : [LocationElement]] = [:]
+    var dicData: [Date : [LocationElement]] = [:]
+    
+    var indxes: [Int] = []
+    var locationsByDriver: [Int: [LocationElement]] = [:]
+    
+    
+    @IBOutlet weak var lblType50kg: UILabel!
+    @IBOutlet weak var lblType30kg: UILabel!
+    @IBOutlet weak var lblType25kg: UILabel!
+    @IBOutlet weak var lblType20kg: UILabel!
+    @IBOutlet weak var lblOtherType: UILabel!
     
     @IBOutlet weak var mapView: MKMapView!
     
@@ -94,35 +111,30 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         view.bringSubviewToFront(btnShipping)
         
         navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
-        // Set initial location in Honolulu
-        //let initialLocation = CLLocation(latitude: 18.683500, longitude: 105.485750)
-        
-        //  let initialLocation = CLLocationCoordinate2DMake( 18.683500, 105.485750)
-        // mapView.centerToLocation(initialLocation)
         
         
         let userCoordinate = CLLocationCoordinate2D(latitude: 35.73774428640241, longitude: 139.6194163709879)
         let eyeCoordinate = CLLocationCoordinate2D(latitude: 35, longitude: 139)
-        let mapCamera = MKMapCamera(lookingAtCenter: userCoordinate, fromEyeCoordinate: eyeCoordinate, eyeAltitude: 700.0)
-        let annotation = MKPointAnnotation()
+        let mapCamera = MKMapCamera(lookingAtCenter: userCoordinate, fromEyeCoordinate: eyeCoordinate, eyeAltitude: 900.0)
+        
         
         //Setup our Map View
         mapView.delegate = self
         mapView.mapType = MKMapType.standard
-//        mapView.addAnnotation(annotation)
+        //        mapView.addAnnotation(annotation)
         mapView.setCamera(mapCamera, animated: false)
         
         
-        var pinsADay: [CustomPin] = []
+        
         let anchor = Date()
         let date: Date! = anchor
-        let valueADay: [LocationElement] = dataOneDay[date] ?? []
+        let valueADay: [LocationElement] = dicData[date] as? [LocationElement] ?? []
         
         // gia tri cua 1 ngay -> locations
         //  print(valueADay.count)
-        // let annotations = mapView.annotations
-        //mapView.removeAnnotations(annotations)
-        //pinsADay.removeAll()
+        
+        mapView.removeAnnotations(mapView.annotations)
+        pinsADay.removeAll()
         if valueADay.count != 0 {
             for coordinate in valueADay {
                 if coordinate.latitude != nil, coordinate.longitude != nil {
@@ -133,8 +145,6 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
             }
             self.mapView.addAnnotations(pinsADay)
         }
-        
-        
     }
     
     func showAlert(title: String? = "", message: String?, completion: (() -> Void)? = nil) {
@@ -169,10 +179,10 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
     var assetID: String = ""
     // var statusDelivery: String = ""
     var locations: [LocationElement] = []
-    var dataOneDay: [Date: [LocationElement]] = [:]
     
-    var locationsByDriver: [Int: [LocationElement]] = [:]
-    var indxes: [Int] = []
+    
+   
+    
     func getLatestWorkerRouteLocationList() {
         self.showActivity()
         let token = UserDefaults.standard.string(forKey: "accessToken") ?? ""
@@ -185,13 +195,13 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
             
             AF.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default ,headers: self.makeHeaders(token: token))
                 .responseDecodable(of: GetLatestWorkerRouteLocationListInfo.self) { response in
-                 //   print("\(url)::::>\( response.response?.statusCode ?? 0)")
+                    print("\(url)::::>\( response.response?.statusCode ?? 0)")
                     
                     switch response.result {
                     case .success(_):
                         
                         let countObject = response.value?.locations?.count
-                      //  print("Có: \(countObject ?? 0) OBJECT")
+                        //  print("Có: \(countObject ?? 0) OBJECT")
                         //  print(status)
                         self.locations = response.value?.locations ?? []
                         if countObject != 0 {
@@ -199,7 +209,6 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
                             for itemObject in self.locations {
                                 locations.append(itemObject)
                                 if itemObject.location?.assetID != nil {
-                                    
                                     self.getGetAsset(forAsset: (itemObject.location!.assetID)!, locationOrder: itemObject.locationOrder ?? 0)
                                 } else {
                                     print("Khong co assetID-> Supplier")
@@ -207,43 +216,32 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
                             }
                             
                             // value cua Dic key la ngay
-                            self.dataOneDay[iday] = locations
+                            self.dicData[iday] = locations
                             // Số lượng xe, tach xe
-                            // var car = 0
-                            // var beforeIdx: Int = 0;
-                            // var beforeIdx1: Int = 0
-                            // var currentIdx: Int = 0;
-                            // var currentIdx1: Int = 0
                             // var arrSupplier: [LocationLocation] = []
-                            var tmpArr: [LocationElement] = []
+                            var tmpArr = locations as? AnyObject
+                            tmpArr = [LocationElement].self as AnyObject
                             // Gia dinh da xoa thang supplier dau tien
                             var arrCar: [String] = []
                             for vehicle in locations {
                                 arrCar.append(vehicle.location?.locationType?.rawValue ?? "")
                                 if arrCar[0] == "supplier" {
                                     arrCar.remove(at: 0)
-                                } else {
-                                  //  print(arrCar)
                                 }
                             }
                             
-                            //                            for (index, element) in arrCar.enumerated() {
-                            //                                print(index, ":", element)
-                            //                            }
-                            //                            print(arrCar)
                             let indxes: [Int] = arrCar.enumerated().filter{ $0.element == "supplier" }.map{ $0.offset }
-                            print(indxes)  // 2022-11-07 co vi tri [22, 28, 48] ==> supplier :: tao ra mang [0->22], [22->28], [28->48] --> 3 xe
+                          
                             for (idx, item) in indxes.enumerated() {
                                 if (idx == 0) {
-                                    tmpArr = Array(self.locations[0...indxes[0]])
+                                    tmpArr = Array(self.locations[0...indxes[0]]) as AnyObject
                                 } else {
-                                    tmpArr = Array(self.locations[indxes[idx-1]+1...indxes[idx]])
+                                    tmpArr = Array(self.locations[indxes[idx-1]+1...indxes[idx]]) as AnyObject
                                 }
-                               // print("\n\n\n\n\n\n\nxxx", tmpArr)
-                                self.locationsByDriver[idx] = tmpArr
+                                // print("\n\n\n\n\n\n\nxxx", tmpArr)
+                                self.locationsByDriver[idx] = tmpArr as? [LocationElement]
                             }
-                            // print(tmpArr)
-                            //                            print(self.locationsByDriver)
+                         
                             
                             self.pickerDriver.reloadAllComponents()
                             
@@ -264,25 +262,26 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
                             //                                    print(beforeIdx)
                             //                                }
                             //                            }
-                            //self.dataOneDay[iday][driver] = locationsByDriver[driver]
-                            //                            in locations {
-                            //                                if vehicle.location?.locationType == .supplier {
-                            //                                    if self.locations[0].location?.locationType == .supplier  {
-                            //                                        self.locations.remove(at: 0)
-                            //                                    } else {
-                            //                                        car = car + 1
-                            //                                    }
-                            //                                }
-                            //                                print("CAR:\(car)")
-                            //                            }
-                            //                            func car() {
-                            //                                var carDic: [String: [Double]]
-                            //                            }
+                            
                             //trạng thái
                             // var statusValue : Date
                             //var arrKeyDate: [String] = []
                             //var dic: [String: String] = [:]
                             //var stringValue: String
+                            
+                            
+                            // MARK: - Display Number For Each Type
+                            var fac: [[Facility_data]]? = []
+                            for types in locations {
+                                if fac == nil {
+                                    fac?.removeAll()
+                                } else {
+                                    fac?.append(types.metadata?.facility_data ?? [])
+                                }
+                                
+                            }
+                            //  print(fac?.count)
+                            
                         } else {
                             print(response.response?.statusCode as Any)
                             print("\(url) =>> Array Empty ")
@@ -295,11 +294,11 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
                             self.navigationController?.pushViewController(src, animated: true)
                         }
                         print("Error: \(response.response?.statusCode ?? 000000)")
-                        print("\(error)")
+                        print("Error: \(error)")
                     }
                 }
         }
-     
+        
     }
     
     func getGetAsset(forAsset iassetID: String, locationOrder: Int) {
@@ -311,10 +310,10 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
                 switch response1.result {
                 case .success(_):
                     print("ok")
-//                    self.coordinate = response1.value?.geoloc?.coordinates ?? []
-//                    let pinsGas1: MyPin = MyPin( coordinate: CLLocationCoordinate2D(latitude: self.coordinate[1], longitude: self.coordinate[0] ) )
-//                    //self.pins. = locationOrder.hashValue
-//                    self.pins.append(pinsGas1)
+                    //                    self.coordinate = response1.value?.geoloc?.coordinates ?? []
+                    //                    let pinsGas1: MyPin = MyPin( coordinate: CLLocationCoordinate2D(latitude: self.coordinate[1], longitude: self.coordinate[0] ) )
+                    //                    //self.pins. = locationOrder.hashValue
+                    //                    self.pins.append(pinsGas1)
                     
                 case .failure(let error):
                     print("\(error)")
@@ -322,9 +321,6 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
             }
         self.hideActivity()
     }
-    //    func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
-    //        <#code#>
-    //    }
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
@@ -335,24 +331,24 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
             return statusDelivery.count
             
         } else if pickerView == pickerDriver {
-            return locationsByDriver.count
+            return indxes.count
             
         } else if pickerView == pickerDate {
             return dateYMD.count
         }
         return 0
     }
-    
+    var car: [String] = ["Car1", "Car2", "Car3", "Car4", "Car5"]
     var arrStringDate: [String] = []
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         if pickerView == pickerStatus {
             return statusDelivery[row]
+            
         } else if pickerView == pickerDriver {
-            
-            var car: [String] = ["Car1", "Car2", "Car3", "Car4", "Car5"]
-            
             return car[row]
+            
         } else if pickerView == pickerDate {
+            
             let formatter = DateFormatter()
             formatter.dateFormat = "MM/dd"
             let dateString: String = formatter.string(from: dateYMD[row])
@@ -361,107 +357,174 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         return ""
     }
     
-    func getDataFiltered(arr: [Date: [LocationElement]], status: String, driver: String, date: Date ) -> [Data] {
-        let locationsOnDate: [LocationElement] = dataOneDay[date] ?? []
-        // Check thang dau la supplier thi remove thang dau di
-        // Duyet
+    
+    
+    func getDataFiltered(date: Date, driver: Int) -> [LocationElement] {
+        //let dateSelect = pickerDate.selectedRow(inComponent: 0)
         
         
-        //        var pinsADay: [MyPin] = []
-        //        let date: Date! = dateYMD[1]
-        //        let valueADay: [LocationElement] = dataOneDay[date] ?? []
-        //
-        //        print( valueADay)
+      //  var tmpArr = locations as AnyObject
+        var tmpArr: [LocationElement] = []
+        let dataOneDate: [LocationElement] = dicData[date] ?? []
+        var arrCar: [String] = []
+        for vehicle in dataOneDate {
+            arrCar.append(vehicle.location?.locationType?.rawValue ?? "")
+            if arrCar[0] == "supplier" {
+                arrCar.remove(at: 0)
+            }
+        }
+       
+        let indxes: [Int] = arrCar.enumerated().filter{ $0.element == "supplier" }.map{ $0.offset }
+      
+        for (idx, item) in indxes.enumerated() {
+            if (idx == 0) {
+                tmpArr = Array(self.locations[0...indxes[0]])
+            } else {
+                tmpArr = Array(self.locations[indxes[idx-1]+1...indxes[idx]])
+            }
+             print("\n\n\n\n\n\n\nxxx", tmpArr)
+            self.locationsByDriver[idx] = tmpArr as? [LocationElement]
+        }
         
-        
-        return []
+        for idataOneDate in dataOneDate {
+            
+        }
+        //Loop dataOnDate, de tach duoc driver co nhung location nay
+        // return rs
+        return tmpArr
     }
     
-    var numberSupplier: Int = 0
-    var numberCustomer: Int = 0
+    func reDrawMarkers(locations: [Data]) {
+        // Duyet locations de ve lai marker tren map
+               
+        // MARK: - Picker Date OK
+      
+       // mapView.removeAnnotations(mapView.annotations)
+       // pinsADay.removeAll()
+        
+       // self.mapView.addAnnotations(pinsADay)
+        
+//        if pinsADay.count != 0 {
+//            self.mapView.addAnnotations(pinsADay)
+//
+//        } else {
+//            showAlert(message: "Không có khách hàng nào!")
+//        }
+        
+        // MARK: - Picker Driver
+//        var arr: [Int] = []
+//        locationsByDriver.keys.forEach({ key in
+//            arr.append(key)
+//        })
+//        let keyDriver: Int = 1
+//        let valueCar: [LocationElement] = locationsByDriver[keyDriver] ?? []
+//
+//        mapView.removeAnnotations(mapView.annotations)
+//        pinsADay.removeAll()
+//        for cars in valueCar {
+//            if cars.latitude != nil, cars.longitude != nil {
+//                let carOnePin = CustomPin(title: cars.locationOrder!, coordinate: CLLocationCoordinate2D(latitude: cars.latitude ?? 0, longitude: cars.longitude ?? 0 ))
+//                pinsADay.append(carOnePin)
+//            }
+//        }
+//        mapView.addAnnotations(pinsADay)
+    }
+    
+    
+    
+    
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        var pinsADay: [CustomPin] = []
-        let date: Date! = dateYMD[row]
-        let valueADay: [LocationElement] = dataOneDay[date] ?? []
-       
         if pickerView == pickerDate {
-            let annotations = mapView.annotations
-            mapView.removeAnnotations(annotations)
-            pinsADay.removeAll()
-            if valueADay.count != 0 {
-                for coordinate in valueADay {
-                    if coordinate.latitude != nil, coordinate.longitude != nil {
-                        let onePin = CustomPin(title: coordinate.locationOrder!, coordinate: CLLocationCoordinate2D(latitude: coordinate.latitude ?? 0, longitude: coordinate.longitude ?? 0 ))
-                        pinsADay.append(onePin)
-                    }
+            // Gan lai gia tri bien toan cuc ngay
+            selectedIdxDate = row
+            
+            // Ve lai picker driver
+            let date: Date! = dateYMD[row]
+            let valueADay: [LocationElement] = dicData[date] as? [LocationElement] ?? []
+            var tmpArr = locations as AnyObject
+            tmpArr = [LocationElement].self as AnyObject
+            var arrCar: [String] = []
+            for vehicle in valueADay {
+                arrCar.append(vehicle.location?.locationType?.rawValue ?? "")
+                if arrCar[0] == "supplier" {
+                    arrCar.remove(at: 0)
                 }
-            } else {
-                showAlert(message: "Không có khách hàng nào!")
             }
-            self.mapView.addAnnotations(pinsADay)
+            let indxes1: [Int] = arrCar.enumerated().filter{ $0.element == "supplier" }.map{ $0.offset }
+            indxes = indxes1
+            
             self.pickerDriver.reloadAllComponents()
             
-        } else if pickerView == pickerDriver {
-        //    print("picker driver")
-            let keyDriver: Int = 0
-            var valueCar: [LocationElement] = locationsByDriver[keyDriver] ?? []
-         //   print(valueCar)
-            let annotations = mapView.annotations
-            mapView.removeAnnotations(annotations)
-            pinsADay.removeAll()
-            for cars in valueCar {
-                if cars.latitude != nil, cars.longitude != nil {
-                    let carOnePin = CustomPin(title: cars.locationOrder!, coordinate: CLLocationCoordinate2D(latitude: cars.latitude ?? 0, longitude: cars.longitude ?? 0 ))
-                    pinsADay.append(carOnePin)
+            // Gan lai gia tri bien toan cuc driver = 0
+            selectedIdxDriver = 0
+            
+            let locationsFiltered = self.getDataFiltered(date: dateYMD[selectedIdxDate], driver: selectedIdxDriver)
+//            print(locationsFiltered)
+            
+            // for locations de ve lai marker
+            var pinsADay1: [CustomPin] = []
+            for iLocation in locationsFiltered {
+                if iLocation.latitude != nil, iLocation.longitude != nil {
+                    let onePin = CustomPin(title: iLocation.locationOrder!, coordinate: CLLocationCoordinate2D(latitude: iLocation.latitude ?? 0, longitude: iLocation.longitude ?? 0 ))
+                    pinsADay1.append(onePin)
+                    pinsADay = pinsADay1
+                    
                 }
+                
+                self.reDrawMarkers(locations: [] )
             }
-            mapView.addAnnotations(pinsADay)
-            //            let date: Date! = dateYMD[]
-            //            let valueADay: [LocationElement] = dataOneDay[date] ?? []
+            
+        } else if pickerView == pickerDriver {
+            // Da co bien toan cuc ngay
+            
+            // selectedIdxDate
+           // dateYMD[selectedIdxDate] =
+            
+            // Gan lai gia tri bien toan cuc driver = Cai thang vua select
+            selectedIdxDriver = row
+            
+           let locationsFilter = self.getDataFiltered(date: dateYMD[selectedIdxDate], driver: selectedIdxDriver)
+            // for locations de ve lai marker
+            for iLocation in locationsFilter {
+                print(iLocation)
+            }
+            
+            
+            
+            // let date: Date! = dateYMD[row]
+            // let valueADay: [LocationElement] = dicData[date] as? [LocationElement] ?? []
+            
+            // locationsByDriver.keys.forEach({ key in
+            //     arr.append(key)
+            // })
+            
+            //            let keyDriver: Int = arr[row]
+            //            let valueCar: [LocationElement] = locationsByDriver[keyDriver] ?? []
             //
-            //                        var arrCar: [String] = []
-            //                        for vehicle in valueADay {
-            //                            arrCar.append(vehicle.location?.locationType?.rawValue ?? "")
-            //
-            //                        }
-            //              print(arrCar)
-            //                        var numberSupplier: Int = 0
-            //                        var numberCustomer: Int = 0
-            //                        for i in arrCar {
-            //                            if i == "supplier" {
-            //                                if arrCar[0] == "supplier" {
-            //                                    arrCar.remove(at: 0)
-            //
-            //                                } else {
-            //                                    numberSupplier += 1
-            //                                }
-            //                            } else if i == "customer" {
-            //                                numberCustomer += 1
-            //                            }
-            //                        }
-            //
-            //                        print("customer:\(numberCustomer)")
-            //                        print("supplier:\(numberSupplier)")
+            //            self.getDataFiltered(date: dateYMD[row], driver: arr[row], status: "")
+            // print(getDataFiltered(date: dateYMD[row], driver: 1))
             
         } else if pickerView == pickerStatus {
-            let date: Date! = dateYMD[row]
-            let valueADay: [LocationElement] = dataOneDay[date] ?? []
-            var pinsStatusAll: [CustomPin] = []
-            var pinsStatusNotDelivery: [CustomPin] = []
-            let annotations = mapView.annotations
-            mapView.removeAnnotations(annotations)
-              pinsStatusAll.removeAll()
-            for statusShipping in valueADay {
-                if statusShipping.latitude != nil && statusShipping.longitude != nil && statusShipping.location?.metadata?.displayData?.valueDeliveryHistory() == .waiting  {
-                    let onePin = CustomPin(title: statusShipping.locationOrder!, coordinate: CLLocationCoordinate2D(latitude: statusShipping.latitude!, longitude: statusShipping.longitude! ))
-                    pinsStatusNotDelivery.append(onePin)
-                    mapView.addAnnotations(pinsStatusNotDelivery)
-                } else {
-                    let onePin = CustomPin(title: statusShipping.locationOrder!, coordinate: CLLocationCoordinate2D(latitude: statusShipping.latitude!, longitude: statusShipping.longitude! ))
-                    pinsStatusAll.append(onePin)
-                    mapView.addAnnotations(pinsStatusAll)
-                }
-            }
+            
+            //            let date: Date! = dateYMD[row]
+            //            let valueADay: [LocationElement] = dataOneDay[date] ?? []
+            //            var pinsStatusAll: [CustomPin] = []
+            //            var pinsStatusNotDelivery: [CustomPin] = []
+            //            let annotations = mapView.annotations
+            //            mapView.removeAnnotations(annotations)
+            //            pinsStatusAll.removeAll()
+            //            for statusShipping in valueADay {
+            //                if statusShipping.latitude != nil && statusShipping.longitude != nil && statusShipping.location?.metadata?.displayData?.valueDeliveryHistory() == .waiting  {
+            //                    let onePin = CustomPin(title: statusShipping.locationOrder!, coordinate: CLLocationCoordinate2D(latitude: statusShipping.latitude!, longitude: statusShipping.longitude! ))
+            //                    pinsStatusNotDelivery.append(onePin)
+            //                    mapView.addAnnotations(pinsStatusNotDelivery)
+            //                } else {
+            //                    let onePin = CustomPin(title: statusShipping.locationOrder!, coordinate: CLLocationCoordinate2D(latitude: statusShipping.latitude!, longitude: statusShipping.longitude! ))
+            //                    pinsStatusAll.append(onePin)
+            //                    mapView.addAnnotations(pinsStatusAll)
+            //                }
+            //            }
+            
         }
     }
     
@@ -471,28 +534,21 @@ extension DeliveryListController: MKMapViewDelegate {
     
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         guard let annotation = annotation as? CustomPin else { return nil }
-      //  guard let title = annotation.title as? CustomPin else { return nil }
-        // let identifier = "Annotation"
+        
+        let identifier = "Annotation"
         var view: MyPinView
-
-        if let dequeuedView = mapView.dequeueReusableAnnotationView(withIdentifier: "Annotation") as? MyPinView {
+        if let dequeuedView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier) as? MyPinView {
             dequeuedView.annotation = annotation
-//            dequeuedView.lblView = annotation.title.self
-          //  dequeuedView.lblView.hashValue =  annotation.hashValue
-
-          dequeuedView.image = UIImage(named: "marker")
+            dequeuedView.image = UIImage(named: "marker")
             view = dequeuedView
         } else {
-            view = MyPinView(annotation: annotation, reuseIdentifier: "Annotation")
-           // view.canShowCallout = true
-           // view = MyPinView(
-          // view = MyPinView()
-            //view.rightCalloutAccessoryView = UIButton(type: .detailDisclosure)
-          //  view.lblView.text = title
+            view = MyPinView(annotation: annotation, reuseIdentifier: identifier)
+            
+            view.lblView.text = annotation.title.description
         }
         return view
     }
-        
+    
     
     
 }

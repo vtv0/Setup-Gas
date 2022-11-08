@@ -418,6 +418,11 @@
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="btnShipping" destination="Y2d-yK-TIm" id="4Mz-hq-YsO"/>
+                        <outlet property="lblOtherType" destination="9kA-11-pQK" id="vVe-qQ-gZx"/>
+                        <outlet property="lblType20kg" destination="HcK-Zy-6ok" id="NzU-sz-Owa"/>
+                        <outlet property="lblType25kg" destination="cXi-sS-n5J" id="oWA-Hy-8Sv"/>
+                        <outlet property="lblType30kg" destination="JP9-uJ-t4H" id="UAf-eq-bgh"/>
+                        <outlet property="lblType50kg" destination="bxP-fd-tvf" id="8Rk-E1-6Y3"/>
                         <outlet property="mapView" destination="gtA-13-IuZ" id="b71-W4-yl2"/>
                         <outlet property="pickerDate" destination="csE-na-47a" id="qvW-uK-16x"/>
                         <outlet property="pickerDriver" destination="gzV-pr-QEL" id="een-fB-FGG"/>

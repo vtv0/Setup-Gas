@@ -204,7 +204,7 @@ struct DisplayData: Codable {
 // MARK: - FluffyMetadata
 struct FluffyMetadata: Decodable {
     var customerID, deliverType: String?
-    var facilityData: [FacilityDatum]?
+    var facility_data: [Facility_data]?
     var optionalDays: Int?
     var optionalLocation: Bool?
     var planID, plannedDate, prevDate: String?
@@ -222,7 +222,7 @@ struct FluffyMetadata: Decodable {
 }
 
 // MARK: - FacilityDatum
-struct FacilityDatum: Codable {
+struct Facility_data: Codable {
     var count, type: Int?
 }
 
