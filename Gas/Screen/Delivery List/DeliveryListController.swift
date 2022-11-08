@@ -361,8 +361,6 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
     
     func getDataFiltered(date: Date, driver: Int) -> [LocationElement] {
         //let dateSelect = pickerDate.selectedRow(inComponent: 0)
-        
-        
       //  var tmpArr = locations as AnyObject
         var tmpArr: [LocationElement] = []
         let dataOneDate: [LocationElement] = dicData[date] ?? []
@@ -382,11 +380,12 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
             } else {
                 tmpArr = Array(self.locations[indxes[idx-1]+1...indxes[idx]])
             }
-             print("\n\n\n\n\n\n\nxxx", tmpArr)
+             print("\n\n\n\n\n\n\naaaaaa", tmpArr)
             self.locationsByDriver[idx] = tmpArr as? [LocationElement]
         }
         
-        for idataOneDate in dataOneDate {
+        // loc data mac dinh la xe 1 
+        for idataOneDate in tmpArr {
             
         }
         //Loop dataOnDate, de tach duoc driver co nhung location nay
@@ -396,38 +395,19 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
     
     func reDrawMarkers(locations: [Data]) {
         // Duyet locations de ve lai marker tren map
-               
-        // MARK: - Picker Date OK
+          let dataDidFilter = getDataFiltered(date: dateYMD[selectedIdxDate], driver: selectedIdxDriver)
+        
+        mapView.removeAnnotations(mapView.annotations)
+        pinsADay.removeAll()
+        for cars in dataDidFilter {
+            if cars.latitude != nil, cars.longitude != nil {
+                let carOnePin = CustomPin(title: cars.locationOrder!, coordinate: CLLocationCoordinate2D(latitude: cars.latitude ?? 0, longitude: cars.longitude ?? 0 ))
+                pinsADay.append(carOnePin)
+            }
+        }
+        mapView.addAnnotations(pinsADay)
       
-       // mapView.removeAnnotations(mapView.annotations)
-       // pinsADay.removeAll()
         
-       // self.mapView.addAnnotations(pinsADay)
-        
-//        if pinsADay.count != 0 {
-//            self.mapView.addAnnotations(pinsADay)
-//
-//        } else {
-//            showAlert(message: "Không có khách hàng nào!")
-//        }
-        
-        // MARK: - Picker Driver
-//        var arr: [Int] = []
-//        locationsByDriver.keys.forEach({ key in
-//            arr.append(key)
-//        })
-//        let keyDriver: Int = 1
-//        let valueCar: [LocationElement] = locationsByDriver[keyDriver] ?? []
-//
-//        mapView.removeAnnotations(mapView.annotations)
-//        pinsADay.removeAll()
-//        for cars in valueCar {
-//            if cars.latitude != nil, cars.longitude != nil {
-//                let carOnePin = CustomPin(title: cars.locationOrder!, coordinate: CLLocationCoordinate2D(latitude: cars.latitude ?? 0, longitude: cars.longitude ?? 0 ))
-//                pinsADay.append(carOnePin)
-//            }
-//        }
-//        mapView.addAnnotations(pinsADay)
     }
     
     
