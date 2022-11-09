@@ -16,7 +16,7 @@ class MyPinView: MKPinAnnotationView {
         
         frame = CGRect(x: 0, y: 0, width: 50, height: 50)
         imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
-        lblView = UILabel(frame: CGRect(x: 10, y: 10, width: 30, height: 30))
+        lblView = UILabel(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
         imageView.image = UIImage(named: "marker")
         lblView.textAlignment = .center
         lblView.layer.cornerRadius = lblView.frame.size.width / 2

@@ -21,14 +21,19 @@ struct GetLatestWorkerRouteLocationListInfo: Decodable {
 }
 
 // MARK: - LocationElement
-struct LocationElement: Decodable {
+struct LocationElement: Decodable, CustomStringConvertible {
+    var description: String {
+        return "locationOrder: \(locationOrder)"
+    }
+    
     var arrivalTime: ArrivalTime?
     var breakTimeSEC: Int?
     var createdAt: String?
     var latitude: Double?
     var loadCapacity, loadSupply: Int?
     var location: LocationLocation?
-    var locationID, locationOrder: Int?
+    var locationID: Int?
+    var locationOrder: Int
     var longitude: Double?
     var metadata: FluffyMetadata?
     //var timeWindow: JSONNull?
