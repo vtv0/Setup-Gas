@@ -30,10 +30,10 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
     let companyCode = UserDefaults.standard.string(forKey: "companyCode") ?? ""
     let tenantId = UserDefaults.standard.string(forKey: "tenantId") ?? ""
     let userId = UserDefaults.standard.string(forKey: "userId") ?? ""
-    //let driver = ["Xe1", "Xe2", "Xe3"]
+    
     let statusDelivery = ["Not Delivery", "All"]
     var arrGetAsset: [String] = []
-    var pins: [CustomPin] = []
+    
     var coordinate: [Double] = []
     var selectedIdxDate: Int = 0
     var selectedIdxDriver: Int = 0
@@ -43,11 +43,12 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
     var pinsADay: [CustomPin] = []
     var dicData: [Date : [LocationElement]] = [:]
     
-    var indxes: [Int] = []
+    var indxes: [Int] = [1]
     var assetID: String = ""
     var locations: [LocationElement] = []
-    
-    
+    var dataDidFilter: [LocationElement] = []
+    var dateYMD: [Date] = []
+    var arrStringDate: [String] = []
     
     @IBOutlet weak var lblType50kg: UILabel!
     @IBOutlet weak var lblType30kg: UILabel!
@@ -83,23 +84,26 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         self.navigationController?.pushViewController(screenReroute, animated: true)
     }
     
+//    override func viewWillAppear(_ animated: Bool) {
+//        super.viewWillAppear(animated)
+//        print("11111111111111111111111")
+//    }
+      
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.sevenDay()
         getLatestWorkerRouteLocationList()
-        print("aa \(companyCode )")
-        print("bb \(tenantId )")
-        print("cc \(userId )")
         
-        //        let fpc = FloatingPanelController()
-        //        fpc.delegate = self
-        //        guard let contentDeliveryVC = storyboard?.instantiateViewController(withIdentifier: "FloatingPanelDeliveryVC") as? FloatingPanelDeliveryVC else { return }
+        //                let fpc = FloatingPanelController()
+        //                fpc.delegate = self
+        //                guard let contentDeliveryVC = storyboard?.instantiateViewController(withIdentifier: "FloatingPanelDeliveryVC") as? FloatingPanelDeliveryVC else { return }
         //
-        //        let countPage = ["a","c","3"]
-        //        contentDeliveryVC.data = countPage
-        //        fpc.set(contentViewController: contentDeliveryVC)
-        //        fpc.addPanel(toParent: self)
-        // fpc.trackingScrollView
+        //                let countPage = ["a","c","3"]
+        //                contentDeliveryVC.data = countPage
+        //                fpc.set(contentViewController: contentDeliveryVC)
+        //                fpc.addPanel(toParent: self)
+        //         fpc.trackingScrollView
         
         pickerStatus.dataSource = self
         pickerStatus.delegate = self
@@ -119,30 +123,38 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         let eyeCoordinate = CLLocationCoordinate2D(latitude: 35.73774428640241, longitude: 139.6194163709879)
         let mapCamera = MKMapCamera(lookingAtCenter: userCoordinate, fromEyeCoordinate: eyeCoordinate, eyeAltitude: 100000.0)
         
+        lblType50kg.text = "\(0)"
+        lblType30kg.text = "\(0)"
+        lblType25kg.text = "\(0)"
+        lblType20kg.text = "\(0)"
+        lblOtherType.text = "\(0)"
         
         //Setup our Map View
         mapView.delegate = self
-        mapView.mapType = MKMapType.standard
-        //        mapView.addAnnotation(annotation)
         mapView.setCamera(mapCamera, animated: false)
         
         
-        //            selectedIdxDate = 0
-        //            let date: Date! = dateYMD[0]
-        //            let valueADay: [LocationElement] = dicData[date] ?? []
-        //            var arrCar: [String] = []
-        //            for vehicle in valueADay {
-        //                arrCar.append(vehicle.location?.locationType?.rawValue ?? "")
-        //                if arrCar[0] == "supplier" {
-        //                    arrCar.remove(at: 0)
-        //                }
-        //            }
-        //            let indxes1: [Int] = arrCar.enumerated().filter{ $0.element == "supplier" }.map{ $0.offset }
-        //            indxes = indxes1
-        //            self.pickerDriver.reloadAllComponents()
-        //            selectedIdxDriver = 0
-        //            let locationsFiltered = self.getDataFiltered(date: dateYMD[selectedIdxDate], driver: selectedIdxDriver, status: selectesIdxStatus)
-        //            self.reDrawMarkers()
+//        let date: Date! = dateYMD[selectedIdxDate]
+//
+//        print(dicData)
+//
+//        let valueADay: [LocationElement] = dicData[date] ?? []
+//        var arrCar: [String] = []
+//        for vehicle in valueADay {
+//            arrCar.append(vehicle.location?.locationType?.rawValue ?? "")
+//            if arrCar[0] == "supplier" {
+//                arrCar.remove(at: 0)
+//            }
+//        }
+//        let indxes1: [Int] = arrCar.enumerated().filter{ $0.element == "supplier" }.map{ $0.offset }
+//        indxes = indxes1
+//        self.pickerDriver.reloadAllComponents()
+//        selectedIdxDriver = 0
+//        self.getDataFiltered(date: date, driver: 0, status: 0)
+//       // print(locationsFiltered)
+//        self.reDrawMarkers()
+        
+//
         
     }
     
@@ -160,9 +172,8 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         return HTTPHeaders(headers)
     }
     
-    var dateYMD: [Date] = []
     func sevenDay() {
-        // 7day
+        // 7 ngay
         let anchor = Date()
         let calendar = Calendar.current
         let formatter = DateFormatter()
@@ -172,7 +183,7 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
                 dateYMD.append(date1)
             }
         }
-        pickerDate.reloadAllComponents()
+        
     }
     
     
@@ -194,8 +205,8 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
                     case .success(_):
                         
                         let countObject = response.value?.locations?.count
-                        //  print("Có: \(countObject ?? 0) OBJECT")
-                        //  print(status)
+                        // print("Có: \(countObject ?? 0) OBJECT")
+                        
                         self.locations = response.value?.locations ?? []
                         if countObject != 0 {
                             var locations: [LocationElement] = []
@@ -207,92 +218,57 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
                                     print("Khong co assetID-> Supplier")
                                 }
                             }
-                            
-                            // value cua Dic key la ngay
                             self.dicData[iday] = locations
-                            // Số lượng xe, tach xe
-                            // var arrSupplier: [LocationLocation] = []
-                            var tmpArr = locations
                             
-                            // Gia dinh da xoa thang supplier dau tien
-                            var arrCar: [String] = []
-                            for vehicle in locations {
-                                arrCar.append(vehicle.location?.locationType?.rawValue ?? "")
-                                if arrCar[0] == "supplier" {
-                                    arrCar.remove(at: 0)
-                                } else {
-                                    let indxes: [Int] = arrCar.enumerated().filter { $0.element == "supplier" }.map { $0.offset }
-                                    
-                                    for (idx, item) in indxes.enumerated() {
-                                        if Array(self.locations) != nil {
-                                            if (idx == 0) {
-                                                tmpArr = (Array(self.locations[0...indxes[0]]) as AnyObject) as! [LocationElement]
-                                            } else {
-                                                tmpArr = (Array(self.locations[indxes[idx-1]+1...indxes[idx]]) as AnyObject) as! [LocationElement]
-                                            }
-                                        }
-                                        // print("\n\n\n\n\n\n\nxxx", tmpArr)
-                                        //self.locationsByDriver[idx] = tmpArr as? [LocationElement]
-                                    }
-                                }
-                            }
-                            print(arrCar )
+                           // self.getDataFiltered(date: self.dateYMD[self.selectedIdxDate], driver: self.selectedIdxDriver, status: self.selectesIdxStatus)
+                            self.reDrawMarkers()
                             
                             
-                            
-                            
-                            self.pickerDriver.reloadAllComponents()
-                            
-                            //                            for location in locations {
-                            //                                if (location.location?.locationType == .supplier) {
-                            //
-                            //                                    beforeIdx = indxes.startIndex
-                            //                                    currentIdx = indxes[beforeIdx + 1]
-                            //                                    let arrTemp: [LocationElement] = Array(self.locations[beforeIdx..<currentIdx])
-                            //
-                            //                                   // print(beforeIdx)
-                            //                                   // print(currentIdx)
-                            //                                    print("\(beforeIdx), \(currentIdx), \(arrTemp)")
-                            //
-                            //                                    beforeIdx = currentIdx
-                            //                                   // currentIdx = ind[beforeIdx + 1]
-                            //
-                            //                                    print(beforeIdx)
+                            //                            var tmpArr: [LocationElement] = []
+                            //                            var arrCar: [String] = []
+                            //                            for vehicle in locations {
+                            //                                arrCar.append(vehicle.location?.locationType?.rawValue ?? "")
+                            //                                if arrCar[0] == "supplier" {
+                            //                                    arrCar.remove(at: 0)
+                            //                                } else {
+                            //                                    let indxes: [Int] = arrCar.enumerated().filter { $0.element == "supplier" }.map { $0.offset }
+                            //                                    for (idx, _) in indxes.enumerated() {
+                            //                                        if Array(self.locations).count > 0 {
+                            //                                            if (idx == 0) {
+                            //                                                tmpArr = (Array(self.locations[0...indxes[0]]) as AnyObject) as! [LocationElement]
+                            //                                            } else {
+                            //                                                tmpArr = (Array(self.locations[indxes[idx-1]+1...indxes[idx]]) as AnyObject) as! [LocationElement]
+                            //                                            }
+                            //                                        }
+                            //                                    }
                             //                                }
                             //                            }
                             
-                            //trạng thái
-                            // var statusValue : Date
-                            //var arrKeyDate: [String] = []
-                            //var dic: [String: String] = [:]
-                            //var stringValue: String
                             
-                            
-                            // MARK: - Display Number For Each Type
-                            var fac: [[Facility_data]]? = []
-                            for types in locations {
-                                if fac == nil {
-                                    fac?.removeAll()
-                                } else {
-                                    fac?.append(types.metadata?.facility_data ?? [])
-                                }
-                                
-                            }
-                            //  print(fac?.count)
-                            
+//                            var fac: [[Facility_data]]? = []
+//                            for types in locations {
+//                                if fac == nil {
+//                                    fac?.removeAll()
+//                                } else {
+//                                    fac?.append(types.metadata?.facility_data ?? [])
+//                                }
+//                            }
                         } else {
                             print(response.response?.statusCode as Any)
                             print("\(url) =>> Array Empty ")
                         }
                         
                     case .failure(let error): // bị lặp lại 7 lần
-                        if( response.response?.statusCode == 401) {
+                        if response.response?.statusCode == 401 {
                             self.hideActivity()
                             let src = self.storyboard?.instantiateViewController(withIdentifier: "LoginViewController") as! ViewController
                             self.navigationController?.pushViewController(src, animated: true)
+                            break
+                        } else {
+                            print("Error: \(response.response?.statusCode ?? 000000)")
+                            print("Error: \(error)")
                         }
-                        print("Error: \(response.response?.statusCode ?? 000000)")
-                        print("Error: \(error)")
+                        
                     }
                 }
         }
@@ -304,20 +280,15 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         let urlGetAsset = "https://\(companyCode).kiiapps.com/am/api/assets/\(iassetID)"
         AF.request(urlGetAsset,method: .get, parameters: nil, headers: self.makeHeaders(token: token))
             .responseDecodable(of: GetAsset.self ) { response1 in
-                // print("Status GetAsset:\( response1.response?.statusCode ?? 0)")
                 switch response1.result {
                 case .success(_):
                     print("ok")
-                    //                    self.coordinate = response1.value?.geoloc?.coordinates ?? []
-                    //                    let pinsGas1: MyPin = MyPin( coordinate: CLLocationCoordinate2D(latitude: self.coordinate[1], longitude: self.coordinate[0] ) )
-                    //                    //self.pins. = locationOrder.hashValue
-                    //                    self.pins.append(pinsGas1)
-                    
+                    self.hideActivity()
                 case .failure(let error):
                     print("\(error)")
                 }
             }
-        self.hideActivity()
+       
     }
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
@@ -329,6 +300,11 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
             return statusDelivery.count
             
         } else if pickerView == pickerDriver {
+            
+            if indxes.count == 0 {
+                return 0
+            }
+            
             return indxes.count
             
         } else if pickerView == pickerDate {
@@ -337,7 +313,7 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         return 0
     }
     var car: [String] = ["Car1", "Car2", "Car3", "Car4", "Car5", "Car6", "Car7", "Car8", "Car9"]
-    var arrStringDate: [String] = []
+    
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         if pickerView == pickerStatus {
             return statusDelivery[row]
@@ -352,63 +328,60 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
             let dateString: String = formatter.string(from: dateYMD[row])
             return dateString
         }
+        pickerView.reloadAllComponents()
         return ""
     }
-    var dataDidFilter: [LocationElement] = []
+    
+    
     func getDataFiltered(date: Date, driver: Int, status: Int) -> [LocationElement] {
+        indxes = []
         var locationsByDriver: [Int: [LocationElement]] = [:]
-        var tmpArr: [LocationElement] = []
-        let dataOneDate: [LocationElement] = dicData[date] ?? []
-        var arrCar: [String] = []
-        for vehicle in dataOneDate {
-            arrCar.append(vehicle.location?.locationType?.rawValue ?? "")
-            if arrCar[0] == "supplier" {
-                arrCar.remove(at: 0)
-            } else {
-            
-            let indxes: [Int] = arrCar.enumerated().filter { $0.element == "supplier" }.map { $0.offset }
-            print("indxes :\(indxes)")
-            indxes.enumerated().forEach { idx, item in
-                if Array(self.locations).count > 0 {
-                    if idx == 0 {
-                        tmpArr = Array(self.locations[0...indxes[0]])  // indxes[]
-                    } else {
-                        tmpArr = Array(self.locations[indxes[idx-1]+1...indxes[idx]])
-                    }
-                    //  print("\n\n\n\n\n\n\naaaaaa", tmpArr)
-                    locationsByDriver[idx] = tmpArr
+        var dataOneDate: [LocationElement] = dicData[date] ?? []
+        if dataOneDate.count > 0 && dataOneDate[0].location?.locationType! == .supplier && dataOneDate[0].locationOrder == 1 {
+            dataOneDate.remove(at: 0)
+        }
+        self.locations = dataOneDate
+
+        dataOneDate.enumerated().forEach { vehicleIdx, vehicle in
+            if (vehicle.location?.locationType?.rawValue == "supplier") {
+                indxes.append(vehicleIdx)
+            }
+        }
+        
+        indxes.enumerated().forEach { idx, item in
+            if Array(self.locations).count > 0 {
+                if idx == 0 && indxes[0] > 0 {
+                    locationsByDriver[idx] = Array(self.locations[0...indxes[idx]])
+                } else if indxes[idx-1]+1 < indxes[idx] {
+                    locationsByDriver[idx] = Array(self.locations[indxes[idx-1]+1...indxes[idx]])
                 }
             }
-            }
         }
         
-        // dataDidFilter = locationsByDriver[driver] ?? []
+        self.selectedIdxDriver = 0
+        self.pickerDriver.reloadAllComponents()
+        
+        dataDidFilter = locationsByDriver[driver] ?? []
         var dataStatus: [LocationElement] = locationsByDriver[driver] ?? []
         
-        for statusShipping in dataStatus {
-            
-            if statusShipping.location?.metadata?.displayData?.valueDeliveryHistory() == .waiting || statusShipping.location?.metadata?.displayData?.valueDeliveryHistory() == .failed ||
+        for statusShipping in locationsByDriver[driver] ?? [] {
+            if statusShipping.location?.metadata?.displayData?.valueDeliveryHistory() == .waiting && statusShipping.location?.metadata?.displayData?.valueDeliveryHistory() == .failed &&
                 statusShipping.location?.metadata?.displayData?.valueDeliveryHistory() == .completed {
-                 dataStatus.removeAll()
-                 dataStatus.append(statusShipping)
+                dataStatus.removeAll()
+                dataStatus.append(statusShipping)
                 dataDidFilter = dataStatus
             } else {
                 dataDidFilter = dataStatus
             }
         }
+        self.pickerStatus.reloadAllComponents()
         self.totalType()
-        for i in dataStatus {
-            i.locationOrder
-        }
+        
         return dataDidFilter
     }
     
     func reDrawMarkers() {
-        // Duyet locations de ve lai marker tren map
-        var dataDidFilter = getDataFiltered(date: dateYMD[selectedIdxDate], driver: selectedIdxDriver, status: selectesIdxStatus)
-        print("aaaaa\(dataDidFilter) -> zzzz\(dataDidFilter.count)")
-       var i = dataDidFilter.remove(at: 0)
-        dataDidFilter.append(i)
+        let dataDidFilter = getDataFiltered(date: dateYMD[selectedIdxDate], driver: selectedIdxDriver, status: selectesIdxStatus)
         mapView.removeAnnotations(mapView.annotations)
         pinsADay.removeAll()
         
@@ -419,80 +392,62 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
             }
         }
         mapView.addAnnotations(pinsADay)
+        let userCoordinate = CLLocationCoordinate2D(latitude: 35.73774428640241, longitude: 139.6194163709879)
+        let eyeCoordinate = CLLocationCoordinate2D(latitude: 35.73774428640241, longitude: 139.6194163709879)
+        let mapCamera = MKMapCamera(lookingAtCenter: userCoordinate, fromEyeCoordinate: eyeCoordinate, eyeAltitude: 100000.0)
+        mapView.setCamera(mapCamera, animated: false)
+        mapView.reloadInputViews()
     }
-    
     
     func totalType() {
-        var arrtype: [[Facility_data]] = []
-        var count: [Int] = []
-        let type: Int = 0
-        // print(filterStatus)
-        for fac in dataDidFilter {
-            arrtype.append(fac.metadata?.facility_data ?? [])
+        var arrFacilityData: [[Facility_data]] = []
+        var numberType50: Int = 0
+        var numberType30: Int = 0
+        var numberType25: Int = 0
+        var numberType20: Int = 0
+        var numberTypeOther: Int = 0
+        for facilityData in dataDidFilter {
+            arrFacilityData.append(facilityData.metadata?.facility_data ?? [])
         }
-        
-        //  print(arrtype)
-        
-        
-        //        var a =
-        //        print(a)
-        for i in arrtype {
-            print(i)
-            
+        for iFacilityData in arrFacilityData {
+            for detailFacilityData in iFacilityData {
+                if detailFacilityData.type == 50 {
+                    numberType50 = numberType50 + (detailFacilityData.count ?? 0)
+                } else if detailFacilityData.type == 30 {
+                    numberType30 = numberType30 + (detailFacilityData.count ?? 0)
+                } else if detailFacilityData.type == 25 {
+                    numberType25 = numberType25 + (detailFacilityData.count ?? 0)
+                } else if detailFacilityData.type == 20 {
+                    numberType20 = numberType20 + (detailFacilityData.count ?? 0)
+                } else {
+                    numberTypeOther = numberTypeOther + (detailFacilityData.count ?? 0)
+                }
+            }
         }
-        
-        
+        lblType50kg.text = "\(numberType50)"
+        lblType30kg.text = "\(numberType30)"
+        lblType25kg.text = "\(numberType25)"
+        lblType20kg.text = "\(numberType20)"
+        lblOtherType.text = "\(numberTypeOther)"
     }
-    
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         if pickerView == pickerDate {
+            
             selectedIdxDate = row
-            let date: Date! = dateYMD[row]
-            let valueADay: [LocationElement] = dicData[date] ?? []
-            var arrCar: [String] = []
-            for vehicle in valueADay {
-                arrCar.append(vehicle.location?.locationType?.rawValue ?? "")
-                if arrCar[0] == "supplier" {
-                    arrCar.remove(at: 0)
-                }
-            }
-            let indxes1: [Int] = arrCar.enumerated().filter { $0.element == "supplier" }.map { $0.offset }
-            indxes = indxes1
-            self.pickerDriver.reloadAllComponents()
+            
             selectedIdxDriver = 0
-            let locationsFiltered = self.getDataFiltered(date: dateYMD[selectedIdxDate], driver: selectedIdxDriver, status: selectesIdxStatus)
             self.reDrawMarkers()
             
         } else if pickerView == pickerDriver {
             selectedIdxDriver = row
-            //   print{"bb"}
-            //            var tmpArr: [LocationElement] = []
-            ////            let locationsFilter = self.getDataFiltered(date: dateYMD[selectedIdxDate], driver: selectedIdxDriver)
-            //            let arrCar: [String] = []
-            //
-            //            let indxes: [Int] = arrCar.enumerated().filter{ $0.element == "supplier" }.map{ $0.offset }
-            //            print(indxes)
-            //            indxes.enumerated().forEach { idx, item in
-            //                if (idx == 0) {
-            //                    tmpArr = Array(self.locations[0...indxes[0]])
-            //                } else {
-            //                    tmpArr = Array(self.locations[indxes[idx-1]+1...indxes[idx]])
-            //                }
-            //            }
             self.reDrawMarkers()
-            
-            
         } else if pickerView == pickerStatus {
             selectesIdxStatus = row
+            self.pickerStatus.reloadAllComponents()
             self.reDrawMarkers()
         }
-        
-        
-        
-        
     }
-    
 }
 
 extension DeliveryListController: MKMapViewDelegate {
@@ -505,16 +460,13 @@ extension DeliveryListController: MKMapViewDelegate {
         if let dequeuedView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier) as? MyPinView {
             dequeuedView.annotation = annotation
             dequeuedView.image = UIImage(named: "marker")
-            dequeuedView.lblView.text = "\(annotation.title)"
+            dequeuedView.lblView.text = "\(annotation.title - 1)"
             view = dequeuedView
         } else {
             view = MyPinView(annotation: annotation, reuseIdentifier: identifier)
-            
-            view.lblView.text = "\(annotation.title)"
+            view.lblView.text = "\(annotation.title - 1)"
         }
         return view
     }
-    
-    
     
 }

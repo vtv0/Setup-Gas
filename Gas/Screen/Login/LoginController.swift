@@ -86,10 +86,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
         txtUserName.text = showUserName
         txtPass.text = showPass
         txtcompanyCode.text = showcompanyCode
-        //        let dateFormatterGet = DateFormatter()
-        //        let workDate = dateFormatterGet.string(from: Date())
-        //
-                imgIcon.image = UIImage(named:"icon.jpg")
+        imgIcon.image = UIImage(named:"icon.jpg")
         
     }
     
@@ -125,6 +122,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
         
         let url = "https://\(txtcompanyCode.text!).kiiapps.com/am/api/oauth2/token"
         self.showActivity()
+        
         AF.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default)
             .responseDecodable (of: AccountInfo.self) {  response in
                 print("\(String(describing: response.response?.statusCode))")

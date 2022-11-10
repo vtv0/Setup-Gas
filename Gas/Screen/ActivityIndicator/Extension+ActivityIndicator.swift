@@ -15,7 +15,7 @@ extension UIViewController {
         let greyView = UIView()
         greyView.frame = CGRect(x: 0, y: 0, width: self.view.bounds.width, height: self.view.bounds.height)
         greyView.backgroundColor = UIColor.black
-        greyView.alpha = 0.5
+        greyView.alpha = 0.6
         greyView.tag = 999
         self.view.addSubview(greyView)
         view.bringSubviewToFront(greyView)
@@ -33,7 +33,7 @@ extension UIViewController {
         // before adding it, you need to check if it is already has been added:
         for subview in view.subviews {
             if subview.tag == 100 {
-                print("already added")
+                //print("already added")
                 return
             }
         }
@@ -46,7 +46,7 @@ extension UIViewController {
         let activityIndicator = view.viewWithTag(100) as? UIActivityIndicatorView
         activityIndicator?.stopAnimating()
         
-        // I think you forgot to remove it?
+     
         activityIndicator?.removeFromSuperview()
         activityIndicator?.removeFromSuperview()
         
