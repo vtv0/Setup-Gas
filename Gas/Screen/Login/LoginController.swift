@@ -86,7 +86,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
         txtUserName.text = showUserName
         txtPass.text = showPass
         txtcompanyCode.text = showcompanyCode
-        imgIcon.image = UIImage(named:"icon.jpg")
+        imgIcon.image = UIImage(named:"Icon-1024")
         
     }
     
@@ -127,9 +127,11 @@ class ViewController: UIViewController, UITextFieldDelegate {
             .responseDecodable (of: AccountInfo.self) {  response in
                 print("\(String(describing: response.response?.statusCode))")
                 switch response.result {
-                case .success( _):
+                case .success(_):
+                    
                     let token = response.value?.access_token ?? ""
                     UserDefaults.standard.set(token, forKey: "accessToken")
+                    
                     self.getMe()
                     if let httpURLResponse = response.response {
                         UserDefaults.standard.set(self.txtUserName.text, forKey: "userName")
