@@ -11,10 +11,13 @@ class FloatingPanelDeliveryVC: UIViewController {
  
     @IBOutlet weak var detailsTabsView: TabsView!
     
+    
+    
+    
     var currentIndex: Int = 0
     var pageController: UIPageViewController!
     
-    var data:[String] = []
+    var data: [String] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,6 +29,7 @@ class FloatingPanelDeliveryVC: UIViewController {
         setupPageViewController()
        
     }
+    
     func setupTabs() {
         // Add Tabs (Set 'icon'to nil if you don't want to have icons)
         for item in data {

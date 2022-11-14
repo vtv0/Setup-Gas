@@ -21,10 +21,10 @@ struct GetLatestWorkerRouteLocationListInfo: Decodable {
 }
 
 // MARK: - LocationElement
-struct LocationElement: Decodable, CustomStringConvertible {
-    var description: String {
-        return "locationOrder: \(locationOrder)"
-    }
+struct LocationElement: Decodable {  // CustomStringConvertible
+//    var description: String {
+//        return "locationOrder: \(locationOrder)"
+//    }
     
     var arrivalTime: ArrivalTime?
     var breakTimeSEC: Int?
@@ -208,7 +208,7 @@ struct DisplayData: Codable {
 
 // MARK: - FluffyMetadata
 struct FluffyMetadata: Decodable {
-    var customerID, deliverType: String?
+    var customer_id, deliverType: String?
     var facility_data: [Facility_data]?
     var optionalDays: Int?
     var optionalLocation: Bool?

@@ -13,18 +13,36 @@ import Network
 
 class CustomPin: NSObject, MKAnnotation {
     let title: Int
-    //let subtitle: String?
     let coordinate: CLLocationCoordinate2D
     init(title: Int, coordinate: CLLocationCoordinate2D) {
         self.title = title
-        //  self.locationName = locationName
         self.coordinate = coordinate
         super.init()
     }
-    //    var subtitle: String? {
-    //        return locationName
-    //    }
 }
+
+
+//class CustomFloatingPanelLayout: FloatingPanelLayout {
+//    var position: FloatingPanelPosition
+//
+//    var initialState: FloatingPanelState
+//
+//    var anchors: [FloatingPanelState : FloatingPanelLayoutAnchoring] = [:]
+//
+//
+//    var initialPosition: FloatingPanelPosition {
+//        return .tip
+//    }
+//
+//    public func insetFor(position: FloatingPanelPosition) -> CGFloat? {
+//        switch position {
+//        case .top: return 16.0 // A top inset from safe area
+//        case .half: return 216.0 // A bottom inset from the safe area
+//        case .tip: return 44.0 // A bottom inset from the safe area
+//        default: return nil // Or `case .hidden: return nil`
+//        }
+//    }
+//}
 
 class DeliveryListController: UIViewController , FloatingPanelControllerDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
     let companyCode = UserDefaults.standard.string(forKey: "companyCode") ?? ""
@@ -42,6 +60,8 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
     var arr: [Int] = []
     var pinsADay: [CustomPin] = []
     var dicData: [Date : [LocationElement]] = [:]
+    var infoOneObject: [PropertiesDetail] = []
+    
     
     var indxes: [Int] = []
     var assetID: String = ""
@@ -49,6 +69,14 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
     var dataDidFilter: [LocationElement] = []
     var dateYMD: [Date] = []
     var arrStringDate: [String] = []
+    var t: Int = 0
+    var totalObjectSevenDate: Int = 0
+    var countPage: [String]  = []
+    let fpc = FloatingPanelController()
+    var arrCustomerName: [String] = []
+    var arrCustommerID: [String] = []
+    
+    
     
     @IBOutlet weak var lblType50kg: UILabel!
     @IBOutlet weak var lblType30kg: UILabel!
@@ -85,22 +113,25 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
     }
     
     
+    func customFloatingPanel() {
+        guard let contentDeliveryVC = storyboard?.instantiateViewController(withIdentifier: "FloatingPanelDeliveryVC") as? FloatingPanelDeliveryVC else { return }
+        if countPage.count != 0 {
+            print(arrCustommerID)
+            contentDeliveryVC.data = arrCustommerID
+            fpc.addPanel(toParent: self)
+            fpc.set(contentViewController: contentDeliveryVC)
+        }
+        
+        //  fpc.trackingScrollView(contentDeliveryVC)
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         self.sevenDay()
         getMe()
         getLatestWorkerRouteLocationList()
         
-        //
-        //                        let fpc = FloatingPanelController()
-        //                        fpc.delegate = self
-        //                        guard let contentDeliveryVC = storyboard?.instantiateViewController(withIdentifier: "FloatingPanelDeliveryVC") as? FloatingPanelDeliveryVC else { return }
-        //
-        //                        let countPage = ["a","c","3"]
-        //                        contentDeliveryVC.data = countPage
-        //                        fpc.set(contentViewController: contentDeliveryVC)
-        //                        fpc.addPanel(toParent: self)
-        //         fpc.trackingScrollView
+        fpc.delegate = self
+        
         
         pickerStatus.dataSource = self
         pickerStatus.delegate = self
@@ -111,14 +142,14 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         pickerDate.dataSource = self
         pickerDate.delegate = self
         
-        // view.bringSubviewToFront(btnShipping)
+        view.bringSubviewToFront(btnShipping)
         
         navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
         
         
         let userCoordinate = CLLocationCoordinate2D(latitude: 35.73774428640241, longitude: 139.6194163709879)
         let eyeCoordinate = CLLocationCoordinate2D(latitude: 35.73774428640241, longitude: 139.6194163709879)
-        let mapCamera = MKMapCamera(lookingAtCenter: userCoordinate, fromEyeCoordinate: eyeCoordinate, eyeAltitude: 100000.0)
+        let mapCamera = MKMapCamera(lookingAtCenter: userCoordinate, fromEyeCoordinate: eyeCoordinate, eyeAltitude: 1000000.0)
         mapView.delegate = self
         mapView.setCamera(mapCamera, animated: false)
         
@@ -131,7 +162,6 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         
         
     }
-    
     func showAlert(title: String? = "", message: String?, completion: (() -> Void)? = nil) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alert.addAction( UIAlertAction(title: "OK", style: .default, handler: { _ in
@@ -147,7 +177,6 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
     }
     
     func sevenDay() {
-        // 7 ngay
         let anchor = Date()
         let calendar = Calendar.current
         let formatter = DateFormatter()
@@ -161,7 +190,6 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
     
     
     func getMe() {
-       // self.showActivity()
         let showcompanyCode = UserDefaults.standard.string(forKey: "companyCode") ?? ""
         let urlGetMe = "https://\(showcompanyCode).kiiapps.com/am/api/me"
         let token = UserDefaults.standard.string(forKey: "accessToken") ?? ""
@@ -187,9 +215,8 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         self.hideActivity()
     }
     
-    var t: Int = 0
-    var totalObjectSevenDate: Int = 0
-    func getLatestWorkerRouteLocationList() {
+    
+    func  getLatestWorkerRouteLocationList() {
         self.showActivity()
         let token = UserDefaults.standard.string(forKey: "accessToken") ?? ""
         let formatter = DateFormatter()
@@ -210,15 +237,15 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
                     case .success(_):
                         let countObject = response.value?.locations?.count
                         self.locations = response.value?.locations ?? []
-                       
-                 
+                        
+                        
                         if countObject != 0 {
                             var locations: [LocationElement] = []
                             for itemObject in self.locations {
                                 locations.append(itemObject)
                                 
                                 self.totalObjectSevenDate += 1
-                                print(self.totalObjectSevenDate)
+                                
                                 
                                 if itemObject.location?.assetID != nil {
                                     self.getGetAsset(forAsset: (itemObject.location!.assetID)!, locationOrder: itemObject.locationOrder )
@@ -242,33 +269,28 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
                     if self.t == self.dateYMD.count {
                         self.reDrawMarkers()
                         self.hideActivity()
-                        self.soLuongItem()
+                        
                     }
                 }
         }
         
     }
-    func soLuongItem() -> Int {
-        print(totalObjectSevenDate)
-        return totalObjectSevenDate
-    }
-    
     
     func getGetAsset(forAsset iassetID: String, locationOrder: Int) {
-       
+        
         let token = UserDefaults.standard.string(forKey: "accessToken") ?? ""
         let urlGetAsset = "https://\(companyCode).kiiapps.com/am/api/assets/\(iassetID)"
         AF.request(urlGetAsset,method: .get, parameters: nil, headers: self.makeHeaders(token: token))
             .responseDecodable(of: GetAsset.self ) { response1 in
                 switch response1.result {
                 case .success:
+                    //                    for infoCustomer in self.infoOneObject {
+                    //
+                    //                    }
+                    
                     if self.totalObjectSevenDate == self.totalObjectSevenDate {
                         self.hideActivity()
                     }
-                  //  print(self.totalObjectSevenDate)
-                    //  DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1), execute: {
-                   //
-                    // })
                     
                 case .failure(let error):
                     print("\(error)")
@@ -345,14 +367,17 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         }
         
         self.selectedIdxDriver = driver
+        self.selectesIdxStatus = status
         self.pickerDriver.reloadAllComponents()
         
         dataDidFilter = locationsByDriver[driver] ?? []
         var dataStatus: [LocationElement] = locationsByDriver[driver] ?? []
         
         for statusShipping in locationsByDriver[driver] ?? [] {
-            if statusShipping.location?.metadata?.displayData?.valueDeliveryHistory() == .waiting && statusShipping.location?.metadata?.displayData?.valueDeliveryHistory() == .failed &&
-                statusShipping.location?.metadata?.displayData?.valueDeliveryHistory() == .completed {
+            if statusShipping.location?.metadata?.displayData?.valueDeliveryHistory() == .waiting
+            && statusShipping.location?.metadata?.displayData?.valueDeliveryHistory() == .failed &&
+            statusShipping.location?.metadata?.displayData?.valueDeliveryHistory() == .completed
+            {
                 dataStatus.removeAll()
                 dataStatus.append(statusShipping)
                 dataDidFilter = dataStatus
@@ -360,15 +385,41 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
                 dataDidFilter = dataStatus
             }
         }
+        
         self.pickerStatus.reloadAllComponents()
+        
         self.totalType()
-        // self.reDrawMarkers()
+        
+        if dataDidFilter.count != 0 {
+            countPage = arrCustommerID
+            print(dataDidFilter)
+            // UserDefaults.standard.set(dataDidFilter, forKey: "DataDidFilter")
+        } else {
+            print(" Khong hien thi Floating Panel ")
+            fpc.removePanelFromParent(animated: true)
+            
+        }
+        
+        for infoCustomer in dataDidFilter {
+            self.arrCustommerID.append(infoCustomer.location?.assetID ?? "")
+            
+            
+        }
+        //print(arrCustommerID.count)
+        customFloatingPanel()
+        
+        //UserDefaults.standard.set(arrCustommerID, forKey: "ArrCustomerID")
+        
+        
         return dataDidFilter
     }
     
     func reDrawMarkers() {
         
         let dataDidFilter = getDataFiltered(date: dateYMD[selectedIdxDate], driver: selectedIdxDriver, status: selectesIdxStatus)
+        print(dataDidFilter)
+        
+        
         mapView.removeAnnotations(mapView.annotations)
         pinsADay.removeAll()
         
@@ -386,7 +437,7 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
             mapView.addAnnotations(pinsADay)
             let userCoordinate = CLLocationCoordinate2D(latitude: 35.73774428640241, longitude: 139.6194163709879)
             let eyeCoordinate = CLLocationCoordinate2D(latitude: 35.73774428640241, longitude: 139.6194163709879)
-            let mapCamera = MKMapCamera(lookingAtCenter: userCoordinate, fromEyeCoordinate: eyeCoordinate, eyeAltitude: 100000.0)
+            let mapCamera = MKMapCamera(lookingAtCenter: userCoordinate, fromEyeCoordinate: eyeCoordinate, eyeAltitude: 1000000.0)
             mapView.setCamera(mapCamera, animated: false)
             mapView.reloadInputViews()
             
@@ -405,6 +456,7 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         for facilityData in dataDidFilter {
             arrFacilityData.append(facilityData.metadata?.facility_data ?? [])
         }
+        
         for iFacilityData in arrFacilityData {
             for detailFacilityData in iFacilityData {
                 if detailFacilityData.type == 50 {
@@ -454,6 +506,7 @@ extension DeliveryListController: MKMapViewDelegate {
             dequeuedView.annotation = annotation
             dequeuedView.image = UIImage(named: "marker")
             dequeuedView.lblView.text = "\(annotation.title - 1)"
+            //            dequeuedView.zPriority = MKAnnotationViewZPriority.init(rawValue: 0.5)
             view = dequeuedView
         } else {
             view = MyPinView(annotation: annotation, reuseIdentifier: identifier)
