@@ -60,6 +60,7 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
     var arr: [Int] = []
     var pinsADay: [CustomPin] = []
     var dicData: [Date : [LocationElement]] = [:]
+    
     var infoOneObject: [PropertiesDetail] = []
     
     
@@ -71,12 +72,21 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
     var arrStringDate: [String] = []
     var t: Int = 0
     var totalObjectSevenDate: Int = 0
-    var countPage: [String]  = []
+    
+    var customer_id: [String] = []
+    var planned_date: [String] = []
+    var arrivalTime_hours: [Int] = []
+    var arrivalTime_minutes: [Int] = []
+    var customer_name: [String] = []
+    var customer_address: [String] = []
+    
+    var arrType: [Int] = []
+    var arrNumber: [Int] = []
+    
+    var dic: [String: PropertiesDetail] = [:]
+    var arrFacilityData: [[Facility_data]] = []
+    
     let fpc = FloatingPanelController()
-    var arrCustomerName: [String] = []
-    var arrCustommerID: [String] = []
-    
-    
     
     @IBOutlet weak var lblType50kg: UILabel!
     @IBOutlet weak var lblType30kg: UILabel!
@@ -112,26 +122,12 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         self.navigationController?.pushViewController(screenReroute, animated: true)
     }
     
-    
-    func customFloatingPanel() {
-        guard let contentDeliveryVC = storyboard?.instantiateViewController(withIdentifier: "FloatingPanelDeliveryVC") as? FloatingPanelDeliveryVC else { return }
-        if countPage.count != 0 {
-            print(arrCustommerID)
-            contentDeliveryVC.data = arrCustommerID
-            fpc.addPanel(toParent: self)
-            fpc.set(contentViewController: contentDeliveryVC)
-        }
-        
-        //  fpc.trackingScrollView(contentDeliveryVC)
-    }
     override func viewDidLoad() {
         super.viewDidLoad()
         self.sevenDay()
         getMe()
         getLatestWorkerRouteLocationList()
-        
         fpc.delegate = self
-        
         
         pickerStatus.dataSource = self
         pickerStatus.delegate = self
@@ -188,7 +184,6 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         }
     }
     
-    
     func getMe() {
         let showcompanyCode = UserDefaults.standard.string(forKey: "companyCode") ?? ""
         let urlGetMe = "https://\(showcompanyCode).kiiapps.com/am/api/me"
@@ -209,7 +204,6 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
                         print("Error: \(response1.response?.statusCode ?? 000000)")
                         print("Error: \(error)")
                     }
-                    
                 }
             }
         self.hideActivity()
@@ -244,11 +238,12 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
                             for itemObject in self.locations {
                                 locations.append(itemObject)
                                 
-                                self.totalObjectSevenDate += 1
+                                // print(itemObject)
                                 
                                 
                                 if itemObject.location?.assetID != nil {
                                     self.getGetAsset(forAsset: (itemObject.location!.assetID)!, locationOrder: itemObject.locationOrder )
+                                    
                                     
                                 } else {
                                     print("Khong co assetID-> Supplier")
@@ -284,9 +279,19 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
             .responseDecodable(of: GetAsset.self ) { response1 in
                 switch response1.result {
                 case .success:
-                    //                    for infoCustomer in self.infoOneObject {
-                    //
-                    //                    }
+                    var assetDetail: [PropertiesDetail] = []
+                    
+                    
+                    let iCustomerName = response1.value?.properties?.values?.customer_name ?? ""
+                    self.customer_name.append(iCustomerName)
+                    
+                    let iCustomerAddress = response1.value?.properties?.values?.address ?? ""
+                    self.customer_address.append(iCustomerAddress)
+                    
+                    
+                    for infoCustomer in self.infoOneObject {
+                        print(infoCustomer)
+                    }
                     
                     if self.totalObjectSevenDate == self.totalObjectSevenDate {
                         self.hideActivity()
@@ -375,8 +380,8 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         
         for statusShipping in locationsByDriver[driver] ?? [] {
             if statusShipping.location?.metadata?.displayData?.valueDeliveryHistory() == .waiting
-            && statusShipping.location?.metadata?.displayData?.valueDeliveryHistory() == .failed &&
-            statusShipping.location?.metadata?.displayData?.valueDeliveryHistory() == .completed
+                && statusShipping.location?.metadata?.displayData?.valueDeliveryHistory() == .failed &&
+                statusShipping.location?.metadata?.displayData?.valueDeliveryHistory() == .inprogress
             {
                 dataStatus.removeAll()
                 dataStatus.append(statusShipping)
@@ -387,39 +392,81 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         }
         
         self.pickerStatus.reloadAllComponents()
-        
         self.totalType()
         
         if dataDidFilter.count != 0 {
-            countPage = arrCustommerID
-            print(dataDidFilter)
-            // UserDefaults.standard.set(dataDidFilter, forKey: "DataDidFilter")
+            for infoCustomer in dataDidFilter {
+                self.customer_id.append(infoCustomer.location?.comment ?? "")
+                self.planned_date.append(infoCustomer.metadata?.planned_date ?? "")
+                self.arrivalTime_hours.append(infoCustomer.arrivalTime?.hours ?? 0)
+                self.arrivalTime_minutes.append(infoCustomer.arrivalTime?.minutes ?? 0)
+                self.arrFacilityData.append(infoCustomer.metadata?.facility_data ?? [])
+                // print(arrFacilityData)
+                
+                
+                //  self.customer_name.append(infoCustomer)
+            }
+            
+            for iFacilityData in arrFacilityData {
+                if iFacilityData.count == 1 {
+                    for detailFacilityData in iFacilityData {
+                        self.arrType.append(detailFacilityData.type ?? 0)
+                        self.arrNumber.append(detailFacilityData.count ?? 0)
+                    }
+                   
+                } else if iFacilityData.count > 1 {
+                    print(iFacilityData)
+                    print("Add stack view, show type and count of Gas")
+                }
+                
+                arrFacilityData.removeAll()
+            }
+            
         } else {
             print(" Khong hien thi Floating Panel ")
             fpc.removePanelFromParent(animated: true)
-            
         }
-        
-        for infoCustomer in dataDidFilter {
-            self.arrCustommerID.append(infoCustomer.location?.assetID ?? "")
-            
-            
-        }
-        //print(arrCustommerID.count)
         customFloatingPanel()
         
-        //UserDefaults.standard.set(arrCustommerID, forKey: "ArrCustomerID")
-        
-        
         return dataDidFilter
+    }
+    
+    func customFloatingPanel() {
+        guard let contentDeliveryVC = storyboard?.instantiateViewController(withIdentifier: "FloatingPanelDeliveryVC") as? FloatingPanelDeliveryVC else { return }
+        if customer_id.count != 0 {
+            contentDeliveryVC.data = customer_id
+            
+            contentDeliveryVC.customer_name = customer_name
+            contentDeliveryVC.customer_address = customer_address
+            
+            contentDeliveryVC.arrivalTime_hours = arrivalTime_hours
+            contentDeliveryVC.arrivalTime_minutes = arrivalTime_minutes
+            
+            contentDeliveryVC.planned_date = planned_date
+            
+            contentDeliveryVC.arrType = arrType
+            contentDeliveryVC.arrNumber = arrNumber
+            
+            arrFacilityData.removeAll()
+            arrType.removeAll()
+            arrNumber.removeAll()
+            
+            customer_id.removeAll()
+            customer_name.removeAll()
+            customer_address.removeAll()
+            arrivalTime_hours.removeAll()
+            arrivalTime_minutes.removeAll()
+            planned_date.removeAll()
+            fpc.addPanel(toParent: self)
+            fpc.set(contentViewController: contentDeliveryVC)
+        }
+        
+        //  fpc.trackingScrollView(contentDeliveryVC)
     }
     
     func reDrawMarkers() {
         
         let dataDidFilter = getDataFiltered(date: dateYMD[selectedIdxDate], driver: selectedIdxDriver, status: selectesIdxStatus)
-        print(dataDidFilter)
-        
-        
         mapView.removeAnnotations(mapView.annotations)
         pinsADay.removeAll()
         
@@ -447,7 +494,7 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
     
     func totalType() {
         
-        var arrFacilityData: [[Facility_data]] = []
+        
         var numberType50: Int = 0
         var numberType30: Int = 0
         var numberType25: Int = 0
@@ -483,7 +530,6 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         if pickerView == pickerDate {
             selectedIdxDate = row
             self.reDrawMarkers()
-            
         } else if pickerView == pickerDriver {
             selectedIdxDriver = row
             self.reDrawMarkers()
@@ -496,10 +542,8 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
 }
 
 extension DeliveryListController: MKMapViewDelegate {
-    
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         guard let annotation = annotation as? CustomPin else { return nil }
-        
         let identifier = "Annotation"
         var view: MyPinView
         if let dequeuedView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier) as? MyPinView {
@@ -514,5 +558,4 @@ extension DeliveryListController: MKMapViewDelegate {
         }
         return view
     }
-    
 }

@@ -36,8 +36,8 @@ struct LocationElement: Decodable {  // CustomStringConvertible
     var locationOrder: Int
     var longitude: Double?
     var metadata: FluffyMetadata?
-    //var timeWindow: JSONNull?
     var travelTimeSECToNext, waitingTimeSEC, workTimeSEC: Int?
+    //var timeWindow: JSONNull?
     
     //    enum CodingKeys: String, CodingKey {
     //        case arrivalTime
@@ -212,7 +212,7 @@ struct FluffyMetadata: Decodable {
     var facility_data: [Facility_data]?
     var optionalDays: Int?
     var optionalLocation: Bool?
-    var planID, plannedDate, prevDate: String?
+    var planID, planned_date, prevDate: String?
     
     //    enum CodingKeys: String, CodingKey {
     //        case customerID = "customer_id"

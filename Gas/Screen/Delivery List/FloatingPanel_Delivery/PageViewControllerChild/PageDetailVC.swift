@@ -12,12 +12,33 @@ import FloatingPanel
 class PageDetailVC: UIViewController , UIScrollViewDelegate, UICollectionViewDelegate {
     
     var pageIndex: Int!
-    var content: String = ""
+    var customer_id: String = ""
+    var planned_date: String = ""
+    var arrivalTime_hours: Int = 0
+    var arrivalTime_minutes: Int = 0
+    var customer_name: String = ""
+    var customer_address: String = ""
     
-    var thisWidth: CGFloat = 0
+    var typeGas: Int = 0
+    var numberGas: Int = 0
+    
+   // var thisWidth: CGFloat = 0
     
     var image: [String] = ["0", "1","2","camel", "dog"]
+    var dateYMD: [Date] = []
+    let companyCode = UserDefaults.standard.string(forKey: "companyCode") ?? ""
+    let tenantId = UserDefaults.standard.string(forKey: "tenantId") ?? ""
+    let userId = UserDefaults.standard.string(forKey: "userId") ?? ""
     
+    var dicData: [Date : [LocationElement]] = [:]
+    var locations: [LocationElement] = []
+    
+    var t: Int = 0
+    var totalObjectSevenDate: Int = 0
+    
+    var arrCustomer_id: [String] = []
+    var data: [String] = []
+  //  var idata: [String] = []
     @IBOutlet weak var scrollView: UIScrollView!
     
     @IBOutlet weak var collectionView: UICollectionView!
@@ -27,12 +48,14 @@ class PageDetailVC: UIViewController , UIScrollViewDelegate, UICollectionViewDel
     @IBOutlet weak var lblAddress: UILabel!
     @IBOutlet weak var lblDeliveryTime: UILabel!
     
+    @IBOutlet weak var lblAstimateDelivery: UILabel!
+    
+    @IBOutlet weak var lblTypeGas: UILabel!
+    @IBOutlet weak var lblNumberGas: UILabel!
+    
     
     @IBOutlet weak var viewImageScroll: UIScrollView!
     @IBOutlet weak var pageControl: UIPageControl!
-    
-    
-    
     
     @IBAction func btnEdit(_ sender: Any) {
         print("click Edit")
@@ -44,35 +67,55 @@ class PageDetailVC: UIViewController , UIScrollViewDelegate, UICollectionViewDel
         
     }
     
-    let companyCode = UserDefaults.standard.string(forKey: "companyCode") ?? ""
-    let tenantId = UserDefaults.standard.string(forKey: "tenantId") ?? ""
-    let userId = UserDefaults.standard.string(forKey: "userId") ?? ""
-    
-    var arrCustommerID: [String] = []
-    
+   
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        arrCustommerID =  UserDefaults.standard.stringArray(forKey: "ArrCustomerID") ?? []
-    //    print(arrCustommerID)
-        
         collectionView.delegate = self
         pageControl.numberOfPages = image.count
+//        for i in data {
+//            if !i.isEmpty {
+//                idata.append(i)
+//            }
+//        }
         
-       showLblInfomation()
-        // self.sevenDay()
-        //getLatestWorkerRouteLocationList()
+        //self.sevenDay()
+        // getLatestWorkerRouteLocationList()
+        // let dataDidFilter: [LocationElement] = UserDefaults.standard.object(forKey: "DataDidFilter") as! [LocationElement]
+        
+//        for idataDidFilter in locations {
+//            arrCustomer_id.append(idataDidFilter.location?.comment ?? "")
+//        }
+        
+        
+        lblCustomer_id?.text = customer_id // idata[index(ofAccessibilityElement: 0)]
+        
+        lblCustomerName?.text = customer_name
+        lblAddress?.text = customer_address
+        
+        lblDeliveryTime?.text = "Estimate Time : \(arrivalTime_hours):\(arrivalTime_minutes)"
+        
+        lblTypeGas?.text = "\(typeGas)kg"
+        lblNumberGas?.text = "\(numberGas)bottle"
+        
+        lblAstimateDelivery?.text = planned_date
+        
     }
+    
+    
+    func scrollViewDidEndDecelerating(scrollImage: UIScrollView) {
+        pageControl.currentPage = Int(viewImageScroll.contentOffset.x / viewImageScroll.bounds.width)
+        pageControl?.currentPage = Int(scrollView.contentOffset.x) / Int(scrollView.frame.width)
+    }
+    func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
+        pageControl?.currentPage = Int(scrollView.contentOffset.x) / Int(scrollView.frame.width)
+    }
+    
     
     func showLblInfomation() {
-       
-         lblCustomer_id.text = arrCustommerID[0]
-        
     }
     
-    var dateYMD: [Date] = []
+    
     func sevenDay() {
-        // 7 ngay
         let anchor = Date()
         let calendar = Calendar.current
         let formatter = DateFormatter()
@@ -89,12 +132,10 @@ class PageDetailVC: UIViewController , UIScrollViewDelegate, UICollectionViewDel
         headers["Authorization"] = "Bearer " + token
         return HTTPHeaders(headers)
     }
-    var dicData: [Date : [LocationElement]] = [:]
-    var locations: [LocationElement] = []
-    var t: Int = 0
-    var totalObjectSevenDate: Int = 0
+    
     func  getLatestWorkerRouteLocationList() {
         self.showActivity()
+        
         let token = UserDefaults.standard.string(forKey: "accessToken") ?? ""
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
@@ -160,12 +201,9 @@ class PageDetailVC: UIViewController , UIScrollViewDelegate, UICollectionViewDel
             .responseDecodable(of: GetAsset.self ) { response1 in
                 switch response1.result {
                 case .success:
-                    
-                    
                     if self.totalObjectSevenDate == self.totalObjectSevenDate {
                         self.hideActivity()
                     }
-                    
                 case .failure(let error):
                     print("\(error)")
                 }
@@ -173,21 +211,8 @@ class PageDetailVC: UIViewController , UIScrollViewDelegate, UICollectionViewDel
         
     }
     
-    func scrollViewDidEndDecelerating(scrollImage: UIScrollView) {
-        pageControl.currentPage = Int(scrollImage.contentOffset.x / scrollImage.bounds.width)
-        pageControl?.currentPage = Int(scrollView.contentOffset.x) / Int(scrollView.frame.width)
-    }
-    func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
-        pageControl?.currentPage = Int(scrollView.contentOffset.x) / Int(scrollView.frame.width)
-    }
-    
-    
-    
     
 }
-
-
-
 
 
 
@@ -215,7 +240,10 @@ extension PageDetailVC: UICollectionViewDataSource {
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let witdh = scrollView.frame.width - (scrollView.contentInset.left*2)
+        
+        //scrollView.contentOffset.x = 0.0
+        
+        let witdh = scrollView.frame.width - (scrollView.contentInset.left * 2)
         let index = scrollView.contentOffset.x / witdh
         let roundedIndex = round(index)
         self.pageControl?.currentPage = Int(roundedIndex)
