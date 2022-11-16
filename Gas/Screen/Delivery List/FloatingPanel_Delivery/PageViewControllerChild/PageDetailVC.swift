@@ -72,6 +72,7 @@ class PageDetailVC: UIViewController , UIScrollViewDelegate, UICollectionViewDel
         super.viewDidLoad()
         collectionView.delegate = self
         pageControl.numberOfPages = image.count
+        
 //        for i in data {
 //            if !i.isEmpty {
 //                idata.append(i)

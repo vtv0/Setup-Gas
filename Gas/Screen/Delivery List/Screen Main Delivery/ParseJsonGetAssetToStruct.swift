@@ -23,8 +23,8 @@ struct GetAsset: Decodable {
 }
 struct PropertiesDetail: Decodable {
     //var etag: Int?
-    var updatedAt: String?
-    var values: ValuesDetail?
+    var updatedAt: String
+    var values: ValuesDetail
 }
 struct ValuesDetail: Decodable {
     var address: String?

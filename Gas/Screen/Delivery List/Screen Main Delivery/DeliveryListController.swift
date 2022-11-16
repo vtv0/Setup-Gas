@@ -59,10 +59,7 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
     
     var arr: [Int] = []
     var pinsADay: [CustomPin] = []
-    var dicData: [Date : [LocationElement]] = [:]
-    
-    var infoOneObject: [PropertiesDetail] = []
-    
+    var dicData: [Date : [Location]] = [:]
     
     var indxes: [Int] = []
     var assetID: String = ""
@@ -83,10 +80,14 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
     var arrType: [Int] = []
     var arrNumber: [Int] = []
     
-    var dic: [String: PropertiesDetail] = [:]
+    //  var dic: [String: PropertiesDetail] = [:]
     var arrFacilityData: [[Facility_data]] = []
     
     let fpc = FloatingPanelController()
+    
+    var asset: [GetAsset] = []
+    var arrGetAssetOneDay: [GetAsset] = []
+    
     
     @IBOutlet weak var lblType50kg: UILabel!
     @IBOutlet weak var lblType30kg: UILabel!
@@ -157,6 +158,7 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         lblOtherType.text = "\(0)"
         
         
+        
     }
     func showAlert(title: String? = "", message: String?, completion: (() -> Void)? = nil) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
@@ -209,6 +211,7 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         self.hideActivity()
     }
     
+    var arrLocationValue: [Location] = []
     
     func  getLatestWorkerRouteLocationList() {
         self.showActivity()
@@ -230,26 +233,31 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
                     switch response.result {
                     case .success(_):
                         let countObject = response.value?.locations?.count
-                        self.locations = response.value?.locations ?? []
-                        
-                        
+                        let locations1 = response.value?.locations ?? []
                         if countObject != 0 {
-                            var locations: [LocationElement] = []
-                            for itemObject in self.locations {
-                                locations.append(itemObject)
-                                
-                                // print(itemObject)
-                                
-                                
+                            for itemObject in locations1 {
                                 if itemObject.location?.assetID != nil {
-                                    self.getGetAsset(forAsset: (itemObject.location!.assetID)!, locationOrder: itemObject.locationOrder )
-                                    
-                                    
+                                    self.getGetAsset(forAsset: (itemObject.location!.assetID)!, locationOrder: itemObject.locationOrder) { iasset in
+                                        //                                        if iasset != nil {
+                                        //                                            self.asset.append(iasset!)
+                                        //                                        }
+                                        self.arrLocationValue.append(Location.init(type: .customer, elem: itemObject, asset: iasset))
+                                    }
                                 } else {
-                                    print("Khong co assetID-> Supplier")
+                                    print("No assetID -> Supplier")
                                 }
                             }
-                            self.dicData[iday] = locations
+                            
+                            //dicData: [Date: [Location]]
+                            // Location - locationElement      //  var elem: LocationElement?
+                            //            - GetAsset?          //   var asset: GetAsset?
+                            
+                            
+                          //  self.dicData[iday] = [[Location]]
+                            
+                            self.dicData[iday] = self.arrLocationValue
+                            
+                            
                             
                         } else {
                             print(response.response?.statusCode as Any)
@@ -261,44 +269,46 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
                         print("Error: \(response.response?.statusCode ?? 000000)")
                         print("Error: \(error)")
                     }
+                    
                     if self.t == self.dateYMD.count {
                         self.reDrawMarkers()
                         self.hideActivity()
-                        
                     }
+                    
                 }
         }
-        
     }
     
-    func getGetAsset(forAsset iassetID: String, locationOrder: Int) {
+    func getGetAsset(forAsset iassetID: String, locationOrder: Int, completion: @escaping  ((GetAsset?) -> Void)) {  // location: Location,
         
         let token = UserDefaults.standard.string(forKey: "accessToken") ?? ""
         let urlGetAsset = "https://\(companyCode).kiiapps.com/am/api/assets/\(iassetID)"
         AF.request(urlGetAsset,method: .get, parameters: nil, headers: self.makeHeaders(token: token))
             .responseDecodable(of: GetAsset.self ) { response1 in
                 switch response1.result {
-                case .success:
-                    var assetDetail: [PropertiesDetail] = []
+                case .success( let value):
                     
                     
-                    let iCustomerName = response1.value?.properties?.values?.customer_name ?? ""
-                    self.customer_name.append(iCustomerName)
                     
-                    let iCustomerAddress = response1.value?.properties?.values?.address ?? ""
-                    self.customer_address.append(iCustomerAddress)
+                    //                    let iCustomerName = response1.value?.properties?.values.customer_name ?? ""
+                    //                    self.customer_name.append(iCustomerName)
+                    //
+                    //                    let iCustomerAddress = response1.value?.properties?.values.address ?? ""
+                    //                    self.customer_address.append(iCustomerAddress)
                     
                     
-                    for infoCustomer in self.infoOneObject {
-                        print(infoCustomer)
-                    }
+                    //                    for infoCustomer in self.infoOneObject {
+                    //                        print(infoCustomer)
+                    //                    }
                     
                     if self.totalObjectSevenDate == self.totalObjectSevenDate {
                         self.hideActivity()
                     }
+                    completion(value)
                     
                 case .failure(let error):
                     print("\(error)")
+                    completion(nil)
                 }
             }
         
@@ -346,20 +356,27 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
     
     
     func getDataFiltered(date: Date, driver: Int, status: Int) -> [LocationElement] {
-        indxes = []
+        self.indxes = []
+        
         var locationsByDriver: [Int: [LocationElement]] = [:]
-        var dataOneDate: [LocationElement] = dicData[date] ?? []
         
-        if dataOneDate.count > 0 && dataOneDate[0].location?.locationType! == .supplier && dataOneDate[0].locationOrder == 1 {
-            dataOneDate.remove(at: 0)
-        }
-        self.locations = dataOneDate
         
-        dataOneDate.enumerated().forEach() { vehicleIdx, vehicle in
-            if (vehicle.location?.locationType?.rawValue == "supplier") {
-                indxes.append(vehicleIdx)
-            }
-        }
+        var dataOneDate: [Location] = dicData[date] ?? []
+        //print(dataOneDate)
+        
+//        if dataOneDate.count > 0 && dataOneDate[0].location?.locationType! == .supplier && dataOneDate[0].locationOrder == 1 {
+//            dataOneDate.remove(at: 0)
+//        }
+//        self.locations = dataOneDate
+//
+//
+//
+//        dataOneDate.enumerated().forEach { vehicleIdx, vehicle in
+//            if (vehicle.location?.locationType?.rawValue == "supplier") {
+//                indxes.append(vehicleIdx)
+//            }
+//
+//        }
         
         indxes.enumerated().forEach { idx, item in
             if Array(self.locations).count > 0 {
@@ -369,13 +386,14 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
                     locationsByDriver[idx] = Array(self.locations[indxes[idx-1]+1...indxes[idx]])
                 }
             }
+            
         }
         
         self.selectedIdxDriver = driver
         self.selectesIdxStatus = status
         self.pickerDriver.reloadAllComponents()
         
-        dataDidFilter = locationsByDriver[driver] ?? []
+        dataDidFilter = locations
         var dataStatus: [LocationElement] = locationsByDriver[driver] ?? []
         
         for statusShipping in locationsByDriver[driver] ?? [] {
@@ -401,10 +419,7 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
                 self.arrivalTime_hours.append(infoCustomer.arrivalTime?.hours ?? 0)
                 self.arrivalTime_minutes.append(infoCustomer.arrivalTime?.minutes ?? 0)
                 self.arrFacilityData.append(infoCustomer.metadata?.facility_data ?? [])
-                // print(arrFacilityData)
                 
-                
-                //  self.customer_name.append(infoCustomer)
             }
             
             for iFacilityData in arrFacilityData {
@@ -413,14 +428,32 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
                         self.arrType.append(detailFacilityData.type ?? 0)
                         self.arrNumber.append(detailFacilityData.count ?? 0)
                     }
-                   
                 } else if iFacilityData.count > 1 {
-                    print(iFacilityData)
-                    print("Add stack view, show type and count of Gas")
+                    // print(iFacilityData)
+                    
+                    print("Add stack view, display type and count of Gas")
                 }
                 
                 arrFacilityData.removeAll()
             }
+            
+            var arrAssetIdOneDay: [String] = []  // ra asset 1 ngay, 1 xe
+            for iassetOneDay in dataDidFilter {
+                arrAssetIdOneDay.append(iassetOneDay.location?.assetID ?? "")
+                
+            }
+            
+            //let selectInfoCustomerOneDay: [GetAsset] = dicData[date]?.asset ?? []
+            // so sanh lan luot cac phan tu cua mang assetOneDay == assetID cua asset ->>>> [GetAsset]
+            for iasset in asset {
+                for i in 0..<arrAssetIdOneDay.count {
+                    if arrAssetIdOneDay[i] == iasset.id {
+                        arrGetAssetOneDay.append(iasset)
+                        
+                    }
+                }
+            }
+            
             
         } else {
             print(" Khong hien thi Floating Panel ")
@@ -447,9 +480,10 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
             contentDeliveryVC.arrType = arrType
             contentDeliveryVC.arrNumber = arrNumber
             
+            
             arrFacilityData.removeAll()
-            arrType.removeAll()
-            arrNumber.removeAll()
+            //arrType.removeAll()
+            // arrNumber.removeAll()
             
             customer_id.removeAll()
             customer_name.removeAll()
@@ -459,13 +493,20 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
             planned_date.removeAll()
             fpc.addPanel(toParent: self)
             fpc.set(contentViewController: contentDeliveryVC)
+            // fpc.trackingScrollView(scrollView)
         }
+        //        for iArrGetAssetOneDay in arrGetAssetOneDay {
+        //            image.append(iArrGetAssetOneDay)
+        //        }
         
-        //  fpc.trackingScrollView(contentDeliveryVC)
     }
+    
+    var image: [String] = []
     
     func reDrawMarkers() {
         
+        print(dicData.count)
+         
         let dataDidFilter = getDataFiltered(date: dateYMD[selectedIdxDate], driver: selectedIdxDriver, status: selectesIdxStatus)
         mapView.removeAnnotations(mapView.annotations)
         pinsADay.removeAll()
@@ -529,6 +570,7 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         if pickerView == pickerDate {
             selectedIdxDate = row
+            selectedIdxDriver = 0
             self.reDrawMarkers()
         } else if pickerView == pickerDriver {
             selectedIdxDriver = row

@@ -14,6 +14,25 @@ import Foundation
 import UIKit
 
 
+class Location {
+    var type: LocationType
+    var elem: LocationElement?
+    var asset: GetAsset?
+    
+    init(type: LocationType, elem: LocationElement?, asset: GetAsset?) {
+        self.type = type
+        self.elem = elem 
+        self.asset = asset
+    }
+
+    enum LocationType: String, Codable, CaseIterable {
+        case customer = "customer"
+        case supplier = "supplier"
+    }
+}
+
+
+
 // MARK: - GetLatestWorkerRouteLocationListInfo
 struct GetLatestWorkerRouteLocationListInfo: Decodable {
     var locations: [LocationElement]?
