@@ -971,9 +971,11 @@
                         <outlet property="lblCustomer_id" destination="I6b-P4-6Ho" id="jgu-fq-sGp"/>
                         <outlet property="lblDeliveryTime" destination="FaU-dU-3BE" id="Mph-Nl-nYI"/>
                         <outlet property="lblNumberGas" destination="fRG-wk-d63" id="Lz9-fe-yrx"/>
+                        <outlet property="lblTextNotes" destination="kvD-dA-ng3" id="ZSz-dh-BsL"/>
                         <outlet property="lblTypeGas" destination="WRc-bj-6kd" id="6fv-Vg-AV3"/>
                         <outlet property="pageControl" destination="3Ml-Mg-Vr5" id="Ca8-Zw-Y5m"/>
                         <outlet property="scrollView" destination="6aO-qi-iYG" id="GPp-pW-tLG"/>
+                        <outlet property="stackViewShowInfoGas" destination="Xl7-8v-ten" id="uq3-Z1-M7x"/>
                         <outlet property="viewImageScroll" destination="kIw-aJ-UlO" id="Ebo-X7-i4F"/>
                     </connections>
                 </viewController>

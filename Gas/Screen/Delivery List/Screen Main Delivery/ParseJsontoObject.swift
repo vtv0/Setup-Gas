@@ -15,12 +15,17 @@ import UIKit
 
 
 class Location {
-    var type: LocationType
+    var type: LocationType {
+        if elem?.location?.assetID == nil {
+            return .supplier
+        }
+        return .customer
+    }
     var elem: LocationElement?
     var asset: GetAsset?
     
-    init(type: LocationType, elem: LocationElement?, asset: GetAsset?) {
-        self.type = type
+    init( elem: LocationElement?, asset: GetAsset?) { //type: LocationType,
+    //    self.type = type
         self.elem = elem 
         self.asset = asset
     }

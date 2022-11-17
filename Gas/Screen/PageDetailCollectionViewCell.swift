@@ -10,6 +10,7 @@ import UIKit
 class PageDetailCollectionViewCell: UICollectionViewCell {
     
     @IBOutlet weak var imgImage: UIImageView!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

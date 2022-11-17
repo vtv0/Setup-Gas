@@ -18,26 +18,30 @@ class FloatingPanelDeliveryVC: UIViewController {
     var arrivalTime_minutes: [Int] = []
     var customer_name: [String] = []
     var customer_address: [String] = []
+    var arrUrlImage: [String] = []
+    
+    var arrNotes: [String] = []
     
     var arrType: [Int] = []
     var arrNumber: [Int] = []
     
+    var scrollView: UIScrollView!
+    
     @IBOutlet weak var detailsTabsView: TabsView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "FloatingPanel PageVC"
-       // navigationController?.navigationBar.backgroundColor = .systemBlue
+        // navigationController?.navigationBar.backgroundColor = .systemBlue
         navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
         setupTabs()
         
         setupPageViewController()
         
-       
+        
     }
     
     func setupTabs() {
-        // Add Tabs (Set 'icon'to nil if you don't want to have icons)
-   
         for item in data {
             let tab = Tab(icon: UIImage(named: ""), title: item)
             if (detailsTabsView != nil) {
@@ -84,7 +88,7 @@ class FloatingPanelDeliveryVC: UIViewController {
             self.pageController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
         ])
         self.pageController.didMove(toParent: self)
- 
+        
     }
     
     override func viewDidLayoutSubviews() {
@@ -93,30 +97,25 @@ class FloatingPanelDeliveryVC: UIViewController {
         detailsTabsView.collectionView.collectionViewLayout.invalidateLayout()
     }
     
-    
-    
-    
     func showViewController(_ index: Int) -> UIViewController? {
         if (self.detailsTabsView.tabs.count == 0) || (index >= self.detailsTabsView.tabs.count) {
             return nil
         }
-        //print(planned_date)
+        
         currentIndex = index
         let contentVC = storyboard?.instantiateViewController(withIdentifier: "PageDetailVC") as! PageDetailVC
+        contentVC.pageIndex = index
+        
         contentVC.customer_id = data[index]
-        
-        //contentVC.customer_name = customer_name[index]
-       // contentVC.customer_address = customer_address[index]
-        
+        contentVC.customer_name = customer_name[index]
+        contentVC.customer_address = customer_address[index]
         contentVC.arrivalTime_hours = arrivalTime_hours[index]
         contentVC.arrivalTime_minutes = arrivalTime_minutes[index]
-        
-        contentVC.planned_date = planned_date[index]
-
         contentVC.typeGas = arrType[index]
         contentVC.numberGas = arrNumber[index]
-        
-        contentVC.pageIndex = index
+        contentVC.arrNotes = arrNotes[index]
+        contentVC.planned_date = planned_date[index]
+        contentVC.scrollView = scrollView
         return contentVC
     }
 }
@@ -137,9 +136,6 @@ extension FloatingPanelDeliveryVC: TabsDelegate {
 
 
 extension FloatingPanelDeliveryVC: UIPageViewControllerDelegate, UIPageViewControllerDataSource {
-
-
-
     // dataSource
     // return ViewController when go forward
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
@@ -154,7 +150,7 @@ extension FloatingPanelDeliveryVC: UIPageViewControllerDelegate, UIPageViewContr
             return self.showViewController(index)
         }
     }
-
+    
     // return ViewController when go backward
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
         let vc = pageViewController.viewControllers?.first
@@ -168,8 +164,6 @@ extension FloatingPanelDeliveryVC: UIPageViewControllerDelegate, UIPageViewContr
             return self.showViewController(index)
         }
     }
-
-    
     //delegate
     func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
         if finished {
@@ -183,7 +177,7 @@ extension FloatingPanelDeliveryVC: UIPageViewControllerDelegate, UIPageViewContr
             }
         }
     }
-
+    
     // Return the current position that is saved in the UIViewControllers we have in the UIPageViewController
     func getVCPageIndex(_ viewController: UIViewController?) -> Int {
         let vc = viewController as! PageDetailVC
