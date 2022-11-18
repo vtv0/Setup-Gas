@@ -11,20 +11,24 @@ import MapKit
 class MyPinView: MKPinAnnotationView {
     var imageView: UIImageView!
     var lblView: UILabel!
+    
     override init(annotation: MKAnnotation?, reuseIdentifier: String?) {
+        
         super.init(annotation: annotation, reuseIdentifier: reuseIdentifier)
         
         frame = CGRect(x: 0, y: 0, width: 50, height: 50)
         imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
-        lblView = UILabel(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
+        lblView = UILabel(frame: CGRect(x: 10, y: 10, width: 30, height: 30))
         imageView.image = UIImage(named: "marker")
         lblView.textAlignment = .center
+        //lblView.backgroundColor = .yellow
         lblView.layer.cornerRadius = lblView.frame.size.width / 2
         lblView.layer.masksToBounds = true
         self.bringSubviewToFront(lblView)
         self.addSubview(self.imageView)
         self.addSubview(self.lblView)
     }
+    
     override var image: UIImage? {
         get {
             return self.imageView.image
@@ -35,6 +39,7 @@ class MyPinView: MKPinAnnotationView {
             }
         }
     }
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

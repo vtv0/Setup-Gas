@@ -7,9 +7,7 @@
 
 import UIKit
 
-protocol TabsDelegate {
-    func tabsViewDidSelectItemAt(position: Int)
-}
+
 
 enum TabMode {
     case fixed
@@ -24,6 +22,7 @@ struct Tab {
 class TabsView: UIView {
     var tabMode: TabMode = .scrollable {
         didSet {
+        
             self.collectionView.reloadData()
         }
     }
@@ -121,6 +120,7 @@ extension TabsView: UICollectionViewDelegate, UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         delegate?.tabsViewDidSelectItemAt(position: indexPath.item)
+        
     }
 }
 

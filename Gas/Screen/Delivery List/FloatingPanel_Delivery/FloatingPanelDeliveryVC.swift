@@ -7,18 +7,23 @@
 
 import UIKit
 
+protocol TabsDelegate {
+    func tabsViewDidSelectItemAt(position: Int)
+}
+
 class FloatingPanelDeliveryVC: UIViewController {
     
     var currentIndex: Int = 0
     var pageController: UIPageViewController!
     
-    var data: [String] = []
+    var customer_id: [String] = []
     var planned_date: [String] = []
     var arrivalTime_hours: [Int] = []
     var arrivalTime_minutes: [Int] = []
     var customer_name: [String] = []
     var customer_address: [String] = []
-    var arrUrlImage: [String] = []
+    
+    var arrUrlImage: [[String]] = []
     
     var arrNotes: [String] = []
     
@@ -26,6 +31,9 @@ class FloatingPanelDeliveryVC: UIViewController {
     var arrNumber: [Int] = []
     
     var scrollView: UIScrollView!
+    
+    
+    var myOperation: DeliveryListController?
     
     @IBOutlet weak var detailsTabsView: TabsView!
     
@@ -37,12 +45,10 @@ class FloatingPanelDeliveryVC: UIViewController {
         setupTabs()
         
         setupPageViewController()
-        
-        
     }
     
     func setupTabs() {
-        for item in data {
+        for item in customer_id {
             let tab = Tab(icon: UIImage(named: ""), title: item)
             if (detailsTabsView != nil) {
                 detailsTabsView.tabs.append(tab)
@@ -61,9 +67,8 @@ class FloatingPanelDeliveryVC: UIViewController {
         // Set detailsTabsView Delegate
         detailsTabsView.delegate = self
         
-        
         // Set the selected Tab when the app starts
-        detailsTabsView.collectionView.selectItem(at: IndexPath(item: 0, section: 0), animated: true, scrollPosition: .bottom)
+        detailsTabsView.collectionView.selectItem(at: IndexPath(item: 0, section: 0), animated: false, scrollPosition: .top)
     }
     
     func setupPageViewController() {
@@ -76,11 +81,12 @@ class FloatingPanelDeliveryVC: UIViewController {
         pageController.delegate = self
         pageController.dataSource = self
         
+        
         // Set the selected ViewController in the PageViewController when the app starts
-        pageController.setViewControllers([showViewController(0)!], direction: .forward, animated: true, completion: nil)
+        pageController.setViewControllers([showViewController(0)!], direction: .forward, animated: false, completion: nil)
         
         // PageViewController Constraints
-        self.pageController.view.translatesAutoresizingMaskIntoConstraints = false
+        self.pageController.view.translatesAutoresizingMaskIntoConstraints = true
         NSLayoutConstraint.activate([
             self.pageController.view.topAnchor.constraint(equalTo: self.detailsTabsView.bottomAnchor),
             self.pageController.view.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
@@ -106,10 +112,12 @@ class FloatingPanelDeliveryVC: UIViewController {
         let contentVC = storyboard?.instantiateViewController(withIdentifier: "PageDetailVC") as! PageDetailVC
         contentVC.pageIndex = index
         
-        contentVC.customer_id = data[index]
+        
+        contentVC.customer_id = customer_id[index]
         contentVC.customer_name = customer_name[index]
         contentVC.customer_address = customer_address[index]
         contentVC.arrivalTime_hours = arrivalTime_hours[index]
+        contentVC.arrUrlImage = arrUrlImage[index]
         contentVC.arrivalTime_minutes = arrivalTime_minutes[index]
         contentVC.typeGas = arrType[index]
         contentVC.numberGas = arrNumber[index]
@@ -120,9 +128,12 @@ class FloatingPanelDeliveryVC: UIViewController {
     }
 }
 
+
 extension FloatingPanelDeliveryVC: TabsDelegate {
+    
     func tabsViewDidSelectItemAt(position: Int) {
         // Check if the selected tab cell position is the same with the current position in pageController, if not, then go forward or backward
+        
         if position != currentIndex {
             if position > currentIndex {
                 self.pageController.setViewControllers([showViewController(position)!], direction: .forward, animated: true, completion: nil)
@@ -135,7 +146,45 @@ extension FloatingPanelDeliveryVC: TabsDelegate {
 }
 
 
-extension FloatingPanelDeliveryVC: UIPageViewControllerDelegate, UIPageViewControllerDataSource {
+extension FloatingPanelDeliveryVC: UIPageViewControllerDelegate, UIPageViewControllerDataSource, ShowResult {
+    
+    func loadMyOperation() {
+        if myOperation == nil {
+            myOperation = DeliveryListController()
+        }
+    }
+    func show(value: Int) {
+        print("value: \(value)")
+    }
+    
+    //delegate
+    func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
+        if finished {
+            if completed {
+                guard let vc = pageViewController.viewControllers?.first else { return }
+                let index: Int
+                index = getVCPageIndex(vc)
+                detailsTabsView.collectionView.selectItem(at: IndexPath(item: index, section: 0), animated: true, scrollPosition: .centeredVertically)
+                // Animate the tab in the detailsTabsView to be centered when you are scrolling using .scrollable
+                
+                print("chuyen tab trong floatingPanel")
+                loadMyOperation()
+                myOperation?.delegateCustom = self
+                myOperation?.sum(fNumber: 9, sNumber: 20)
+                
+                
+                detailsTabsView.collectionView.scrollToItem(at: IndexPath(item: index, section: 0), at: .centeredHorizontally, animated: true)
+            }
+        }
+    }
+    
+    // Return the current position that is saved in the UIViewControllers we have in the UIPageViewController
+    func getVCPageIndex(_ viewController: UIViewController?) -> Int {
+        let vc = viewController as! PageDetailVC
+        return vc.pageIndex
+    }
+    
+    
     // dataSource
     // return ViewController when go forward
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
@@ -164,23 +213,7 @@ extension FloatingPanelDeliveryVC: UIPageViewControllerDelegate, UIPageViewContr
             return self.showViewController(index)
         }
     }
-    //delegate
-    func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
-        if finished {
-            if completed {
-                guard let vc = pageViewController.viewControllers?.first else { return }
-                let index: Int
-                index = getVCPageIndex(vc)
-                detailsTabsView.collectionView.selectItem(at: IndexPath(item: index, section: 0), animated: true, scrollPosition: .centeredVertically)
-                // Animate the tab in the detailsTabsView to be centered when you are scrolling using .scrollable
-                detailsTabsView.collectionView.scrollToItem(at: IndexPath(item: index, section: 0), at: .centeredHorizontally, animated: true)
-            }
-        }
-    }
     
-    // Return the current position that is saved in the UIViewControllers we have in the UIPageViewController
-    func getVCPageIndex(_ viewController: UIViewController?) -> Int {
-        let vc = viewController as! PageDetailVC
-        return vc.pageIndex
-    }
+    
+    
 }

@@ -125,6 +125,7 @@ class EditViewController: UIViewController {
 }
 
 extension EditViewController: TabsDelegate {
+    
     func tabsViewDidSelectItemAt(position: Int) {
         // Check if the selected tab cell position is the same with the current position in pageController, if not, then go forward or backward
         if position != currentIndex {

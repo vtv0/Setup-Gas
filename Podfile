@@ -8,5 +8,6 @@ target 'Gas' do
   pod 'FloatingPanel'
   pod 'Alamofire'
   pod 'SwiftyJSON'
+  pod 'AlamofireImage'
 
 end

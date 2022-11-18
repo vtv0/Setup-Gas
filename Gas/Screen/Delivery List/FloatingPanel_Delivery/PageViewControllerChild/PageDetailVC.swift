@@ -8,10 +8,9 @@
 import UIKit
 import Alamofire
 import FloatingPanel
+import AlamofireImage
 
-protocol ShowSelectedMarkerDelegate {
-    func ShowSelectedMarker()
-}
+
 
 class PageDetailVC: UIViewController , UIScrollViewDelegate, UICollectionViewDelegate {
     
@@ -27,7 +26,9 @@ class PageDetailVC: UIViewController , UIScrollViewDelegate, UICollectionViewDel
     var typeGas: Int = 0
     var numberGas: Int = 0
     
-    var image: [String] = ["", "0", "1","2","camel", "dog"]
+    var arrUrlImage: [String] = []// ["0", "1","2","camel", "dog"]
+    
+    
     var dateYMD: [Date] = []
     let companyCode = UserDefaults.standard.string(forKey: "companyCode") ?? ""
     let tenantId = UserDefaults.standard.string(forKey: "tenantId") ?? ""
@@ -73,12 +74,14 @@ class PageDetailVC: UIViewController , UIScrollViewDelegate, UICollectionViewDel
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView.delegate = self
-        pageControl.numberOfPages = image.count
+        collectionView.dataSource = self
+        pageControl.numberOfPages = arrUrlImage.count
         
         lblCustomer_id?.text = customer_id
         lblCustomerName?.text = customer_name
         lblAddress?.text = customer_address
         lblDeliveryTime?.text = "Estimate Time : \(arrivalTime_hours):\(arrivalTime_minutes)"
+        //collectionView.
         lblTypeGas?.text = "\(typeGas)kg"
         lblNumberGas?.text = "\(numberGas)bottle"
         
@@ -88,6 +91,13 @@ class PageDetailVC: UIViewController , UIScrollViewDelegate, UICollectionViewDel
             lblTextNotes.text = arrNotes
         }
         lblAstimateDelivery?.text = planned_date
+        
+        var arrDataUrlImage = [String]()
+        for iUrlImage in arrUrlImage where iUrlImage != "" {
+            arrDataUrlImage.append(iUrlImage)
+        }
+        arrUrlImage = arrDataUrlImage
+        print(arrDataUrlImage.count)
     }
     
     
@@ -108,8 +118,36 @@ class PageDetailVC: UIViewController , UIScrollViewDelegate, UICollectionViewDel
         self.pageControl?.currentPage = Int(roundedIndex)
         
     }
+    
+    //    func getImage() {
+    //        for i in arrUrlImage {
+    //            Alamofire.request("\(i)").responseImage { response in
+    //                if let catPicture = response.result.value {
+    //                    print("image downloaded: \(image)")
+    //                }
+    //            }
+    //        }
+    //
+    //    }
+    
+    
 }
 
+extension UIImageView {
+    func loadFrom(URLAddress: String) {
+        guard let url = URL(string: URLAddress) else {
+            return
+        }
+        
+        DispatchQueue.main.async { [weak self] in
+            if let imageData = try? Data(contentsOf: url) {
+                if let loadedImage = UIImage(data: imageData) {
+                    self?.image = loadedImage
+                }
+            }
+        }
+    }
+}
 
 extension PageDetailVC: UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -117,7 +155,7 @@ extension PageDetailVC: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        let count = image.count
+        let count = arrUrlImage.count
         pageControl.numberOfPages = count
         pageControl.isHidden = !(count > 1)
         return count
@@ -125,9 +163,25 @@ extension PageDetailVC: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath)  as? PageDetailCollectionViewCell
-        cell?.imgImage.image = UIImage(named: image[indexPath.row] )
+        cell?.imgImage.image = UIImage(named: arrUrlImage[indexPath.row])
+        
+        
+        //cell?.imgImage.loadFrom(URLAddress: "https://52nbhwgyk0am.jp.kiiapps.com/api/x/s.7b83d7a00022-2ed9-ce11-ed1f-a4067c05")
+        //        for i in arrUrlImage {
+        //            let url = URL(string: "\(i)")!
+        
+//        if let data = try? Data(contentsOf: URL(string: "https://52nbhwgyk0am.jp.kiiapps.com/api/x/s.7b83d7a00022-2ed9-ce11-ed1f-a4067c05")! ) {
+//            cell?.imgImage.image = UIImage(data: data)
+//
+//        }
+        
+        
+        //        }
+        
+        
         return cell!
     }
     
     
 }
+

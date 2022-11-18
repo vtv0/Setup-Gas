@@ -44,11 +44,24 @@ class CustomPin: NSObject, MKAnnotation {
 //    }
 //}
 
+
+protocol ShowResult: AnyObject {
+    func show(value: Int)
+}
+
 class DeliveryListController: UIViewController , FloatingPanelControllerDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
+    
+    weak var delegateCustom: ShowResult?
+    
+    func sum(fNumber: Int, sNumber: Int) {
+        delegateCustom?.show(value: fNumber + sNumber)
+        print("use delegate ")
+    }
+    
+    
     let companyCode = UserDefaults.standard.string(forKey: "companyCode") ?? ""
     let tenantId = UserDefaults.standard.string(forKey: "tenantId") ?? ""
     let userId = UserDefaults.standard.string(forKey: "userId") ?? ""
-    
     let statusDelivery = ["Not Delivery", "All"]
     var arrGetAsset: [String] = []
     
@@ -56,25 +69,16 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
     var selectedIdxDate: Int = 0
     var selectedIdxDriver: Int = 0
     var selectesIdxStatus: Int = 0
-    
     var arr: [Int] = []
     var pinsADay: [CustomPin] = []
-    
     var dicData: [Date : [Location]] = [:]
-    
-    // var dicData: [Date : [LocationElement]] = [:]
-    
     var indxes: [Int] = []
     var assetID: String = ""
-    
-    
     var dateYMD: [Date] = []
     var arrStringDate: [String] = []
     var t: Int = 0
     var totalObjectSevenDate: Int = 0
-    
     var customer_id: [String] = []
-    
     var planned_date: [String] = []
     var arrivalTime_hours: [Int] = []
     var arrivalTime_minutes: [Int] = []
@@ -86,7 +90,8 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
     
     var arrType: [Int] = []
     var arrNumber: [Int] = []
-    var arrUrlImage: [String] = []
+    
+    var arrUrlImage: [[String]] = []
     
     var arrFacilityData: [[Facility_data]] = []
     
@@ -97,19 +102,15 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
     var locations: [Location] = []
     var scrollView: UIScrollView!
     
-    
     @IBOutlet weak var lblType50kg: UILabel!
     @IBOutlet weak var lblType30kg: UILabel!
     @IBOutlet weak var lblType25kg: UILabel!
     @IBOutlet weak var lblType20kg: UILabel!
     @IBOutlet weak var lblOtherType: UILabel!
-    
     @IBOutlet weak var mapView: MKMapView!
-    
     @IBOutlet weak var pickerStatus: UIPickerView!
     @IBOutlet weak var pickerDriver: UIPickerView!
     @IBOutlet weak var pickerDate: UIPickerView!
-    
     @IBOutlet weak var btnShipping: UIButton!
     @IBAction func btnShipping(_ sender: Any) {
         print("click Shipping tren MH chinh")
@@ -132,11 +133,12 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         self.navigationController?.pushViewController(screenReroute, animated: true)
     }
     
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.sevenDay()
         getMe()
-        
         fpc.delegate = self
         
         pickerStatus.dataSource = self
@@ -155,6 +157,7 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         let userCoordinate = CLLocationCoordinate2D(latitude: 35.73774428640241, longitude: 139.6194163709879)
         let eyeCoordinate = CLLocationCoordinate2D(latitude: 35.73774428640241, longitude: 139.6194163709879)
         let mapCamera = MKMapCamera(lookingAtCenter: userCoordinate, fromEyeCoordinate: eyeCoordinate, eyeAltitude: 1000000.0)
+        
         mapView.delegate = self
         mapView.setCamera(mapCamera, animated: false)
         
@@ -163,7 +166,6 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         lblType25kg.text = "\(0)"
         lblType20kg.text = "\(0)"
         lblOtherType.text = "\(0)"
-        
     }
     
     
@@ -205,6 +207,7 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
                 case .success(let getMeInfo):
                     UserDefaults.standard.set(getMeInfo.tenants[0].id, forKey: "tenantId")
                     UserDefaults.standard.set(getMeInfo.id, forKey: "userId")
+                    self.getLatestWorkerRouteLocationList()
                 case .failure(let error):
                     if response1.response?.statusCode == 401 {
                         let src = self.storyboard?.instantiateViewController(withIdentifier: "LoginViewController") as! ViewController
@@ -216,8 +219,6 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
                     }
                 }
             }
-        getLatestWorkerRouteLocationList()
-        // self.hideActivity()
     }
     
     
@@ -227,28 +228,19 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
         
-        
-        
         for iday in dateYMD {
             let dateString: String = formatter.string(from: iday)
             let url: String = "https://\(companyCode).kiiapps.com/am/exapi/vrp/tenants/\(tenantId)/latest_route/worker_users/\(userId)?workDate=\(dateString)"
-            
             AF.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default ,headers: self.makeHeaders(token: token)).validate(statusCode: (200...299))
                 .responseDecodable(of: GetLatestWorkerRouteLocationListInfo.self) { response in
-                    print("\(url)::::>\( response.response?.statusCode ?? 0)")
-                    
+                    //                    print("\(url)::::>\( response.response?.statusCode ?? 0)")
                     self.t += 1
-                    
                     switch response.result {
                     case .success(_):
                         let countObject = response.value?.locations?.count
                         let locations1: [LocationElement] = response.value?.locations ?? []
-                        
                         if countObject != 0 {
-                            
                             var arrLocationValue: [Location] = []
-                            // let arrElemValue = [LocationElement]()
-                            
                             for itemObject in locations1 {
                                 arrLocationValue.append(Location.init(elem: itemObject, asset: nil))
                             }
@@ -262,7 +254,6 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
                                 }
                             }
                             self.dicData[iday] = arrLocationValue
-                            
                         } else {
                             print(response.response?.statusCode as Any)
                             print("\(url) =>> Array Empty, No Object ")
@@ -280,7 +271,6 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
     }
     
     func getGetAsset(forAsset iassetID: String, completion: @escaping  ((GetAsset?) -> Void)) {  // location: Location,
-        
         let token = UserDefaults.standard.string(forKey: "accessToken") ?? ""
         let urlGetAsset = "https://\(companyCode).kiiapps.com/am/api/assets/\(iassetID)"
         AF.request(urlGetAsset,method: .get, parameters: nil, headers: self.makeHeaders(token: token))
@@ -399,15 +389,24 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
                 self.arrivalTime_hours.append(infoCustomer.elem?.arrivalTime?.hours ?? 0)
                 self.arrivalTime_minutes.append(infoCustomer.elem?.arrivalTime?.minutes ?? 0)
                 
-                //arrImage.append(infoCustomer.asset)
+                // arrImage.append(infoCustomer.asset)
                 
-//                if !(infoCustomer.asset?.properties?.values.gas_location1?.isEmpty ?? "") || !(infoCustomer.asset?.properties?.values.gas_location2?.isEmpty ?? <#default value#>) || !(infoCustomer.asset?.properties?.values.gas_location3?.isEmpty ?? <#default value#>) || !infoCustomer.asset?.properties?.values.gas_location4?.isEmpty || !infoCustomer.asset?.properties?.values.parking_place1?.isEmpty || !infoCustomer.asset?.properties?.values.parking_place2?.isEmpty || !infoCustomer.asset?.properties?.values.parking_place3?.isEmpty || !infoCustomer.asset?.properties?.values.parking_place4?.isEmpty {
-//                    arrImage.append(infoCustomer.asset)
-//                    
-//                }
+                if let gasLocation1 = infoCustomer.asset?.properties?.values.gas_location1, let gasLocation2 = infoCustomer.asset?.properties?.values.gas_location2 , let gasLocation3 = infoCustomer.asset?.properties?.values.gas_location3, let gasLocation4 = infoCustomer.asset?.properties?.values.gas_location4 , let parkingPlace1 = infoCustomer.asset?.properties?.values.parking_place1, let parkingPlace2 = infoCustomer.asset?.properties?.values.parking_place2, let parkingPlace3 = infoCustomer.asset?.properties?.values.parking_place3, let parkingPlace4 = infoCustomer.asset?.properties?.values.parking_place4 {
                     
-                    
-               // self.arrUrlImage.append(infoCustomer.asset?.properties?.values.)
+                    if !gasLocation1.isEmpty || !gasLocation2.isEmpty || !gasLocation3.isEmpty || !gasLocation4.isEmpty || !parkingPlace1.isEmpty || !parkingPlace2.isEmpty || !parkingPlace3.isEmpty || !parkingPlace4.isEmpty {
+                        arrImage.append(gasLocation1)
+                        arrImage.append(gasLocation2)
+                        arrImage.append(gasLocation3)
+                        arrImage.append(gasLocation4)
+                        arrImage.append(parkingPlace1)
+                        arrImage.append(parkingPlace2)
+                        arrImage.append(parkingPlace3)
+                        arrImage.append(parkingPlace4)
+                    }
+                }
+              
+                
+                self.arrUrlImage.append(arrImage)
                 
                 self.arrFacilityData.append(infoCustomer.elem?.metadata?.facility_data ?? [])
                 
@@ -425,11 +424,14 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
                 self.arrNotes.append(infoCustomer.asset?.properties?.values.notes ?? "")
                 self.planned_date.append(infoCustomer.elem?.metadata?.planned_date ?? "")
             }
+           
             
         } else {
             print(" Khong hien thi Floating Panel ")
+           // btnShipping.removeFromSuperview()
             fpc.removePanelFromParent(animated: true)
         }
+        
         customFloatingPanel()
         return dataDidFilter
     }
@@ -438,15 +440,16 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
     func customFloatingPanel() {
         guard let contentDeliveryVC = storyboard?.instantiateViewController(withIdentifier: "FloatingPanelDeliveryVC") as? FloatingPanelDeliveryVC else { return }
         if customer_id.count != 0 {
-            contentDeliveryVC.data = customer_id
+            
+            contentDeliveryVC.customer_id = customer_id
             contentDeliveryVC.customer_name = customer_name
             contentDeliveryVC.customer_address = customer_address
             contentDeliveryVC.arrivalTime_hours = arrivalTime_hours
             contentDeliveryVC.arrivalTime_minutes = arrivalTime_minutes
+            contentDeliveryVC.arrUrlImage = arrUrlImage
             contentDeliveryVC.scrollView = scrollView
             contentDeliveryVC.arrType = arrType
             contentDeliveryVC.arrNumber = arrNumber
-            contentDeliveryVC.arrUrlImage = arrUrlImage
             contentDeliveryVC.arrNotes = arrNotes
             
             contentDeliveryVC.planned_date = planned_date
@@ -456,7 +459,7 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
             customer_address.removeAll()
             arrivalTime_hours.removeAll()
             arrivalTime_minutes.removeAll()
-            
+            arrUrlImage.removeAll()
             arrFacilityData.removeAll()
             arrType.removeAll()
             arrNumber.removeAll()
@@ -465,7 +468,8 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
             arrUrlImage.removeAll()
             fpc.addPanel(toParent: self)
             fpc.set(contentViewController: contentDeliveryVC)
-            fpc.trackingScrollView
+           // fpc.trackingScrollView
+            
         }
         
         var value: [ValuesDetail] = []
@@ -474,10 +478,16 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         }
     }
     
+    
+    
     func reDrawMarkers() {
         dataDidFilter.removeAll()
         mapView.removeAnnotations(mapView.annotations)
         pinsADay.removeAll()
+        
+        let userCoordinate = CLLocationCoordinate2D(latitude: 35.73774428640241, longitude: 139.6194163709879)
+        let eyeCoordinate = CLLocationCoordinate2D(latitude: 35.73774428640241, longitude: 139.6194163709879)
+        let mapCamera = MKMapCamera(lookingAtCenter: userCoordinate, fromEyeCoordinate: eyeCoordinate, eyeAltitude: 1000000.0)
         
         let dataDidFilter = getDataFiltered(date: dateYMD[selectedIdxDate], driver: selectedIdxDriver, status: selectesIdxStatus)
         if dataDidFilter.count == 0 {
@@ -490,12 +500,11 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
                     pinsADay.append(carOnePin)
                 }
             }
-            mapView.addAnnotations(pinsADay)
-            let userCoordinate = CLLocationCoordinate2D(latitude: 35.73774428640241, longitude: 139.6194163709879)
-            let eyeCoordinate = CLLocationCoordinate2D(latitude: 35.73774428640241, longitude: 139.6194163709879)
-            let mapCamera = MKMapCamera(lookingAtCenter: userCoordinate, fromEyeCoordinate: eyeCoordinate, eyeAltitude: 1000000.0)
+            
+            
             mapView.setCamera(mapCamera, animated: false)
             mapView.reloadInputViews()
+            mapView.addAnnotations(pinsADay)
         }
     }
     
@@ -556,7 +565,7 @@ extension DeliveryListController: MKMapViewDelegate {
             dequeuedView.annotation = annotation
             dequeuedView.image = UIImage(named: "marker")
             dequeuedView.lblView.text = "\(annotation.title - 1)"
-            //            dequeuedView.zPriority = MKAnnotationViewZPriority.init(rawValue: 0.5)
+            // dequeuedView.zPriority = MKAnnotationViewZPriority.init(rawValue: 0.5)
             view = dequeuedView
         } else {
             view = MyPinView(annotation: annotation, reuseIdentifier: identifier)
@@ -564,4 +573,24 @@ extension DeliveryListController: MKMapViewDelegate {
         }
         return view
     }
+    
+    //    func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
+    //            print("selected callout")
+    //        }
+    
+    internal func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView)  {
+        print("chon vao pin")
+        
+        if let pin = mapView.dequeueReusableAnnotationView(withIdentifier: "Annotation") as? MyPinView {
+            pin.zPriority = MKAnnotationViewZPriority(rawValue: 1.0)
+            pin.imageView.image = UIImage(named: "marker_yellow")
+            pin.lblView.backgroundColor = .yellow
+            mapView.reloadInputViews()
+            
+        }
+        
+    }
+    
+    
+    
 }
