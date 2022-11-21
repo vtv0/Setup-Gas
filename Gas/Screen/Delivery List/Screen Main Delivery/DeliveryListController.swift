@@ -78,22 +78,10 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
     var arrStringDate: [String] = []
     var t: Int = 0
     var totalObjectSevenDate: Int = 0
+    
+    var customer_LocationType = [String]()
+    
     var customer_id: [String] = []
-    var planned_date: [String] = []
-    var arrivalTime_hours: [Int] = []
-    var arrivalTime_minutes: [Int] = []
-    
-    var customer_name: [String] = []
-    
-    var customer_address: [String] = []
-    var arrNotes: [String] = []
-    
-    var arrType: [Int] = []
-    var arrNumber: [Int] = []
-    
-    var arrUrlImage: [[String]] = []
-    
-    var arrFacilityData: [[Facility_data]] = []
     
     let fpc = FloatingPanelController()
     
@@ -101,6 +89,7 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
     var assetAday: [GetAsset] = []
     var locations: [Location] = []
     var scrollView: UIScrollView!
+    var arrFacilityData: [[Facility_data]] = []
     
     @IBOutlet weak var lblType50kg: UILabel!
     @IBOutlet weak var lblType30kg: UILabel!
@@ -111,6 +100,7 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
     @IBOutlet weak var pickerStatus: UIPickerView!
     @IBOutlet weak var pickerDriver: UIPickerView!
     @IBOutlet weak var pickerDate: UIPickerView!
+    
     @IBOutlet weak var btnShipping: UIButton!
     @IBAction func btnShipping(_ sender: Any) {
         print("click Shipping tren MH chinh")
@@ -150,7 +140,7 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         pickerDate.dataSource = self
         pickerDate.delegate = self
         
-        view.bringSubviewToFront(btnShipping)
+       
         
         navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
         
@@ -166,6 +156,9 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         lblType25kg.text = "\(0)"
         lblType20kg.text = "\(0)"
         lblOtherType.text = "\(0)"
+        
+       
+        
     }
     
     
@@ -380,55 +373,16 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         
         if dataDidFilter.count > 0 {
             
-            var arrImage = [String]()
+            
             
             for infoCustomer in dataDidFilter {
                 self.customer_id.append(infoCustomer.elem?.location?.comment ?? "")
-                customer_name.append(infoCustomer.asset?.properties?.values.customer_name ?? "")
-                customer_address.append(infoCustomer.asset?.properties?.values.address ?? "")
-                self.arrivalTime_hours.append(infoCustomer.elem?.arrivalTime?.hours ?? 0)
-                self.arrivalTime_minutes.append(infoCustomer.elem?.arrivalTime?.minutes ?? 0)
-                
-                // arrImage.append(infoCustomer.asset)
-                
-                if let gasLocation1 = infoCustomer.asset?.properties?.values.gas_location1, let gasLocation2 = infoCustomer.asset?.properties?.values.gas_location2 , let gasLocation3 = infoCustomer.asset?.properties?.values.gas_location3, let gasLocation4 = infoCustomer.asset?.properties?.values.gas_location4 , let parkingPlace1 = infoCustomer.asset?.properties?.values.parking_place1, let parkingPlace2 = infoCustomer.asset?.properties?.values.parking_place2, let parkingPlace3 = infoCustomer.asset?.properties?.values.parking_place3, let parkingPlace4 = infoCustomer.asset?.properties?.values.parking_place4 {
-                    
-                    if !gasLocation1.isEmpty || !gasLocation2.isEmpty || !gasLocation3.isEmpty || !gasLocation4.isEmpty || !parkingPlace1.isEmpty || !parkingPlace2.isEmpty || !parkingPlace3.isEmpty || !parkingPlace4.isEmpty {
-                        arrImage.append(gasLocation1)
-                        arrImage.append(gasLocation2)
-                        arrImage.append(gasLocation3)
-                        arrImage.append(gasLocation4)
-                        arrImage.append(parkingPlace1)
-                        arrImage.append(parkingPlace2)
-                        arrImage.append(parkingPlace3)
-                        arrImage.append(parkingPlace4)
-                    }
-                }
-              
-                
-                self.arrUrlImage.append(arrImage)
-                
-                self.arrFacilityData.append(infoCustomer.elem?.metadata?.facility_data ?? [])
-                
-                for iFacilityData in arrFacilityData {
-                    if iFacilityData.count == 1 {
-                        iFacilityData.forEach() { detailFacilityData in
-                            
-                            self.arrType.append(detailFacilityData.type ?? 0)
-                            self.arrNumber.append(detailFacilityData.count ?? 0)
-                        }
-                    } else if iFacilityData.count > 1 {
-                        print("Add stack view, display type and count of Gas")
-                    }
-                }
-                self.arrNotes.append(infoCustomer.asset?.properties?.values.notes ?? "")
-                self.planned_date.append(infoCustomer.elem?.metadata?.planned_date ?? "")
             }
-           
+            
             
         } else {
             print(" Khong hien thi Floating Panel ")
-           // btnShipping.removeFromSuperview()
+            // btnShipping.removeFromSuperview()
             fpc.removePanelFromParent(animated: true)
         }
         
@@ -440,35 +394,19 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
     func customFloatingPanel() {
         guard let contentDeliveryVC = storyboard?.instantiateViewController(withIdentifier: "FloatingPanelDeliveryVC") as? FloatingPanelDeliveryVC else { return }
         if customer_id.count != 0 {
+            print(dataDidFilter)
+            contentDeliveryVC.dataDidFilter = dataDidFilter
             
+            contentDeliveryVC.customer_LocationType = customer_LocationType
             contentDeliveryVC.customer_id = customer_id
-            contentDeliveryVC.customer_name = customer_name
-            contentDeliveryVC.customer_address = customer_address
-            contentDeliveryVC.arrivalTime_hours = arrivalTime_hours
-            contentDeliveryVC.arrivalTime_minutes = arrivalTime_minutes
-            contentDeliveryVC.arrUrlImage = arrUrlImage
-            contentDeliveryVC.scrollView = scrollView
-            contentDeliveryVC.arrType = arrType
-            contentDeliveryVC.arrNumber = arrNumber
-            contentDeliveryVC.arrNotes = arrNotes
             
-            contentDeliveryVC.planned_date = planned_date
-            
+            customer_LocationType.removeAll()
             customer_id.removeAll()
-            customer_name.removeAll()
-            customer_address.removeAll()
-            arrivalTime_hours.removeAll()
-            arrivalTime_minutes.removeAll()
-            arrUrlImage.removeAll()
             arrFacilityData.removeAll()
-            arrType.removeAll()
-            arrNumber.removeAll()
-            arrNotes.removeAll()
-            planned_date.removeAll()
-            arrUrlImage.removeAll()
+            
             fpc.addPanel(toParent: self)
             fpc.set(contentViewController: contentDeliveryVC)
-           // fpc.trackingScrollView
+            // fpc.trackingScrollView
             
         }
         
@@ -476,9 +414,12 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         for iArrGetAssetOneDay in assetAday where iArrGetAssetOneDay.properties?.values != nil {
             value.append(iArrGetAssetOneDay.properties!.values)
         }
+        
+        self.view.bringSubviewToFront(btnShipping)
     }
     
     
+    var currentLocationAppleMarker : MKAnnotationView?
     
     func reDrawMarkers() {
         dataDidFilter.removeAll()
@@ -500,8 +441,6 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
                     pinsADay.append(carOnePin)
                 }
             }
-            
-            
             mapView.setCamera(mapCamera, animated: false)
             mapView.reloadInputViews()
             mapView.addAnnotations(pinsADay)
@@ -538,7 +477,6 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         lblType25kg.text = "\(numberType25)"
         lblType20kg.text = "\(numberType20)"
         lblOtherType.text = "\(numberTypeOther)"
-        
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
@@ -563,14 +501,27 @@ extension DeliveryListController: MKMapViewDelegate {
         var view: MyPinView
         if let dequeuedView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier) as? MyPinView {
             dequeuedView.annotation = annotation
+            //            let pin = mapView.view(for: annotation) ?? MKAnnotationView(annotation: annotation, reuseIdentifier: identifier)
+            //            if annotation is MKUserLocation {
+            //                pin.image = UIImage(named: "marker")
+            //                dequeuedView.lblView.text = "\(annotation.title - 1)"
+            //                return pin
+            //            } else {
+            //                pin.image = UIImage(named: "marker_yellow")
+            //               dequeuedView.lblView.text = "\(annotation.title - 1)"
+            //                return pin
+            //            }
+            //   dequeuedView.canShowCallout = true
+            //   dequeuedView.displayPriority = .defaultHigh
             dequeuedView.image = UIImage(named: "marker")
             dequeuedView.lblView.text = "\(annotation.title - 1)"
-            // dequeuedView.zPriority = MKAnnotationViewZPriority.init(rawValue: 0.5)
             view = dequeuedView
         } else {
             view = MyPinView(annotation: annotation, reuseIdentifier: identifier)
+            view.image = UIImage(named: "marker")
             view.lblView.text = "\(annotation.title - 1)"
         }
+        
         return view
     }
     
@@ -578,19 +529,22 @@ extension DeliveryListController: MKMapViewDelegate {
     //            print("selected callout")
     //        }
     
-    internal func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView)  {
+    
+    
+    
+    func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         print("chon vao pin")
-        
-        if let pin = mapView.dequeueReusableAnnotationView(withIdentifier: "Annotation") as? MyPinView {
-            pin.zPriority = MKAnnotationViewZPriority(rawValue: 1.0)
-            pin.imageView.image = UIImage(named: "marker_yellow")
-            pin.lblView.backgroundColor = .yellow
-            mapView.reloadInputViews()
-            
-        }
-        
+        var annotation = view.annotation
+        let index = (self.mapView.annotations as NSArray).index(of: annotation!)
+         print ("Annotation Index = \(index)")
+
+            performSegue(withIdentifier: "showMuseumDetails", sender: self)
+        //var view = MyPinView.self
+        let pin = mapView.dequeueReusableAnnotationView(withIdentifier: "Annotation") as? MyPinView
+        pin?.lblView.backgroundColor = .red
+        pin?.image = UIImage(named: "marker_yellow")
+        annotation = pin as? MKAnnotation
+        view.reloadInputViews()
+        //performSegue(withIdentifier: "replace", sender: self)
     }
-    
-    
-    
 }

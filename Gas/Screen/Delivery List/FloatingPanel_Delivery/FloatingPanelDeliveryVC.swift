@@ -15,23 +15,10 @@ class FloatingPanelDeliveryVC: UIViewController {
     
     var currentIndex: Int = 0
     var pageController: UIPageViewController!
-    
+    var customer_LocationType = [String]()
     var customer_id: [String] = []
-    var planned_date: [String] = []
-    var arrivalTime_hours: [Int] = []
-    var arrivalTime_minutes: [Int] = []
-    var customer_name: [String] = []
-    var customer_address: [String] = []
-    
-    var arrUrlImage: [[String]] = []
-    
-    var arrNotes: [String] = []
-    
-    var arrType: [Int] = []
-    var arrNumber: [Int] = []
-    
+    var dataDidFilter: [Location] = []
     var scrollView: UIScrollView!
-    
     
     var myOperation: DeliveryListController?
     
@@ -107,22 +94,12 @@ class FloatingPanelDeliveryVC: UIViewController {
         if (self.detailsTabsView.tabs.count == 0) || (index >= self.detailsTabsView.tabs.count) {
             return nil
         }
-        
         currentIndex = index
         let contentVC = storyboard?.instantiateViewController(withIdentifier: "PageDetailVC") as! PageDetailVC
         contentVC.pageIndex = index
-        
-        
+        contentVC.dataInfoOneCustomer = dataDidFilter[index]
+      
         contentVC.customer_id = customer_id[index]
-        contentVC.customer_name = customer_name[index]
-        contentVC.customer_address = customer_address[index]
-        contentVC.arrivalTime_hours = arrivalTime_hours[index]
-        contentVC.arrUrlImage = arrUrlImage[index]
-        contentVC.arrivalTime_minutes = arrivalTime_minutes[index]
-        contentVC.typeGas = arrType[index]
-        contentVC.numberGas = arrNumber[index]
-        contentVC.arrNotes = arrNotes[index]
-        contentVC.planned_date = planned_date[index]
         contentVC.scrollView = scrollView
         return contentVC
     }

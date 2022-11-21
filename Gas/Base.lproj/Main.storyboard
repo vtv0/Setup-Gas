@@ -115,6 +115,18 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <button contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" showsTouchWhenHighlighted="YES" lineBreakMode="clip" translatesAutoresizingMaskIntoConstraints="NO" id="Y2d-yK-TIm">
+                                <rect key="frame" x="30" y="745" width="315" height="31"/>
+                                <color key="backgroundColor" red="0.069788746540000002" green="0.51404082780000004" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <rect key="contentStretch" x="0.25" y="0.0" width="1" height="0.94999999999999996"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Shipping" subtitle="">
+                                    <color key="baseForegroundColor" red="0.93256921169999996" green="0.93256921169999996" blue="0.93256921169999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </buttonConfiguration>
+                                <connections>
+                                    <action selector="btnShipping:" destination="Jg3-zV-p4Z" eventType="touchUpInside" id="Fgv-ZE-VSj"/>
+                                </connections>
+                            </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="I6x-1X-8fp">
                                 <rect key="frame" x="0.0" y="91" width="375" height="56"/>
                                 <subviews>
@@ -358,18 +370,6 @@
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="gtA-13-IuZ">
                                 <rect key="frame" x="0.0" y="229" width="375" height="583"/>
                             </mapView>
-                            <button contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" showsTouchWhenHighlighted="YES" lineBreakMode="clip" translatesAutoresizingMaskIntoConstraints="NO" id="Y2d-yK-TIm">
-                                <rect key="frame" x="30" y="745" width="315" height="31"/>
-                                <color key="backgroundColor" red="0.069788746540000002" green="0.51404082780000004" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <rect key="contentStretch" x="0.25" y="0.0" width="1" height="0.94999999999999996"/>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" title="Shipping" subtitle="">
-                                    <color key="baseForegroundColor" red="0.93256921169999996" green="0.93256921169999996" blue="0.93256921169999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                </buttonConfiguration>
-                                <connections>
-                                    <action selector="btnShipping:" destination="Jg3-zV-p4Z" eventType="touchUpInside" id="Fgv-ZE-VSj"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="aGw-Ma-w39"/>
                         <color key="backgroundColor" systemColor="tintColor"/>
@@ -589,7 +589,7 @@
                                                                             <rect key="frame" x="0.0" y="0.0" width="375" height="288"/>
                                                                             <autoresizingMask key="autoresizingMask"/>
                                                                             <subviews>
-                                                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="1" translatesAutoresizingMaskIntoConstraints="NO" id="tvP-BF-K18">
+                                                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="tvP-BF-K18">
                                                                                     <rect key="frame" x="8" y="-12" width="367" height="300"/>
                                                                                 </imageView>
                                                                             </subviews>
@@ -748,7 +748,7 @@
                                                                             <stackView opaque="NO" contentMode="scaleToFill" spacing="71" translatesAutoresizingMaskIntoConstraints="NO" id="Xl7-8v-ten" userLabel="Stack View Automatic">
                                                                                 <rect key="frame" x="40" y="81.333333333333371" width="295" height="20.333333333333329"/>
                                                                                 <subviews>
-                                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="...................." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jly-Vc-aFr">
+                                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="...................." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jly-Vc-aFr" userLabel="lblTypeGasStackView">
                                                                                         <rect key="frame" x="0.0" y="0.0" width="112" height="20.333333333333332"/>
                                                                                         <constraints>
                                                                                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="112" id="RJ3-9y-cg7"/>
@@ -758,7 +758,7 @@
                                                                                         <nil key="textColor"/>
                                                                                         <nil key="highlightedColor"/>
                                                                                     </label>
-                                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="......................." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9l1-15-ylh">
+                                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="......................." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9l1-15-ylh" userLabel="lblNumberGasStackView">
                                                                                         <rect key="frame" x="183" y="0.0" width="112" height="20.333333333333332"/>
                                                                                         <constraints>
                                                                                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="112" id="YZ1-mn-tWH"/>
@@ -768,7 +768,6 @@
                                                                                         <nil key="highlightedColor"/>
                                                                                     </label>
                                                                                 </subviews>
-                                                                                <color key="backgroundColor" systemColor="systemGreenColor"/>
                                                                             </stackView>
                                                                         </subviews>
                                                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -971,12 +970,17 @@
                         <outlet property="lblCustomer_id" destination="I6b-P4-6Ho" id="jgu-fq-sGp"/>
                         <outlet property="lblDeliveryTime" destination="FaU-dU-3BE" id="Mph-Nl-nYI"/>
                         <outlet property="lblNumberGas" destination="fRG-wk-d63" id="Lz9-fe-yrx"/>
+                        <outlet property="lblNumberGasInStackView" destination="9l1-15-ylh" id="FVV-SU-BBF"/>
                         <outlet property="lblTextNotes" destination="kvD-dA-ng3" id="ZSz-dh-BsL"/>
                         <outlet property="lblTypeGas" destination="WRc-bj-6kd" id="6fv-Vg-AV3"/>
+                        <outlet property="lblTypeGasInStackView" destination="jly-Vc-aFr" id="siI-69-TgH"/>
                         <outlet property="pageControl" destination="3Ml-Mg-Vr5" id="Ca8-Zw-Y5m"/>
                         <outlet property="scrollView" destination="6aO-qi-iYG" id="GPp-pW-tLG"/>
                         <outlet property="stackViewShowInfoGas" destination="Xl7-8v-ten" id="uq3-Z1-M7x"/>
+                        <outlet property="viewDetail" destination="Dq0-is-AgA" id="ZXu-CB-RaE"/>
                         <outlet property="viewImageScroll" destination="kIw-aJ-UlO" id="Ebo-X7-i4F"/>
+                        <outlet property="viewNote" destination="2Sz-7C-6qg" id="Rds-LV-fsN"/>
+                        <outlet property="viewType" destination="2zW-X8-9B9" id="ZQe-43-QWg"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7PZ-hZ-eT0" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -2430,7 +2434,6 @@ Sáng sớm hôm sau, </string>
         </scene>
     </scenes>
     <resources>
-        <image name="1" width="122" height="125"/>
         <image name="Icon-1024" width="1024" height="1024"/>
         <image name="bx+current+location-1325051865916848437" width="16" height="16"/>
         <image name="checkboxEmpty" width="27" height="27"/>
@@ -2481,9 +2484,6 @@ Sáng sớm hôm sau, </string>
         </systemColor>
         <systemColor name="systemGrayColor">
             <color red="0.55686274509803924" green="0.55686274509803924" blue="0.57647058823529407" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </systemColor>
-        <systemColor name="systemGreenColor">
-            <color red="0.20392156862745098" green="0.7803921568627451" blue="0.34901960784313724" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemMintColor">
             <color red="0.0" green="0.7803921568627451" blue="0.74509803921568629" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
