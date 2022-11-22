@@ -94,6 +94,7 @@ class FloatingPanelDeliveryVC: UIViewController {
         if (self.detailsTabsView.tabs.count == 0) || (index >= self.detailsTabsView.tabs.count) {
             return nil
         }
+        
         currentIndex = index
         let contentVC = storyboard?.instantiateViewController(withIdentifier: "PageDetailVC") as! PageDetailVC
         contentVC.pageIndex = index
@@ -124,14 +125,18 @@ extension FloatingPanelDeliveryVC: TabsDelegate {
 
 
 extension FloatingPanelDeliveryVC: UIPageViewControllerDelegate, UIPageViewControllerDataSource, ShowResult {
+    func passIndexPVC(currentIndexPageVC: Int) {
+       // print("z")
+    }
     
     func loadMyOperation() {
         if myOperation == nil {
             myOperation = DeliveryListController()
         }
     }
-    func show(value: Int) {
-        print("value: \(value)")
+    
+    func selectedMarker(currentIndexPageVC: Int) {
+        print("currentIndexPageVC: \(currentIndexPageVC)")
     }
     
     //delegate
@@ -147,9 +152,7 @@ extension FloatingPanelDeliveryVC: UIPageViewControllerDelegate, UIPageViewContr
                 print("chuyen tab trong floatingPanel")
                 loadMyOperation()
                 myOperation?.delegateCustom = self
-                myOperation?.sum(fNumber: 9, sNumber: 20)
-                
-                
+                myOperation?.markerIndex(title: index)
                 detailsTabsView.collectionView.scrollToItem(at: IndexPath(item: index, section: 0), at: .centeredHorizontally, animated: true)
             }
         }

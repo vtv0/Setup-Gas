@@ -46,9 +46,9 @@ struct GetLatestWorkerRouteLocationListInfo: Decodable {
 
 // MARK: - LocationElement
 struct LocationElement: Decodable {  // CustomStringConvertible
-//    var description: String {
-//        return "locationOrder: \(locationOrder)"
-//    }
+    var description: String {
+        return "locationOrder: \(locationOrder)"
+    }
     
     var arrivalTime: ArrivalTime?
     var breakTimeSEC: Int?

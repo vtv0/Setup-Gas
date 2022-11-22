@@ -18,10 +18,10 @@ class MyPinView: MKPinAnnotationView {
         
         frame = CGRect(x: 0, y: 0, width: 50, height: 50)
         imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
-        lblView = UILabel(frame: CGRect(x: 10, y: 10, width: 30, height: 30))
+        lblView = UILabel(frame: CGRect(x: 11, y: 11, width: 25, height: 25))
         imageView.image = UIImage(named: "marker")
         lblView.textAlignment = .center
-        //lblView.backgroundColor = .yellow
+//        lblView.backgroundColor = .red
         lblView.layer.cornerRadius = lblView.frame.size.width / 2
         lblView.layer.masksToBounds = true
         self.bringSubviewToFront(lblView)

@@ -32,7 +32,8 @@ class PageDetailVC: UIViewController , UIScrollViewDelegate, UICollectionViewDel
     var arrFacilityData = [[Facility_data]]()
     
     var arrImage = [String]()
-    var dataInfoOneCustomer: Location = Location(elem: LocationElement(locationOrder: 0), asset: GetAsset(assetModelID: 0, enabled: true))
+    
+    var dataInfoOneCustomer: Location = Location(elem: LocationElement(locationOrder: 0), asset: GetAsset(assetModelID: 0, enabled: false))  // Location(elem: LocationElement(locationOrder: ), asset: GetAsset(assetModelID: 1, enabled: true))
     
     
     @IBOutlet weak var scrollView: UIScrollView!
