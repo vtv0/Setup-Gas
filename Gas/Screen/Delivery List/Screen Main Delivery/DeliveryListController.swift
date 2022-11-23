@@ -44,14 +44,13 @@ class CustomPin: NSObject, MKAnnotation {
 //    }
 //}
 
-
-protocol ShowResult: AnyObject {
+protocol ShowIndexPageDelegate {
     func passIndexPVC(currentIndexPageVC: Int)
 }
 
+
 class DeliveryListController: UIViewController , FloatingPanelControllerDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
     
-    weak var delegateCustom: ShowResult?
     
     let companyCode = UserDefaults.standard.string(forKey: "companyCode") ?? ""
     let tenantId = UserDefaults.standard.string(forKey: "tenantId") ?? ""
@@ -64,7 +63,7 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
     var selectedIdxDriver: Int = 0
     var selectesIdxStatus: Int = 0
     var arr: [Int] = []
-    var pinsADay: [CustomPin] = []
+    var pinsADayOfACar: [CustomPin] = []
     var dicData: [Date : [Location]] = [:]
     var indxes: [Int] = []
     var assetID: String = ""
@@ -125,6 +124,8 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         getMe()
         fpc.delegate = self
         
+        
+        
         pickerStatus.dataSource = self
         pickerStatus.delegate = self
         
@@ -151,8 +152,7 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         lblType20kg.text = "\(0)"
         lblOtherType.text = "\(0)"
         
-        
-        
+      
     }
     
     
@@ -415,11 +415,12 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
     
     
     //var currentLocationAppleMarker : MKAnnotationView?
-    
+    var arrLocationOrder = [Int]()
     func reDrawMarkers() {
         dataDidFilter.removeAll()
+        arrLocationOrder.removeAll()
         mapView.removeAnnotations(mapView.annotations)
-        pinsADay.removeAll()
+        pinsADayOfACar.removeAll()
         
         let userCoordinate = CLLocationCoordinate2D(latitude: 35.73774428640241, longitude: 139.6194163709879)
         let eyeCoordinate = CLLocationCoordinate2D(latitude: 35.73774428640241, longitude: 139.6194163709879)
@@ -431,14 +432,18 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
             self.showAlert(message: "Không có đơn hàng nào!")
         } else {
             for picker in dataDidFilter {
-                if picker.elem?.latitude != nil, picker.elem?.longitude != nil {
-                    let carOnePin = CustomPin(title: picker.elem?.locationOrder ?? 0, coordinate: CLLocationCoordinate2D(latitude: picker.elem?.latitude ?? 0, longitude: picker.elem?.longitude ?? 0 ))
-                    pinsADay.append(carOnePin)
+                if let lat = picker.elem?.latitude, let long = picker.elem?.longitude, let locationOrder = picker.elem?.locationOrder {
+                    let locationOfCustomer = CustomPin(title: locationOrder , coordinate: CLLocationCoordinate2D(latitude: lat, longitude: long))
+                    pinsADayOfACar.append(locationOfCustomer)
+                    arrLocationOrder.append(locationOfCustomer.title)
+                    
                 }
+                
             }
             mapView.setCamera(mapCamera, animated: false)
             mapView.reloadInputViews()
-            mapView.addAnnotations(pinsADay)
+            mapView.addAnnotations(pinsADayOfACar)
+            
         }
     }
     
@@ -492,86 +497,114 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
     var arrIndexMarker = [Int]()
     var indexMarkerFirst = 0
     var curenIndex = 0
+    var TheSenderVCObj = FloatingPanelDeliveryVC()
+
+    
 }
 
 
-extension DeliveryListController: MKMapViewDelegate  {
+extension DeliveryListController: MKMapViewDelegate, ShowIndexPageDelegate {
     
+//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+//        if segue.identifier == "FloatingPanelDeliveryVC" {
+//            let floatingPanelDelivery = segue.destination as! FloatingPanelDeliveryVC
+//            floatingPanelDelivery.delegate1 = self
+//
+//           // floatingPanelDelivery.passIndexPVC(currentIndexPageVC: 0)
+//        }
+//    }
     
-    // nhan ve so trang hien tai cua floating panel() PVC
-    func markerIndex(title: Int) -> Int {
-        delegateCustom?.passIndexPVC(currentIndexPageVC: title)
-         print("CurrentIndexPVC: \(title)")
-            
- 
-        return title
+   func delegateLuncher(){
+
+       self.TheSenderVCObj.delegate1 = self
+      
     }
+    
+    func passIndexPVC(currentIndexPageVC: Int){
+        print(currentIndexPageVC)
+    }
+  
+    // nhan ve so trang hien tai cua floating panel() PVC
+
     
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         guard let annotation = annotation as? CustomPin else { return nil }
         let identifier = "Annotation"
         var view: MyPinView
+        
+        arrIndexMarker.removeAll()
         if let dequeuedView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier) as? MyPinView {
+            
             dequeuedView.annotation = annotation
-  
-            let i = 0  // markerIndex(title: annotation.title)
-            print(i)
-            // truong hop index nho nhat cua xe2, xe3, xe4
-            if i == annotation.title {
+            if arrLocationOrder[0] == annotation.title {
                 dequeuedView.image = UIImage(named: "marker_yellow")
                 dequeuedView.lblView.text = "\(annotation.title - 1)"
                 dequeuedView.zPriority = MKAnnotationViewZPriority.max
-            } else {  // cac truong hop khong phai index nho nhat
+            } else {
                 dequeuedView.image = UIImage(named: "marker")
                 dequeuedView.lblView.text = "\(annotation.title - 1)"
             }
             view = dequeuedView
             
-        } else {  // chay lan dau
-            
+        } else {
             view = MyPinView(annotation: annotation, reuseIdentifier: identifier)
-            arrIndexMarker.append(annotation.title)
-            
-            let arrIndexMarkerDidSort = arrIndexMarker.sorted()
-            // print(arrIndexMarkerDidSort)
-            indexMarkerFirst = arrIndexMarkerDidSort.first ?? 0
-            
-            // truong hop index nho nhat
-            if 2 == annotation.title {
-                view.image = UIImage(named: "marker_yellow")
+            if arrLocationOrder[0] == annotation.title {
+                
                 view.lblView.text = "\(annotation.title - 1)"
                 view.zPriority = MKAnnotationViewZPriority.max
-            } else {  // cac truong hop khong phai index nho nhat
+                view.image = UIImage(named: "marker_yellow")
+                
+            } else {
                 view.image = UIImage(named: "marker")
                 view.lblView.text = "\(annotation.title - 1)"
+                view.zPriority = MKAnnotationViewZPriority.min
             }
-            
         }
+        
+        
         return view
     }
     
     // chon vao marker tren MKMapView
+    
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
-       
+        
+        var selectedMarker = 0
         if let anno = view.annotation as? CustomPin {
-            let title = anno.title - 1
-            print(arrIndexMarker)
             
-            for i in arrIndexMarker {
-                if i == title {
-                    view.image = UIImage(named: "marker_yellow")
+            selectedMarker = anno.title
+//            TheSenderVCObj.delegate1?.passIndexPVC(currentIndexPageVC: selectedMarker)
+            passIndexPVC(currentIndexPageVC: selectedMarker)
+            print(selectedMarker)
+            print(arrLocationOrder)
+            
+            for i in arrLocationOrder {
+                print("selectedMarker:\(selectedMarker)")
+                if selectedMarker == i {
+                    print("iiiiiiii:\(i)\n")
                     view.zPriority = MKAnnotationViewZPriority.max
-                    mapView.reloadInputViews()
+                    view.image = UIImage(named: "marker_yellow")
+                    
                 } else {
-                    mapView.reloadInputViews()
-                    view.image = UIImage(named: "marker")
+                    
+                    print("i:\(i)")
                     view.zPriority = MKAnnotationViewZPriority.min
+                    view.image = UIImage(named: "marker")
                 }
+                view.reloadInputViews()
+                mapView.reloadInputViews()
+                
             }
             
-//            mapView.reloadInputViews()
-            view.reloadInputViews()
+            
         }
+        
+        
     }
     
 }
+
+
+
+
+

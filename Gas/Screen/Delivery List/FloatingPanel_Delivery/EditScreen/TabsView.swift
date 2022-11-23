@@ -8,7 +8,6 @@
 import UIKit
 
 
-
 enum TabMode {
     case fixed
     case scrollable
@@ -59,7 +58,7 @@ class TabsView: UIView {
     
     var collectionView: UICollectionView!
     
-    var delegate: TabsDelegate?
+    var delegate2: TabsDelegate?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -119,9 +118,11 @@ extension TabsView: UICollectionViewDelegate, UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        delegate?.tabsViewDidSelectItemAt(position: indexPath.item)
+        delegate2?.tabsViewDidSelectItemAt(position: indexPath.item)
+        print(delegate2)
         
     }
+    
 }
 
 extension TabsView: UICollectionViewDelegateFlowLayout {

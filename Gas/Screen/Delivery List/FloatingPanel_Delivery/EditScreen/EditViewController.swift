@@ -61,7 +61,7 @@ class EditViewController: UIViewController {
         // tabsView.collectionView.backgroundColor = .cyan
         
         // Set TabsView Delegate
-        tabsView.delegate = self
+        tabsView.delegate2 = self
         
         // Set the selected Tab when the app starts
         tabsView.collectionView.selectItem(at: IndexPath(item: 0, section: 0), animated: true, scrollPosition: .centeredVertically)
