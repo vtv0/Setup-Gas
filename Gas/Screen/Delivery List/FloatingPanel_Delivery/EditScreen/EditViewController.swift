@@ -34,6 +34,8 @@ class EditViewController: UIViewController {
         setupTabs()
         
         setupPageViewController()
+        
+        
     }
     
     func setupTabs() {

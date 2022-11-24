@@ -11,12 +11,11 @@ protocol TabsDelegate {
     func tabsViewDidSelectItemAt(position: Int)
 }
 
-
-
-
-class FloatingPanelDeliveryVC: UIViewController, UIPageViewControllerDelegate, UIPageViewControllerDataSource {
+class FloatingPanelDeliveryVC: UIViewController, UIPageViewControllerDelegate, UIPageViewControllerDataSource, ShowIndexPageDelegateProtocol {
     
-    var delegate1: ShowIndexPageDelegate?
+    func passIndexPVC(currentIndexPageVC: Int) {
+        print(currentIndexPageVC)
+    }
     
     var currentIndex: Int = 0
     var pageController: UIPageViewController!
@@ -25,21 +24,14 @@ class FloatingPanelDeliveryVC: UIViewController, UIPageViewControllerDelegate, U
     var dataDidFilter: [Location] = []
     var scrollView: UIScrollView!
     
-    
-    
     @IBOutlet weak var detailsTabsView: TabsView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "FloatingPanel PageVC"
-        
-        
         // navigationController?.navigationBar.backgroundColor = .systemBlue
         navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
         setupTabs()
-        
-        
-        
         setupPageViewController()
     }
     
@@ -114,8 +106,10 @@ class FloatingPanelDeliveryVC: UIViewController, UIPageViewControllerDelegate, U
         return contentVC
     }
     
+    
     // MARK: Delegate
     //delegate
+    
     func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
         if finished {
             if completed {
@@ -124,16 +118,9 @@ class FloatingPanelDeliveryVC: UIViewController, UIPageViewControllerDelegate, U
                 index = getVCPageIndex(vc)
                 detailsTabsView.collectionView.selectItem(at: IndexPath(item: index, section: 0), animated: true, scrollPosition: .centeredVertically)
                 
-                // print("chuyen tab trong floatingPanel")
-                //loadMyOperation()
-                // myOperation?.delegateCustom = self
-                //  myOperation?.markerIndex(title: index)
-                
-                
-                delegate1?.passIndexPVC(currentIndexPageVC: index)
-                //delegate1?.passIndexPVC(currentIndexPageVC: index)
-                
-                print(delegate1)
+                let pvc = storyboard?.instantiateViewController(withIdentifier: "DeliveryListController") as? DeliveryListController
+                pvc?.delegate1 = self
+                pvc?.passIndexPVC(currentIndexPageVC: index)
                 
                 // Animate the tab in the detailsTabsView to be centered when you are scrolling using .scrollable
                 detailsTabsView.collectionView.scrollToItem(at: IndexPath(item: index, section: 0), at: .centeredHorizontally, animated: true)
@@ -172,14 +159,12 @@ class FloatingPanelDeliveryVC: UIViewController, UIPageViewControllerDelegate, U
             return nil
         } else {
             index -= 1
-            
             return self.showViewController(index)
         }
     }
     
-    
-    
 }
+
 
 extension FloatingPanelDeliveryVC: TabsDelegate {
     

@@ -44,13 +44,14 @@ class CustomPin: NSObject, MKAnnotation {
 //    }
 //}
 
-protocol ShowIndexPageDelegate {
+
+protocol ShowIndexPageDelegateProtocol: AnyObject {
     func passIndexPVC(currentIndexPageVC: Int)
 }
 
-
 class DeliveryListController: UIViewController , FloatingPanelControllerDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
     
+    var delegate1: ShowIndexPageDelegateProtocol?
     
     let companyCode = UserDefaults.standard.string(forKey: "companyCode") ?? ""
     let tenantId = UserDefaults.standard.string(forKey: "tenantId") ?? ""
@@ -63,6 +64,7 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
     var selectedIdxDriver: Int = 0
     var selectesIdxStatus: Int = 0
     var arr: [Int] = []
+    var arrLocationOrder = [Int]()
     var pinsADayOfACar: [CustomPin] = []
     var dicData: [Date : [Location]] = [:]
     var indxes: [Int] = []
@@ -89,7 +91,9 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
     @IBOutlet weak var lblType25kg: UILabel!
     @IBOutlet weak var lblType20kg: UILabel!
     @IBOutlet weak var lblOtherType: UILabel!
+    
     @IBOutlet weak var mapView: MKMapView!
+    
     @IBOutlet weak var pickerStatus: UIPickerView!
     @IBOutlet weak var pickerDriver: UIPickerView!
     @IBOutlet weak var pickerDate: UIPickerView!
@@ -124,8 +128,6 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         getMe()
         fpc.delegate = self
         
-        
-        
         pickerStatus.dataSource = self
         pickerStatus.delegate = self
         
@@ -134,7 +136,6 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         
         pickerDate.dataSource = self
         pickerDate.delegate = self
-        
         
         
         navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
@@ -151,11 +152,7 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         lblType25kg.text = "\(0)"
         lblType20kg.text = "\(0)"
         lblOtherType.text = "\(0)"
-        
-      
     }
-    
-    
     
     func showAlert(title: String? = "", message: String?, completion: (() -> Void)? = nil) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
@@ -387,6 +384,8 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
     
     
     func customFloatingPanel() {
+        
+        
         guard let contentDeliveryVC = storyboard?.instantiateViewController(withIdentifier: "FloatingPanelDeliveryVC") as? FloatingPanelDeliveryVC else { return }
         if customer_id.count != 0 {
             print(dataDidFilter)
@@ -411,39 +410,58 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         }
         
         self.view.bringSubviewToFront(btnShipping)
+        
+        //        let pvc = storyboard?.instantiateViewController(withIdentifier: "PageDetailVC") as? PageDetailVC
+        //       let aaa =  pvc?.scrollView
+        
     }
     
     
-    //var currentLocationAppleMarker : MKAnnotationView?
-    var arrLocationOrder = [Int]()
     func reDrawMarkers() {
+        
         dataDidFilter.removeAll()
         arrLocationOrder.removeAll()
-        mapView.removeAnnotations(mapView.annotations)
+        if mapView != nil {
+            mapView.removeAnnotations(mapView.annotations)
+        }
         pinsADayOfACar.removeAll()
         
-        let userCoordinate = CLLocationCoordinate2D(latitude: 35.73774428640241, longitude: 139.6194163709879)
-        let eyeCoordinate = CLLocationCoordinate2D(latitude: 35.73774428640241, longitude: 139.6194163709879)
-        let mapCamera = MKMapCamera(lookingAtCenter: userCoordinate, fromEyeCoordinate: eyeCoordinate, eyeAltitude: 1000000.0)
+        // let userCoordinate = CLLocationCoordinate2D(latitude: 35.73774428640241, longitude: 139.6194163709879)
+        // let eyeCoordinate = CLLocationCoordinate2D(latitude: 35.73774428640241, longitude: 139.6194163709879)
+        // let mapCamera = MKMapCamera(lookingAtCenter: userCoordinate, fromEyeCoordinate: eyeCoordinate, eyeAltitude: 1000000.0)
         
         let dataDidFilter = getDataFiltered(date: dateYMD[selectedIdxDate], driver: selectedIdxDriver, status: selectesIdxStatus)
         if dataDidFilter.count == 0 {
             print("_______________________________________________________________________________Không có đơn hàng nào!")
             self.showAlert(message: "Không có đơn hàng nào!")
         } else {
+            
             for picker in dataDidFilter {
                 if let lat = picker.elem?.latitude, let long = picker.elem?.longitude, let locationOrder = picker.elem?.locationOrder {
                     let locationOfCustomer = CustomPin(title: locationOrder , coordinate: CLLocationCoordinate2D(latitude: lat, longitude: long))
-                    pinsADayOfACar.append(locationOfCustomer)
-                    arrLocationOrder.append(locationOfCustomer.title)
                     
+                    pinsADayOfACar.append(locationOfCustomer)
+                    
+                    
+                    arrLocationOrder.append(locationOfCustomer.title)
                 }
+            }
+            
+            let identifier = "Annotation"
+            var view: MyPinView
+            if let dequeuedView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier) as? MyPinView {
+                
+                if arrLocationOrder[0] == 2    {
+                    print("aaaaa")
+                }
+                view = dequeuedView
                 
             }
-            mapView.setCamera(mapCamera, animated: false)
-            mapView.reloadInputViews()
-            mapView.addAnnotations(pinsADayOfACar)
             
+            
+            // mapView.setCamera(mapCamera, animated: false)
+            
+            mapView.addAnnotations(pinsADayOfACar)
         }
     }
     
@@ -472,6 +490,7 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
                 }
             }
         }
+        
         lblType50kg.text = "\(numberType50)"
         lblType30kg.text = "\(numberType30)"
         lblType25kg.text = "\(numberType25)"
@@ -494,68 +513,45 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
     }
     
     
-    var arrIndexMarker = [Int]()
-    var indexMarkerFirst = 0
-    var curenIndex = 0
-    var TheSenderVCObj = FloatingPanelDeliveryVC()
-
-    
+    var currentIndex = 0
 }
 
 
-extension DeliveryListController: MKMapViewDelegate, ShowIndexPageDelegate {
+extension DeliveryListController: MKMapViewDelegate {
     
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        if segue.identifier == "FloatingPanelDeliveryVC" {
-//            let floatingPanelDelivery = segue.destination as! FloatingPanelDeliveryVC
-//            floatingPanelDelivery.delegate1 = self
-//
-//           // floatingPanelDelivery.passIndexPVC(currentIndexPageVC: 0)
-//        }
-//    }
     
-   func delegateLuncher(){
-
-       self.TheSenderVCObj.delegate1 = self
-      
-    }
-    
-    func passIndexPVC(currentIndexPageVC: Int){
-        print(currentIndexPageVC)
-    }
-  
-    // nhan ve so trang hien tai cua floating panel() PVC
-
     
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         guard let annotation = annotation as? CustomPin else { return nil }
+        
         let identifier = "Annotation"
         var view: MyPinView
         
-        arrIndexMarker.removeAll()
+        
         if let dequeuedView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier) as? MyPinView {
-            
             dequeuedView.annotation = annotation
             if arrLocationOrder[0] == annotation.title {
-                dequeuedView.image = UIImage(named: "marker_yellow")
+               
                 dequeuedView.lblView.text = "\(annotation.title - 1)"
-                dequeuedView.zPriority = MKAnnotationViewZPriority.max
+                dequeuedView.zPriority = MKAnnotationViewZPriority.defaultSelected
+                dequeuedView.image = UIImage(named: "marker_yellow")
+                
             } else {
                 dequeuedView.image = UIImage(named: "marker")
                 dequeuedView.lblView.text = "\(annotation.title - 1)"
             }
-            view = dequeuedView
             
+            view = dequeuedView
         } else {
             view = MyPinView(annotation: annotation, reuseIdentifier: identifier)
+            
             if arrLocationOrder[0] == annotation.title {
-                
                 view.lblView.text = "\(annotation.title - 1)"
-                view.zPriority = MKAnnotationViewZPriority.max
+                view.zPriority = MKAnnotationViewZPriority.defaultSelected
                 view.image = UIImage(named: "marker_yellow")
-                
             } else {
                 view.image = UIImage(named: "marker")
+                //view.imageView = UIImageView(image: UIImage(named: "0"))
                 view.lblView.text = "\(annotation.title - 1)"
                 view.zPriority = MKAnnotationViewZPriority.min
             }
@@ -565,41 +561,81 @@ extension DeliveryListController: MKMapViewDelegate, ShowIndexPageDelegate {
         return view
     }
     
-    // chon vao marker tren MKMapView
+    func passIndexPVC(currentIndexPageVC: Int) {
+        print(currentIndexPageVC)
+        currentIndex = currentIndexPageVC
+        dataDidFilter.removeAll()
+        arrLocationOrder.removeAll()
+        if mapView != nil {
+            mapView.removeAnnotations(mapView.annotations)
+        }
+        
+//        for picker in dataDidFilter {
+//            if let lat = picker.elem?.latitude, let long = picker.elem?.longitude, let locationOrder = picker.elem?.locationOrder {
+//                let locationOfCustomer = CustomPin(title: locationOrder , coordinate: CLLocationCoordinate2D(latitude: lat, longitude: long))
+//                pinsADayOfACar.append(locationOfCustomer)
+//                arrLocationOrder.append(locationOfCustomer.title)
+//            }
+//        }
+        
+        
+//        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(mapTapped))
+//                tapGesture.numberOfTapsRequired = 1
+//                mapView.addGestureRecognizer(tapGesture)
+//                mapView.delegate = self
+    }
     
+//    @objc func mapTapped(_ sender: UITapGestureRecognizer) {
+//            let tapPoint = sender.location(in: mapView)
+//            let geoPoint = mapView.convert(tapPoint, toCoordinateFrom: mapView)
+//            print(geoPoint)
+//        }
+
+    
+    
+    // chon vao marker tren MKMapView
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         
         var selectedMarker = 0
-        if let anno = view.annotation as? CustomPin {
-            
-            selectedMarker = anno.title
-//            TheSenderVCObj.delegate1?.passIndexPVC(currentIndexPageVC: selectedMarker)
-            passIndexPVC(currentIndexPageVC: selectedMarker)
-            print(selectedMarker)
-            print(arrLocationOrder)
-            
-            for i in arrLocationOrder {
-                print("selectedMarker:\(selectedMarker)")
-                if selectedMarker == i {
-                    print("iiiiiiii:\(i)\n")
-                    view.zPriority = MKAnnotationViewZPriority.max
-                    view.image = UIImage(named: "marker_yellow")
-                    
-                } else {
-                    
-                    print("i:\(i)")
-                    view.zPriority = MKAnnotationViewZPriority.min
-                    view.image = UIImage(named: "marker")
-                }
-                view.reloadInputViews()
-                mapView.reloadInputViews()
-                
-            }
-            
-            
-        }
+        // if let anno = view.annotation as? CustomPin {
+        // currentIndex = anno.title
         
+        selectedMarker = currentIndex
         
+        //print(selectedMarker)
+        //  print("Diem da chon tren Map: \(selectedMarker)")
+        //print(arrLocationOrder)
+        
+        //  for i in arrLocationOrder {
+        //  print("selectedMarker:\(selectedMarker)")
+        // if selectedMarker == i {
+        
+        //   print("iiiiiiii:\(i)\n")
+        
+        //   view.zPriority = MKAnnotationViewZPriority.max
+        //   view.image = UIImage(named: "marker")
+        
+        // let button = UIButton(type: .infoDark)
+        // button.addTarget(self, action: #selector(selectPinView(_:)), for: .touchDown)
+        // view.rightCalloutAccessoryView = button
+        // view.leftCalloutAccessoryView = UIImageView(image: UIImage(named: "marker"))
+        // view.canShowCallout = true
+        //view.image = ui
+        
+        //let customMarker = storyboard?.instantiateViewController(withIdentifier: "DeliveryListController") as? DeliveryListController
+        //customMarker?.
+        // mapView.reloadInputViews()
+        
+        // } else {
+        // print("i:\(i)")
+        view.image = UIImage(named: "marker_yellow")
+        view.selectedZPriority = MKAnnotationViewZPriority.max
+        
+        //  }
+        // }
+        view.reloadInputViews()
+        mapView.reloadInputViews()
+        //   }
     }
     
 }

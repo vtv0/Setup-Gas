@@ -168,7 +168,10 @@ class PageDetailVC: UIViewController , UIScrollViewDelegate, UICollectionViewDel
             }
             arrImage = arrDataUrlImage
             
+            
         }
+        
+        
     }
     
     
