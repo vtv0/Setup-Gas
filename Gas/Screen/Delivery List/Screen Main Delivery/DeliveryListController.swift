@@ -65,7 +65,7 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
     var selectesIdxStatus: Int = 0
     var arr: [Int] = []
     var arrLocationOrder = [Int]()
-    var pinsADayOfACar: [CustomPin] = []
+    // var pinsADayOfACar: [CustomPin] = []
     var dicData: [Date : [Location]] = [:]
     var indxes: [Int] = []
     var assetID: String = ""
@@ -78,6 +78,7 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
     
     var customer_id: [String] = []
     
+    var passIndexSelectedMarker = 0
     let fpc = FloatingPanelController()
     
     var dataDidFilter: [Location] = []
@@ -128,6 +129,7 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         getMe()
         fpc.delegate = self
         
+        
         pickerStatus.dataSource = self
         pickerStatus.delegate = self
         
@@ -144,6 +146,7 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         let eyeCoordinate = CLLocationCoordinate2D(latitude: 35.73774428640241, longitude: 139.6194163709879)
         let mapCamera = MKMapCamera(lookingAtCenter: userCoordinate, fromEyeCoordinate: eyeCoordinate, eyeAltitude: 1000000.0)
         
+        
         mapView.delegate = self
         mapView.setCamera(mapCamera, animated: false)
         
@@ -152,6 +155,8 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         lblType25kg.text = "\(0)"
         lblType20kg.text = "\(0)"
         lblOtherType.text = "\(0)"
+        
+        
     }
     
     func showAlert(title: String? = "", message: String?, completion: (() -> Void)? = nil) {
@@ -250,6 +255,7 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
                     if self.t == self.dateYMD.count {
                         self.reDrawMarkers()
                         self.hideActivity()
+                        
                     }
                 }
         }
@@ -310,27 +316,19 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         self.indxes = []
         var locationsByDriver: [Int: [Location]] = [:]
         var elemLocationADay = [Location]()
-        
         var dataOneDate: [Location] = dicData[date] ?? []
-        
-        // xoa phan tu dau tien cua mang [Location] neu la supplier && locationOrder = 1
         if dataOneDate.count > 0 && dataOneDate[0].type == .supplier && dataOneDate[0].elem?.locationOrder == 1 {
             dataOneDate.remove(at: 0)
         }
-        
         dataOneDate.forEach() { idataADay in
             elemLocationADay.append(idataADay)
-            
-            //assetAday.append(idataADay.asset)
         }
-        
         locations = elemLocationADay
         elemLocationADay.enumerated().forEach { vehicleIdx, vehicle in
             if (vehicle.elem?.location?.locationType?.rawValue == "supplier") {
                 indxes.append(vehicleIdx)
             }
         }
-        
         indxes.enumerated().forEach { idx, item in
             if Array(elemLocationADay).count > 0 {
                 if idx == 0 && indxes[0] > 0 {
@@ -340,13 +338,10 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
                 }
             }
         }
-        
         self.selectedIdxDriver = driver
         self.selectesIdxStatus = status
         self.pickerDriver.reloadAllComponents()
-        
         var dataStatus: [Location] = locationsByDriver[driver] ?? []
-        
         for statusShipping in dataStatus {
             if statusShipping.elem?.location?.metadata?.displayData?.valueDeliveryHistory() == .waiting
                 && statusShipping.elem?.location?.metadata?.displayData?.valueDeliveryHistory() == .failed &&
@@ -359,19 +354,12 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
                 dataDidFilter = dataStatus
             }
         }
-        
         self.pickerStatus.reloadAllComponents()
         self.totalType()
-        
         if dataDidFilter.count > 0 {
-            
-            
-            
             for infoCustomer in dataDidFilter {
                 self.customer_id.append(infoCustomer.elem?.location?.comment ?? "")
             }
-            
-            
         } else {
             print(" Khong hien thi Floating Panel ")
             // btnShipping.removeFromSuperview()
@@ -379,90 +367,30 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         }
         
         customFloatingPanel()
+        
         return dataDidFilter
     }
     
-    
     func customFloatingPanel() {
-        
-        
         guard let contentDeliveryVC = storyboard?.instantiateViewController(withIdentifier: "FloatingPanelDeliveryVC") as? FloatingPanelDeliveryVC else { return }
         if customer_id.count != 0 {
-            print(dataDidFilter)
+            //            print(dataDidFilter)
             contentDeliveryVC.dataDidFilter = dataDidFilter
-            
             contentDeliveryVC.customer_LocationType = customer_LocationType
             contentDeliveryVC.customer_id = customer_id
-            
+            //contentDeliveryVC.passIndexSelectedMarker = passIndexSelectedMarker
             customer_LocationType.removeAll()
             customer_id.removeAll()
             arrFacilityData.removeAll()
-            
             fpc.addPanel(toParent: self)
             fpc.set(contentViewController: contentDeliveryVC)
             // fpc.trackingScrollView
-            
         }
-        
         var value: [ValuesDetail] = []
         for iArrGetAssetOneDay in assetAday where iArrGetAssetOneDay.properties?.values != nil {
             value.append(iArrGetAssetOneDay.properties!.values)
         }
-        
         self.view.bringSubviewToFront(btnShipping)
-        
-        //        let pvc = storyboard?.instantiateViewController(withIdentifier: "PageDetailVC") as? PageDetailVC
-        //       let aaa =  pvc?.scrollView
-        
-    }
-    
-    
-    func reDrawMarkers() {
-        
-        dataDidFilter.removeAll()
-        arrLocationOrder.removeAll()
-        if mapView != nil {
-            mapView.removeAnnotations(mapView.annotations)
-        }
-        pinsADayOfACar.removeAll()
-        
-        // let userCoordinate = CLLocationCoordinate2D(latitude: 35.73774428640241, longitude: 139.6194163709879)
-        // let eyeCoordinate = CLLocationCoordinate2D(latitude: 35.73774428640241, longitude: 139.6194163709879)
-        // let mapCamera = MKMapCamera(lookingAtCenter: userCoordinate, fromEyeCoordinate: eyeCoordinate, eyeAltitude: 1000000.0)
-        
-        let dataDidFilter = getDataFiltered(date: dateYMD[selectedIdxDate], driver: selectedIdxDriver, status: selectesIdxStatus)
-        if dataDidFilter.count == 0 {
-            print("_______________________________________________________________________________Không có đơn hàng nào!")
-            self.showAlert(message: "Không có đơn hàng nào!")
-        } else {
-            
-            for picker in dataDidFilter {
-                if let lat = picker.elem?.latitude, let long = picker.elem?.longitude, let locationOrder = picker.elem?.locationOrder {
-                    let locationOfCustomer = CustomPin(title: locationOrder , coordinate: CLLocationCoordinate2D(latitude: lat, longitude: long))
-                    
-                    pinsADayOfACar.append(locationOfCustomer)
-                    
-                    
-                    arrLocationOrder.append(locationOfCustomer.title)
-                }
-            }
-            
-            let identifier = "Annotation"
-            var view: MyPinView
-            if let dequeuedView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier) as? MyPinView {
-                
-                if arrLocationOrder[0] == 2    {
-                    print("aaaaa")
-                }
-                view = dequeuedView
-                
-            }
-            
-            
-            // mapView.setCamera(mapCamera, animated: false)
-            
-            mapView.addAnnotations(pinsADayOfACar)
-        }
     }
     
     func totalType() {
@@ -490,7 +418,6 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
                 }
             }
         }
-        
         lblType50kg.text = "\(numberType50)"
         lblType30kg.text = "\(numberType30)"
         lblType25kg.text = "\(numberType25)"
@@ -502,6 +429,7 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         if pickerView == pickerDate {
             selectedIdxDate = row
             selectedIdxDriver = 0
+            passIndexPVC(currentIndexPageVC: row)
             self.reDrawMarkers()
         } else if pickerView == pickerDriver {
             selectedIdxDriver = row
@@ -512,35 +440,99 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         }
     }
     
-    
     var currentIndex = 0
+    
+    func reDrawMarkers() {
+        dataDidFilter.removeAll()
+        arrLocationOrder.removeAll()
+        print(mapView)
+        if mapView != nil {
+            mapView.removeAnnotations(mapView.annotations)
+        }
+        dataDidFilter = getDataFiltered(date: dateYMD[selectedIdxDate], driver: selectedIdxDriver, status: selectesIdxStatus)
+        if dataDidFilter.count == 0 {
+            print("_______________________________________________________________________________Không có đơn hàng nào!")
+            self.showAlert(message: "Không có đơn hàng nào!")
+        } else {
+            for picker in dataDidFilter {
+                if let lat = picker.elem?.latitude, let long = picker.elem?.longitude, let locationOrder = picker.elem?.locationOrder {
+                    let locationOfCustomer = CustomPin(title: locationOrder , coordinate: CLLocationCoordinate2D(latitude: lat, longitude: long))
+                    arrLocationOrder.append(locationOfCustomer.title)
+                    
+                    
+                    mapView.addAnnotation(locationOfCustomer)
+                }
+            }
+        }
+        mapView.reloadInputViews()
+        //        UserDefaults.standard.set(arrLocationOrder, forKey: "ArrLocationOrder")
+    }
 }
 
 
 extension DeliveryListController: MKMapViewDelegate {
     
-    
+    func passIndexPVC(currentIndexPageVC: Int) {
+        
+        print(currentIndexPageVC)
+        //currentIndex = currentIndexPageVC
+        //     reDrawMarkers()
+        
+        print(mapView)
+        
+        if self.mapView != nil {
+            // mapView.removeAnnotations(mapView.annotations)
+            self.mapView.removeAnnotations(mapView.annotations)
+            
+            // self.mapView.addAnnotation(annotation)
+        }
+        
+        
+        // let  arrLocationOrder1 = UserDefaults.standard.array(forKey: "ArrLocationOrder") ?? []
+        //        for i in arrLocationOrder1 {
+        //            print(i)
+        //            print(currentIndex)
+        //            if i as! Int == currentIndex {
+        //            }
+        //        }
+        //        if dataDidFilter1.count == 0 {
+        //            print("_______________________________________________________________________________Không có đơn hàng nào!")
+        //            self.showAlert(message: "Không có đơn hàng nào!")
+        //        } else {
+        //            for picker in dataDidFilter1 {
+        //                if let lat = picker.elem?.latitude, let long = picker.elem?.longitude, let locationOrder = picker.elem?.locationOrder {
+        //                    let locationOfCustomer = CustomPin(title: locationOrder , coordinate: CLLocationCoordinate2D(latitude: lat, longitude: long))
+        //                    // pinsADayOfACar.append(locationOfCustomer)
+        //                    arrLocationOrder.append(locationOfCustomer.title)
+        //                    mapView.addAnnotation(locationOfCustomer)
+        //                }
+        //            }
+        //           // dataDidFilter1.removeAll()
+        //            //mapView.addAnnotations(pinsADayOfACar)
+        //        }
+    }
     
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-        guard let annotation = annotation as? CustomPin else { return nil }
+        mapView.delegate = self
         
+        guard let annotation = annotation as? CustomPin else { return nil }
         let identifier = "Annotation"
         var view: MyPinView
-        
-        
+        // thay doi i de mau ve ra mau vang
         if let dequeuedView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier) as? MyPinView {
             dequeuedView.annotation = annotation
-            if arrLocationOrder[0] == annotation.title {
-               
+            
+            print(arrLocationOrder)
+            print(passIndexSelectedMarker)
+            
+            if passIndexSelectedMarker == annotation.title  {
                 dequeuedView.lblView.text = "\(annotation.title - 1)"
                 dequeuedView.zPriority = MKAnnotationViewZPriority.defaultSelected
                 dequeuedView.image = UIImage(named: "marker_yellow")
-                
             } else {
                 dequeuedView.image = UIImage(named: "marker")
                 dequeuedView.lblView.text = "\(annotation.title - 1)"
             }
-            
             view = dequeuedView
         } else {
             view = MyPinView(annotation: annotation, reuseIdentifier: identifier)
@@ -557,85 +549,68 @@ extension DeliveryListController: MKMapViewDelegate {
             }
         }
         
-        
         return view
     }
-    
-    func passIndexPVC(currentIndexPageVC: Int) {
-        print(currentIndexPageVC)
-        currentIndex = currentIndexPageVC
-        dataDidFilter.removeAll()
-        arrLocationOrder.removeAll()
-        if mapView != nil {
-            mapView.removeAnnotations(mapView.annotations)
-        }
-        
-//        for picker in dataDidFilter {
-//            if let lat = picker.elem?.latitude, let long = picker.elem?.longitude, let locationOrder = picker.elem?.locationOrder {
-//                let locationOfCustomer = CustomPin(title: locationOrder , coordinate: CLLocationCoordinate2D(latitude: lat, longitude: long))
-//                pinsADayOfACar.append(locationOfCustomer)
-//                arrLocationOrder.append(locationOfCustomer.title)
-//            }
-//        }
-        
-        
-//        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(mapTapped))
-//                tapGesture.numberOfTapsRequired = 1
-//                mapView.addGestureRecognizer(tapGesture)
-//                mapView.delegate = self
-    }
-    
-//    @objc func mapTapped(_ sender: UITapGestureRecognizer) {
-//            let tapPoint = sender.location(in: mapView)
-//            let geoPoint = mapView.convert(tapPoint, toCoordinateFrom: mapView)
-//            print(geoPoint)
-//        }
-
     
     
     // chon vao marker tren MKMapView
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
-        
-        var selectedMarker = 0
-        // if let anno = view.annotation as? CustomPin {
-        // currentIndex = anno.title
-        
-        selectedMarker = currentIndex
-        
-        //print(selectedMarker)
-        //  print("Diem da chon tren Map: \(selectedMarker)")
-        //print(arrLocationOrder)
-        
-        //  for i in arrLocationOrder {
-        //  print("selectedMarker:\(selectedMarker)")
-        // if selectedMarker == i {
-        
-        //   print("iiiiiiii:\(i)\n")
-        
-        //   view.zPriority = MKAnnotationViewZPriority.max
-        //   view.image = UIImage(named: "marker")
-        
-        // let button = UIButton(type: .infoDark)
-        // button.addTarget(self, action: #selector(selectPinView(_:)), for: .touchDown)
-        // view.rightCalloutAccessoryView = button
-        // view.leftCalloutAccessoryView = UIImageView(image: UIImage(named: "marker"))
-        // view.canShowCallout = true
-        //view.image = ui
-        
-        //let customMarker = storyboard?.instantiateViewController(withIdentifier: "DeliveryListController") as? DeliveryListController
-        //customMarker?.
-        // mapView.reloadInputViews()
-        
-        // } else {
-        // print("i:\(i)")
-        view.image = UIImage(named: "marker_yellow")
-        view.selectedZPriority = MKAnnotationViewZPriority.max
-        
-        //  }
-        // }
-        view.reloadInputViews()
-        mapView.reloadInputViews()
-        //   }
+        if let anno = view.annotation as? CustomPin {
+            //     let scr2 = storyboard?.instantiateViewController(withIdentifier: "FloatingPanelDeliveryVC") as? FloatingPanelDeliveryVC
+            passIndexSelectedMarker = anno.title
+            guard let contentDeliveryVC = storyboard?.instantiateViewController(withIdentifier: "FloatingPanelDeliveryVC") as? FloatingPanelDeliveryVC else { return }
+            contentDeliveryVC.passIndexSelectedMarker = anno.title
+            mapView.removeAnnotations(mapView.annotations)
+            if passIndexSelectedMarker > 0 {
+                dataDidFilter = getDataFiltered(date: dateYMD[selectedIdxDate], driver: selectedIdxDriver, status: selectesIdxStatus)
+                if dataDidFilter.count == 0 {
+                    print("_______________________________________________________________________________Không có đơn hàng nào!")
+                    self.showAlert(message: "Không có đơn hàng nào!")
+                } else {
+                    for picker in dataDidFilter {
+                        if let lat = picker.elem?.latitude, let long = picker.elem?.longitude, let locationOrder = picker.elem?.locationOrder {
+                            let locationOfCustomer = CustomPin(title: locationOrder , coordinate: CLLocationCoordinate2D(latitude: lat, longitude: long))
+                            mapView.addAnnotation(locationOfCustomer)
+                        }
+                    }
+                }
+                // arrLocationOrder.removeAll()
+            }
+            //  print(anno.title)
+            
+            //  print("Diem da chon tren Map: \(selectedMarker)")
+            //print(arrLocationOrder)
+            
+            //  for i in arrLocationOrder {
+            //  print("selectedMarker:\(selectedMarker)")
+            // if selectedMarker == i {
+            
+            //   print("iiiiiiii:\(i)\n")
+            
+            //   view.zPriority = MKAnnotationViewZPriority.max
+            //   view.image = UIImage(named: "marker")
+            
+            // let button = UIButton(type: .infoDark)
+            // button.addTarget(self, action: #selector(selectPinView(_:)), for: .touchDown)
+            // view.rightCalloutAccessoryView = button
+            // view.leftCalloutAccessoryView = UIImageView(image: UIImage(named: "marker"))
+            // view.canShowCallout = true
+            //view.image = ui
+            
+            //let customMarker = storyboard?.instantiateViewController(withIdentifier: "DeliveryListController") as? DeliveryListController
+            //customMarker?.
+            // mapView.reloadInputViews()
+            
+            // } else {
+            // print("i:\(i)")
+            //view.image = UIImage(named: "marker_yellow")
+            
+            
+            //  }
+            // }
+            //view.reloadInputViews()
+            //mapView.reloadInputViews()
+        }
     }
     
 }

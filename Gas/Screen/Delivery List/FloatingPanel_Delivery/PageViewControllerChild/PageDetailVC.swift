@@ -15,6 +15,7 @@ import AlamofireImage
 class PageDetailVC: UIViewController , UIScrollViewDelegate, UICollectionViewDelegate {
     
     var pageIndex: Int!
+    
     var customer_id: String = ""
     var arrUrlImage: [[String]] = []
     
@@ -77,6 +78,8 @@ class PageDetailVC: UIViewController , UIScrollViewDelegate, UICollectionViewDel
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        print(pageIndex)
+        
         collectionView.delegate = self
         collectionView.dataSource = self
         
@@ -147,8 +150,6 @@ class PageDetailVC: UIViewController , UIScrollViewDelegate, UICollectionViewDel
                     lblNumberGas?.text =  "\(iFacilityData[0].count  ?? 0)bottle"
                     lblTypeGasInStackView.text = "\(iFacilityData[1].type ?? 0 )kg"
                     lblNumberGasInStackView.text = "\(iFacilityData[1].count  ?? 0)bottle"
-                    
-                    
                 }
             }
             
