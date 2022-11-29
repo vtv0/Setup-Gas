@@ -134,7 +134,7 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         let eyeCoordinate = CLLocationCoordinate2D(latitude: 35.73774428640241, longitude: 139.6194163709879)
         let mapCamera = MKMapCamera(lookingAtCenter: userCoordinate, fromEyeCoordinate: eyeCoordinate, eyeAltitude: 1000000.0)
         mapView.delegate = self
-        //        mapView.delegate1 = self
+        
         mapView.setCamera(mapCamera, animated: false)
         lblType50kg.text = "\(0)"
         lblType30kg.text = "\(0)"
@@ -364,7 +364,7 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
             contentDeliveryVC.customer_id = customer_id
             
             // print(passIndexSelectedMarker)
-            // contentDeliveryVC.currentIndex = passIndexSelectedMarker
+            contentDeliveryVC.currentIndex = passIndexSelectedMarker
             // contentDeliveryVC.passIndexSelectedMarker = passIndexSelectedMarker
             
             customer_LocationType.removeAll()
@@ -458,7 +458,7 @@ extension DeliveryListController: MKMapViewDelegate, ShowIndexPageDelegateProtoc
         // remove anotations
         print(currentIndexPageVC)
         
-       // passIndexSelectedMarker = currentIndexPageVC
+        passIndexSelectedMarker = currentIndexPageVC
         print(passIndexSelectedMarker)
         
         let allAnmotations = self.mapView.annotations
@@ -473,6 +473,7 @@ extension DeliveryListController: MKMapViewDelegate, ShowIndexPageDelegateProtoc
                     mapView.addAnnotation(locationOfCustomer)
                 }
             }
+            
         }
     }
     
@@ -487,7 +488,7 @@ extension DeliveryListController: MKMapViewDelegate, ShowIndexPageDelegateProtoc
             print(annotation.title - 2 )
             print(passIndexSelectedMarker)
             
-            if  passIndexSelectedMarker == annotation.title - 2   {
+            if  passIndexSelectedMarker == annotation.title - 2 {
                 dequeuedView.lblView.text = "\(annotation.title - 1)"
                 dequeuedView.zPriority = MKAnnotationViewZPriority.max
                 dequeuedView.image = UIImage(named: "marker_yellow")
@@ -499,15 +500,14 @@ extension DeliveryListController: MKMapViewDelegate, ShowIndexPageDelegateProtoc
         } else {
             view = MyPinView(annotation: annotation, reuseIdentifier: identifier)
             
-            if arrLocationOrder[0] == annotation.title  {
+            if arrLocationOrder[0] == annotation.title {
                 view.lblView.text = "\(annotation.title - 1)"
-                view.zPriority = MKAnnotationViewZPriority.defaultSelected
+                view.zPriority = MKAnnotationViewZPriority.max
                 view.image = UIImage(named: "marker_yellow")
             } else {
-                view.image = UIImage(named: "marker")
-                //view.imageView = UIImageView(image: UIImage(named: "0"))
                 view.lblView.text = "\(annotation.title - 1)"
                 view.zPriority = MKAnnotationViewZPriority.min
+                view.image = UIImage(named: "marker")
             }
         }
         return view
@@ -517,7 +517,6 @@ extension DeliveryListController: MKMapViewDelegate, ShowIndexPageDelegateProtoc
     // chon vao marker tren MKMapView
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         if let anno = view.annotation as? CustomPin {
-            //     let scr2 = storyboard?.instantiateViewController(withIdentifier: "FloatingPanelDeliveryVC") as? FloatingPanelDeliveryVC
             passIndexSelectedMarker = anno.title
             guard let contentDeliveryVC = storyboard?.instantiateViewController(withIdentifier: "FloatingPanelDeliveryVC") as? FloatingPanelDeliveryVC else { return }
             contentDeliveryVC.passIndexSelectedMarker = anno.title
@@ -537,12 +536,8 @@ extension DeliveryListController: MKMapViewDelegate, ShowIndexPageDelegateProtoc
                 }
             }
             
-            //  }
-            
         }
     }
-    
-    
     
     
 }

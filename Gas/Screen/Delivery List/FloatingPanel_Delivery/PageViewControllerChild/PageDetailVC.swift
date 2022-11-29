@@ -104,9 +104,9 @@ class PageDetailVC: UIViewController , UIScrollViewDelegate, UICollectionViewDel
             lblAddress?.text = dataInfoOneCustomer.asset?.properties?.values.address
             
             if dataInfoOneCustomer.elem?.arrivalTime?.minutes ?? 0 < 10 {
-                lblDeliveryTime?.text = "Estimate Time : \(dataInfoOneCustomer.elem?.arrivalTime?.hours ?? 00):0\(dataInfoOneCustomer.elem?.arrivalTime?.minutes ?? 0)"
+                lblDeliveryTime?.text = "Estimate Time: \(dataInfoOneCustomer.elem?.arrivalTime?.hours ?? 00):0\(dataInfoOneCustomer.elem?.arrivalTime?.minutes ?? 0)"
             } else {
-                lblDeliveryTime?.text = "Estimate Time : \(dataInfoOneCustomer.elem?.arrivalTime?.hours ?? 00):\(dataInfoOneCustomer.elem?.arrivalTime?.minutes ?? 0)"
+                lblDeliveryTime?.text = "Estimate Time: \(dataInfoOneCustomer.elem?.arrivalTime?.hours ?? 00):\(dataInfoOneCustomer.elem?.arrivalTime?.minutes ?? 0)"
             }
             
             

@@ -125,10 +125,11 @@ class FloatingPanelDeliveryVC: UIViewController, UIPageViewControllerDelegate, U
                 guard let vc = pageViewController.viewControllers?.first else { return }
                 let index: Int
                 index = getVCPageIndex(vc)
-                detailsTabsView.collectionView.selectItem(at: IndexPath(item: index, section: 0), animated: true, scrollPosition: .centeredVertically)
                 
                 print("index: \(index)")
-                //delegate1?.passIndexPVC(currentIndexPageVC: index)
+                
+               // delegate1?.passIndexPVC(currentIndexPageVC: index)
+                
                 // Animate the tab in the detailsTabsView to be centered when you are scrolling using .scrollable
                 detailsTabsView.collectionView.scrollToItem(at: IndexPath(item: index, section: 0), at: .centeredHorizontally, animated: true)
             }
@@ -141,10 +142,10 @@ class FloatingPanelDeliveryVC: UIViewController, UIPageViewControllerDelegate, U
         return vc.pageIndex
     }
     
-//    func getMarkerIndex(_ viewController: UIViewController?) -> Int {
-//        let vc = viewController as! DeliveryListController
-//        return vc.passIndexSelectedMarker
-//    }
+    //    func getMarkerIndex(_ viewController: UIViewController?) -> Int {
+    //        let vc = viewController as! DeliveryListController
+    //        return vc.passIndexSelectedMarker
+    //    }
     
     
     // dataSource

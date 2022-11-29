@@ -119,7 +119,7 @@ extension TabsView: UICollectionViewDelegate, UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         delegate2?.tabsViewDidSelectItemAt(position: indexPath.item)
-        print(delegate2)
+       
         
     }
     
