@@ -11,7 +11,15 @@ protocol TabsDelegate {
     func tabsViewDidSelectItemAt(position: Int)
 }
 
-class FloatingPanelDeliveryVC: UIViewController, UIPageViewControllerDelegate, UIPageViewControllerDataSource, ShowIndexPageDelegateProtocol {
+protocol ShowIndexPageDelegateProtocol: AnyObject {
+    func passIndexPVC(currentIndexPageVC: Int)
+}
+
+class FloatingPanelDeliveryVC: UIViewController, UIPageViewControllerDelegate, UIPageViewControllerDataSource {
+    
+    var parentVC: DeliveryListController?
+    
+    weak var delegate1: ShowIndexPageDelegateProtocol?
     
     var passIndexSelectedMarker = 0
     
@@ -32,11 +40,9 @@ class FloatingPanelDeliveryVC: UIViewController, UIPageViewControllerDelegate, U
         navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
         setupTabs()
         setupPageViewController()
+        
     }
     
-    func passIndexPVC(currentIndexPageVC: Int) {
-        print(currentIndexPageVC)
-    }
     
     func setupTabs() {
         for item in customer_id {
@@ -98,44 +104,31 @@ class FloatingPanelDeliveryVC: UIViewController, UIPageViewControllerDelegate, U
         if (self.detailsTabsView.tabs.count == 0) || (index >= self.detailsTabsView.tabs.count) {
             return nil
         }
-        
+        // print("currentIndex: \(currentIndex)")
         currentIndex = index
-        //print(passIndexSelectedMarker)
-        //        currentIndex = passIndexSelectedMarker
-        
         
         let contentVC = storyboard?.instantiateViewController(withIdentifier: "PageDetailVC") as! PageDetailVC
         contentVC.pageIndex = index
         contentVC.dataInfoOneCustomer = dataDidFilter[index]
         
         contentVC.customer_id = customer_id[index]
-        contentVC.scrollView = scrollView
+        //contentVC.scrollView = scrollView
         return contentVC
     }
     
     
     // MARK: Delegate
     //delegate
-    
     func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
         if finished {
             if completed {
                 guard let vc = pageViewController.viewControllers?.first else { return }
                 let index: Int
-                // let index1: Int
                 index = getVCPageIndex(vc)
-                
-                // index1 = getVCPageIndex1(vc)
                 detailsTabsView.collectionView.selectItem(at: IndexPath(item: index, section: 0), animated: true, scrollPosition: .centeredVertically)
                 
-                // detailsTabsView.collectionView.selectItem(at: IndexPath(item: index1, section: 0), animated: true, scrollPosition: .centeredVertically)
-                
-                let pvc = storyboard?.instantiateViewController(withIdentifier: "DeliveryListController") as? DeliveryListController
-                pvc?.delegate1 = self
-                pvc?.passIndexPVC(currentIndexPageVC: index)
-                pvc?.passIndexSelectedMarker = passIndexSelectedMarker
-                
-                
+                print("index: \(index)")
+                //delegate1?.passIndexPVC(currentIndexPageVC: index)
                 // Animate the tab in the detailsTabsView to be centered when you are scrolling using .scrollable
                 detailsTabsView.collectionView.scrollToItem(at: IndexPath(item: index, section: 0), at: .centeredHorizontally, animated: true)
             }
@@ -148,10 +141,10 @@ class FloatingPanelDeliveryVC: UIViewController, UIPageViewControllerDelegate, U
         return vc.pageIndex
     }
     
-    func getVCPageIndex1(_ viewController: UIViewController?) -> Int {
-        let vc = viewController as! PageDetailVC
-        return vc.pageIndex
-    }
+//    func getMarkerIndex(_ viewController: UIViewController?) -> Int {
+//        let vc = viewController as! DeliveryListController
+//        return vc.passIndexSelectedMarker
+//    }
     
     
     // dataSource
@@ -181,7 +174,6 @@ class FloatingPanelDeliveryVC: UIViewController, UIPageViewControllerDelegate, U
             return self.showViewController(index)
         }
     }
-    
 }
 
 

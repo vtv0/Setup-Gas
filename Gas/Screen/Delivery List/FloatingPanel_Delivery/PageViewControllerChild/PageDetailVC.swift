@@ -34,7 +34,7 @@ class PageDetailVC: UIViewController , UIScrollViewDelegate, UICollectionViewDel
     
     var arrImage = [String]()
     
-    var dataInfoOneCustomer: Location = Location(elem: LocationElement(locationOrder: 0), asset: GetAsset(assetModelID: 0, enabled: false))  // Location(elem: LocationElement(locationOrder: ), asset: GetAsset(assetModelID: 1, enabled: true))
+    var dataInfoOneCustomer: Location = Location(elem: LocationElement(locationOrder: 0), asset: GetAsset(assetModelID: 0, enabled: true))  // Location(elem: LocationElement(locationOrder: ), asset: GetAsset(assetModelID: 1, enabled: true))
     
     
     @IBOutlet weak var scrollView: UIScrollView!
@@ -78,13 +78,11 @@ class PageDetailVC: UIViewController , UIScrollViewDelegate, UICollectionViewDel
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print(pageIndex)
-        
+       
         collectionView.delegate = self
         collectionView.dataSource = self
         
         pageControl.numberOfPages = arrImage.count
-        
         
         if dataInfoOneCustomer.type == .supplier {
             lblCustomer_id?.text = customer_id
@@ -99,7 +97,7 @@ class PageDetailVC: UIViewController , UIScrollViewDelegate, UICollectionViewDel
             viewType.removeFromSuperview()
             
         } else {
-            //    print(dataInfoOneCustomer)
+        
             lblCustomer_id?.text = dataInfoOneCustomer.elem?.location?.comment
             lblCustomerName?.text = dataInfoOneCustomer.asset?.properties?.values.customer_name
             
@@ -168,11 +166,7 @@ class PageDetailVC: UIViewController , UIScrollViewDelegate, UICollectionViewDel
                 arrDataUrlImage.append(iUrlImage)
             }
             arrImage = arrDataUrlImage
-            
-            
         }
-        
-        
     }
     
     
