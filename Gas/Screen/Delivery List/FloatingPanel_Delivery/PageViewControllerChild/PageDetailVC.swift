@@ -10,13 +10,11 @@ import Alamofire
 import FloatingPanel
 import AlamofireImage
 
-
-
 class PageDetailVC: UIViewController , UIScrollViewDelegate, UICollectionViewDelegate {
     
     var pageIndex: Int!
     
-    var customer_id: String = ""
+    var comment: String = ""
     var arrUrlImage: [[String]] = []
     
     var dateYMD: [Date] = []
@@ -26,7 +24,7 @@ class PageDetailVC: UIViewController , UIScrollViewDelegate, UICollectionViewDel
     
     var dicData: [Date : [LocationElement]] = [:]
     var locations: [LocationElement] = []
-    var t: Int = 0
+    
     var totalObjectSevenDate: Int = 0
     var arrCustomer_id: [String] = []
     var data: [String] = []
@@ -78,14 +76,14 @@ class PageDetailVC: UIViewController , UIScrollViewDelegate, UICollectionViewDel
     
     override func viewDidLoad() {
         super.viewDidLoad()
-       
+        
         collectionView.delegate = self
         collectionView.dataSource = self
         
         pageControl.numberOfPages = arrImage.count
         
         if dataInfoOneCustomer.type == .supplier {
-            lblCustomer_id?.text = customer_id
+            lblCustomer_id?.text = comment
             lblCustomerName.removeFromSuperview()
             lblAddress.removeFromSuperview()
             lblDeliveryTime.removeFromSuperview()
@@ -97,7 +95,7 @@ class PageDetailVC: UIViewController , UIScrollViewDelegate, UICollectionViewDel
             viewType.removeFromSuperview()
             
         } else {
-        
+            
             lblCustomer_id?.text = dataInfoOneCustomer.elem?.location?.comment
             lblCustomerName?.text = dataInfoOneCustomer.asset?.properties?.values.customer_name
             
@@ -109,9 +107,15 @@ class PageDetailVC: UIViewController , UIScrollViewDelegate, UICollectionViewDel
                 lblDeliveryTime?.text = "Estimate Time: \(dataInfoOneCustomer.elem?.arrivalTime?.hours ?? 00):\(dataInfoOneCustomer.elem?.arrivalTime?.minutes ?? 0)"
             }
             
-            
             arrImage.removeAll()
-            if let gasLocation1 = dataInfoOneCustomer.asset?.properties?.values.gas_location1, let gasLocation2 = dataInfoOneCustomer.asset?.properties?.values.gas_location2 , let gasLocation3 = dataInfoOneCustomer.asset?.properties?.values.gas_location3, let gasLocation4 = dataInfoOneCustomer.asset?.properties?.values.gas_location4 , let parkingPlace1 = dataInfoOneCustomer.asset?.properties?.values.parking_place1, let parkingPlace2 = dataInfoOneCustomer.asset?.properties?.values.parking_place2, let parkingPlace3 = dataInfoOneCustomer.asset?.properties?.values.parking_place3, let parkingPlace4 = dataInfoOneCustomer.asset?.properties?.values.parking_place4 {
+            if let gasLocation1 = dataInfoOneCustomer.asset?.properties?.values.gas_location1,
+               let gasLocation2 = dataInfoOneCustomer.asset?.properties?.values.gas_location2 ,
+               let gasLocation3 = dataInfoOneCustomer.asset?.properties?.values.gas_location3,
+               let gasLocation4 = dataInfoOneCustomer.asset?.properties?.values.gas_location4 ,
+               let parkingPlace1 = dataInfoOneCustomer.asset?.properties?.values.parking_place1,
+               let parkingPlace2 = dataInfoOneCustomer.asset?.properties?.values.parking_place2,
+               let parkingPlace3 = dataInfoOneCustomer.asset?.properties?.values.parking_place3,
+               let parkingPlace4 = dataInfoOneCustomer.asset?.properties?.values.parking_place4 {
                 
                 if !gasLocation1.isEmpty || !gasLocation2.isEmpty || !gasLocation3.isEmpty || !gasLocation4.isEmpty || !parkingPlace1.isEmpty || !parkingPlace2.isEmpty || !parkingPlace3.isEmpty || !parkingPlace4.isEmpty {
                     arrImage.append(gasLocation1)
@@ -159,8 +163,6 @@ class PageDetailVC: UIViewController , UIScrollViewDelegate, UICollectionViewDel
             
             lblAstimateDelivery?.text = dataInfoOneCustomer.elem?.metadata?.planned_date
             
-            
-            
             var arrDataUrlImage = [String]()
             for iUrlImage in arrImage where iUrlImage != "" {
                 arrDataUrlImage.append(iUrlImage)
@@ -185,7 +187,6 @@ class PageDetailVC: UIViewController , UIScrollViewDelegate, UICollectionViewDel
         let index = scrollView.contentOffset.x / witdh
         let roundedIndex = round(index)
         self.pageControl?.currentPage = Int(roundedIndex)
-        
     }
     
 }
@@ -213,6 +214,7 @@ extension PageDetailVC: UICollectionViewDataSource {
         return 1
     }
     
+    // colection DataSource
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         let count = arrImage.count
         pageControl.numberOfPages = count

@@ -58,7 +58,7 @@ class TabsView: UIView {
     
     var collectionView: UICollectionView!
     
-    var delegate2: TabsDelegate?
+    weak var delegate2: TabsDelegate?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -119,8 +119,6 @@ extension TabsView: UICollectionViewDelegate, UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         delegate2?.tabsViewDidSelectItemAt(position: indexPath.item)
-       
-        
     }
     
 }

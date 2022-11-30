@@ -148,8 +148,8 @@
 				750C7E6A2908ECA0009A9E27 /* Marker+ExtensionViewController.swift */,
 				750C7E6429078E52009A9E27 /* ParseJsontoObject.swift */,
 				750C7E6C290FA4CE009A9E27 /* ParseJsonGetAssetToStruct.swift */,
-				75BF3A1D28E2883100BC0F0C /* DeliveryListController.swift */,
 				754C39B1291E409500793A14 /* Extension+APIGetMe.swift */,
+				75BF3A1D28E2883100BC0F0C /* DeliveryListController.swift */,
 			);
 			path = "Screen Main Delivery";
 			sourceTree = "<group>";
@@ -157,8 +157,8 @@
 		757F496B28E3FD23008B8C05 /* FloatingPanel_Delivery */ = {
 			isa = PBXGroup;
 			children = (
-				7501250428EC3904003AC9EB /* FloatingPanelDeliveryPVC.swift */,
 				7501250228EC0FBE003AC9EB /* FloatingPanelDeliveryVC.swift */,
+				7501250428EC3904003AC9EB /* FloatingPanelDeliveryPVC.swift */,
 				7501250628ED21F5003AC9EB /* PageViewControllerChild */,
 				757F496C28E41EFB008B8C05 /* EditScreen */,
 			);

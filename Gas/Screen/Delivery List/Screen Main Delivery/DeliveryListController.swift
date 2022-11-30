@@ -43,10 +43,13 @@ class CustomPin: NSObject, MKAnnotation {
 //    }
 //}
 
+protocol GetIndexMarkerDelegateProtocol: AnyObject {
+    func getIndexMarker(indexDidSelected: Int)
+}
 
 class DeliveryListController: UIViewController , FloatingPanelControllerDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
     
-    
+    weak var delegateGetIndex: GetIndexMarkerDelegateProtocol?
     
     let companyCode = UserDefaults.standard.string(forKey: "companyCode") ?? ""
     let tenantId = UserDefaults.standard.string(forKey: "tenantId") ?? ""
@@ -71,7 +74,7 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
     
     var customer_LocationType = [String]()
     
-    var customer_id: [String] = []
+    var comment: [String] = []
     
     var passIndexSelectedMarker = 0
     var currentIndex = 0
@@ -125,10 +128,13 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         
         pickerStatus.dataSource = self
         pickerStatus.delegate = self
+        
         pickerDriver.dataSource = self
         pickerDriver.delegate = self
+        
         pickerDate.dataSource = self
         pickerDate.delegate = self
+        
         navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
         let userCoordinate = CLLocationCoordinate2D(latitude: 35.73774428640241, longitude: 139.6194163709879)
         let eyeCoordinate = CLLocationCoordinate2D(latitude: 35.73774428640241, longitude: 139.6194163709879)
@@ -141,6 +147,7 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         lblType25kg.text = "\(0)"
         lblType20kg.text = "\(0)"
         lblOtherType.text = "\(0)"
+        
         
     }
     
@@ -195,7 +202,6 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
                 }
             }
     }
-    
     
     func  getLatestWorkerRouteLocationList() {
         // self.showActivity()
@@ -342,10 +348,10 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         self.totalType()
         if dataDidFilter.count > 0 {
             for infoCustomer in dataDidFilter {
-                self.customer_id.append(infoCustomer.elem?.location?.comment ?? "")
+                self.comment.append(infoCustomer.elem?.location?.comment ?? "")
             }
         } else {
-            print(" Khong hien thi Floating Panel ")
+           
             // btnShipping.removeFromSuperview()
             fpc.removePanelFromParent(animated: true)
         }
@@ -357,18 +363,23 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
     
     func customFloatingPanel() {
         guard let contentDeliveryVC = storyboard?.instantiateViewController(withIdentifier: "FloatingPanelDeliveryVC") as? FloatingPanelDeliveryVC else { return }
-        if customer_id.count != 0 {
+        if comment.count != 0 {
+            
+            delegateGetIndex = contentDeliveryVC
             contentDeliveryVC.delegate1 = self
+            
             contentDeliveryVC.dataDidFilter = dataDidFilter
             contentDeliveryVC.customer_LocationType = customer_LocationType
-            contentDeliveryVC.customer_id = customer_id
+            contentDeliveryVC.comment = comment
             
-            // print(passIndexSelectedMarker)
+           
             contentDeliveryVC.currentIndex = passIndexSelectedMarker
+            
+            
             // contentDeliveryVC.passIndexSelectedMarker = passIndexSelectedMarker
             
             customer_LocationType.removeAll()
-            customer_id.removeAll()
+            comment.removeAll()
             arrFacilityData.removeAll()
             fpc.addPanel(toParent: self)
             fpc.set(contentViewController: contentDeliveryVC)
@@ -447,23 +458,30 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
                 }
             }
         }
-        mapView.reloadInputViews()
+        passIndexSelectedMarker = 0
+        
     }
+    
 }
 
 
 extension DeliveryListController: MKMapViewDelegate, ShowIndexPageDelegateProtocol {
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?)
+    {
+        if segue.destination is FloatingPanelDeliveryVC
+        {
+            let vc = segue.destination as? FloatingPanelDeliveryVC
+            vc?.currentIndex = passIndexSelectedMarker
+        }
+    }
+    
     func passIndexPVC(currentIndexPageVC: Int) {
-        // remove anotations
-        print(currentIndexPageVC)
-        
         passIndexSelectedMarker = currentIndexPageVC
-        print(passIndexSelectedMarker)
+        // remove anotations
         
         let allAnmotations = self.mapView.annotations
         self.mapView.removeAnnotations(allAnmotations)
-        dataDidFilter = getDataFiltered(date: dateYMD[selectedIdxDate], driver: selectedIdxDriver, status: selectesIdxStatus)
         if dataDidFilter.count == 0 {
             print("_______________________________________________________________________________Không có đơn hàng nào!")
         } else {
@@ -475,6 +493,7 @@ extension DeliveryListController: MKMapViewDelegate, ShowIndexPageDelegateProtoc
             }
             
         }
+        mapView.reloadInputViews()
     }
     
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
@@ -484,49 +503,60 @@ extension DeliveryListController: MKMapViewDelegate, ShowIndexPageDelegateProtoc
         // thay doi i de mau ve ra mau vang
         if let dequeuedView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier) as? MyPinView {
             dequeuedView.annotation = annotation
-            
-            print(annotation.title - 2 )
-            print(passIndexSelectedMarker)
-            
-            if  passIndexSelectedMarker == annotation.title - 2 {
+//            var arrTitle = [Int]()
+//            arrTitle.append(annotation.title)
+//            let valueMin =  arrTitle.sorted().first
+//            print(arrTitle)
+          
+            if  arrLocationOrder[passIndexSelectedMarker] == annotation.title {
+                
                 dequeuedView.lblView.text = "\(annotation.title - 1)"
                 dequeuedView.zPriority = MKAnnotationViewZPriority.max
                 dequeuedView.image = UIImage(named: "marker_yellow")
             } else {
-                dequeuedView.image = UIImage(named: "marker")
                 dequeuedView.lblView.text = "\(annotation.title - 1)"
+                dequeuedView.image = UIImage(named: "marker")
+                dequeuedView.layer.zPosition = 1
             }
             view = dequeuedView
         } else {
             view = MyPinView(annotation: annotation, reuseIdentifier: identifier)
-            
-            if arrLocationOrder[0] == annotation.title {
+            if arrLocationOrder[0] == annotation.title  {
+                
                 view.lblView.text = "\(annotation.title - 1)"
                 view.zPriority = MKAnnotationViewZPriority.max
                 view.image = UIImage(named: "marker_yellow")
             } else {
                 view.lblView.text = "\(annotation.title - 1)"
-                view.zPriority = MKAnnotationViewZPriority.min
                 view.image = UIImage(named: "marker")
+                view.zPriority = MKAnnotationViewZPriority.min
             }
         }
         return view
     }
     
-    
     // chon vao marker tren MKMapView
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         if let anno = view.annotation as? CustomPin {
-            passIndexSelectedMarker = anno.title
-            guard let contentDeliveryVC = storyboard?.instantiateViewController(withIdentifier: "FloatingPanelDeliveryVC") as? FloatingPanelDeliveryVC else { return }
-            contentDeliveryVC.passIndexSelectedMarker = anno.title
+            //lay index trong mang
+            let clickIndexMarker = anno.title
+            arrLocationOrder.enumerated().forEach {  index, value in
+                if clickIndexMarker == value {
+                  
+                    passIndexSelectedMarker = index
+                }
+            }
+            
+            delegateGetIndex?.getIndexMarker(indexDidSelected: passIndexSelectedMarker)
+            
+            // Notification
+            // NotificationCenter.default.post(name: Notification.Name(rawValue: "name"), object: nil)
+            
+            // remove marker
             mapView.removeAnnotations(mapView.annotations)
-            // if passIndexSelectedMarker > 0 {
-            dataDidFilter = getDataFiltered(date: dateYMD[selectedIdxDate], driver: selectedIdxDriver, status: selectesIdxStatus)
             
             if dataDidFilter.count == 0 {
-                print("_______________________________________________________________________________Không có đơn hàng nào!")
-                // self.showAlert(message: "Không có đơn hàng nào!")
+                self.showAlert(message: "Không có đơn hàng nào!")
             } else {
                 for picker in dataDidFilter {
                     if let lat = picker.elem?.latitude, let long = picker.elem?.longitude, let locationOrder = picker.elem?.locationOrder {

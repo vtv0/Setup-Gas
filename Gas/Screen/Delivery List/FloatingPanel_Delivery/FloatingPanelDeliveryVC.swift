@@ -7,7 +7,7 @@
 
 import UIKit
 
-protocol TabsDelegate {
+protocol TabsDelegate: AnyObject {
     func tabsViewDidSelectItemAt(position: Int)
 }
 
@@ -17,35 +17,28 @@ protocol ShowIndexPageDelegateProtocol: AnyObject {
 
 class FloatingPanelDeliveryVC: UIViewController, UIPageViewControllerDelegate, UIPageViewControllerDataSource {
     
-    var parentVC: DeliveryListController?
-    
     weak var delegate1: ShowIndexPageDelegateProtocol?
-    
     var passIndexSelectedMarker = 0
-    
     var currentIndex: Int = 0
-    
     var pageController: UIPageViewController!
     var customer_LocationType = [String]()
-    var customer_id: [String] = []
     var dataDidFilter: [Location] = []
     var scrollView: UIScrollView!
+    var comment: [String] = []
     
     @IBOutlet weak var detailsTabsView: TabsView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         title = "FloatingPanel PageVC"
-        // navigationController?.navigationBar.backgroundColor = .systemBlue
         navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
         setupTabs()
         setupPageViewController()
-        
     }
     
-    
     func setupTabs() {
-        for item in customer_id {
+        for item in comment {
             let tab = Tab(icon: UIImage(named: ""), title: item)
             if (detailsTabsView != nil) {
                 detailsTabsView.tabs.append(tab)
@@ -57,15 +50,14 @@ class FloatingPanelDeliveryVC: UIViewController, UIPageViewControllerDelegate, U
         // TabView Customization
         detailsTabsView.titleColor = .blue
         detailsTabsView.iconColor = .blue
-        detailsTabsView.indicatorColor = .black
         detailsTabsView.titleFont = UIFont.systemFont(ofSize: 29, weight: .semibold)
-        // detailsTabsView.collectionView.backgroundColor = .cyan
         
         // Set detailsTabsView Delegate
         detailsTabsView.delegate2 = self
         
         // Set the selected Tab when the app starts
-        detailsTabsView.collectionView.selectItem(at: IndexPath(item: 0, section: 0), animated: false, scrollPosition: .top)
+        detailsTabsView.collectionView.selectItem(at: IndexPath(item: currentIndex, section: 0), animated: false, scrollPosition: .centeredVertically)
+        
     }
     
     func setupPageViewController() {
@@ -80,7 +72,7 @@ class FloatingPanelDeliveryVC: UIViewController, UIPageViewControllerDelegate, U
         
         
         // Set the selected ViewController in the PageViewController when the app starts
-        pageController.setViewControllers([showViewController(0)!], direction: .forward, animated: false, completion: nil)
+        pageController.setViewControllers([showViewController(currentIndex)!], direction: .forward, animated: true, completion: nil)
         
         // PageViewController Constraints
         self.pageController.view.translatesAutoresizingMaskIntoConstraints = true
@@ -91,7 +83,7 @@ class FloatingPanelDeliveryVC: UIViewController, UIPageViewControllerDelegate, U
             self.pageController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
         ])
         self.pageController.didMove(toParent: self)
-        
+       
     }
     
     override func viewDidLayoutSubviews() {
@@ -100,18 +92,18 @@ class FloatingPanelDeliveryVC: UIViewController, UIPageViewControllerDelegate, U
         detailsTabsView.collectionView.collectionViewLayout.invalidateLayout()
     }
     
+    
+    // so luong man hinh Floating
     func showViewController(_ index: Int) -> UIViewController? {
         if (self.detailsTabsView.tabs.count == 0) || (index >= self.detailsTabsView.tabs.count) {
             return nil
         }
-        // print("currentIndex: \(currentIndex)")
         currentIndex = index
-        
         let contentVC = storyboard?.instantiateViewController(withIdentifier: "PageDetailVC") as! PageDetailVC
-        contentVC.pageIndex = index
+        contentVC.pageIndex = currentIndex
         contentVC.dataInfoOneCustomer = dataDidFilter[index]
+        contentVC.comment = comment[index]
         
-        contentVC.customer_id = customer_id[index]
         //contentVC.scrollView = scrollView
         return contentVC
     }
@@ -123,30 +115,28 @@ class FloatingPanelDeliveryVC: UIViewController, UIPageViewControllerDelegate, U
         if finished {
             if completed {
                 guard let vc = pageViewController.viewControllers?.first else { return }
-                let index: Int
+                var index: Int
+                
                 index = getVCPageIndex(vc)
-                
-                print("index: \(index)")
-                
-               // delegate1?.passIndexPVC(currentIndexPageVC: index)
+                delegate1?.passIndexPVC(currentIndexPageVC: index)
                 
                 // Animate the tab in the detailsTabsView to be centered when you are scrolling using .scrollable
-                detailsTabsView.collectionView.scrollToItem(at: IndexPath(item: index, section: 0), at: .centeredHorizontally, animated: true)
+                detailsTabsView.collectionView.scrollToItem(at: IndexPath(item: index, section: 0), at: .bottom, animated: true)
             }
         }
     }
     
     // Return the current position that is saved in the UIViewControllers we have in the UIPageViewController
     func getVCPageIndex(_ viewController: UIViewController?) -> Int {
-        let vc = viewController as! PageDetailVC
-        return vc.pageIndex
+        switch viewController {
+        case is PageDetailVC:
+            let vc = viewController as! PageDetailVC
+            return vc.pageIndex
+        default:
+          
+            return currentIndex
+        }
     }
-    
-    //    func getMarkerIndex(_ viewController: UIViewController?) -> Int {
-    //        let vc = viewController as! DeliveryListController
-    //        return vc.passIndexSelectedMarker
-    //    }
-    
     
     // dataSource
     // return ViewController when go forward
@@ -175,14 +165,13 @@ class FloatingPanelDeliveryVC: UIViewController, UIPageViewControllerDelegate, U
             return self.showViewController(index)
         }
     }
+    
 }
 
 
-extension FloatingPanelDeliveryVC: TabsDelegate {
-    
+extension FloatingPanelDeliveryVC: TabsDelegate, GetIndexMarkerDelegateProtocol {
     func tabsViewDidSelectItemAt(position: Int) {
         // Check if the selected tab cell position is the same with the current position in pageController, if not, then go forward or backward
-        
         if position != currentIndex {
             if position > currentIndex {
                 self.pageController.setViewControllers([showViewController(position)!], direction: .forward, animated: true, completion: nil)
@@ -190,6 +179,17 @@ extension FloatingPanelDeliveryVC: TabsDelegate {
                 self.pageController.setViewControllers([showViewController(position)!], direction: .reverse, animated: true, completion: nil)
             }
             detailsTabsView.collectionView.scrollToItem(at: IndexPath(item: position, section: 0), at: .centeredHorizontally, animated: true)
+        }
+    }
+    
+    func getIndexMarker(indexDidSelected: Int) {
+        if indexDidSelected != currentIndex {
+            if indexDidSelected > currentIndex {
+                self.pageController.setViewControllers([showViewController(indexDidSelected)!], direction: .forward, animated: true, completion: nil)
+            } else {
+                self.pageController.setViewControllers([showViewController(indexDidSelected)!], direction: .reverse, animated: true, completion: nil)
+            }
+            detailsTabsView.collectionView.scrollToItem(at: IndexPath(item: indexDidSelected, section: 0), at: .centeredHorizontally, animated: true)
         }
     }
     
