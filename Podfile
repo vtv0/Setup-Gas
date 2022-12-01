@@ -9,5 +9,7 @@ target 'Gas' do
   pod 'Alamofire'
   pod 'SwiftyJSON'
   pod 'AlamofireImage'
-
+  pod 'Toast-Swift'
+  pod 'CoreLocationDemo', '~> 0.20'
+  
 end

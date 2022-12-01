@@ -8,7 +8,7 @@
 import Foundation
 
 enum DeliveryLocationImageType: Int {
-    case facilityExterior = 0
+    case facilityExterior = 1
     case gasLocation
     case parking
 

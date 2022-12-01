@@ -51,7 +51,7 @@ class ImageLabelView: UIView, UINavigationControllerDelegate {
             case .gasLocation:
                 iconImageView.image = UIImage(named: "gas")
             case .parking:
-                iconImageView.image = UIImage(named: "P")
+                iconImageView.image = UIImage(named: "parking")
             }
         }
     }

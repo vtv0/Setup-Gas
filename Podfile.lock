@@ -4,12 +4,14 @@ PODS:
     - Alamofire (~> 5.4)
   - FloatingPanel (2.5.4)
   - SwiftyJSON (5.0.1)
+  - Toast-Swift (5.0.1)
 
 DEPENDENCIES:
   - Alamofire
   - AlamofireImage
   - FloatingPanel
   - SwiftyJSON
+  - Toast-Swift
 
 SPEC REPOS:
   trunk:
@@ -17,13 +19,15 @@ SPEC REPOS:
     - AlamofireImage
     - FloatingPanel
     - SwiftyJSON
+    - Toast-Swift
 
 SPEC CHECKSUMS:
   Alamofire: d368e1ff8a298e6dde360e35a3e68e6c610e7204
   AlamofireImage: 34a2d90b0e5fe6a5605f85ae4b7b01e784c60192
   FloatingPanel: 387377aa46a9b088e5f8f5f2a8d2c00c61e67298
   SwiftyJSON: 2f33a42c6fbc52764d96f13368585094bfd8aa5e
+  Toast-Swift: 9b6a70f28b3bf0b96c40d46c0c4b9d6639846711
 
-PODFILE CHECKSUM: 1464ff52eab6633cccfb696e459470a23602e99a
+PODFILE CHECKSUM: 4792aea8b77b1c4d51b54a71e38988d6ba76048d
 
 COCOAPODS: 1.11.3

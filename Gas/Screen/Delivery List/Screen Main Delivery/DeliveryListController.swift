@@ -351,7 +351,7 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
                 self.comment.append(infoCustomer.elem?.location?.comment ?? "")
             }
         } else {
-           
+            
             // btnShipping.removeFromSuperview()
             fpc.removePanelFromParent(animated: true)
         }
@@ -372,7 +372,7 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
             contentDeliveryVC.customer_LocationType = customer_LocationType
             contentDeliveryVC.comment = comment
             
-           
+            
             contentDeliveryVC.currentIndex = passIndexSelectedMarker
             
             
@@ -441,7 +441,7 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
     func reDrawMarkers() {
         dataDidFilter.removeAll()
         arrLocationOrder.removeAll()
-        
+        arrCoordinate.removeAll()
         if mapView != nil {
             mapView.removeAnnotations(mapView.annotations)
         }
@@ -450,18 +450,24 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
             print("_______________________________________________________________________________Không có đơn hàng nào!")
             self.showAlert(message: "Không có đơn hàng nào!")
         } else {
+            
+            //            dataDidFilter = dataDidFilter.sorted(by: { $0.elem?.locationOrder ?? 0 > $1.elem?.locationOrder ?? 0 })
             for picker in dataDidFilter {
                 if let lat = picker.elem?.latitude, let long = picker.elem?.longitude, let locationOrder = picker.elem?.locationOrder {
                     let locationOfCustomer = CustomPin(title: locationOrder , coordinate: CLLocationCoordinate2D(latitude: lat, longitude: long))
                     arrLocationOrder.append(locationOfCustomer.title)
-                    mapView.addAnnotation(locationOfCustomer)
+                    //mapView.addAnnotation(locationOfCustomer)
+                    arrCoordinate.append(locationOfCustomer)
                 }
             }
+            
+            let arrCoordinateDidSort = arrCoordinate.sorted(by: { $0.title > $1.title } )
+            
+            mapView.addAnnotations(arrCoordinateDidSort)
         }
         passIndexSelectedMarker = 0
-        
     }
-    
+    var arrCoordinate = [CustomPin]()
 }
 
 
@@ -479,9 +485,9 @@ extension DeliveryListController: MKMapViewDelegate, ShowIndexPageDelegateProtoc
     func passIndexPVC(currentIndexPageVC: Int) {
         passIndexSelectedMarker = currentIndexPageVC
         // remove anotations
-        
         let allAnmotations = self.mapView.annotations
         self.mapView.removeAnnotations(allAnmotations)
+        // draw marker
         if dataDidFilter.count == 0 {
             print("_______________________________________________________________________________Không có đơn hàng nào!")
         } else {
@@ -491,66 +497,77 @@ extension DeliveryListController: MKMapViewDelegate, ShowIndexPageDelegateProtoc
                     mapView.addAnnotation(locationOfCustomer)
                 }
             }
-            
         }
-        mapView.reloadInputViews()
     }
     
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        
         guard let annotation = annotation as? CustomPin else { return nil }
+        
+        print("LocationOrder: \(annotation.title)")
+        
+        
+        
         let identifier = "Annotation"
         var view: MyPinView
-        // thay doi i de mau ve ra mau vang
+        
         if let dequeuedView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier) as? MyPinView {
             dequeuedView.annotation = annotation
-//            var arrTitle = [Int]()
-//            arrTitle.append(annotation.title)
-//            let valueMin =  arrTitle.sorted().first
-//            print(arrTitle)
-          
+            
+            
             if  arrLocationOrder[passIndexSelectedMarker] == annotation.title {
-                
                 dequeuedView.lblView.text = "\(annotation.title - 1)"
-                dequeuedView.zPriority = MKAnnotationViewZPriority.max
                 dequeuedView.image = UIImage(named: "marker_yellow")
+                dequeuedView.zPriority = MKAnnotationViewZPriority.max
             } else {
                 dequeuedView.lblView.text = "\(annotation.title - 1)"
                 dequeuedView.image = UIImage(named: "marker")
-                dequeuedView.layer.zPosition = 1
+                //                dequeuedView.layer.zPosition = CGFloat( -annotation.title)
+                //                dequeuedView.backgroundColor = .gray
+                //                dequeuedView.lblView.layer.zPosition = CGFloat( -annotation.title)
+                dequeuedView.zPriority = MKAnnotationViewZPriority.init(rawValue: -Float(annotation.title))
             }
+            dequeuedView.reloadInputViews()
             view = dequeuedView
+            
         } else {
+            
             view = MyPinView(annotation: annotation, reuseIdentifier: identifier)
-            if arrLocationOrder[0] == annotation.title  {
+            var arrTitle = [Int]()
+            arrTitle.append(annotation.title)
+            
+            if arrLocationOrder[0] == arrTitle.sorted().first {
                 
                 view.lblView.text = "\(annotation.title - 1)"
                 view.zPriority = MKAnnotationViewZPriority.max
                 view.image = UIImage(named: "marker_yellow")
             } else {
                 view.lblView.text = "\(annotation.title - 1)"
+                view.zPriority = MKAnnotationViewZPriority.init(rawValue: -Float(annotation.title))
+//                view.imageView.layer.zPosition = CGFloat(exactly: -Float(annotation.title)) ?? 0
+                
+                view.imageView.backgroundColor = .systemGreen
                 view.image = UIImage(named: "marker")
-                view.zPriority = MKAnnotationViewZPriority.min
             }
         }
+        view.reloadInputViews()
+        mapView.reloadInputViews()
         return view
     }
     
-    // chon vao marker tren MKMapView
+    // selected marker on MKMapView
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         if let anno = view.annotation as? CustomPin {
             //lay index trong mang
             let clickIndexMarker = anno.title
             arrLocationOrder.enumerated().forEach {  index, value in
                 if clickIndexMarker == value {
-                  
                     passIndexSelectedMarker = index
                 }
             }
             
+            // delegate Protocol
             delegateGetIndex?.getIndexMarker(indexDidSelected: passIndexSelectedMarker)
-            
-            // Notification
-            // NotificationCenter.default.post(name: Notification.Name(rawValue: "name"), object: nil)
             
             // remove marker
             mapView.removeAnnotations(mapView.annotations)
