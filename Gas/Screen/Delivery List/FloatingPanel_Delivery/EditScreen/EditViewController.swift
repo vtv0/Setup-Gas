@@ -34,8 +34,6 @@ class EditViewController: UIViewController {
         setupTabs()
         
         setupPageViewController()
-        
-        
     }
     
     func setupTabs() {
@@ -109,8 +107,8 @@ class EditViewController: UIViewController {
         
         if index == 1 {
             let contentVC = storyboard?.instantiateViewController(withIdentifier: "ParkingLocationController") as! ParkingLocationController
-            
             contentVC.pageIndex = index
+            
             return contentVC
         } else if index == 2 {
             let contentVC = storyboard?.instantiateViewController(withIdentifier: "CustomerLocationController") as! CustomerLocationController

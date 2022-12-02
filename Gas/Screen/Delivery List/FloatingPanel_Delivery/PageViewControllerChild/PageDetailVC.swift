@@ -10,8 +10,14 @@ import Alamofire
 import FloatingPanel
 import AlamofireImage
 
-class PageDetailVC: UIViewController , UIScrollViewDelegate, UICollectionViewDelegate {
+
+protocol PassInfoOneCustomerDelegateProtocol: AnyObject {
+    func passData()
+}
+
+class PageDetailVC: UIViewController, UIScrollViewDelegate, UICollectionViewDelegate {
     
+    weak var delegatePassInfoOneCustomer: PassInfoOneCustomerDelegateProtocol?
     var pageIndex: Int!
     
     var comment: String = ""
@@ -81,6 +87,9 @@ class PageDetailVC: UIViewController , UIScrollViewDelegate, UICollectionViewDel
         collectionView.dataSource = self
         
         pageControl.numberOfPages = arrImage.count
+       // let dataToPass: [String: Location] = ["details": dataInfoOneCustomer]
+        
+//        NotificationCenter.default.post(name: Notification.Name("NotificationPassData"), object: dataInfoOneCustomer)
         
         if dataInfoOneCustomer.type == .supplier {
             lblCustomer_id?.text = comment
@@ -95,8 +104,12 @@ class PageDetailVC: UIViewController , UIScrollViewDelegate, UICollectionViewDel
             viewType.removeFromSuperview()
             
         } else {
+            UserDefaults.standard.set(dataInfoOneCustomer.asset?.properties?.values.location?.coordinates?[1], forKey: "LatOfParking")
+            UserDefaults.standard.set(dataInfoOneCustomer.asset?.properties?.values.location?.coordinates?[0], forKey: "LongOfParking")
+            UserDefaults.standard.set(dataInfoOneCustomer.elem?.location?.comment, forKey: "iassetID")
             
             lblCustomer_id?.text = dataInfoOneCustomer.elem?.location?.comment
+            
             lblCustomerName?.text = dataInfoOneCustomer.asset?.properties?.values.customer_name
             
             lblAddress?.text = dataInfoOneCustomer.asset?.properties?.values.address

@@ -5,7 +5,7 @@
 //  Created by Vuong The Vu on 31/10/2022.
 //
 
-import Foundation
+import UIKit
 
 struct GetAsset: Decodable {
     var assetModelID : Int
@@ -52,7 +52,7 @@ struct ValuesDetail: Decodable {
     
 }
 struct LocationDetail: Decodable {
-    var coordinates: [Float]?
+    var coordinates: [Double]?
     var type: String?
 }
 struct Display_dataDetail: Decodable {

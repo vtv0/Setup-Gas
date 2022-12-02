@@ -12,7 +12,6 @@ protocol ImageLabelViewDelegate: AnyObject {
     func didImagePick()
 }
 
-
 class GeneralInfoController: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
     var pageIndex: Int!
     var imagePicker = UIImagePickerController()
