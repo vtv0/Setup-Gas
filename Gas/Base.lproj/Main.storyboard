@@ -1135,6 +1135,9 @@
                                 <buttonConfiguration key="configuration" style="plain" title="btn Customer">
                                     <color key="baseForegroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </buttonConfiguration>
+                                <connections>
+                                    <action selector="btnSaveNewPosition:" destination="eFU-E9-yLL" eventType="touchUpInside" id="2yL-93-bd5"/>
+                                </connections>
                             </button>
                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="chu-gg-shy">
                                 <rect key="frame" x="30" y="677" width="49" height="31"/>
@@ -1152,6 +1155,9 @@
                                 </constraints>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="plain" image="locationGPS"/>
+                                <connections>
+                                    <action selector="btnLocationGPS:" destination="eFU-E9-yLL" eventType="touchUpInside" id="Y2z-P1-gwD"/>
+                                </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="aaaaaaaaaaaaa" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BL6-z1-YGz">
                                 <rect key="frame" x="87" y="678" width="183" height="30"/>
@@ -1184,6 +1190,11 @@
                             <constraint firstItem="Gg6-Zq-aSF" firstAttribute="centerX" secondItem="BOU-Ff-9kA" secondAttribute="centerX" id="zOg-0F-EOT"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="btnSelectedPositionCustomer" destination="Gg6-Zq-aSF" id="3k0-tZ-2eC"/>
+                        <outlet property="mapView" destination="vOB-6f-b9r" id="hl1-mZ-DBO"/>
+                        <outlet property="switchAutomaticGetInfoPosition" destination="chu-gg-shy" id="QXj-tZ-68X"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="P0j-W7-qI1" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>

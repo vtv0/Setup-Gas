@@ -564,6 +564,7 @@ extension DeliveryListController: MKMapViewDelegate, ShowIndexPageDelegateProtoc
             }
             
             // delegate Protocol
+            print(delegateGetIndex)
             delegateGetIndex?.getIndexMarker(indexDidSelected: passIndexSelectedMarker)
             
             // remove marker

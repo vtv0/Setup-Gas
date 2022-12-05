@@ -122,7 +122,9 @@ extension UIViewController {
     func getGetAssetExtension(forAsset iassetID: String, completion: @escaping  ((GetAsset?) -> Void)) {
         let companyCode = UserDefaults.standard.string(forKey: "companyCode") ?? ""
         let token = UserDefaults.standard.string(forKey: "accessToken") ?? ""
+        
         let urlGetAsset = "https://\(companyCode).kiiapps.com/am/api/assets/\(iassetID)"
+        
         AF.request(urlGetAsset,method: .get, parameters: nil, headers: self.makeHeadersExtension(token: token))
             .responseDecodable(of: GetAsset.self ) { response1 in
                 switch response1.result {

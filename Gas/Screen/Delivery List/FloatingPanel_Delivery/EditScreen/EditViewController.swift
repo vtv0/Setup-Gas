@@ -9,6 +9,10 @@ import UIKit
 
 class EditViewController: UIViewController {
     
+    var currentIndex: Int = 0
+    var pageController: UIPageViewController!
+    
+    
     @IBOutlet var tabsView: TabsView!
     
     @IBAction func btnExit(_ sender: Any) {
@@ -22,9 +26,8 @@ class EditViewController: UIViewController {
         self.present(alert, animated: true, completion: nil)
         
     }
-    var currentIndex: Int = 0
     
-    var pageController: UIPageViewController!
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -106,19 +109,19 @@ class EditViewController: UIViewController {
         currentIndex = index
         
         if index == 1 {
-            let contentVC = storyboard?.instantiateViewController(withIdentifier: "ParkingLocationController") as! ParkingLocationController
-            contentVC.pageIndex = index
+            let contentVC = storyboard?.instantiateViewController(withIdentifier: "ParkingLocationController") as? ParkingLocationController
+            contentVC?.pageIndex = index
             
             return contentVC
         } else if index == 2 {
-            let contentVC = storyboard?.instantiateViewController(withIdentifier: "CustomerLocationController") as! CustomerLocationController
+            let contentVC = storyboard?.instantiateViewController(withIdentifier: "CustomerLocationController") as? CustomerLocationController
             
-            contentVC.pageIndex = index
+            contentVC?.pageIndex = index
             return contentVC
         } else {
-            let contentVC = storyboard?.instantiateViewController(withIdentifier: "GeneralInfoController") as! GeneralInfoController
+            let contentVC = storyboard?.instantiateViewController(withIdentifier: "GeneralInfoController") as? GeneralInfoController
             
-            contentVC.pageIndex = index
+            contentVC?.pageIndex = index
             return contentVC
         }
     }
@@ -186,6 +189,7 @@ extension EditViewController: UIPageViewControllerDataSource, UIPageViewControll
         switch viewController {
         case is ParkingLocationController:
             let vc = viewController as! ParkingLocationController
+            
             return vc.pageIndex
         case is CustomerLocationController:
             let vc = viewController as! CustomerLocationController

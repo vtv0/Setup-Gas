@@ -30,13 +30,15 @@ class ImageLabelView: UIView, UINavigationControllerDelegate {
     
     @IBInspectable var label: String = "" {
         didSet {
+            print(label)
             labelView.text = label
         }
     }
     
     @IBInspectable var number: Int = 1 {
         didSet {
-            numberView.text = String(number)
+            print(number)
+            numberView.text = "\(number)"
         }
     }
     @IBInspectable var locationType: Int {

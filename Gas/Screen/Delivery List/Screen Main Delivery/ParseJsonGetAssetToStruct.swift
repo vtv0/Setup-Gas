@@ -28,7 +28,7 @@ struct PropertiesDetail: Decodable {
 }
 struct ValuesDetail: Decodable {
     var address: String?
-    var customer_location: [Float]
+    var customer_location: [Double]
     var customer_name: String?
     var display_data: Display_dataDetail
     var gas_location1: String?

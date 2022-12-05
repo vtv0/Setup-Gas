@@ -168,11 +168,11 @@
 		757F496C28E41EFB008B8C05 /* EditScreen */ = {
 			isa = PBXGroup;
 			children = (
+				75FDF73C28EABABA00AADB99 /* EditViewController.swift */,
+				75FDF72E28EAA31300AADB99 /* ViewSmall */,
 				75FDF73128EAB18400AADB99 /* TabsPageViewController.swift */,
 				75FDF72F28EAB0F700AADB99 /* TabsView.swift */,
 				75FDF73428EAB30200AADB99 /* TabCell.swift */,
-				75FDF73C28EABABA00AADB99 /* EditViewController.swift */,
-				75FDF72E28EAA31300AADB99 /* ViewSmall */,
 			);
 			path = EditScreen;
 			sourceTree = "<group>";
