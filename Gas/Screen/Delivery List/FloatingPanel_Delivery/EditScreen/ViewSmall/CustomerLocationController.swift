@@ -15,12 +15,10 @@ import Contacts
 class CustomerLocationController: UIViewController, MKMapViewDelegate, PassInfoOneCustomerDelegateProtocol {
     
     var pageIndex: Int!
-    var coordinateCustomer: [Double] = UserDefaults.standard.value(forKey: "coordinateCustomer") as! [Double]
+    var coordinateCustomer: [Double] = UserDefaults.standard.value(forKey: "coordinateCustomer") as? [Double] ?? []
     let companyCode = UserDefaults.standard.string(forKey: "companyCode") ?? ""
     var mapLat: CLLocationDegrees = 0.0
     var mapLong: CLLocationDegrees = 0.0
-    
-    
     
     @IBOutlet weak var mapView: MKMapView!
     
@@ -105,7 +103,7 @@ class CustomerLocationController: UIViewController, MKMapViewDelegate, PassInfoO
         print(token)
         print(mapLat)
         print(mapLong)
-        AF.request(urlGetAsset, method: .patch, parameters: parameters, encoding: URLEncoding.httpBody, headers: self.makeHeaders(token: token)).validate(statusCode: (200...299))
+        AF.request(urlGetAsset, method: .patch, parameters: parameters, encoding: URLEncoding.default, headers: self.makeHeaders(token: token)).validate(statusCode: (200...299))
             .response { response1 in
                 
                 print(response1.response?.statusCode ?? 0)
