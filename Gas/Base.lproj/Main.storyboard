@@ -1054,6 +1054,9 @@
                                 <buttonConfiguration key="configuration" style="plain" title="btnParking">
                                     <color key="baseForegroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </buttonConfiguration>
+                                <connections>
+                                    <action selector="btnSaveParking:" destination="hat-qu-Ryc" eventType="touchUpInside" id="fgK-8m-iyt"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1qF-g6-T6s">
                                 <rect key="frame" x="287" y="709" width="54" height="30"/>
@@ -1063,6 +1066,9 @@
                                 </constraints>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="plain" image="locationGPS" title=""/>
+                                <connections>
+                                    <action selector="btnLocationGPS:" destination="hat-qu-Ryc" eventType="touchUpInside" id="OCs-S8-1gH"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="J4w-Ec-f0q">
                                 <rect key="frame" x="155.66666666666666" y="381" width="64" height="50"/>
@@ -1097,6 +1103,7 @@
                     <connections>
                         <outlet property="btnLocationGPS" destination="1qF-g6-T6s" id="dJc-rs-3An"/>
                         <outlet property="btnSaveParking" destination="K0u-Hd-GlN" id="2hj-zE-dAK"/>
+                        <outlet property="btnSelectedCoordinate" destination="J4w-Ec-f0q" id="SuL-2t-2yh"/>
                         <outlet property="mapView" destination="2jN-3O-bBa" id="ENi-lI-Hbk"/>
                     </connections>
                 </viewController>
@@ -1119,7 +1126,7 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gg6-Zq-aSF">
                                 <rect key="frame" x="155.66666666666666" y="379" width="64" height="54"/>
                                 <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" image="pin-2"/>
+                                <buttonConfiguration key="configuration" style="plain" image="pin-2" title=""/>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="x7z-lC-AGI">
                                 <rect key="frame" x="30" y="727" width="315" height="31"/>
@@ -1128,6 +1135,9 @@
                                 <buttonConfiguration key="configuration" style="plain" title="btn Customer">
                                     <color key="baseForegroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </buttonConfiguration>
+                                <connections>
+                                    <action selector="btnSaveNewPosition:" destination="eFU-E9-yLL" eventType="touchUpInside" id="2yL-93-bd5"/>
+                                </connections>
                             </button>
                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="chu-gg-shy">
                                 <rect key="frame" x="30" y="677" width="49" height="31"/>
@@ -1145,6 +1155,9 @@
                                 </constraints>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="plain" image="locationGPS"/>
+                                <connections>
+                                    <action selector="btnLocationGPS:" destination="eFU-E9-yLL" eventType="touchUpInside" id="Y2z-P1-gwD"/>
+                                </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="aaaaaaaaaaaaa" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BL6-z1-YGz">
                                 <rect key="frame" x="87" y="678" width="183" height="30"/>
@@ -1177,6 +1190,11 @@
                             <constraint firstItem="Gg6-Zq-aSF" firstAttribute="centerX" secondItem="BOU-Ff-9kA" secondAttribute="centerX" id="zOg-0F-EOT"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="btnSelectedPositionCustomer" destination="Gg6-Zq-aSF" id="3k0-tZ-2eC"/>
+                        <outlet property="mapView" destination="vOB-6f-b9r" id="hl1-mZ-DBO"/>
+                        <outlet property="switchAutomaticGetInfoPosition" destination="chu-gg-shy" id="QXj-tZ-68X"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="P0j-W7-qI1" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>

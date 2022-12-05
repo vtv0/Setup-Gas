@@ -10,7 +10,16 @@ import Alamofire
 import FloatingPanel
 import AlamofireImage
 
-class PageDetailVC: UIViewController , UIScrollViewDelegate, UICollectionViewDelegate {
+
+protocol PassInfoOneCustomerDelegateProtocol: AnyObject {
+    func passiassetID(iassetID: String)
+    func passCoordinate(coordinate: [Double])
+    func passCoordinateOfCustomer(coordinateCustomer: [Double])
+}
+
+class PageDetailVC: UIViewController, UIScrollViewDelegate, UICollectionViewDelegate {
+    
+    weak var delegatePassInfoOneCustomer: PassInfoOneCustomerDelegateProtocol?
     
     var pageIndex: Int!
     
@@ -32,7 +41,7 @@ class PageDetailVC: UIViewController , UIScrollViewDelegate, UICollectionViewDel
     
     var arrImage = [String]()
     
-    var dataInfoOneCustomer: Location = Location(elem: LocationElement(locationOrder: 0), asset: GetAsset(assetModelID: 0, enabled: true))  // Location(elem: LocationElement(locationOrder: ), asset: GetAsset(assetModelID: 1, enabled: true))
+    var dataInfoOneCustomer: Location = Location(elem: LocationElement(arrivalTime: nil, breakTimeSEC: nil, createdAt: nil, latitude: 0, loadCapacity: 0, loadSupply: 0, location: nil, locationID: 0, locationOrder: 0, longitude: 0, metadata: nil, travelTimeSECToNext: 0, waitingTimeSEC: 0, workTimeSEC: 0), asset: GetAsset(assetModelID: 0, createdAt: "", enabled: true, geoloc: nil, id: "", metedata: "", name: "", properties: nil, tenantID: 0, updatedAt: "", version: 0, vendorThingID: ""))
     
     
     @IBOutlet weak var scrollView: UIScrollView!
@@ -81,6 +90,23 @@ class PageDetailVC: UIViewController , UIScrollViewDelegate, UICollectionViewDel
         collectionView.dataSource = self
         
         pageControl.numberOfPages = arrImage.count
+        guard let parkingVC = storyboard?.instantiateViewController(withIdentifier: "ParkingLocationController") as? ParkingLocationController else { return }
+        delegatePassInfoOneCustomer = parkingVC
+        if let mapCoordinate = dataInfoOneCustomer.asset?.properties?.values.location?.coordinates, let iassetID = dataInfoOneCustomer.elem?.location?.assetID {
+            
+            delegatePassInfoOneCustomer?.passiassetID(iassetID: iassetID )
+            delegatePassInfoOneCustomer?.passCoordinate(coordinate: mapCoordinate)
+          
+           
+            parkingVC.iassetID = iassetID
+        }
+        guard let customerLocation = storyboard?.instantiateViewController(withIdentifier: "CustomerLocationController") as? CustomerLocationController else { return }
+      
+        delegatePassInfoOneCustomer = customerLocation
+        if let mapCoordinateCustomer = dataInfoOneCustomer.asset?.properties?.values.customer_location, let iassetID = dataInfoOneCustomer.elem?.location?.assetID {
+            delegatePassInfoOneCustomer?.passiassetID(iassetID: iassetID )
+        delegatePassInfoOneCustomer?.passCoordinateOfCustomer(coordinateCustomer: mapCoordinateCustomer)
+        }
         
         if dataInfoOneCustomer.type == .supplier {
             lblCustomer_id?.text = comment
@@ -97,6 +123,7 @@ class PageDetailVC: UIViewController , UIScrollViewDelegate, UICollectionViewDel
         } else {
             
             lblCustomer_id?.text = dataInfoOneCustomer.elem?.location?.comment
+            
             lblCustomerName?.text = dataInfoOneCustomer.asset?.properties?.values.customer_name
             
             lblAddress?.text = dataInfoOneCustomer.asset?.properties?.values.address
@@ -131,8 +158,7 @@ class PageDetailVC: UIViewController , UIScrollViewDelegate, UICollectionViewDel
             arrUrlImage.append(arrImage)
             arrFacilityData.append(dataInfoOneCustomer.elem?.metadata?.facility_data ?? [])
             
-            
-            for iFacilityData in  arrFacilityData {
+            for iFacilityData in arrFacilityData {
                 if iFacilityData.count == 1 {
                     lblTypeGas?.text = "\(iFacilityData[0].type ?? 0 )kg"
                     lblNumberGas?.text = "\(iFacilityData[0].count  ?? 0)bottle"

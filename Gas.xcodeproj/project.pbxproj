@@ -20,7 +20,7 @@
 		75123F6A29027E3D00A08972 /* PassScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75123F6929027E3D00A08972 /* PassScreenViewController.swift */; };
 		7517A0F028F660FE00994CBD /* CustomAlertReplanVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7517A0EF28F660FE00994CBD /* CustomAlertReplanVC.swift */; };
 		754B942028EAE8CB0059D4F2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 754B941F28EAE8CB0059D4F2 /* Assets.xcassets */; };
-		754C39B2291E409500793A14 /* Extension+APIGetMe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754C39B1291E409500793A14 /* Extension+APIGetMe.swift */; };
+		754C39B2291E409500793A14 /* Extension+API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754C39B1291E409500793A14 /* Extension+API.swift */; };
 		7598E46128EFC4DC00EA9FA9 /* PageDetailCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7598E46028EFC4DC00EA9FA9 /* PageDetailCollectionViewCell.swift */; };
 		75A1E17C28EFE6F200EA17A2 /* ContentReplanTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75A1E17B28EFE6F200EA17A2 /* ContentReplanTableViewCell.swift */; };
 		75A1E17F28F3AB6300EA17A2 /* RerouteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75A1E17E28F3AB6300EA17A2 /* RerouteViewController.swift */; };
@@ -63,7 +63,7 @@
 		75123F6929027E3D00A08972 /* PassScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassScreenViewController.swift; sourceTree = "<group>"; };
 		7517A0EF28F660FE00994CBD /* CustomAlertReplanVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAlertReplanVC.swift; sourceTree = "<group>"; };
 		754B941F28EAE8CB0059D4F2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		754C39B1291E409500793A14 /* Extension+APIGetMe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+APIGetMe.swift"; sourceTree = "<group>"; };
+		754C39B1291E409500793A14 /* Extension+API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+API.swift"; sourceTree = "<group>"; };
 		7598E46028EFC4DC00EA9FA9 /* PageDetailCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageDetailCollectionViewCell.swift; sourceTree = "<group>"; };
 		75A1E17B28EFE6F200EA17A2 /* ContentReplanTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentReplanTableViewCell.swift; sourceTree = "<group>"; };
 		75A1E17E28F3AB6300EA17A2 /* RerouteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RerouteViewController.swift; sourceTree = "<group>"; };
@@ -148,7 +148,7 @@
 				750C7E6A2908ECA0009A9E27 /* Marker+ExtensionViewController.swift */,
 				750C7E6429078E52009A9E27 /* ParseJsontoObject.swift */,
 				750C7E6C290FA4CE009A9E27 /* ParseJsonGetAssetToStruct.swift */,
-				754C39B1291E409500793A14 /* Extension+APIGetMe.swift */,
+				754C39B1291E409500793A14 /* Extension+API.swift */,
 				75BF3A1D28E2883100BC0F0C /* DeliveryListController.swift */,
 			);
 			path = "Screen Main Delivery";
@@ -169,10 +169,10 @@
 			isa = PBXGroup;
 			children = (
 				75FDF73C28EABABA00AADB99 /* EditViewController.swift */,
+				75FDF72E28EAA31300AADB99 /* ViewSmall */,
 				75FDF73128EAB18400AADB99 /* TabsPageViewController.swift */,
 				75FDF72F28EAB0F700AADB99 /* TabsView.swift */,
 				75FDF73428EAB30200AADB99 /* TabCell.swift */,
-				75FDF72E28EAA31300AADB99 /* ViewSmall */,
 			);
 			path = EditScreen;
 			sourceTree = "<group>";
@@ -427,7 +427,7 @@
 				7501250328EC0FBE003AC9EB /* FloatingPanelDeliveryVC.swift in Sources */,
 				75FDF73228EAB18400AADB99 /* TabsPageViewController.swift in Sources */,
 				75D2CE7D28F8038D00B51CED /* UIApplacation+TopVC.swift in Sources */,
-				754C39B2291E409500793A14 /* Extension+APIGetMe.swift in Sources */,
+				754C39B2291E409500793A14 /* Extension+API.swift in Sources */,
 				750C7E6B2908ECA0009A9E27 /* Marker+ExtensionViewController.swift in Sources */,
 				75BF3A0B28E161A800BC0F0C /* LoginController.swift in Sources */,
 				7517A0F028F660FE00994CBD /* CustomAlertReplanVC.swift in Sources */,

@@ -63,14 +63,13 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
     var selectesIdxStatus: Int = 0
     var arr: [Int] = []
     var arrLocationOrder = [Int]()
-    // var pinsADayOfACar: [CustomPin] = []
     var dicData: [Date : [Location]] = [:]
     var indxes: [Int] = []
     var assetID: String = ""
     var dateYMD: [Date] = []
     var arrStringDate: [String] = []
     var t: Int = 0
-    var totalObjectSevenDate: Int = 0
+    
     
     var customer_LocationType = [String]()
     
@@ -149,6 +148,7 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         lblOtherType.text = "\(0)"
         
         
+        
     }
     
     func showAlert(title: String? = "", message: String?, completion: (() -> Void)? = nil) {
@@ -178,7 +178,7 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
     }
     
     func getMe() {
-        self.showActivity()//
+        self.showActivity()
         let showcompanyCode = UserDefaults.standard.string(forKey: "companyCode") ?? ""
         let urlGetMe = "https://\(showcompanyCode).kiiapps.com/am/api/me"
         let token = UserDefaults.standard.string(forKey: "accessToken") ?? ""
@@ -245,22 +245,21 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
                     if self.t == self.dateYMD.count {
                         self.reDrawMarkers()
                         self.hideActivity()
-                        
                     }
                 }
         }
     }
     
-    func getGetAsset(forAsset iassetID: String, completion: @escaping  ((GetAsset?) -> Void)) {  // location: Location,
+    func getGetAsset(forAsset iassetID: String, completion: @escaping  ((GetAsset?) -> Void)) {
         let token = UserDefaults.standard.string(forKey: "accessToken") ?? ""
         let urlGetAsset = "https://\(companyCode).kiiapps.com/am/api/assets/\(iassetID)"
         AF.request(urlGetAsset,method: .get, parameters: nil, headers: self.makeHeaders(token: token))
             .responseDecodable(of: GetAsset.self ) { response1 in
                 switch response1.result {
                 case .success( let value):
-                    if self.totalObjectSevenDate == self.totalObjectSevenDate {
-                        self.hideActivity()
-                    }
+                    
+                    self.hideActivity()
+                    
                     completion(value)
                 case .failure(let error):
                     print("\(error)")
@@ -506,8 +505,6 @@ extension DeliveryListController: MKMapViewDelegate, ShowIndexPageDelegateProtoc
         
         print("LocationOrder: \(annotation.title)")
         
-        
-        
         let identifier = "Annotation"
         var view: MyPinView
         
@@ -544,7 +541,7 @@ extension DeliveryListController: MKMapViewDelegate, ShowIndexPageDelegateProtoc
             } else {
                 view.lblView.text = "\(annotation.title - 1)"
                 view.zPriority = MKAnnotationViewZPriority.init(rawValue: -Float(annotation.title))
-//                view.imageView.layer.zPosition = CGFloat(exactly: -Float(annotation.title)) ?? 0
+                //                view.imageView.layer.zPosition = CGFloat(exactly: -Float(annotation.title)) ?? 0
                 
                 view.imageView.backgroundColor = .systemGreen
                 view.image = UIImage(named: "marker")
@@ -567,6 +564,7 @@ extension DeliveryListController: MKMapViewDelegate, ShowIndexPageDelegateProtoc
             }
             
             // delegate Protocol
+            print(delegateGetIndex)
             delegateGetIndex?.getIndexMarker(indexDidSelected: passIndexSelectedMarker)
             
             // remove marker
