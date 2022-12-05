@@ -132,12 +132,10 @@ class ParkingLocationController: UIViewController, MKMapViewDelegate, CLLocation
         print(mapLat)
         
         let parameters: [String: Any] = ["properties": ["values": ["location": ["coordinates": [mapLong, mapLat] ] ] ] ]
-        //        let parameters =
         let urlGetAsset = "https://\(companyCode).kiiapps.com/am/api/assets/\(iassetID)"
         self.showActivity()
         
         
-        // AF.upload(multipartFormData: <#T##(MultipartFormData) -> Void#>, to: <#T##URLConvertible#>)
         AF.request(urlGetAsset, method: .put, parameters: parameters, encoding: JSONEncoding.default, headers: self.makeHeaders(token: token)).validate(statusCode: (200...299))
             .response { response1 in
                 

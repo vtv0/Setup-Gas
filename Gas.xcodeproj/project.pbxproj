@@ -87,7 +87,7 @@
 		75FDF73128EAB18400AADB99 /* TabsPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabsPageViewController.swift; sourceTree = "<group>"; };
 		75FDF73428EAB30200AADB99 /* TabCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabCell.swift; sourceTree = "<group>"; };
 		75FDF73628EAB65800AADB99 /* GeneralInfoController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralInfoController.swift; sourceTree = "<group>"; };
-		75FDF73828EAB69700AADB99 /* ParkingLocationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParkingLocationController.swift; sourceTree = "<group>"; };
+		75FDF73828EAB69700AADB99 /* ParkingLocationController.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; path = ParkingLocationController.swift; sourceTree = "<group>"; };
 		75FDF73A28EAB6B300AADB99 /* CustomerLocationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomerLocationController.swift; sourceTree = "<group>"; };
 		75FDF73C28EABABA00AADB99 /* EditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditViewController.swift; sourceTree = "<group>"; };
 		8A21B86529058E35008D94DE /* Extension+ActivityIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+ActivityIndicator.swift"; sourceTree = "<group>"; };
