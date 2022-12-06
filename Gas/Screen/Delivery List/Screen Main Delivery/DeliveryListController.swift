@@ -21,7 +21,7 @@ class CustomPin: NSObject, MKAnnotation {
     }
 }
 
-//class CustomFloatingPanelLayout: FloatingPanelLayout {
+//class DeliveryListController: FloatingPanelLayout {
 //    var position: FloatingPanelPosition
 //
 //    var initialState: FloatingPanelState
@@ -70,7 +70,7 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
     var arrStringDate: [String] = []
     var t: Int = 0
     
-    
+    var arrCoordinate = [CustomPin]()
     var customer_LocationType = [String]()
     
     var comment: [String] = []
@@ -146,8 +146,6 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         lblType25kg.text = "\(0)"
         lblType20kg.text = "\(0)"
         lblOtherType.text = "\(0)"
-        
-        
         
     }
     
@@ -371,17 +369,12 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
             contentDeliveryVC.customer_LocationType = customer_LocationType
             contentDeliveryVC.comment = comment
             
-            
-            contentDeliveryVC.currentIndex = passIndexSelectedMarker
-            
-            
-            // contentDeliveryVC.passIndexSelectedMarker = passIndexSelectedMarker
-            
             customer_LocationType.removeAll()
             comment.removeAll()
             arrFacilityData.removeAll()
             fpc.addPanel(toParent: self)
             fpc.set(contentViewController: contentDeliveryVC)
+            //            fpc.trackingScrollView?.
             // fpc.trackingScrollView
         }
         var value: [ValuesDetail] = []
@@ -450,7 +443,7 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
             self.showAlert(message: "Không có đơn hàng nào!")
         } else {
             
-            //            dataDidFilter = dataDidFilter.sorted(by: { $0.elem?.locationOrder ?? 0 > $1.elem?.locationOrder ?? 0 })
+            // dataDidFilter = dataDidFilter.sorted(by: { $0.elem?.locationOrder ?? 0 > $1.elem?.locationOrder ?? 0 })
             for picker in dataDidFilter {
                 if let lat = picker.elem?.latitude, let long = picker.elem?.longitude, let locationOrder = picker.elem?.locationOrder {
                     let locationOfCustomer = CustomPin(title: locationOrder , coordinate: CLLocationCoordinate2D(latitude: lat, longitude: long))
@@ -461,19 +454,17 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
             }
             
             let arrCoordinateDidSort = arrCoordinate.sorted(by: { $0.title > $1.title } )
-            
             mapView.addAnnotations(arrCoordinateDidSort)
         }
         passIndexSelectedMarker = 0
     }
-    var arrCoordinate = [CustomPin]()
+    
 }
 
 
 extension DeliveryListController: MKMapViewDelegate, ShowIndexPageDelegateProtocol {
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?)
-    {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.destination is FloatingPanelDeliveryVC
         {
             let vc = segue.destination as? FloatingPanelDeliveryVC
@@ -491,13 +482,16 @@ extension DeliveryListController: MKMapViewDelegate, ShowIndexPageDelegateProtoc
             print("_______________________________________________________________________________Không có đơn hàng nào!")
         } else {
             for picker in dataDidFilter {
-                if let lat = picker.elem?.latitude, let long = picker.elem?.longitude, let locationOrder = picker.elem?.locationOrder {
+                if let lat = picker.elem?.latitude,
+                   let long = picker.elem?.longitude,
+                   let locationOrder = picker.elem?.locationOrder {
                     let locationOfCustomer = CustomPin(title: locationOrder , coordinate: CLLocationCoordinate2D(latitude: lat, longitude: long))
                     mapView.addAnnotation(locationOfCustomer)
                 }
             }
         }
     }
+    
     
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         
@@ -511,7 +505,6 @@ extension DeliveryListController: MKMapViewDelegate, ShowIndexPageDelegateProtoc
         if let dequeuedView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier) as? MyPinView {
             dequeuedView.annotation = annotation
             
-            
             if  arrLocationOrder[passIndexSelectedMarker] == annotation.title {
                 dequeuedView.lblView.text = "\(annotation.title - 1)"
                 dequeuedView.image = UIImage(named: "marker_yellow")
@@ -519,10 +512,10 @@ extension DeliveryListController: MKMapViewDelegate, ShowIndexPageDelegateProtoc
             } else {
                 dequeuedView.lblView.text = "\(annotation.title - 1)"
                 dequeuedView.image = UIImage(named: "marker")
-                //                dequeuedView.layer.zPosition = CGFloat( -annotation.title)
-                //                dequeuedView.backgroundColor = .gray
-                //                dequeuedView.lblView.layer.zPosition = CGFloat( -annotation.title)
-                dequeuedView.zPriority = MKAnnotationViewZPriority.init(rawValue: -Float(annotation.title))
+                //                                dequeuedView.layer.zPosition = CGFloat( -annotation.title)
+                //                                dequeuedView.backgroundColor = .gray
+                //                                dequeuedView.lblView.layer.zPosition = CGFloat( -annotation.title)
+                //                dequeuedView.zPriority = MKAnnotationViewZPriority.init(rawValue: -Float(annotation.title))
             }
             dequeuedView.reloadInputViews()
             view = dequeuedView
@@ -540,10 +533,10 @@ extension DeliveryListController: MKMapViewDelegate, ShowIndexPageDelegateProtoc
                 view.image = UIImage(named: "marker_yellow")
             } else {
                 view.lblView.text = "\(annotation.title - 1)"
-                view.zPriority = MKAnnotationViewZPriority.init(rawValue: -Float(annotation.title))
-                //                view.imageView.layer.zPosition = CGFloat(exactly: -Float(annotation.title)) ?? 0
+                //                view.zPriority = MKAnnotationViewZPriority.init(rawValue: -Float(annotation.title))
+                view.imageView.layer.zPosition = CGFloat(exactly: -Float(annotation.title)) ?? 0
                 
-                view.imageView.backgroundColor = .systemGreen
+                //  view.imageView.backgroundColor = .systemGreen
                 view.image = UIImage(named: "marker")
             }
         }
@@ -564,7 +557,6 @@ extension DeliveryListController: MKMapViewDelegate, ShowIndexPageDelegateProtoc
             }
             
             // delegate Protocol
-            print(delegateGetIndex)
             delegateGetIndex?.getIndexMarker(indexDidSelected: passIndexSelectedMarker)
             
             // remove marker

@@ -6,6 +6,11 @@
 //
 
 import UIKit
+import Alamofire
+import CoreLocation
+import MapKit
+import FloatingPanel
+import Contacts
 
 protocol TabsDelegate: AnyObject {
     func tabsViewDidSelectItemAt(position: Int)
@@ -23,7 +28,7 @@ class FloatingPanelDeliveryVC: UIViewController, UIPageViewControllerDelegate, U
     var pageController: UIPageViewController!
     var customer_LocationType = [String]()
     var dataDidFilter: [Location] = []
-    var scrollView: UIScrollView!
+   
     var comment: [String] = []
     
     @IBOutlet weak var detailsTabsView: TabsView!
@@ -83,7 +88,7 @@ class FloatingPanelDeliveryVC: UIViewController, UIPageViewControllerDelegate, U
             self.pageController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
         ])
         self.pageController.didMove(toParent: self)
-       
+        
     }
     
     override func viewDidLayoutSubviews() {
@@ -104,7 +109,6 @@ class FloatingPanelDeliveryVC: UIViewController, UIPageViewControllerDelegate, U
         contentVC.dataInfoOneCustomer = dataDidFilter[index]
         contentVC.comment = comment[index]
         
-        //contentVC.scrollView = scrollView
         return contentVC
     }
     
@@ -133,7 +137,7 @@ class FloatingPanelDeliveryVC: UIViewController, UIPageViewControllerDelegate, U
             let vc = viewController as! PageDetailVC
             return vc.pageIndex
         default:
-          
+            
             return currentIndex
         }
     }

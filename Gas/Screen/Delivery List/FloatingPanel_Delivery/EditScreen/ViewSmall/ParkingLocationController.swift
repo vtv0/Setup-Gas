@@ -16,20 +16,14 @@ class ParkingLocationController: UIViewController, MKMapViewDelegate, CLLocation
     func passCoordinateOfCustomer(coordinateCustomer: [Double]) {
         //
     }
-    
     var pageIndex: Int!
-    
-    
     var mapLat: CLLocationDegrees = 0.0
     var mapLong: CLLocationDegrees = 0.0
-    
     var iassetID: String = ""
     var coordinateParking = [Double]()
     
     let companyCode = UserDefaults.standard.string(forKey: "companyCode") ?? ""
-    
     @IBOutlet weak var mapView: MKMapView!
-    
     @IBOutlet weak var btnSaveParking: UIButton!
     @IBAction func btnSaveParking(_ sender: UIButton) {
         
@@ -98,19 +92,6 @@ class ParkingLocationController: UIViewController, MKMapViewDelegate, CLLocation
         return view
     }
     
-    //    override func viewWillAppear(_ animated: Bool) {
-    //        NotificationCenter.default.addObserver(self,
-    //                                               selector: #selector(self.dataACustomer(_:)),
-    //                                               name: Notification.Name("NotificationPassData"),
-    //                                               object: nil)
-    //    }
-    //
-    //    @objc func dataACustomer(_ notification: NSNotification) {
-    //        let details = notification.userInfo?["details"] as? [Double]
-    //        let iassetID = notification.userInfo?["issetID"]
-    //
-    //    }
-    
     // MARK:- PUT alamofire
     func makeHeaders(token: String) -> HTTPHeaders {
         var headers: [String: String] = [:]
@@ -131,12 +112,12 @@ class ParkingLocationController: UIViewController, MKMapViewDelegate, CLLocation
         print(mapLong)
         print(mapLat)
         
-        let parameters: [String: Any] = ["properties": ["values": ["location": ["coordinates": [mapLong, mapLat] ] ] ] ]
+        let parameters: [String: [String: [String: [String: [Double]]]]] = ["properties": ["values": ["location": ["coordinates": [mapLong, mapLat] ] ] ] ]
         let urlGetAsset = "https://\(companyCode).kiiapps.com/am/api/assets/\(iassetID)"
         self.showActivity()
         
         
-        AF.request(urlGetAsset, method: .put, parameters: parameters, encoding: JSONEncoding.default, headers: self.makeHeaders(token: token)).validate(statusCode: (200...299))
+        AF.request(urlGetAsset, method: .patch, parameters: parameters, encoding: CustomPATCHEncoding(), headers: self.makeHeaders(token: token)).validate(statusCode: (200...299))
             .response { response1 in
                 
                 print(response1.response?.statusCode ?? 0)

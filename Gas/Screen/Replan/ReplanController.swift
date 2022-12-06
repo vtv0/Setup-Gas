@@ -10,11 +10,18 @@ import FloatingPanel
 
 class ReplanController: UIViewController, FloatingPanelControllerDelegate {
     let viewBtnAnimation = UIButton()
-    let driver = ["n1", "n2", "n3"]
+    var car: [String] = ["Car1", "Car2", "Car3", "Car4", "Car5", "Car6", "Car7", "Car8", "Car9"]
     let fpc = FloatingPanelController()
-    let date = ["03/10", "04/10", "05/10", "06/10","07/10","08/10","09/10"]
+   
+    var status: Bool = false
+    
+    var dicData: [Date : [Location]] = [:]
+    var dateYMD: [Date] = []
+    
     @IBOutlet weak var btnClear: UIButton!
     @IBOutlet weak var btnReplace: UIButton!
+    
+    
     
     @IBAction func btnClear(_ sender: Any) {
         print("bo chon")
@@ -25,12 +32,10 @@ class ReplanController: UIViewController, FloatingPanelControllerDelegate {
     
     
     @IBAction func btnReplace(_ sender: Any) {
-       print("chuyen sang ngay khac")
-       // let view = fpc.contentViewController as! ContentReplanController
-        
-        
-       // view.myTableView.reloadData()
-    //let alert =  UIAlertController
+        print("chuyen sang ngay khac")
+        // let view = fpc.contentViewController as! ContentReplanController
+        // view.myTableView.reloadData()
+        //let alert =  UIAlertController
         
     }
     
@@ -53,8 +58,7 @@ class ReplanController: UIViewController, FloatingPanelControllerDelegate {
         super.viewDidLoad()
         title = "Replan"
         createViewBtnAnimation()
-        
-        
+        self.sevenDay()
         fpc.delegate = self
         
         guard let contentVC = storyboard?.instantiateViewController(withIdentifier: "ContentReplanController") as? ContentReplanController else { return }
@@ -71,7 +75,6 @@ class ReplanController: UIViewController, FloatingPanelControllerDelegate {
         
     }
     
-    
     func createViewBtnAnimation () {
         
         viewBtnAnimation.frame = CGRect(x: 0, y: 270, width: self.viewAnimation.frame.width, height: 30)
@@ -81,9 +84,8 @@ class ReplanController: UIViewController, FloatingPanelControllerDelegate {
         self.view.addSubview(viewBtnAnimation)
     }
     
-    var status:Bool = false
-    @objc
-    func clickBtn() {
+ 
+    @objc func clickBtn() {
         print("click BTN")
         status = !status
         if (status){
@@ -102,25 +104,42 @@ class ReplanController: UIViewController, FloatingPanelControllerDelegate {
         }
         
     }
+    
 }
 
 extension ReplanController: UIPickerViewDelegate, UIPickerViewDataSource {
+    
+    func sevenDay() {
+        let anchor = Date()
+        let calendar = Calendar.current
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        for dayOffset in 0...6 {
+            if let date1 = calendar.date(byAdding: .day, value: dayOffset, to: anchor) {
+                dateYMD.append(date1)
+            }
+        }
+    }
+    
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        if pickerView.tag == 0 {
-            return driver.count
-        } else if (pickerView.tag == 1) {
-            return date.count
+        if pickerView == pickerDriver {
+            return car.count
+        } else if pickerView == pickerDate {
+            return dateYMD.count
         }
         return 1
     }
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        if (pickerView.tag == 0) {
-            return driver[row]
-        } else if (pickerView.tag == 1) {
-            return date[row]
+        if pickerView == pickerDriver {
+            return car[row]
+        } else if pickerView == pickerDate {
+            let formatter = DateFormatter()
+            formatter.dateFormat = "MM/dd"
+            let dateString: String = formatter.string(from: dateYMD[row])
+            return dateString
         }
         return ""
     }

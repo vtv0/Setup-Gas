@@ -4,11 +4,29 @@
 //
 //  Created by kwakata on 2021/02/09.
 //
-
 import UIKit
+
+protocol ImageLabelViewDelegate: AnyObject {
+    func onTap(_ sender: ImageLabelView, number: Int, type: DeliveryLocationImageType)
+    func didImagePick()
+}
+
+
 class ImageLabelView: UIView, UINavigationControllerDelegate {
     
-    static var delegate: ImageLabelViewDelegate?
+    enum ImageType: String {
+        case gasLocation1
+        case gasLocation2
+        case gasLocation3
+        case gasLocation4
+        case parkingPlace5
+        case parkingPlace6
+        case parkingPlace7
+        case parkingPlace8
+    }
+    
+    static var delegatePassSelectedImage: ImageLabelViewDelegate?
+    
     private var deliveryLocationType: DeliveryLocationImageType = .facilityExterior
     private var isSetImage: Bool = false
     private(set) var newFileName: String?
@@ -16,8 +34,9 @@ class ImageLabelView: UIView, UINavigationControllerDelegate {
     
     @IBInspectable var image: UIImage? {
         didSet {
+            print(image)
             if let image = image {
-                mainImageView.contentMode = .scaleAspectFill
+                mainImageView.contentMode = .scaleToFill
                 mainImageView.image = image
                 isSetImage = true
             } else {
@@ -43,6 +62,7 @@ class ImageLabelView: UIView, UINavigationControllerDelegate {
     }
     @IBInspectable var locationType: Int {
         get {
+            print(locationType)
             return deliveryLocationType.rawValue
         }
         set(newValue) {
@@ -59,7 +79,7 @@ class ImageLabelView: UIView, UINavigationControllerDelegate {
     }
     
     @IBOutlet private weak var mainView: UIView!
-    @IBOutlet private weak var mainImageView: UIImageView!
+    @IBOutlet weak var mainImageView: UIImageView!
     @IBOutlet private weak var iconImageView: UIImageView!
     @IBOutlet private weak var labelView: UILabel!
     @IBOutlet private weak var numberView: UILabel!
@@ -150,8 +170,9 @@ class ImageLabelView: UIView, UINavigationControllerDelegate {
         mainView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onTapView)))
     }
     @objc private func onTapView() {
-        
-        ImageLabelView.delegate?.onTap(self, number: number, type: deliveryLocationType)
+    
+        ImageLabelView.delegatePassSelectedImage?.onTap(self, number: number, type: deliveryLocationType)
+        print(number)
     }
 }
 
@@ -159,7 +180,8 @@ extension ImageLabelView: UIImagePickerControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
         guard let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage
         else {
-            ImageLabelView.delegate?.didImagePick()
+            
+            ImageLabelView.delegatePassSelectedImage?.didImagePick()
             return
         }
         var fileName = ""
@@ -175,10 +197,10 @@ extension ImageLabelView: UIImagePickerControllerDelegate {
         }
         let newImage = resizeImage(image)
         changeImage(image: newImage, fileName: fileName)
-        ImageLabelView.delegate?.didImagePick()
+        ImageLabelView.delegatePassSelectedImage?.didImagePick()
     }
     func resizeImage(_ image: UIImage) -> UIImage {
-        let compressionQuality = 0.9
+        let compressionQuality = 1.0
         let rect = CGRect(x: 0.0, y: 0.0, width: CGFloat(70), height: CGFloat(84))
         UIGraphicsBeginImageContext(rect.size)
         image.draw(in: rect)

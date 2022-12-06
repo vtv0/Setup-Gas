@@ -17,8 +17,10 @@ struct DeliveryLocationImageUrl {
         switch imageType {
         case .facilityExterior:
             return imageType.text
-        case .gasLocation, .parking:
-            return imageType.text + order.description
+        case .gasLocation:
+            return imageType.text 
+        case .parking:
+            return imageType.text
         }
     }
 }

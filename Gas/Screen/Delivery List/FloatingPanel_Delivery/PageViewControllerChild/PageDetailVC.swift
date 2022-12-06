@@ -17,9 +17,28 @@ protocol PassInfoOneCustomerDelegateProtocol: AnyObject {
     func passCoordinateOfCustomer(coordinateCustomer: [Double])
 }
 
+protocol PassImageDelegateProtocol: AnyObject {
+    func passUrlGasLocation1(urlImage1: String)
+    func passUrlGasLocation2(urlImage2: String)
+    func passUrlGasLocation3(urlImage3: String)
+    func passUrlGasLocation4(urlImage4: String)
+    
+    func passUrlParkingPlace5(urlImage5: String)
+    func passUrlParkingPlace6(urlImage6: String)
+    func passUrlParkingPlace7(urlImage7: String)
+    func passUrlParkingPlace8(urlImage8: String)
+    func passNotes(notes: String)
+}
+
+//protocol PassAssetDelegateProtocol: AnyObject {
+//    func passAssetOfCustomer(asset: AnyObject)
+//}
+
 class PageDetailVC: UIViewController, UIScrollViewDelegate, UICollectionViewDelegate {
     
     weak var delegatePassInfoOneCustomer: PassInfoOneCustomerDelegateProtocol?
+    weak var delegatePassImage: PassImageDelegateProtocol?
+//    weak var delegatePassAsset: PassAssetDelegateProtocol?
     
     var pageIndex: Int!
     
@@ -85,28 +104,65 @@ class PageDetailVC: UIViewController, UIScrollViewDelegate, UICollectionViewDele
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        lblTextNotes.isEditable = false
         
         collectionView.delegate = self
         collectionView.dataSource = self
         
         pageControl.numberOfPages = arrImage.count
+
+//        guard let editViewVC = storyboard?.instantiateViewController(withIdentifier: "EditViewController") as? EditViewController else { return }
+//        delegatePassAsset = editViewVC as! PassAssetDelegateProtocol
+//        if let asset = dataInfoOneCustomer.asset {
+//            delegatePassAsset?.passAssetOfCustomer(asset: asset)
+//           editViewVC.asset = asset
+//        }
+                
+        
         guard let parkingVC = storyboard?.instantiateViewController(withIdentifier: "ParkingLocationController") as? ParkingLocationController else { return }
         delegatePassInfoOneCustomer = parkingVC
-        if let mapCoordinate = dataInfoOneCustomer.asset?.properties?.values.location?.coordinates, let iassetID = dataInfoOneCustomer.elem?.location?.assetID {
-            
+        if let mapCoordinate = dataInfoOneCustomer.asset?.properties?.values.location?.coordinates,
+            let iassetID = dataInfoOneCustomer.elem?.location?.assetID {
             delegatePassInfoOneCustomer?.passiassetID(iassetID: iassetID )
             delegatePassInfoOneCustomer?.passCoordinate(coordinate: mapCoordinate)
-          
-           
-            parkingVC.iassetID = iassetID
+//            parkingVC.iassetID = iassetID
         }
+
         guard let customerLocation = storyboard?.instantiateViewController(withIdentifier: "CustomerLocationController") as? CustomerLocationController else { return }
-      
         delegatePassInfoOneCustomer = customerLocation
-        if let mapCoordinateCustomer = dataInfoOneCustomer.asset?.properties?.values.customer_location, let iassetID = dataInfoOneCustomer.elem?.location?.assetID {
-            delegatePassInfoOneCustomer?.passiassetID(iassetID: iassetID )
-        delegatePassInfoOneCustomer?.passCoordinateOfCustomer(coordinateCustomer: mapCoordinateCustomer)
+        
+        if let mapCoordinateCustomer = dataInfoOneCustomer.asset?.properties?.values.customer_location,
+           let iassetID = dataInfoOneCustomer.elem?.location?.assetID {
+            delegatePassInfoOneCustomer?.passiassetID(iassetID: iassetID)
+            delegatePassInfoOneCustomer?.passCoordinateOfCustomer(coordinateCustomer: mapCoordinateCustomer)
         }
+        
+        guard let generalInforVC = storyboard?.instantiateViewController(withIdentifier: "GeneralInfoController") as? GeneralInfoController else { return }
+        delegatePassImage = generalInforVC
+        
+        if let gasLocation1 = dataInfoOneCustomer.asset?.properties?.values.gas_location1,
+           let gasLocation2 = dataInfoOneCustomer.asset?.properties?.values.gas_location2,
+           let gasLocation3 = dataInfoOneCustomer.asset?.properties?.values.gas_location3,
+           let gasLocation4 = dataInfoOneCustomer.asset?.properties?.values.gas_location4,
+           let parkingPlace5 = dataInfoOneCustomer.asset?.properties?.values.parking_place1,
+           let parkingPlace6 = dataInfoOneCustomer.asset?.properties?.values.parking_place2,
+           let parkingPlace7 = dataInfoOneCustomer.asset?.properties?.values.parking_place3,
+           let parkingPlace8 = dataInfoOneCustomer.asset?.properties?.values.parking_place4,
+           let notes = dataInfoOneCustomer.asset?.properties?.values.notes {
+            
+            delegatePassImage?.passUrlGasLocation1(urlImage1: gasLocation1)
+            delegatePassImage?.passUrlGasLocation2(urlImage2: gasLocation2)
+            delegatePassImage?.passUrlGasLocation3(urlImage3: gasLocation3)
+            delegatePassImage?.passUrlGasLocation4(urlImage4: gasLocation4)
+            
+            delegatePassImage?.passUrlParkingPlace5(urlImage5: parkingPlace5)
+            delegatePassImage?.passUrlParkingPlace6(urlImage6: parkingPlace6)
+            delegatePassImage?.passUrlParkingPlace7(urlImage7: parkingPlace7)
+            delegatePassImage?.passUrlParkingPlace8(urlImage8: parkingPlace8)
+            
+            delegatePassImage?.passNotes(notes: notes)
+        }
+         
         
         if dataInfoOneCustomer.type == .supplier {
             lblCustomer_id?.text = comment
@@ -136,9 +192,9 @@ class PageDetailVC: UIViewController, UIScrollViewDelegate, UICollectionViewDele
             
             arrImage.removeAll()
             if let gasLocation1 = dataInfoOneCustomer.asset?.properties?.values.gas_location1,
-               let gasLocation2 = dataInfoOneCustomer.asset?.properties?.values.gas_location2 ,
+               let gasLocation2 = dataInfoOneCustomer.asset?.properties?.values.gas_location2,
                let gasLocation3 = dataInfoOneCustomer.asset?.properties?.values.gas_location3,
-               let gasLocation4 = dataInfoOneCustomer.asset?.properties?.values.gas_location4 ,
+               let gasLocation4 = dataInfoOneCustomer.asset?.properties?.values.gas_location4,
                let parkingPlace1 = dataInfoOneCustomer.asset?.properties?.values.parking_place1,
                let parkingPlace2 = dataInfoOneCustomer.asset?.properties?.values.parking_place2,
                let parkingPlace3 = dataInfoOneCustomer.asset?.properties?.values.parking_place3,
@@ -160,7 +216,7 @@ class PageDetailVC: UIViewController, UIScrollViewDelegate, UICollectionViewDele
             
             for iFacilityData in arrFacilityData {
                 if iFacilityData.count == 1 {
-                    lblTypeGas?.text = "\(iFacilityData[0].type ?? 0 )kg"
+                    lblTypeGas?.text = "\(iFacilityData[0].type ?? 0)kg"
                     lblNumberGas?.text = "\(iFacilityData[0].count  ?? 0)bottle"
                     stackViewShowInfoGas.removeFromSuperview()
                     

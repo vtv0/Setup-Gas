@@ -98,12 +98,13 @@ class CustomerLocationController: UIViewController, MKMapViewDelegate, PassInfoO
         let iassetID = UserDefaults.standard.string(forKey: "iassetID") ?? ""
         let token = UserDefaults.standard.string(forKey: "accessToken") ?? ""
         
-        let parameters: [String: [Double]] = ["customer_location": [mapLong, mapLat]]
+        let parameters: [String: [Any]] = ["customer_location": [mapLong, mapLat]]
+        
         let urlGetAsset = "https://\(companyCode).kiiapps.com/am/api/assets/\(iassetID)"
         print(token)
         print(mapLat)
         print(mapLong)
-        AF.request(urlGetAsset, method: .patch, parameters: parameters, encoding: URLEncoding.default, headers: self.makeHeaders(token: token)).validate(statusCode: (200...299))
+        AF.request(urlGetAsset, method: .patch, parameters: parameters, encoding: JSONEncoding.default, headers: self.makeHeaders(token: token)).validate(statusCode: (200...299))
             .response { response1 in
                 
                 print(response1.response?.statusCode ?? 0)
@@ -125,7 +126,19 @@ class CustomerLocationController: UIViewController, MKMapViewDelegate, PassInfoO
     
     
     
+    
     func passCoordinate(coordinate: [Double]) {
         //
     }
 }
+
+extension String: ParameterEncoding {
+
+    public func encode(_ urlRequest: URLRequestConvertible, with parameters: Parameters?) throws -> URLRequest {
+        var request = try urlRequest.asURLRequest()
+        request.httpBody = data(using: .utf8, allowLossyConversion: false)
+        return request
+    }
+
+}
+

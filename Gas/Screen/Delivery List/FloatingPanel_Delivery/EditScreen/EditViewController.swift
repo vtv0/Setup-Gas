@@ -13,6 +13,7 @@ class EditViewController: UIViewController {
     var pageController: UIPageViewController!
     
     
+    
     @IBOutlet var tabsView: TabsView!
     
     @IBAction func btnExit(_ sender: Any) {

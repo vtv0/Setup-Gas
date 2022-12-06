@@ -593,6 +593,7 @@
                                                                                     <rect key="frame" x="8" y="-12" width="367" height="300"/>
                                                                                 </imageView>
                                                                             </subviews>
+                                                                            <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                             <constraints>
                                                                                 <constraint firstItem="tvP-BF-K18" firstAttribute="top" secondItem="z0T-G6-RCr" secondAttribute="top" constant="-12" id="Gdg-JV-uID"/>
                                                                                 <constraint firstAttribute="trailing" secondItem="tvP-BF-K18" secondAttribute="trailing" id="Zh5-lT-Uc8"/>
@@ -2109,6 +2110,9 @@ Sáng sớm hôm sau, </string>
                                                         <rect key="frame" x="0.0" y="0.0" width="93.666666666666671" height="120"/>
                                                         <userDefinedRuntimeAttributes>
                                                             <userDefinedRuntimeAttribute type="string" keyPath="label" value="Factory"/>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="number">
+                                                                <integer key="value" value="1"/>
+                                                            </userDefinedRuntimeAttribute>
                                                         </userDefinedRuntimeAttributes>
                                                     </view>
                                                     <view tag="1" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6bv-Cz-rgb" customClass="ImageLabelView" customModule="Gas" customModuleProvider="target">
@@ -2148,7 +2152,7 @@ Sáng sớm hôm sau, </string>
                                             <constraint firstAttribute="height" constant="120" id="fOw-Lx-xPv"/>
                                         </constraints>
                                     </stackView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" restorationIdentifier="StackView2" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="jNo-7e-HEb">
+                                    <stackView opaque="NO" contentMode="scaleToFill" restorationIdentifier="StackView2" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="jNo-7e-HEb" userLabel="Stack Image Location">
                                         <rect key="frame" x="0.0" y="132" width="375" height="120"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="UCV-3R-lJC">
@@ -2227,12 +2231,11 @@ Sáng sớm hôm sau, </string>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="QGE-Sr-nBn">
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" alwaysBounceHorizontal="YES" pagingEnabled="YES" bouncesZoom="NO" text="Không hiển thị khi không có Notes trong GetAssset" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="QGE-Sr-nBn">
                                         <rect key="frame" x="0.0" y="52" width="375" height="257"/>
                                         <color key="backgroundColor" systemColor="systemGray6Color"/>
-                                        <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. </string>
                                         <color key="textColor" systemColor="systemGrayColor"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                     </textView>
                                 </subviews>
@@ -2279,7 +2282,17 @@ Sáng sớm hôm sau, </string>
                     </view>
                     <connections>
                         <outlet property="stackImageGas" destination="SMq-G7-Uju" id="j5W-cu-tkC"/>
+                        <outlet property="txtFieldNotes" destination="QGE-Sr-nBn" id="Zke-MM-m6W"/>
+                        <outlet property="viewGasLocation1" destination="fly-R1-gu5" id="liV-6Q-Awb"/>
+                        <outlet property="viewGasLocation2" destination="6bv-Cz-rgb" id="pCD-cx-6b4"/>
+                        <outlet property="viewGasLocation3" destination="N7M-3R-oeR" id="mws-cV-H0H"/>
+                        <outlet property="viewGasLocation4" destination="ACs-yg-fjL" id="dlo-MZ-rz7"/>
                         <outlet property="viewImage" destination="aaO-6j-9Iu" id="0ys-7Z-5us"/>
+                        <outlet property="viewNotes" destination="TvY-eS-VpY" id="OkS-Ou-NCC"/>
+                        <outlet property="viewParkingLocation5" destination="FPq-nm-9cq" id="Tby-Tb-gQP"/>
+                        <outlet property="viewParkingLocation6" destination="8Ns-lB-QD8" id="7pc-IW-pq7"/>
+                        <outlet property="viewParkingLocation7" destination="bKh-rr-rP0" id="DcE-3t-qI7"/>
+                        <outlet property="viewParkingLocation8" destination="Zzv-fN-vPE" id="e7x-Fs-Cbz"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BCD-Yw-nr7" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

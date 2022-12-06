@@ -15,11 +15,11 @@ enum DeliveryLocationImageType: Int {
     var text: String {
         switch self {
         case .facilityExterior:
-            return "Factory"
+            return "factory"
         case .gasLocation:
-            return "Gas"
+            return "gas"
         case .parking:
-            return "Location"
+            return "location"
         }
     }
 }
