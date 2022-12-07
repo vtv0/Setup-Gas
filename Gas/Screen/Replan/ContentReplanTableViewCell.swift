@@ -12,7 +12,12 @@ class ContentReplanTableViewCell: UITableViewCell {
     //@IBOutlet weak var imgCheckbox: UIImageView!
     
     @IBOutlet weak var btnCheckbox: UIButton!
-    @IBOutlet weak var lblContent: UILabel!
+
+    @IBOutlet weak var lbl_locationOrder: UILabel!
+
+    @IBOutlet weak var lbl_kyokyusetsubi_code: UILabel!
+    @IBOutlet weak var lbl_customer_name: UILabel!
+    @IBOutlet weak var lbl_planned_date: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()

@@ -8,9 +8,9 @@
 import UIKit
 
 struct GetAsset: Decodable {
-    var assetModelID : Int
+    var assetModelID: Int?
     var createdAt: String?
-    var enabled: Bool
+    var enabled: Bool?
     var geoloc : GeolocDetail?
     var id: String?
     var metedata: String?

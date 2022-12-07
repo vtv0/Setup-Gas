@@ -9,7 +9,7 @@ import UIKit
 import FloatingPanel
 import Alamofire
 import MapKit
-import Network
+
 
 class CustomPin: NSObject, MKAnnotation {
     let title: Int
@@ -47,9 +47,12 @@ protocol GetIndexMarkerDelegateProtocol: AnyObject {
     func getIndexMarker(indexDidSelected: Int)
 }
 
+
+
 class DeliveryListController: UIViewController , FloatingPanelControllerDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
     
     weak var delegateGetIndex: GetIndexMarkerDelegateProtocol?
+    
     
     let companyCode = UserDefaults.standard.string(forKey: "companyCode") ?? ""
     let tenantId = UserDefaults.standard.string(forKey: "tenantId") ?? ""
@@ -124,6 +127,7 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         self.sevenDay()
         getMe()
         fpc.delegate = self
+        mapView.delegate = self
         
         pickerStatus.dataSource = self
         pickerStatus.delegate = self
@@ -138,7 +142,7 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         let userCoordinate = CLLocationCoordinate2D(latitude: 35.73774428640241, longitude: 139.6194163709879)
         let eyeCoordinate = CLLocationCoordinate2D(latitude: 35.73774428640241, longitude: 139.6194163709879)
         let mapCamera = MKMapCamera(lookingAtCenter: userCoordinate, fromEyeCoordinate: eyeCoordinate, eyeAltitude: 1000000.0)
-        mapView.delegate = self
+        
         
         mapView.setCamera(mapCamera, animated: false)
         lblType50kg.text = "\(0)"
@@ -146,6 +150,7 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         lblType25kg.text = "\(0)"
         lblType20kg.text = "\(0)"
         lblOtherType.text = "\(0)"
+        
         
     }
     
@@ -201,8 +206,7 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
             }
     }
     
-    func  getLatestWorkerRouteLocationList() {
-        // self.showActivity()
+    func getLatestWorkerRouteLocationList() {
         let token = UserDefaults.standard.string(forKey: "accessToken") ?? ""
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
@@ -232,6 +236,7 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
                                 }
                             }
                             self.dicData[iday] = arrLocationValue
+                            
                         } else {
                             print(response.response?.statusCode as Any)
                             print("\(url) =>> Array Empty, No Object ")
@@ -243,10 +248,17 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
                     if self.t == self.dateYMD.count {
                         self.reDrawMarkers()
                         self.hideActivity()
+                        
+                        //                        print(self.dicData)
+                        //                        guard let replan = self.storyboard?.instantiateViewController(withIdentifier: "ReplanController") as? ReplanController else { return }
+                        //                        replan.dicDataReplan = self.dicData
+                        
                     }
                 }
         }
+       
     }
+    
     
     func getGetAsset(forAsset iassetID: String, completion: @escaping  ((GetAsset?) -> Void)) {
         let token = UserDefaults.standard.string(forKey: "accessToken") ?? ""
@@ -265,6 +277,15 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
                 }
             }
     }
+    
+//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+//        if segue.destination is ReplanController
+//        {
+//            let vc = segue.destination as? ReplanController
+//            vc?.dicDataReplan = self.dicData
+//        }
+//    }
+    
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
@@ -311,6 +332,7 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
             elemLocationADay.append(idataADay)
         }
         locations = elemLocationADay
+        
         elemLocationADay.enumerated().forEach { vehicleIdx, vehicle in
             if (vehicle.elem?.location?.locationType?.rawValue == "supplier") {
                 indxes.append(vehicleIdx)
@@ -464,13 +486,7 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
 
 extension DeliveryListController: MKMapViewDelegate, ShowIndexPageDelegateProtocol {
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.destination is FloatingPanelDeliveryVC
-        {
-            let vc = segue.destination as? FloatingPanelDeliveryVC
-            vc?.currentIndex = passIndexSelectedMarker
-        }
-    }
+    
     
     func passIndexPVC(currentIndexPageVC: Int) {
         passIndexSelectedMarker = currentIndexPageVC

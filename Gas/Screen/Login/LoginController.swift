@@ -80,6 +80,9 @@ class ViewController: UIViewController, UITextFieldDelegate {
             
         }
     }
+    
+    
+    var dicData: [Date: [Location]] = [:]
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.hidesBackButton = true
@@ -88,6 +91,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
         txtcompanyCode.text = showcompanyCode
         imgIcon.image = UIImage(named:"Icon-1024")
         
+     
     }
     
     @objc func onInputUserName(_ sender: UITextField) {
