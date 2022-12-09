@@ -17,15 +17,16 @@ extension UIViewController {
         greyView.backgroundColor = UIColor.black
         greyView.alpha = 0.3
         greyView.tag = 999
+        greyView.layer.zPosition = 1000
         self.view.addSubview(greyView)
         self.view.bringSubviewToFront(greyView)
-        self.view.layer.zPosition = 1
+        self.view.layer.zPosition = 1000
         
 //        UIApplication.shared.keyWindow?.addSubview(greyView)
 //        UIApplication.shared.keyWindow?.bringSubviewToFront(greyView)
         
         let activityIndicator = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
-        activityIndicator.backgroundColor = UIColor(red:0.16, green:0.17, blue:0.21, alpha:1)
+        activityIndicator.backgroundColor = UIColor(red: 0.16, green: 0.17, blue: 0.21, alpha: 1)
         activityIndicator.layer.cornerRadius = 6
         activityIndicator.center = view.center
         

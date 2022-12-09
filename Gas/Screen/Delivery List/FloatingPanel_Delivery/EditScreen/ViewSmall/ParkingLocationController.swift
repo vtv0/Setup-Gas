@@ -107,10 +107,6 @@ class ParkingLocationController: UIViewController, MKMapViewDelegate, CLLocation
     func putPositionParking() {
         let token = UserDefaults.standard.string(forKey: "accessToken") ?? ""
         let iassetID = UserDefaults.standard.string(forKey: "iassetID") ?? ""
-        print(iassetID)
-        print(companyCode)
-        print(mapLong)
-        print(mapLat)
         
         let parameters: [String: [String: [String: [String: [Double]]]]] = ["properties": ["values": ["location": ["coordinates": [mapLong, mapLat] ] ] ] ]
         let urlGetAsset = "https://\(companyCode).kiiapps.com/am/api/assets/\(iassetID)"

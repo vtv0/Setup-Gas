@@ -41,7 +41,7 @@ class RerouteViewController: UIViewController {
         
 //        self.navigationController?.navigationBar.backgroundColor = .systemBlue
 //        self.navigationItem.rightBarButtonItem?.tintColor = .white
-        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
+//        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
         
     }
     

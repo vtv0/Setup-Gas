@@ -11,10 +11,12 @@ import Alamofire
 import MapKit
 
 class ReplanController: UIViewController, FloatingPanelControllerDelegate {
+    
     let viewBtnAnimation = UIButton()
     var car: [String] = ["Car1", "Car2", "Car3", "Car4", "Car5", "Car6", "Car7", "Car8", "Car9"]
     let fpc = FloatingPanelController()
     var t: Int = 0
+    var totalCellSelect: Int = 0
     var status: Bool = false
     let tenantId = UserDefaults.standard.string(forKey: "tenantId") ?? ""
     let userId = UserDefaults.standard.string(forKey: "userId") ?? ""
@@ -27,24 +29,31 @@ class ReplanController: UIViewController, FloatingPanelControllerDelegate {
     var selectedIdxDriver = 0
     var arrLocationOrder = [Int]()
     var arrFacilityData: [[Facility_data]] = []
-    
+    var selectedRows: [Int] = []
     
     @IBOutlet weak var btnClear: UIButton!
-    @IBOutlet weak var btnReplace: UIButton!
-    
     @IBAction func btnClear(_ sender: Any) {
         print("bo chon")
         let view = fpc.contentViewController as! ContentReplanController
         view.selectedRows.removeAll()
         view.myTableView.reloadData()
+        totalCellSelect = 0
     }
     
+    @IBOutlet weak var btnReplace: UIButton!
     @IBAction func btnReplace(_ sender: Any) {
-        print("chuyen sang ngay khac")
-        // let view = fpc.contentViewController as! ContentReplanController
-        // view.myTableView.reloadData()
-        //let alert =  UIAlertController
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MM/dd"
+        let dateString: String = formatter.string(from: dateYMD[0])
         
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let destinationVC = storyboard.instantiateViewController(withIdentifier: "CustomAlertReplanVC") as! CustomAlertReplanVC
+        destinationVC.delegateClickOK = self
+        destinationVC.selectedIdxDate = selectedIdxDate
+        destinationVC.totalCellSelect = totalCellSelect
+        destinationVC.t = t
+        destinationVC.date = dateString
+        present(destinationVC, animated: false, completion: nil)
     }
     
     @IBAction func btnCancel_Replan(_ sender: Any) {
@@ -69,7 +78,12 @@ class ReplanController: UIViewController, FloatingPanelControllerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Replan"
-        createViewBtnAnimation()
+        
+        
+        //btnReplace.isEnabled = false
+        // btnReplace.isHidden = true
+       
+        fpc.delegate = self
         self.sevenDay()
         
         
@@ -78,9 +92,7 @@ class ReplanController: UIViewController, FloatingPanelControllerDelegate {
         pickerDate.dataSource = self
         pickerDate.delegate = self
         
-        view.bringSubviewToFront(btnClear)
-        view.bringSubviewToFront(btnReplace)
-        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
+        //     navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
         
         getLatestWorkerRouteLocationList()
         mapView.delegate = self
@@ -88,19 +100,30 @@ class ReplanController: UIViewController, FloatingPanelControllerDelegate {
         let userCoordinate = CLLocationCoordinate2D(latitude: 35.73774428640241, longitude: 139.6194163709879)
         let eyeCoordinate = CLLocationCoordinate2D(latitude: 35.73774428640241, longitude: 139.6194163709879)
         let mapCamera = MKMapCamera(lookingAtCenter: userCoordinate, fromEyeCoordinate: eyeCoordinate, eyeAltitude: 1000000.0)
-        
         mapView.setCamera(mapCamera, animated: false)
         
     }
     
     func floatingPanel() {
-        fpc.delegate = self
         guard let contentVC = storyboard?.instantiateViewController(withIdentifier: "ContentReplanController") as? ContentReplanController else { return }
+        contentVC.delegateContenReplant = self
         contentVC.dataDidFilter = dataDidFilter
         
+        contentVC.selectedRows1 = selectedRows
+        fpc.contentMode = .fitToBounds
         fpc.set(contentViewController: contentVC)
-        
         fpc.addPanel(toParent: self)
+        //        self.present(fpc, animated: true)
+        fpc.trackingScrollView?.automaticallyAdjustsScrollIndicatorInsets = true
+        
+        
+        
+        // self.view.insertSubview(viewBtnAnimation, belowSubview: contentVC.myTableView )
+        //        fpc.trackingScrollView?.isScrollEnabled = true
+        
+        self.view.bringSubviewToFront(btnClear)
+        self.view.bringSubviewToFront(btnReplace)
+        
     }
     
     func getLatestWorkerRouteLocationList() {
@@ -115,7 +138,6 @@ class ReplanController: UIViewController, FloatingPanelControllerDelegate {
             AF.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default ,headers: self.makeHeadersExtension(token: token)).validate(statusCode: (200...299))
                 .responseDecodable(of: GetLatestWorkerRouteLocationListInfo.self) { response in
                     self.t += 1
-                    
                     switch response.result {
                     case .success(_):
                         let countObject = response.value?.locations?.count
@@ -128,7 +150,6 @@ class ReplanController: UIViewController, FloatingPanelControllerDelegate {
                             for iLocationValue in arrLocationValue {
                                 if let  assetID = iLocationValue.elem?.location?.assetID {
                                     self.getGetAsset(forAsset: assetID) { iasset in
-//                                        print(iasset)
                                         iLocationValue.asset = iasset
                                     }
                                 } else {
@@ -162,7 +183,7 @@ class ReplanController: UIViewController, FloatingPanelControllerDelegate {
                 switch response1.result {
                 case .success( let value):
                     
-                    self.hideActivity()
+                    //self.hideActivity()
                     
                     completion(value)
                 case .failure( let error):
@@ -206,43 +227,89 @@ class ReplanController: UIViewController, FloatingPanelControllerDelegate {
         self.selectedIdxDriver = driver
         self.pickerDriver.reloadAllComponents()
         dataDidFilter = locationsByDriver[driver] ?? []
-        self.totalType()
-        self.floatingPanel()
+        
+        if dataDidFilter.count > 0 {
+            btnReplace.isHidden = false
+            btnClear.isHidden = false
+            self.totalType(EachType: .lblTypeOther)
+            self.floatingPanel()
+        } else {
+            fpc.removePanelFromParent(animated: true)
+            btnReplace.isHidden = true
+            btnClear.isHidden = true
+        }
+        
+        self.createViewBtnAnimation()
         return dataDidFilter
     }
     
+    // create button with code
     func createViewBtnAnimation () {
         
-        viewBtnAnimation.frame = CGRect(x: 0, y: 270, width: self.viewAnimation.frame.width, height: 30)
+        viewAnimation.isHidden = false
         viewBtnAnimation.backgroundColor = .white
         viewBtnAnimation.addTarget(self, action: #selector(clickBtn), for: .touchUpInside)
         viewBtnAnimation.setImage(UIImage(named: "upAnimation"), for: .normal)
-        self.view.addSubview(viewBtnAnimation)
+        viewBtnAnimation.frame = CGRect(x: 0, y: 270, width: self.viewAnimation.frame.size.width, height: 30)
+        
+        self.view.insertSubview(viewBtnAnimation, aboveSubview: viewAnimation)
+        
+        //        let verticalConstraint = NSLayoutConstraint(item: viewBtnAnimation, attribute: NSLayoutConstraint.Attribute.top, relatedBy: NSLayoutConstraint.Relation.equal, toItem: viewAnimation, attribute: NSLayoutConstraint.Attribute.bottom , multiplier: 1, constant: 0)
+        //
+        //        let widthConstraint = NSLayoutConstraint(item: viewBtnAnimation, attribute: NSLayoutConstraint.Attribute.width, relatedBy: NSLayoutConstraint.Relation.equal, toItem: nil, attribute: NSLayoutConstraint.Attribute.notAnAttribute, multiplier: 1, constant: self.viewAnimation.frame.size.width )
+        //        let heightConstraint = NSLayoutConstraint(item: viewBtnAnimation, attribute: NSLayoutConstraint.Attribute.height, relatedBy: NSLayoutConstraint.Relation.equal, toItem: nil, attribute: NSLayoutConstraint.Attribute.notAnAttribute, multiplier: 1, constant: 30)
+        //        viewBtnAnimation.translatesAutoresizingMaskIntoConstraints = false
+        //        view.addConstraints([verticalConstraint, widthConstraint, heightConstraint])
+        
+        
     }
     
     
     @objc func clickBtn() {
-        print("click BTN")
+        
         status = !status
-        if (status){
+        
+        //let horizontalConstraint = NSLayoutConstraint(item: viewBtnAnimation, attribute: NSLayoutConstraint.Attribute.leading , relatedBy: NSLayoutConstraint.Relation.equal, toItem: viewAnimation, attribute: NSLayoutConstraint.Attribute.centerX, multiplier: 1, constant: 0)
+        //        let verticalConstraint = NSLayoutConstraint(item: viewBtnAnimation, attribute: NSLayoutConstraint.Attribute.top, relatedBy: NSLayoutConstraint.Relation.equal, toItem: viewAnimation, attribute: NSLayoutConstraint.Attribute.bottom, multiplier: 1, constant: 0)
+        //        let widthConstraint = NSLayoutConstraint(item: viewBtnAnimation, attribute: NSLayoutConstraint.Attribute.width, relatedBy: NSLayoutConstraint.Relation.equal, toItem: nil, attribute: NSLayoutConstraint.Attribute.notAnAttribute, multiplier: 1, constant: self.viewAnimation.frame.size.width )
+        //        let heightConstraint = NSLayoutConstraint(item: viewBtnAnimation, attribute: NSLayoutConstraint.Attribute.height, relatedBy: NSLayoutConstraint.Relation.equal, toItem: nil, attribute: NSLayoutConstraint.Attribute.notAnAttribute, multiplier: 1, constant: 30)
+        
+        if status {
+            
+            // view Animation hidden
+            
             viewAnimation.isHidden = true
             viewBtnAnimation.setImage(UIImage(named: "downAnimation"), for: .normal)
-            viewBtnAnimation.frame = CGRect(x: 0, y: 160, width: self.viewAnimation.frame.size.width, height: 30)
-            //viewBtnAnimation.b
+            
+            viewBtnAnimation.frame = CGRect(x: 0, y: 161, width: self.viewAnimation.frame.width, height: 30)
+            view.insertSubview(viewBtnAnimation, belowSubview: viewAnimation)
+            
             
         } else {
-            viewAnimation.isHidden = false
             
+            // view Animation Display
+            
+            // viewBtnAnimation.removeConstraints([verticalConstraint, widthConstraint, heightConstraint])
+            viewAnimation.isHidden = false
             viewBtnAnimation.setImage(UIImage(named: "upAnimation"), for: .normal)
+            //viewBtnAnimation.translatesAutoresizingMaskIntoConstraints = false
+            // view.addConstraints([verticalConstraint, widthConstraint, heightConstraint])
             viewBtnAnimation.frame = CGRect(x: 0, y: 270, width: self.viewAnimation.frame.size.width, height: 30)
-            // viewBtnAnimation.layer.borderWidth = 1.0
+            //  view.addSubview(viewBtnAnimation)
             
         }
         
     }
     
+    enum quantityOfEachType {
+        case lblType50kg
+        case lblType30kg
+        case lblType25kg
+        case lblType20kg
+        case lblTypeOther
+    }
     
-    func totalType() {
+    func totalType(EachType: quantityOfEachType) -> Int {
         var numberType50: Int = 0
         var numberType30: Int = 0
         var numberType25: Int = 0
@@ -255,6 +322,7 @@ class ReplanController: UIViewController, FloatingPanelControllerDelegate {
         
         for iFacilityData in arrFacilityData {
             for detailFacilityData in iFacilityData {
+                
                 if detailFacilityData.type == 50 {
                     numberType50 = numberType50 + (detailFacilityData.count ?? 0)
                 } else if detailFacilityData.type == 30 {
@@ -266,15 +334,18 @@ class ReplanController: UIViewController, FloatingPanelControllerDelegate {
                 } else {
                     numberTypeOther = numberTypeOther + (detailFacilityData.count ?? 0)
                 }
+                
             }
+            
         }
         lblType50kg.text = "\(numberType50)"
         lblType30kg.text = "\(numberType30)"
         lblType25kg.text = "\(numberType25)"
         lblType20kg.text = "\(numberType20)"
         lblTypeOther.text = "\(numberTypeOther)"
+        
+        return 0
     }
-    
 }
 
 extension ReplanController: UIPickerViewDelegate, UIPickerViewDataSource {
@@ -321,6 +392,7 @@ extension ReplanController: UIPickerViewDelegate, UIPickerViewDataSource {
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         if pickerView == pickerDate {
             selectedIdxDate = row
+            totalCellSelect = 0
             selectedIdxDriver = 0
             self.reDrawMarkers()
         } else if pickerView == pickerDriver {
@@ -353,13 +425,14 @@ extension ReplanController: MKMapViewDelegate {
             self.showAlert(message: "không có khách hàng nào")
         } else {
             
-            let dataDidFilter1 = dataDidFilter.sorted(by: { $0.elem?.locationOrder ?? 0 > $1.elem?.locationOrder ?? 0 })
+            //            let dataDidFilter1 = dataDidFilter.sorted(by: { $0.elem?.locationOrder ?? 0 > $1.elem?.locationOrder ?? 0 })
             
-            for picker in dataDidFilter1 where picker.type == .customer  {
+            for picker in dataDidFilter where picker.type == .customer  {
                 
                 if let lat = picker.elem?.latitude, let long = picker.elem?.longitude, let locationOrder = picker.elem?.locationOrder {
                     let locationOfCustomer = CustomPin(title: locationOrder , coordinate: CLLocationCoordinate2D(latitude: lat, longitude: long))
                     arrLocationOrder.append(locationOfCustomer.title)
+                    
                     mapView.addAnnotation(locationOfCustomer)
                     
                 }
@@ -368,27 +441,69 @@ extension ReplanController: MKMapViewDelegate {
         
     }
     
-    
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         
         guard let annotation = annotation as? CustomPin else { return nil }
-        
         let identifier = "Annotation"
         var view: MyPinView
         
         if let dequeuedView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier) as? MyPinView {
             dequeuedView.annotation = annotation
-            dequeuedView.lblView.text = "\(annotation.title - 1)"
-            dequeuedView.image = UIImage(named: "marker")
             
+            if  arrLocationOrder[0] == annotation.title {
+                dequeuedView.lblView.text = "\(annotation.title - 1)"
+                dequeuedView.image = UIImage(named: "marker")
+                dequeuedView.zPriority = MKAnnotationViewZPriority.max
+            } else {
+                dequeuedView.lblView.text = "\(annotation.title - 1)"
+                dequeuedView.image = UIImage(named: "marker")
+                dequeuedView.zPriority = MKAnnotationViewZPriority.init(rawValue: 999 - Float(annotation.title))
+            }
+            dequeuedView.reloadInputViews()
             view = dequeuedView
             
         } else {
-            
             view = MyPinView(annotation: annotation, reuseIdentifier: identifier)
-            view.lblView.text = "\(annotation.title - 1)"
-            view.image = UIImage(named: "marker")
+            if arrLocationOrder[0] == annotation.title {
+                view.lblView.text = "\(annotation.title - 1)"
+                view.zPriority = MKAnnotationViewZPriority.max
+                view.image = UIImage(named: "marker")
+            } else {
+                view.lblView.text = "\(annotation.title - 1)"
+                view.zPriority = MKAnnotationViewZPriority.init(rawValue: 999 - Float(annotation.title))
+                view.image = UIImage(named: "marker")
+            }
         }
         return view
+    }
+}
+
+extension ReplanController: InfoACellDelegateProtocol {
+    // delegateContenReplant
+    func unselected(index: Int) {
+        totalCellSelect -= 1
+        if !selectedRows.isEmpty {
+            selectedRows.enumerated().forEach() { ind, value in
+                if value == index {
+                    selectedRows.remove(at: ind)
+                }
+            }
+        }
+        
+    }
+    
+    func passData(index: Int, info: String) {
+        selectedRows.append(index)
+        totalCellSelect += 1
+    }
+}
+
+
+extension ReplanController: ClickOkDelegateProtocol {
+    
+    // truyen vi tri cac cell  da ddc chon sang ContentReplanVC --> to mau
+    func clickOk() {
+        
+       print("click Ok ")
     }
 }

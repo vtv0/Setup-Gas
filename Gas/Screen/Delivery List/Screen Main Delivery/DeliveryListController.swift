@@ -145,6 +145,7 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         
         
         mapView.setCamera(mapCamera, animated: false)
+        
         lblType50kg.text = "\(0)"
         lblType30kg.text = "\(0)"
         lblType25kg.text = "\(0)"
@@ -185,7 +186,7 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         let showcompanyCode = UserDefaults.standard.string(forKey: "companyCode") ?? ""
         let urlGetMe = "https://\(showcompanyCode).kiiapps.com/am/api/me"
         let token = UserDefaults.standard.string(forKey: "accessToken") ?? ""
-        self.showActivity()
+        
         AF.request(urlGetMe, method: .get, parameters: nil, encoding: JSONEncoding.default,headers: self.makeHeaders(token: token))
             .responseDecodable(of: GetMeInfo.self) { response1 in
                 switch response1.result {
@@ -218,11 +219,13 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
                 .responseDecodable(of: GetLatestWorkerRouteLocationListInfo.self) { response in
                     self.t += 1
                     switch response.result {
+                        
                     case .success(_):
                         let countObject = response.value?.locations?.count
                         let locations1: [LocationElement] = response.value?.locations ?? []
                         if countObject != 0 {
                             var arrLocationValue: [Location] = []
+                            
                             for itemObject in locations1 {
                                 arrLocationValue.append(Location.init(elem: itemObject, asset: nil))
                             }
@@ -241,22 +244,18 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
                             print(response.response?.statusCode as Any)
                             print("\(url) =>> Array Empty, No Object ")
                         }
+                        
                     case .failure(let error):
                         print("Error: \(response.response?.statusCode ?? 000000)")
                         print("Error: \(error)")
                     }
                     if self.t == self.dateYMD.count {
                         self.reDrawMarkers()
-                        self.hideActivity()
-                        
-                        //                        print(self.dicData)
-                        //                        guard let replan = self.storyboard?.instantiateViewController(withIdentifier: "ReplanController") as? ReplanController else { return }
-                        //                        replan.dicDataReplan = self.dicData
-                        
+                        //self.hideActivity()
                     }
                 }
         }
-       
+        
     }
     
     
@@ -267,9 +266,7 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
             .responseDecodable(of: GetAsset.self ) { response1 in
                 switch response1.result {
                 case .success( let value):
-                    
                     self.hideActivity()
-                    
                     completion(value)
                 case .failure(let error):
                     print("\(error)")
@@ -278,13 +275,13 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
             }
     }
     
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        if segue.destination is ReplanController
-//        {
-//            let vc = segue.destination as? ReplanController
-//            vc?.dicDataReplan = self.dicData
-//        }
-//    }
+    //    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    //        if segue.destination is ReplanController
+    //        {
+    //            let vc = segue.destination as? ReplanController
+    //            vc?.dicDataReplan = self.dicData
+    //        }
+    //    }
     
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
@@ -365,6 +362,7 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         }
         self.pickerStatus.reloadAllComponents()
         self.totalType()
+        
         if dataDidFilter.count > 0 {
             for infoCustomer in dataDidFilter {
                 self.comment.append(infoCustomer.elem?.location?.comment ?? "")
@@ -486,8 +484,6 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
 
 extension DeliveryListController: MKMapViewDelegate, ShowIndexPageDelegateProtocol {
     
-    
-    
     func passIndexPVC(currentIndexPageVC: Int) {
         passIndexSelectedMarker = currentIndexPageVC
         // remove anotations
@@ -528,10 +524,8 @@ extension DeliveryListController: MKMapViewDelegate, ShowIndexPageDelegateProtoc
             } else {
                 dequeuedView.lblView.text = "\(annotation.title - 1)"
                 dequeuedView.image = UIImage(named: "marker")
-                //                                dequeuedView.layer.zPosition = CGFloat( -annotation.title)
-                //                                dequeuedView.backgroundColor = .gray
-                //                                dequeuedView.lblView.layer.zPosition = CGFloat( -annotation.title)
-                //                dequeuedView.zPriority = MKAnnotationViewZPriority.init(rawValue: -Float(annotation.title))
+                dequeuedView.zPriority = MKAnnotationViewZPriority.init(rawValue: 999 - Float(annotation.title))
+                
             }
             dequeuedView.reloadInputViews()
             view = dequeuedView
@@ -549,10 +543,7 @@ extension DeliveryListController: MKMapViewDelegate, ShowIndexPageDelegateProtoc
                 view.image = UIImage(named: "marker_yellow")
             } else {
                 view.lblView.text = "\(annotation.title - 1)"
-                //                view.zPriority = MKAnnotationViewZPriority.init(rawValue: -Float(annotation.title))
-                view.imageView.layer.zPosition = CGFloat(exactly: -Float(annotation.title)) ?? 0
-                
-                //  view.imageView.backgroundColor = .systemGreen
+                view.zPriority = MKAnnotationViewZPriority.init(rawValue: 999 - Float(annotation.title))
                 view.image = UIImage(named: "marker")
             }
         }
@@ -563,10 +554,11 @@ extension DeliveryListController: MKMapViewDelegate, ShowIndexPageDelegateProtoc
     
     // selected marker on MKMapView
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+        
         if let anno = view.annotation as? CustomPin {
             //lay index trong mang
             let clickIndexMarker = anno.title
-            arrLocationOrder.enumerated().forEach {  index, value in
+            arrLocationOrder.enumerated().forEach { index, value in
                 if clickIndexMarker == value {
                     passIndexSelectedMarker = index
                 }
@@ -588,10 +580,8 @@ extension DeliveryListController: MKMapViewDelegate, ShowIndexPageDelegateProtoc
                     }
                 }
             }
-            
         }
     }
-    
     
 }
 

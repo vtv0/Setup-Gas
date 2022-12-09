@@ -185,9 +185,9 @@ class PageDetailVC: UIViewController, UIScrollViewDelegate, UICollectionViewDele
             lblAddress?.text = dataInfoOneCustomer.asset?.properties?.values.address
             
             if dataInfoOneCustomer.elem?.arrivalTime?.minutes ?? 0 < 10 {
-                lblDeliveryTime?.text = "Estimate Time: \(dataInfoOneCustomer.elem?.arrivalTime?.hours ?? 00):0\(dataInfoOneCustomer.elem?.arrivalTime?.minutes ?? 0)"
+                lblDeliveryTime?.text = "Estimate Time : \(dataInfoOneCustomer.elem?.arrivalTime?.hours ?? 00):0\(dataInfoOneCustomer.elem?.arrivalTime?.minutes ?? 0)"
             } else {
-                lblDeliveryTime?.text = "Estimate Time: \(dataInfoOneCustomer.elem?.arrivalTime?.hours ?? 00):\(dataInfoOneCustomer.elem?.arrivalTime?.minutes ?? 0)"
+                lblDeliveryTime?.text = "Estimate Time : \(dataInfoOneCustomer.elem?.arrivalTime?.hours ?? 00):\(dataInfoOneCustomer.elem?.arrivalTime?.minutes ?? 0)"
             }
             
             arrImage.removeAll()
@@ -273,23 +273,6 @@ class PageDetailVC: UIViewController, UIScrollViewDelegate, UICollectionViewDele
     
 }
 
-extension UIImageView {
-    
-    func loadFrom(URLAddress: String) {
-        guard let url = URL(string: URLAddress) else {
-            return
-        }
-        
-        DispatchQueue.main.async { [weak self] in
-            if let imageData = try? Data(contentsOf: url) {
-                if let loadedImage = UIImage(data: imageData) {
-                    self?.image = loadedImage
-                }
-            }
-        }
-    }
-    
-}
 
 extension PageDetailVC: UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -300,7 +283,7 @@ extension PageDetailVC: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         let count = arrImage.count
         pageControl.numberOfPages = count
-        pageControl.isHidden = !(count > 1)
+       // pageControl.isHidden = !(count > 1)
         return count
     }
     
