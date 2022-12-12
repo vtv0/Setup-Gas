@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="5L7-f5-pjp">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21225" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="5L7-f5-pjp">
     <device id="retina5_9" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21207"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="Stack View standard spacing" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -18,7 +19,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="bezel" placeholder="Tài khoản" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="RKu-eJ-GM4">
+                            <textField opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="bezel" placeholder="Tài khoản" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="RKu-eJ-GM4">
                                 <rect key="frame" x="30" y="260" width="315" height="32"/>
                                 <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -30,7 +31,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
-                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="bezel" placeholder="Mật khẩu" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="bbM-C8-LcT">
+                            <textField opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="bezel" placeholder="Mật khẩu" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="bbM-C8-LcT">
                                 <rect key="frame" x="30" y="319" width="315" height="32"/>
                                 <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -1226,7 +1227,6 @@
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" verticalCompressionResistancePriority="753" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TrQ-Cx-vyV" userLabel="lblValue">
                                                         <rect key="frame" x="303" y="0.0" width="72" height="46"/>
-                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="72" id="Jl4-9f-6o1"/>
                                                         </constraints>
@@ -1242,7 +1242,6 @@
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" usesAttributedText="YES" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" showsExpansionTextWhenTruncated="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SPa-7l-WU4" userLabel="lblVersion">
                                                         <rect key="frame" x="0.0" y="0.0" width="303" height="46"/>
-                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <attributedString key="attributedText">
                                                             <fragment content="Version">
                                                                 <attributes>
@@ -1251,7 +1250,7 @@
                                                                 </attributes>
                                                             </fragment>
                                                         </attributedString>
-                                                        <nil key="highlightedColor"/>
+                                                        <color key="highlightedColor" systemColor="labelColor"/>
                                                     </label>
                                                 </subviews>
                                                 <color key="backgroundColor" systemColor="systemGray4Color"/>
@@ -1282,9 +1281,8 @@
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="i7e-oj-He2">
                                                 <rect key="frame" x="0.0" y="0.0" width="375" height="50"/>
                                                 <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NEN-A8-s7m" userLabel="lblHighway">
-                                                        <rect key="frame" x="0.0" y="0.0" width="375" height="49"/>
-                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" misplaced="YES" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NEN-A8-s7m" userLabel="lblHighway">
+                                                        <rect key="frame" x="0.0" y="0.0" width="415" height="49"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="375" id="km4-qk-5V9"/>
                                                         </constraints>
@@ -1300,17 +1298,16 @@
                                                     </label>
                                                     <switch opaque="NO" contentMode="redraw" horizontalHuggingPriority="750" verticalHuggingPriority="750" showsMenuAsPrimaryAction="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XsW-Rb-jnf">
                                                         <rect key="frame" x="306" y="9.6666666666666572" width="51" height="31"/>
-                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     </switch>
                                                 </subviews>
                                                 <color key="backgroundColor" systemColor="systemGray4Color"/>
                                                 <constraints>
                                                     <constraint firstAttribute="bottom" secondItem="NEN-A8-s7m" secondAttribute="bottom" constant="1" id="1aN-D5-uPY"/>
                                                     <constraint firstAttribute="bottom" secondItem="XsW-Rb-jnf" secondAttribute="bottom" constant="9.3300000000000001" id="Bim-kV-bw0"/>
-                                                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="NEN-A8-s7m" secondAttribute="trailing" id="M7C-pP-t3S"/>
                                                     <constraint firstAttribute="trailing" secondItem="XsW-Rb-jnf" secondAttribute="trailing" constant="20" id="X1n-SN-Oyd"/>
                                                     <constraint firstItem="NEN-A8-s7m" firstAttribute="top" secondItem="i7e-oj-He2" secondAttribute="top" id="slr-oe-71i"/>
-                                                    <constraint firstItem="NEN-A8-s7m" firstAttribute="leading" secondItem="i7e-oj-He2" secondAttribute="leading" id="y8b-tr-1Ik"/>
+                                                    <constraint firstAttribute="trailing" secondItem="NEN-A8-s7m" secondAttribute="trailing" constant="-1" id="vdv-rV-kge"/>
+                                                    <constraint firstItem="NEN-A8-s7m" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="i7e-oj-He2" secondAttribute="leading" id="y8b-tr-1Ik"/>
                                                 </constraints>
                                             </view>
                                         </subviews>
@@ -1357,7 +1354,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rzZ-PC-p30" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2239.1999999999998" y="3623.6453201970444"/>
+            <point key="canvasLocation" x="-2240.5797101449275" y="3623.4375"/>
         </scene>
         <!--Reroute-->
         <scene sceneID="PJc-EP-uZY">
@@ -1527,8 +1524,11 @@ Tiết Liêu tỉnh dậy, vô cùng mừng rỡ. Ông làm theo lời Thần d�
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalHuggingPriority="255" verticalHuggingPriority="255" horizontalCompressionResistancePriority="759" verticalCompressionResistancePriority="759" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="DcV-E8-i2z">
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalHuggingPriority="255" verticalHuggingPriority="255" horizontalCompressionResistancePriority="759" verticalCompressionResistancePriority="759" mapType="standard" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="DcV-E8-i2z">
                                 <rect key="frame" x="0.0" y="161" width="375" height="651"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="414" id="gpH-D6-Zyz"/>
+                                </constraints>
                             </mapView>
                             <view contentMode="scaleToFill" horizontalHuggingPriority="253" verticalHuggingPriority="253" translatesAutoresizingMaskIntoConstraints="NO" id="kc0-ZZ-hzc" userLabel="ViewPicker">
                                 <rect key="frame" x="0.0" y="91" width="375" height="70"/>
@@ -1541,10 +1541,8 @@ Tiết Liêu tỉnh dậy, vô cùng mừng rỡ. Ông làm theo lời Thần d�
                                                 <subviews>
                                                     <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2Lb-3g-xbi">
                                                         <rect key="frame" x="10" y="15" width="105" height="40"/>
-                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     </pickerView>
                                                 </subviews>
-                                                <color key="backgroundColor" systemColor="opaqueSeparatorColor"/>
                                                 <constraints>
                                                     <constraint firstItem="2Lb-3g-xbi" firstAttribute="top" secondItem="OBS-hC-CJO" secondAttribute="top" constant="15" id="0mW-kA-CJV"/>
                                                     <constraint firstAttribute="bottom" secondItem="2Lb-3g-xbi" secondAttribute="bottom" constant="15" id="IHS-xd-dEa"/>
@@ -1555,12 +1553,10 @@ Tiết Liêu tỉnh dậy, vô cùng mừng rỡ. Ông làm theo lời Thần d�
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Y5B-s0-axb">
                                                 <rect key="frame" x="125" y="0.0" width="125" height="70"/>
                                                 <subviews>
-                                                    <pickerView tag="1" contentMode="scaleToFill" semanticContentAttribute="playback" translatesAutoresizingMaskIntoConstraints="NO" id="suF-RR-TQP">
+                                                    <pickerView tag="1" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="suF-RR-TQP">
                                                         <rect key="frame" x="10" y="15" width="105" height="40"/>
-                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     </pickerView>
                                                 </subviews>
-                                                <color key="backgroundColor" systemColor="opaqueSeparatorColor"/>
                                                 <constraints>
                                                     <constraint firstItem="suF-RR-TQP" firstAttribute="leading" secondItem="Y5B-s0-axb" secondAttribute="leading" constant="10" id="1Kw-BS-XSO"/>
                                                     <constraint firstAttribute="trailing" secondItem="suF-RR-TQP" secondAttribute="trailing" constant="10" id="TWA-x4-fRr"/>
@@ -1580,7 +1576,6 @@ Tiết Liêu tỉnh dậy, vô cùng mừng rỡ. Ông làm theo lời Thần d�
                                                         </buttonConfiguration>
                                                     </button>
                                                 </subviews>
-                                                <color key="backgroundColor" systemColor="opaqueSeparatorColor"/>
                                                 <constraints>
                                                     <constraint firstItem="xzN-f7-sRk" firstAttribute="top" secondItem="giU-wy-y00" secondAttribute="top" constant="15" id="3t2-4E-Vsw"/>
                                                     <constraint firstAttribute="bottom" secondItem="xzN-f7-sRk" secondAttribute="bottom" constant="15" id="ECZ-Vu-mfo"/>
@@ -1589,9 +1584,9 @@ Tiết Liêu tỉnh dậy, vô cùng mừng rỡ. Ông làm theo lời Thần d�
                                                 </constraints>
                                             </view>
                                         </subviews>
+                                        <color key="backgroundColor" systemColor="systemGray3Color"/>
                                     </stackView>
                                 </subviews>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstItem="Cbx-59-uLi" firstAttribute="top" secondItem="kc0-ZZ-hzc" secondAttribute="top" id="3aP-O4-GMg"/>
                                     <constraint firstAttribute="height" constant="70" id="EVh-DZ-ZN8"/>
@@ -1600,8 +1595,8 @@ Tiết Liêu tỉnh dậy, vô cùng mừng rỡ. Ông làm theo lời Thần d�
                                     <constraint firstItem="Cbx-59-uLi" firstAttribute="leading" secondItem="kc0-ZZ-hzc" secondAttribute="leading" id="sgw-U5-2yE"/>
                                 </constraints>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Cfw-CJ-RAp" userLabel="ViewAnimation">
-                                <rect key="frame" x="0.0" y="161" width="375" height="110"/>
+                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Cfw-CJ-RAp" userLabel="ViewAnimation">
+                                <rect key="frame" x="0.0" y="162" width="414" height="165"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="JZg-EF-ALb" userLabel="StackViewAnimation">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="116"/>
@@ -1613,18 +1608,17 @@ Tiết Liêu tỉnh dậy, vô cùng mừng rỡ. Ông làm theo lời Thần d�
                                                         <rect key="frame" x="0.0" y="0.0" width="74" height="34"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                                        <nil key="textColor"/>
+                                                        <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KBY-Iq-8Rb">
                                                         <rect key="frame" x="0.0" y="34" width="74" height="74"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                                        <nil key="textColor"/>
+                                                        <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                 </subviews>
-                                                <color key="backgroundColor" systemColor="systemGray4Color"/>
                                                 <constraints>
                                                     <constraint firstItem="yXp-YK-gZT" firstAttribute="leading" secondItem="jhq-ar-6Vs" secondAttribute="leading" id="67h-F5-KCF"/>
                                                     <constraint firstItem="yXp-YK-gZT" firstAttribute="trailing" secondItem="KBY-Iq-8Rb" secondAttribute="trailing" id="ARd-J2-Enk"/>
@@ -1643,18 +1637,17 @@ Tiết Liêu tỉnh dậy, vô cùng mừng rỡ. Ông làm theo lời Thần d�
                                                         <rect key="frame" x="0.0" y="0.0" width="74" height="34"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                                        <nil key="textColor"/>
+                                                        <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tiA-r9-GeP">
                                                         <rect key="frame" x="0.0" y="34" width="74" height="74"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                                        <nil key="textColor"/>
+                                                        <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                 </subviews>
-                                                <color key="backgroundColor" systemColor="systemGray4Color"/>
                                                 <constraints>
                                                     <constraint firstItem="tiA-r9-GeP" firstAttribute="top" secondItem="wjd-ie-mtj" secondAttribute="bottom" id="8cG-A3-nV9"/>
                                                     <constraint firstItem="wjd-ie-mtj" firstAttribute="trailing" secondItem="tiA-r9-GeP" secondAttribute="trailing" id="LxV-Fm-fsx"/>
@@ -1673,18 +1666,17 @@ Tiết Liêu tỉnh dậy, vô cùng mừng rỡ. Ông làm theo lời Thần d�
                                                         <rect key="frame" x="0.0" y="0.0" width="74" height="34"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                                        <nil key="textColor"/>
+                                                        <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HUj-fi-Tgn">
                                                         <rect key="frame" x="0.0" y="34" width="74" height="74"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                                        <nil key="textColor"/>
+                                                        <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                 </subviews>
-                                                <color key="backgroundColor" systemColor="systemGray4Color"/>
                                                 <constraints>
                                                     <constraint firstAttribute="bottom" secondItem="HUj-fi-Tgn" secondAttribute="bottom" constant="8" id="0We-kw-FwX"/>
                                                     <constraint firstAttribute="trailing" secondItem="shV-5w-NmX" secondAttribute="trailing" constant="1" id="55Y-ve-gpJ"/>
@@ -1703,18 +1695,17 @@ Tiết Liêu tỉnh dậy, vô cùng mừng rỡ. Ông làm theo lời Thần d�
                                                         <rect key="frame" x="0.0" y="0.0" width="74" height="34"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                                        <nil key="textColor"/>
+                                                        <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ujs-j8-iqC">
                                                         <rect key="frame" x="0.0" y="34" width="74" height="74"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                                        <nil key="textColor"/>
+                                                        <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                 </subviews>
-                                                <color key="backgroundColor" systemColor="systemGray4Color"/>
                                                 <constraints>
                                                     <constraint firstItem="Ujs-j8-iqC" firstAttribute="top" secondItem="Wab-Vp-rO1" secondAttribute="bottom" id="1d8-Jg-T0G"/>
                                                     <constraint firstItem="Wab-Vp-rO1" firstAttribute="leading" secondItem="HEc-Hv-uum" secondAttribute="leading" id="BH1-Zq-uFy"/>
@@ -1733,18 +1724,17 @@ Tiết Liêu tỉnh dậy, vô cùng mừng rỡ. Ông làm theo lời Thần d�
                                                         <rect key="frame" x="0.0" y="0.0" width="74" height="34"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                                        <nil key="textColor"/>
+                                                        <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Noo-A7-2xl">
                                                         <rect key="frame" x="0.0" y="34" width="74" height="74"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                                        <nil key="textColor"/>
+                                                        <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                 </subviews>
-                                                <color key="backgroundColor" systemColor="systemGray4Color"/>
                                                 <constraints>
                                                     <constraint firstAttribute="bottom" secondItem="Noo-A7-2xl" secondAttribute="bottom" constant="8" id="85A-B7-cLe"/>
                                                     <constraint firstItem="Noo-A7-2xl" firstAttribute="top" secondItem="TNl-Lx-R1f" secondAttribute="bottom" id="Akv-LC-vFy"/>
@@ -1757,10 +1747,9 @@ Tiết Liêu tỉnh dậy, vô cùng mừng rỡ. Ông làm theo lời Thần d�
                                                 </constraints>
                                             </view>
                                         </subviews>
-                                        <color key="backgroundColor" systemColor="systemGray5Color"/>
+                                        <color key="backgroundColor" systemColor="systemGray3Color"/>
                                     </stackView>
                                 </subviews>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstItem="JZg-EF-ALb" firstAttribute="leading" secondItem="Cfw-CJ-RAp" secondAttribute="leading" id="B5f-No-9zQ"/>
                                     <constraint firstItem="JZg-EF-ALb" firstAttribute="top" secondItem="Cfw-CJ-RAp" secondAttribute="top" id="bhW-bD-R0A"/>
@@ -1768,21 +1757,8 @@ Tiết Liêu tỉnh dậy, vô cùng mừng rỡ. Ông làm theo lời Thần d�
                                     <constraint firstAttribute="trailing" secondItem="JZg-EF-ALb" secondAttribute="trailing" id="ysJ-jY-2I0"/>
                                 </constraints>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" id="q9B-fX-Qib">
-                                <rect key="frame" x="186" y="764" width="189" height="48"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" title="Replace ">
-                                    <color key="baseForegroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                </buttonConfiguration>
-                                <connections>
-                                    <action selector="btnReplace:" destination="vDs-RV-bZT" eventType="touchUpInside" id="a6V-oj-CFQ"/>
-                                    <segue destination="km6-TK-7Y5" kind="presentation" id="9Lq-Ml-Yxw"/>
-                                </connections>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kgD-IF-QLG">
-                                <rect key="frame" x="0.0" y="764" width="190" height="48"/>
+                                <rect key="frame" x="0.0" y="764" width="227" height="48"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="48" id="lGx-qf-EnK"/>
@@ -1794,6 +1770,19 @@ Tiết Liêu tỉnh dậy, vô cùng mừng rỡ. Ông làm theo lời Thần d�
                                 <connections>
                                     <action selector="btnClear:" destination="vDs-RV-bZT" eventType="touchUpInside" id="A5V-2h-eQX"/>
                                     <action selector="btnClear:" destination="IuX-rd-pLS" eventType="touchUpInside" id="T82-X7-rMu"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" id="q9B-fX-Qib">
+                                <rect key="frame" x="223" y="848" width="189" height="48"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Replace ">
+                                    <color key="baseForegroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </buttonConfiguration>
+                                <connections>
+                                    <action selector="btnReplace:" destination="vDs-RV-bZT" eventType="touchUpInside" id="a6V-oj-CFQ"/>
+                                    <segue destination="km6-TK-7Y5" kind="presentation" id="9Lq-Ml-Yxw"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -1856,9 +1845,8 @@ Tiết Liêu tỉnh dậy, vô cùng mừng rỡ. Ông làm theo lời Thần d�
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="YgK-sN-fD4">
-                                <rect key="frame" x="0.0" y="44" width="375" height="608"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="YgK-sN-fD4">
+                                <rect key="frame" x="0.0" y="43" width="375" height="735"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleAspectFit" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="1" reuseIdentifier="ContentReplanTableViewCell" rowHeight="45" id="scP-Q8-P9v" userLabel="Cell" customClass="ContentReplanTableViewCell" customModule="Gas" customModuleProvider="target">
@@ -1942,7 +1930,13 @@ Tiết Liêu tỉnh dậy, vô cùng mừng rỡ. Ông làm theo lời Thần d�
                             </tableView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="bZs-eE-oiW"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                        <constraints>
+                            <constraint firstItem="bZs-eE-oiW" firstAttribute="bottom" secondItem="YgK-sN-fD4" secondAttribute="bottom" id="GXA-5b-HNG"/>
+                            <constraint firstItem="bZs-eE-oiW" firstAttribute="trailing" secondItem="YgK-sN-fD4" secondAttribute="trailing" id="Uxs-7h-Hde"/>
+                            <constraint firstItem="YgK-sN-fD4" firstAttribute="top" secondItem="6jl-co-xeh" secondAttribute="topMargin" constant="-4" id="dEI-nZ-1PM"/>
+                            <constraint firstItem="YgK-sN-fD4" firstAttribute="leading" secondItem="6jl-co-xeh" secondAttribute="leading" id="jZP-rX-k3d"/>
+                        </constraints>
                     </view>
                     <connections>
                         <outlet property="myTableView" destination="YgK-sN-fD4" id="yNg-SQ-wOb"/>
@@ -1963,7 +1957,7 @@ Tiết Liêu tỉnh dậy, vô cùng mừng rỡ. Ông làm theo lời Thần d�
                                 <rect key="frame" x="10" y="281" width="355" height="250"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0pZ-EI-JPv">
-                                        <rect key="frame" x="192.66666666666663" y="215.66666666666669" width="162.33333333333337" height="34.333333333333343"/>
+                                        <rect key="frame" x="193.66666666666663" y="215.66666666666669" width="161.33333333333337" height="34.333333333333343"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <state key="normal" title="Button"/>
                                         <buttonConfiguration key="configuration" style="plain" title="OK"/>
@@ -1972,7 +1966,7 @@ Tiết Liêu tỉnh dậy, vô cùng mừng rỡ. Ông làm theo lời Thần d�
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="A77-Sj-IIh">
-                                        <rect key="frame" x="0.0" y="215.66666666666669" width="191.66666666666666" height="34.333333333333343"/>
+                                        <rect key="frame" x="0.0" y="215.66666666666669" width="192.66666666666666" height="34.333333333333343"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="A77-Sj-IIh" secondAttribute="height" multiplier="173:31" id="uIB-6f-DxP"/>
