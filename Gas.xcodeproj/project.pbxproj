@@ -24,6 +24,7 @@
 		7598E46128EFC4DC00EA9FA9 /* PageDetailCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7598E46028EFC4DC00EA9FA9 /* PageDetailCollectionViewCell.swift */; };
 		75A1E17C28EFE6F200EA17A2 /* ContentReplanTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75A1E17B28EFE6F200EA17A2 /* ContentReplanTableViewCell.swift */; };
 		75A1E17F28F3AB6300EA17A2 /* RerouteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75A1E17E28F3AB6300EA17A2 /* RerouteViewController.swift */; };
+		75A466DF2946CE0400A92FA9 /* PropertiesOfLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75A466DE2946CE0400A92FA9 /* PropertiesOfLocation.swift */; };
 		75BF3A0728E161A800BC0F0C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BF3A0628E161A800BC0F0C /* AppDelegate.swift */; };
 		75BF3A0928E161A800BC0F0C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BF3A0828E161A800BC0F0C /* SceneDelegate.swift */; };
 		75BF3A0B28E161A800BC0F0C /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BF3A0A28E161A800BC0F0C /* LoginController.swift */; };
@@ -65,6 +66,7 @@
 		7598E46028EFC4DC00EA9FA9 /* PageDetailCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageDetailCollectionViewCell.swift; sourceTree = "<group>"; };
 		75A1E17B28EFE6F200EA17A2 /* ContentReplanTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentReplanTableViewCell.swift; sourceTree = "<group>"; };
 		75A1E17E28F3AB6300EA17A2 /* RerouteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RerouteViewController.swift; sourceTree = "<group>"; };
+		75A466DE2946CE0400A92FA9 /* PropertiesOfLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropertiesOfLocation.swift; sourceTree = "<group>"; };
 		75BF3A0328E161A800BC0F0C /* Gas.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Gas.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		75BF3A0628E161A800BC0F0C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		75BF3A0828E161A800BC0F0C /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -125,6 +127,7 @@
 				750B39D128E3E71900210AB9 /* ContentReplanController.swift */,
 				75A1E17B28EFE6F200EA17A2 /* ContentReplanTableViewCell.swift */,
 				7517A0EF28F660FE00994CBD /* CustomAlertReplanVC.swift */,
+				75A466DE2946CE0400A92FA9 /* PropertiesOfLocation.swift */,
 			);
 			path = Replan;
 			sourceTree = "<group>";
@@ -429,6 +432,7 @@
 				75FDF73D28EABABA00AADB99 /* EditViewController.swift in Sources */,
 				75FDF73928EAB69700AADB99 /* ParkingLocationController.swift in Sources */,
 				75D2CE8928F80F7200B51CED /* ImageLabelView.swift in Sources */,
+				75A466DF2946CE0400A92FA9 /* PropertiesOfLocation.swift in Sources */,
 				8A21B86629058E35008D94DE /* Extension+ActivityIndicator.swift in Sources */,
 				7598E46128EFC4DC00EA9FA9 /* PageDetailCollectionViewCell.swift in Sources */,
 				75BF3A1E28E2883100BC0F0C /* DeliveryListController.swift in Sources */,

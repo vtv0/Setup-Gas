@@ -8,8 +8,8 @@
 import UIKit
 
 protocol InfoACellDelegateProtocol: AnyObject {
-    func passData(index: Int, info: String)
-    func unselected(index: Int)
+    func passData(index: Int, assetID: String)
+    func unselected(index: Int, assetID: String)
 }
 
 class ContentReplanController: UIViewController, UITableViewDataSource, UITableViewDelegate {
@@ -25,6 +25,7 @@ class ContentReplanController: UIViewController, UITableViewDataSource, UITableV
     var arrDateMMDD: [Date] = []
     var arrLocationOrder = [Int]()
     var arrStringDateMMDD = [String]()
+    var arrAssetID: [String] = []
     
     @IBOutlet weak var myTableView: UITableView!
     
@@ -37,12 +38,10 @@ class ContentReplanController: UIViewController, UITableViewDataSource, UITableV
         //self.view.bringSubviewToFront(myTableView)
         
         detailsCustomer()
-        print(selectedRows1)
-       // self.view.backgroundColor = UIColor(white: 1, alpha: 0.5)
+        // self.view.backgroundColor = UIColor(white: 1, alpha: 0.5)
     }
     
     func detailsCustomer() {
-        
         for iCutomer in dataDidFilter {
             if let locationOrder = iCutomer.elem?.locationOrder,
                let kyokyusetsubiCode = iCutomer.asset?.properties?.values.kyokyusetsubi_code,
@@ -78,47 +77,56 @@ class ContentReplanController: UIViewController, UITableViewDataSource, UITableV
         }
     }
     
-        func deleteRows() {
-            if let selectedRows = myTableView.indexPathsForSelectedRows {
-                // 1
-                var items = [String]()
-                for indexPath in selectedRows  {
-                    items.append(arrCustomer_name[indexPath.row])
-                }
-    
-                // 2
-                for item in items {
-                    if let index = arrCustomer_name.firstIndex(of: item) {
-                        arrCustomer_name.remove(at: index)
-                    }
-                }
-                // 3
-                myTableView.deleteRows(at: selectedRows, with: .automatic)
-                myTableView.reloadData()
+    func deleteRows() {
+        if let selectedRows = myTableView.indexPathsForSelectedRows {
+            // 1
+            var items = [String]()
+            for indexPath in selectedRows  {
+                items.append(arrCustomer_name[indexPath.row])
             }
+            
+            // 2
+            for item in items {
+                if let index = arrCustomer_name.firstIndex(of: item) {
+                    arrCustomer_name.remove(at: index)
+                }
+            }
+            // 3
+            myTableView.deleteRows(at: selectedRows, with: .automatic)
+            myTableView.reloadData()
         }
+    }
     
     
     // myTableView dataSource
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = myTableView.dequeueReusableCell(withIdentifier: "ContentReplanTableViewCell", for: indexPath) as? ContentReplanTableViewCell
         
-        cell?.lbl_kyokyusetsubi_code.text = arrKyokyusetsubi_code[indexPath.row]
+        cell?.lbl_kyokyusetsubi_code.text = arrAssetID[indexPath.row]
         
         cell?.lbl_locationOrder.layer.borderWidth = 1
         cell?.lbl_locationOrder.layer.borderColor = UIColor.black.cgColor
         cell?.lbl_locationOrder.textAlignment = .center
-        cell?.lbl_locationOrder.layer.cornerRadius = (cell?.lbl_locationOrder.frame.size.width ?? 0) / 2
+        cell?.lbl_locationOrder.layer.cornerRadius = (cell?.lbl_locationOrder.frame.size.width ?? 45) / 2
         cell?.lbl_locationOrder.layer.masksToBounds = true
         
         cell?.lbl_locationOrder.text = "\(arrLocationOrder[indexPath.row] - 1)"
         cell?.lbl_customer_name.text = arrCustomer_name[indexPath.row]
         
-        
         cell?.lbl_planned_date.text = arrStringDateMMDD[indexPath.row]
+        
         cell?.btnCheckbox.setImage(UIImage(named: "ic_check_off"), for: .normal)
         
-       // cell?.backgroundColor = .darkGray
+       
+        selectedRows1.forEach() { cellDidSelected in
+         
+            if indexPath.row == cellDidSelected {
+                cell?.btnCheckbox.setImage(UIImage(named: "ic_check_on"), for: .normal)
+                cell?.contentView.backgroundColor = .darkGray
+            }
+        }
+        
+        
         return cell!
     }
     
@@ -127,35 +135,26 @@ class ContentReplanController: UIViewController, UITableViewDataSource, UITableV
     }
     
     
-    // delete cell did selectedm in tableview
-//    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-//        return false
-//
-//    }
-//
-//    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-//
-//
-//
-//    }
-    
-    
     // myTable view delegate
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let cell = myTableView.cellForRow(at: indexPath) as? ContentReplanTableViewCell else { return }
         cell.selectionStyle = .none
+        
         myTableView.deselectRow(at: indexPath, animated: false)
         
         if self.selectedRows.contains(indexPath) {
+            // uncheck
             self.selectedRows.remove(at: self.selectedRows.firstIndex(of: indexPath)!)
             cell.btnCheckbox.setImage(UIImage(named: "ic_check_off"), for: .normal)
-            delegateContenReplant?.unselected(index: indexPath.row)
+            delegateContenReplant?.unselected(index: indexPath.row, assetID: arrAssetID[indexPath.row])
         } else {
+            // click cell add
             self.selectedRows.append(indexPath)
             cell.btnCheckbox.setImage(UIImage(named: "ic_check_on"), for: .normal)
-
-            delegateContenReplant?.passData(index: indexPath.row, info: "")
+            delegateContenReplant?.passData(index: indexPath.row, assetID: arrAssetID[indexPath.row])
         }
+        
+        
     }
     
 }

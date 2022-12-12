@@ -47,8 +47,6 @@ protocol GetIndexMarkerDelegateProtocol: AnyObject {
     func getIndexMarker(indexDidSelected: Int)
 }
 
-
-
 class DeliveryListController: UIViewController , FloatingPanelControllerDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
     
     weak var delegateGetIndex: GetIndexMarkerDelegateProtocol?
@@ -229,6 +227,7 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
                             for itemObject in locations1 {
                                 arrLocationValue.append(Location.init(elem: itemObject, asset: nil))
                             }
+                            
                             for iLocationValue in arrLocationValue {
                                 if let  assetID = iLocationValue.elem?.location?.assetID {
                                     self.getGetAsset(forAsset: assetID) { iasset in
@@ -238,6 +237,7 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
                                     print("No assetID -> Supplier")
                                 }
                             }
+                            
                             self.dicData[iday] = arrLocationValue
                             
                         } else {
@@ -249,9 +249,10 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
                         print("Error: \(response.response?.statusCode ?? 000000)")
                         print("Error: \(error)")
                     }
+                    
                     if self.t == self.dateYMD.count {
+                        self.hideActivity()
                         self.reDrawMarkers()
-                        //self.hideActivity()
                     }
                 }
         }
@@ -259,14 +260,16 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
     }
     
     
-    func getGetAsset(forAsset iassetID: String, completion: @escaping  ((GetAsset?) -> Void)) {
+    func getGetAsset(forAsset iassetID: String, completion: @escaping ((GetAsset?) -> Void)) {
         let token = UserDefaults.standard.string(forKey: "accessToken") ?? ""
         let urlGetAsset = "https://\(companyCode).kiiapps.com/am/api/assets/\(iassetID)"
         AF.request(urlGetAsset,method: .get, parameters: nil, headers: self.makeHeaders(token: token))
             .responseDecodable(of: GetAsset.self ) { response1 in
+                
                 switch response1.result {
                 case .success( let value):
-                    self.hideActivity()
+//                    self.reDrawMarkers()
+                    
                     completion(value)
                 case .failure(let error):
                     print("\(error)")
@@ -321,6 +324,7 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         self.indxes = []
         var locationsByDriver: [Int: [Location]] = [:]
         var elemLocationADay = [Location]()
+
         var dataOneDate: [Location] = dicData[date] ?? []
         if dataOneDate.count > 0 && dataOneDate[0].type == .supplier && dataOneDate[0].elem?.locationOrder == 1 {
             dataOneDate.remove(at: 0)
@@ -351,8 +355,8 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         for statusShipping in dataStatus {
             if statusShipping.elem?.location?.metadata?.displayData?.valueDeliveryHistory() == .waiting
                 && statusShipping.elem?.location?.metadata?.displayData?.valueDeliveryHistory() == .failed &&
-                statusShipping.elem?.location?.metadata?.displayData?.valueDeliveryHistory() == .inprogress
-            {
+                statusShipping.elem?.location?.metadata?.displayData?.valueDeliveryHistory() == .inprogress {
+                
                 dataStatus.removeAll()
                 dataStatus.append(statusShipping)
                 dataDidFilter = dataStatus
@@ -366,15 +370,15 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         if dataDidFilter.count > 0 {
             for infoCustomer in dataDidFilter {
                 self.comment.append(infoCustomer.elem?.location?.comment ?? "")
+                
             }
         } else {
-            
             // btnShipping.removeFromSuperview()
             fpc.removePanelFromParent(animated: true)
         }
         
-        customFloatingPanel()
         
+        customFloatingPanel()
         return dataDidFilter
     }
     
@@ -468,13 +472,10 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
                 if let lat = picker.elem?.latitude, let long = picker.elem?.longitude, let locationOrder = picker.elem?.locationOrder {
                     let locationOfCustomer = CustomPin(title: locationOrder , coordinate: CLLocationCoordinate2D(latitude: lat, longitude: long))
                     arrLocationOrder.append(locationOfCustomer.title)
-                    //mapView.addAnnotation(locationOfCustomer)
-                    arrCoordinate.append(locationOfCustomer)
+                    mapView.addAnnotation(locationOfCustomer)
                 }
             }
             
-            let arrCoordinateDidSort = arrCoordinate.sorted(by: { $0.title > $1.title } )
-            mapView.addAnnotations(arrCoordinateDidSort)
         }
         passIndexSelectedMarker = 0
     }

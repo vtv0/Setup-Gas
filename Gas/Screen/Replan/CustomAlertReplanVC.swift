@@ -7,10 +7,6 @@
 
 import UIKit
 
-//class DataOnCustomer {
-//    var
-//}
-
 
 protocol ClickOkDelegateProtocol: AnyObject {
     func clickOk()
@@ -38,17 +34,8 @@ class CustomAlertReplanVC: UIViewController {
         dismiss(animated: false)
     }
     @IBAction func btnOK(_ sender: Any) {
-        
         dismiss(animated: false)
         delegateClickOK?.clickOk()
-        
-        // khi click ok -> nhan data dc chon trong [Location]
-        
-        
-//        guard let vc = storyboard?.instantiateViewController(withIdentifier: "ReplanController") as? ReplanController else { return }
-//
-//        vc.navigationController?.pushViewController(vc, animated: true)
-        
     }
     
     override func viewDidLoad() {
@@ -78,6 +65,5 @@ class CustomAlertReplanVC: UIViewController {
             
         }
     }
-    
 
 }
