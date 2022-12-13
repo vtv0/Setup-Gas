@@ -3,16 +3,8 @@
 //  Gas
 //
 //  Created by Vuong The Vu on 25/10/2022.
-//
-//
-// This file was generated from JSON Schema using quicktype, do not modify it directly.
-// To parse the JSON, add this file to your project and do:
-//
-//  let welcome = try? newJSONDecoder().decode(Welcome.self, from: jsonData)
 
-import Foundation
 import UIKit
-
 
 class Location {
     var type: LocationType {
@@ -25,11 +17,11 @@ class Location {
     var asset: GetAsset?
     
     init( elem: LocationElement?, asset: GetAsset?) { //type: LocationType,
-    //    self.type = type
-        self.elem = elem 
+        //    self.type = type
+        self.elem = elem
         self.asset = asset
     }
-
+    
     enum LocationType: String, Codable, CaseIterable {
         case customer = "customer"
         case supplier = "supplier"
@@ -39,13 +31,13 @@ class Location {
 
 
 // MARK: - GetLatestWorkerRouteLocationListInfo
-struct GetLatestWorkerRouteLocationListInfo: Decodable {
+class GetLatestWorkerRouteLocationListInfo: Decodable {
     var locations: [LocationElement]?
     var workerRoute: WorkerRoute?
 }
 
 // MARK: - LocationElement
-struct LocationElement: Decodable {  // CustomStringConvertible
+class LocationElement: Decodable {
     var description: String {
         return "locationOrder: \(locationOrder)"
     }
@@ -61,25 +53,40 @@ struct LocationElement: Decodable {  // CustomStringConvertible
     var longitude: Double?
     var metadata: FluffyMetadata?
     var travelTimeSECToNext, waitingTimeSEC, workTimeSEC: Int?
-    //var timeWindow: JSONNull?
+   
     
-    //    enum CodingKeys: String, CodingKey {
-    //        case arrivalTime
-    //        case breakTimeSEC = "breakTimeSec"
-    //        case createdAt, latitude, loadCapacity, loadSupply, location, locationID, locationOrder, longitude, metadata, timeWindow
-    //        case travelTimeSECToNext = "travelTimeSecToNext"
-    //        case waitingTimeSEC = "waitingTimeSec"
-    //        case workTimeSEC = "workTimeSec"
-    //    }
+    init(arrivalTime: ArrivalTime? = nil, breakTimeSEC: Int? = nil, createdAt: String? = nil, latitude: Double? = nil, loadCapacity: Int? = nil, loadSupply: Int? = nil, location: LocationLocation? = nil, locationID: Int? = nil, locationOrder: Int, longitude: Double? = nil, metadata: FluffyMetadata? = nil, travelTimeSECToNext: Int? = nil, waitingTimeSEC: Int? = nil, workTimeSEC: Int? = nil) {
+        self.arrivalTime = arrivalTime
+        self.breakTimeSEC = breakTimeSEC
+        self.createdAt = createdAt
+        self.latitude = latitude
+        self.loadCapacity = loadCapacity
+        self.loadSupply = loadSupply
+        self.location = location
+        self.locationID = locationID
+        self.locationOrder = locationOrder
+        self.longitude = longitude
+        self.metadata = metadata
+        self.travelTimeSECToNext = travelTimeSECToNext
+        self.waitingTimeSEC = waitingTimeSEC
+        self.workTimeSEC = workTimeSEC
+    }
+    
 }
 
 // MARK: - ArrivalTime
-struct ArrivalTime: Decodable {
+class ArrivalTime: Decodable {
     var hours, minutes, nanos, seconds: Int?
+    init(hours: Int? = nil, minutes: Int? = nil, nanos: Int? = nil, seconds: Int? = nil) {
+        self.hours = hours
+        self.minutes = minutes
+        self.nanos = nanos
+        self.seconds = seconds
+    }
 }
 
 // MARK: - LocationLocation
-struct LocationLocation: Decodable {
+class LocationLocation: Decodable {
     var areaID: Int?
     var comment, createdAt: String?
     var id, importance: Int?
@@ -98,56 +105,69 @@ struct LocationLocation: Decodable {
     var normalizedScore: Double?
     var vehicleLimit: Int?
     
-//    func status() -> LocationType? {
-//        if locationType == "supplier" {
-//            
-//        }
-//        
-//        return .customer
-//    }
+    
     enum LocationType: String, Codable, CaseIterable {
         case customer = "customer"
         case supplier = "supplier"
     }
     
-//    enum MyCode : String, CaseIterable {
-//
-//        case one   = "uno"
-//        case two   = "dos"
-//        case three = "tres"
-//
-//        static func withLabel(_ label: String) -> MyCode? {
-//            return self.allCases.first{ "\($0)" == label }
-//        }
-//    }
-    //    enum CodingKeys: String, CodingKey {
-    //        case areaID, comment, createdAt, id, importance, latitude, loadConsumeMax, loadConsumeMin, locationType, longitude, metadata, priority, tenantID, timeWindow, updatedAt
-    //        case workTimeSEC = "workTimeSec"
-    //        case assetID, loadCapacity, normalizedScore, vehicleLimit
-    //    }
+    init(areaID: Int? = nil, comment: String? = nil, createdAt: String? = nil, id: Int? = nil, importance: Int? = nil, latitude: Double? = nil, loadConsumeMax: Int? = nil, loadConsumeMin: Int? = nil, locationType: LocationType? = nil, longitude: Double? = nil, metadata: PurpleMetadata? = nil, priority: String? = nil, tenantID: Int? = nil, updatedAt: String? = nil, workTimeSEC: Int? = nil, assetID: String? = nil, loadCapacity: Int? = nil, normalizedScore: Double? = nil, vehicleLimit: Int? = nil) {
+        self.areaID = areaID
+        self.comment = comment
+        self.createdAt = createdAt
+        self.id = id
+        self.importance = importance
+        self.latitude = latitude
+        self.loadConsumeMax = loadConsumeMax
+        self.loadConsumeMin = loadConsumeMin
+        self.locationType = locationType
+        self.longitude = longitude
+        self.metadata = metadata
+        self.priority = priority
+        self.tenantID = tenantID
+        self.updatedAt = updatedAt
+        self.workTimeSEC = workTimeSEC
+        self.assetID = assetID
+        self.loadCapacity = loadCapacity
+        self.normalizedScore = normalizedScore
+        self.vehicleLimit = vehicleLimit
+    }
 }
 
 
 
 // MARK: - PurpleMetadata
-struct PurpleMetadata: Codable {
+class PurpleMetadata: Codable {
     var kyokyusetsubiCode: String?
-    var displayData: DisplayData?
+    var display_data: DisplayData?
     var operators: [String?]?
     
     enum CodingKeys: String, CodingKey {
         case kyokyusetsubiCode = "KYOKYUSETSUBI_CODE"
-        case displayData = "display_data"
+        case display_data = "display_data"
         case operators
+    }
+    
+    init(kyokyusetsubiCode: String? = nil, display_data: DisplayData? = nil, operators: [String?]? = nil) {
+        self.kyokyusetsubiCode = kyokyusetsubiCode
+        self.display_data = display_data
+        self.operators = operators
     }
 }
 
 // MARK: - DisplayData
-struct DisplayData: Codable {
+class DisplayData: Codable {
     var delivery_history: [String: String]?
-    var excludeFirstday: Bool?
-    var originRouteID: Int?
-    var moveToFirstday: Bool?
+    var origin_route_id: Int?
+    var exclude_firstday: Bool?
+    var move_to_firstday: Bool?
+    
+    init(delivery_history: [String : String]? = nil, exclude_firstday: Bool? = nil, origin_route_id: Int? = nil, move_to_firstday: Bool? = nil) {
+        self.delivery_history = delivery_history
+        self.origin_route_id = origin_route_id
+        self.exclude_firstday = false
+        self.move_to_firstday = move_to_firstday
+    }
     
     enum DeliveryHistory: String, Codable {
         case completed = "completed"
@@ -157,6 +177,12 @@ struct DisplayData: Codable {
         case waiting = "waiting"  //chua giao
     }
     
+    func moveToFirstDay() -> Bool {
+        
+        
+        
+        return false
+    }
     
     func valueDeliveryHistory() -> DeliveryHistory {
         var arrStringDate: [String] = []
@@ -165,9 +191,13 @@ struct DisplayData: Codable {
                 arrStringDate.append(i)
             }
         }
-        struct DataHistory {
+        class DataHistory {
             var date: String
             var status: String
+            init(date: String, status: String) {
+                self.date = date
+                self.status = status
+            }
         }
         var arr: [DataHistory] = []
         
@@ -192,406 +222,64 @@ struct DisplayData: Codable {
         
         return .waiting
         
-        //        deliveryHistory?.keys.forEach { i in
-        //            arrStringDate.append(i)
-        //            print("qqqqqqqqqqqqqqqqqqq:\(i)")
-        //        }
-        //        let dateFormatter = DateFormatter()
-        //        //dateFormatter.timeZone = TimeZone(identifier: "UTC")
-        //        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm"
-        //        let dateObjects: [Date] = arrStringDate.compactMap{ dateFormatter.date(from: $0) } //loc cac phan tu nil trong [String] va chuyen [String] -> [Date]
-        //        var stringKey: String = String.init()
-        //        let recentDays = dateObjects.sorted(by: { $0.compare($1) == .orderedDescending }) //sap xep [Date]
-        //        if let mostRecentDay = recentDays.first{
-        //       //     print(mostRecentDay)  // lay ra phan tu Date gan day nhat
-        //
-        //            let today = mostRecentDay
-        //            let formatter1 = DateFormatter()
-        //            formatter1.timeZone = TimeZone(identifier: "UTC")
-        //            formatter1.dateFormat = "yyyy-MM-dd HH:mm"
-        //            stringKey = formatter1.string(from: today) //chuyen Date -> String
-        //
-        //
-        //        }
-        //        print("\(stringKey)::>\(delivery_history?["\(stringKey)"])")
-        //        return delivery_history?["\(stringKey )"] ?? ""
+        
     }
     
 }
 
-//struct DeliveryHistory : Decodable {
-//    statusValue : String?
-//}
-
-
-
-//enum Priority: String, Codable {
-//    case normal = "normal"
-//    case priorityOptional = "optional"
-//}
 
 // MARK: - FluffyMetadata
-struct FluffyMetadata: Decodable {
+class FluffyMetadata: Decodable {
     var customer_id, deliverType: String?
     var facility_data: [Facility_data]?
     var optionalDays: Int?
     var optionalLocation: Bool?
     var planID, planned_date, prevDate: String?
     
-    //    enum CodingKeys: String, CodingKey {
-    //        case customerID = "customer_id"
-    //        case deliverType = "deliver_type"
-    //        case facilityData = "facility_data"
-    //        case optionalDays = "optional_days"
-    //        case optionalLocation = "optional_location"
-    //        case planID = "plan_id"
-    //        case plannedDate = "planned_date"
-    //        case prevDate = "prev_date"
-    //    }
+    init(customer_id: String? = nil, deliverType: String? = nil, facility_data: [Facility_data]? = nil, optionalDays: Int? = nil, optionalLocation: Bool? = nil, planID: String? = nil, planned_date: String? = nil, prevDate: String? = nil) {
+        self.customer_id = customer_id
+        self.deliverType = deliverType
+        self.facility_data = facility_data
+        self.optionalDays = optionalDays
+        self.optionalLocation = optionalLocation
+        self.planID = planID
+        self.planned_date = planned_date
+        self.prevDate = prevDate
+    }
 }
 
 // MARK: - FacilityDatum
-struct Facility_data: Codable {
+class Facility_data: Codable {
     var count, type: Int?
+    init(count: Int? = nil, type: Int? = nil) {
+        self.count = count
+        self.type = type
+    }
 }
 
 // MARK: - WorkerRoute
-struct WorkerRoute: Codable {
+class WorkerRoute: Codable {
     var createdAt: String?
     var id, loadRemain, routeID, totalTimeSEC: Int?
     var workDate: String?
     var workerID, workerVehicleID: Int?
+    
+    init(createdAt: String? = nil, id: Int? = nil, loadRemain: Int? = nil, routeID: Int? = nil, totalTimeSEC: Int? = nil, workDate: String? = nil, workerID: Int? = nil, workerVehicleID: Int? = nil) {
+        self.createdAt = createdAt
+        self.id = id
+        self.loadRemain = loadRemain
+        self.routeID = routeID
+        self.totalTimeSEC = totalTimeSEC
+        self.workDate = workDate
+        self.workerID = workerID
+        self.workerVehicleID = workerVehicleID
+    }
     
     enum CodingKeys: String, CodingKey {
         case createdAt, id, loadRemain, routeID
         case totalTimeSEC = "totalTimeSec"
         case workDate, workerID, workerVehicleID
     }
+    
 }
 
-// MARK: - Encode/decode helpers
-
-//class JSONNull: Codable, Hashable {
-//
-//    public static func == (lhs: JSONNull, rhs: JSONNull) -> Bool {
-//        return true
-//    }
-//
-//    public var hashValue: Int {
-//        return 0
-//    }
-//
-//    public func hash(into hasher: inout Hasher) {
-//        // No-op
-//    }
-//
-//    public init() {}
-//
-//    public required init(from decoder: Decoder) throws {
-//        let container = try decoder.singleValueContainer()
-//        if !container.decodeNil() {
-//            throw DecodingError.typeMismatch(JSONNull.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Wrong type for JSONNull"))
-//        }
-//    }
-//
-//    public func encode(to encoder: Encoder) throws {
-//        var container = encoder.singleValueContainer()
-//        try container.encodeNil()
-//    }
-//}
-
-//class JSONCodingKey: CodingKey {
-//    let key: String
-//
-//    required init?(intValue: Int) {
-//        return nil
-//    }
-//
-//    required init?(stringValue: String) {
-//        key = stringValue
-//    }
-//
-//    var intValue: Int? {
-//        return nil
-//    }
-//
-//    var stringValue: String {
-//        return key
-//    }
-//}
-
-//class JSONAny: Codable {
-//
-//    let value: Any
-//
-//    static func decodingError(forCodingPath codingPath: [CodingKey]) -> DecodingError {
-//        let context = DecodingError.Context(codingPath: codingPath, debugDescription: "Cannot decode JSONAny")
-//        return DecodingError.typeMismatch(JSONAny.self, context)
-//    }
-//
-//    static func encodingError(forValue value: Any, codingPath: [CodingKey]) -> EncodingError {
-//        let context = EncodingError.Context(codingPath: codingPath, debugDescription: "Cannot encode JSONAny")
-//        return EncodingError.invalidValue(value, context)
-//    }
-//
-//    static func decode(from container: SingleValueDecodingContainer) throws -> Any {
-//        if let value = try? container.decode(Bool.self) {
-//            return value
-//        }
-//        if let value = try? container.decode(Int64.self) {
-//            return value
-//        }
-//        if let value = try? container.decode(Double.self) {
-//            return value
-//        }
-//        if let value = try? container.decode(String.self) {
-//            return value
-//        }
-//        if container.decodeNil() {
-//            return JSONNull()
-//        }
-//        throw decodingError(forCodingPath: container.codingPath)
-//    }
-//
-//    static func decode(from container: inout UnkeyedDecodingContainer) throws -> Any {
-//        if let value = try? container.decode(Bool.self) {
-//            return value
-//        }
-//        if let value = try? container.decode(Int64.self) {
-//            return value
-//        }
-//        if let value = try? container.decode(Double.self) {
-//            return value
-//        }
-//        if let value = try? container.decode(String.self) {
-//            return value
-//        }
-//        if let value = try? container.decodeNil() {
-//            if value {
-//                return JSONNull()
-//            }
-//        }
-//        if var container = try? container.nestedUnkeyedContainer() {
-//            return try decodeArray(from: &container)
-//        }
-//        if var container = try? container.nestedContainer(keyedBy: JSONCodingKey.self) {
-//            return try decodeDictionary(from: &container)
-//        }
-//        throw decodingError(forCodingPath: container.codingPath)
-//    }
-//
-//    static func decode(from container: inout KeyedDecodingContainer<JSONCodingKey>, forKey key: JSONCodingKey) throws -> Any {
-//        if let value = try? container.decode(Bool.self, forKey: key) {
-//            return value
-//        }
-//        if let value = try? container.decode(Int64.self, forKey: key) {
-//            return value
-//        }
-//        if let value = try? container.decode(Double.self, forKey: key) {
-//            return value
-//        }
-//        if let value = try? container.decode(String.self, forKey: key) {
-//            return value
-//        }
-//        if let value = try? container.decodeNil(forKey: key) {
-//            if value {
-//                return JSONNull()
-//            }
-//        }
-//        if var container = try? container.nestedUnkeyedContainer(forKey: key) {
-//            return try decodeArray(from: &container)
-//        }
-//        if var container = try? container.nestedContainer(keyedBy: JSONCodingKey.self, forKey: key) {
-//            return try decodeDictionary(from: &container)
-//        }
-//        throw decodingError(forCodingPath: container.codingPath)
-//    }
-//
-//    static func decodeArray(from container: inout UnkeyedDecodingContainer) throws -> [Any] {
-//        var arr: [Any] = []
-//        while !container.isAtEnd {
-//            let value = try decode(from: &container)
-//            arr.append(value)
-//        }
-//        return arr
-//    }
-//
-//    static func decodeDictionary(from container: inout KeyedDecodingContainer<JSONCodingKey>) throws -> [String: Any] {
-//        var dict = [String: Any]()
-//        for key in container.allKeys {
-//            let value = try decode(from: &container, forKey: key)
-//            dict[key.stringValue] = value
-//        }
-//        return dict
-//    }
-//
-//    static func encode(to container: inout UnkeyedEncodingContainer, array: [Any]) throws {
-//        for value in array {
-//            if let value = value as? Bool {
-//                try container.encode(value)
-//            } else if let value = value as? Int64 {
-//                try container.encode(value)
-//            } else if let value = value as? Double {
-//                try container.encode(value)
-//            } else if let value = value as? String {
-//                try container.encode(value)
-//            } else if value is JSONNull {
-//                try container.encodeNil()
-//            } else if let value = value as? [Any] {
-//                var container = container.nestedUnkeyedContainer()
-//                try encode(to: &container, array: value)
-//            } else if let value = value as? [String: Any] {
-//                var container = container.nestedContainer(keyedBy: JSONCodingKey.self)
-//                try encode(to: &container, dictionary: value)
-//            } else {
-//                throw encodingError(forValue: value, codingPath: container.codingPath)
-//            }
-//        }
-//    }
-//
-//    static func encode(to container: inout KeyedEncodingContainer<JSONCodingKey>, dictionary: [String: Any]) throws {
-//        for (key, value) in dictionary {
-//            let key = JSONCodingKey(stringValue: key)!
-//            if let value = value as? Bool {
-//                try container.encode(value, forKey: key)
-//            } else if let value = value as? Int64 {
-//                try container.encode(value, forKey: key)
-//            } else if let value = value as? Double {
-//                try container.encode(value, forKey: key)
-//            } else if let value = value as? String {
-//                try container.encode(value, forKey: key)
-//            } else if value is JSONNull {
-//                try container.encodeNil(forKey: key)
-//            } else if let value = value as? [Any] {
-//                var container = container.nestedUnkeyedContainer(forKey: key)
-//                try encode(to: &container, array: value)
-//            } else if let value = value as? [String: Any] {
-//                var container = container.nestedContainer(keyedBy: JSONCodingKey.self, forKey: key)
-//                try encode(to: &container, dictionary: value)
-//            } else {
-//                throw encodingError(forValue: value, codingPath: container.codingPath)
-//            }
-//        }
-//    }
-//
-//    static func encode(to container: inout SingleValueEncodingContainer, value: Any) throws {
-//        if let value = value as? Bool {
-//            try container.encode(value)
-//        } else if let value = value as? Int64 {
-//            try container.encode(value)
-//        } else if let value = value as? Double {
-//            try container.encode(value)
-//        } else if let value = value as? String {
-//            try container.encode(value)
-//        } else if value is JSONNull {
-//            try container.encodeNil()
-//        } else {
-//            throw encodingError(forValue: value, codingPath: container.codingPath)
-//        }
-//    }
-//
-//    public required init(from decoder: Decoder) throws {
-//        if var arrayContainer = try? decoder.unkeyedContainer() {
-//            self.value = try JSONAny.decodeArray(from: &arrayContainer)
-//        } else if var container = try? decoder.container(keyedBy: JSONCodingKey.self) {
-//            self.value = try JSONAny.decodeDictionary(from: &container)
-//        } else {
-//            let container = try decoder.singleValueContainer()
-//            self.value = try JSONAny.decode(from: container)
-//        }
-//    }
-//
-//    public func encode(to encoder: Encoder) throws {
-//        if let arr = self.value as? [Any] {
-//            var container = encoder.unkeyedContainer()
-//            try JSONAny.encode(to: &container, array: arr)
-//        } else if let dict = self.value as? [String: Any] {
-//            var container = encoder.container(keyedBy: JSONCodingKey.self)
-//            try JSONAny.encode(to: &container, dictionary: dict)
-//        } else {
-//            var container = encoder.singleValueContainer()
-//            try JSONAny.encode(to: &container, value: self.value)
-//        }
-//    }
-//}
-
-//import UIKit
-//
-//struct GetLatestWorkerRouteLocationListInfo: Decodable {
-//    var locations: [ObjectItem]?
-//    var workerRoute : workerRouteDetail
-//}
-//
-//struct ObjectItem : Decodable {
-//    var arrivalTime : arrivalTimeDetail?
-//    var breakTimeSec: Int
-//    var createdAt: String?
-//    var latitude : Double
-//    var loadCapacity: Int?
-//    var loadSupply: Int
-//    var location : locationDetail?
-//    var locationID: Int
-//    var locationOrder : Int
-//    var longitude : Double
-//    var metadata : metedateDetail
-//    var timeWindow : String?
-//    var travelTimeSecToNext : Int
-//    var waitingTimeSec: Int
-//    var workTimeSec: Int
-//
-//}
-//
-//struct locationDetail : Decodable {
-//    var areaID: Int?
-//    var assetID: String?
-//    var comment : String?
-//    var createdAt : String?
-//    var id : Int?
-//    var importance : Int?
-//    var latitude: Double?
-//    var loadCapacity: Int?
-//    var loadConsumeMax: Int?
-//    var loadConsumeMin: Int?
-//    var locationType : String?
-//    var longitude: Double?
-//    var metadata : metedateDetail?
-//    var normalizedScore : Double?
-//    var priority: String?
-//    var tenantID: Int?
-//    var timeWindow: String?
-//    var updatedAt: Date?
-//    var vehicleLimit : Int?
-//    var workTimeSec: Int?
-//}
-//struct arrivalTimeDetail : Decodable {
-//    var hours : Int?
-//    var minutes : Int?
-//    var nanos : Int?
-//    var second : Int?
-//
-//}
-//struct metedateDetail : Decodable {
-//    var KYOKYUSETSUBI_CODE : String?
-//    var display_data : display_dataDetail?
-//    var operators : [String]?
-//}
-//struct display_dataDetail : Decodable {
-//    var delivery_history: DateInfo?
-//
-//}
-//struct DateInfo : Decodable {
-//    var dateDetail : String?
-//}
-//struct workerRouteDetail: Decodable {
-//         var  createdAt: String?
-//         var  id: Int
-//         var loadRemain: Int
-//         var  routeID: Int
-//         var totalTimeSec: Double
-//         var workDate: Date
-//         var workerID: Int
-//         var workerVehicleID: Int
-//}
-//
-//
-//

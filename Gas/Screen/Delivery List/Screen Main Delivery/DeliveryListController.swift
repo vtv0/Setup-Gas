@@ -113,6 +113,8 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
     }
     @IBAction func btnReplan(_ sender: Any) {
         let screenReplan = storyboard?.instantiateViewController(withIdentifier: "ReplanController") as! ReplanController
+        screenReplan.dicDataReplan = self.dicData
+        screenReplan.dateYMD = dateYMD
         self.navigationController?.pushViewController(screenReplan, animated: true)
     }
     @IBAction func btnReroute(_ sender: Any) {
@@ -268,7 +270,7 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
                 
                 switch response1.result {
                 case .success( let value):
-//                    self.reDrawMarkers()
+                    //                    self.reDrawMarkers()
                     
                     completion(value)
                 case .failure(let error):
@@ -278,13 +280,6 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
             }
     }
     
-    //    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-    //        if segue.destination is ReplanController
-    //        {
-    //            let vc = segue.destination as? ReplanController
-    //            vc?.dicDataReplan = self.dicData
-    //        }
-    //    }
     
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
@@ -324,8 +319,8 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         self.indxes = []
         var locationsByDriver: [Int: [Location]] = [:]
         var elemLocationADay = [Location]()
-
         var dataOneDate: [Location] = dicData[date] ?? []
+        
         if dataOneDate.count > 0 && dataOneDate[0].type == .supplier && dataOneDate[0].elem?.locationOrder == 1 {
             dataOneDate.remove(at: 0)
         }
@@ -353,9 +348,9 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         self.pickerDriver.reloadAllComponents()
         var dataStatus: [Location] = locationsByDriver[driver] ?? []
         for statusShipping in dataStatus {
-            if statusShipping.elem?.location?.metadata?.displayData?.valueDeliveryHistory() == .waiting
-                && statusShipping.elem?.location?.metadata?.displayData?.valueDeliveryHistory() == .failed &&
-                statusShipping.elem?.location?.metadata?.displayData?.valueDeliveryHistory() == .inprogress {
+            if statusShipping.elem?.location?.metadata?.display_data?.valueDeliveryHistory() == .waiting
+                && statusShipping.elem?.location?.metadata?.display_data?.valueDeliveryHistory() == .failed &&
+                statusShipping.elem?.location?.metadata?.display_data?.valueDeliveryHistory() == .inprogress {
                 
                 dataStatus.removeAll()
                 dataStatus.append(statusShipping)
@@ -573,6 +568,7 @@ extension DeliveryListController: MKMapViewDelegate, ShowIndexPageDelegateProtoc
             
             if dataDidFilter.count == 0 {
                 self.showAlert(message: "Không có đơn hàng nào!")
+                
             } else {
                 for picker in dataDidFilter {
                     if let lat = picker.elem?.latitude, let long = picker.elem?.longitude, let locationOrder = picker.elem?.locationOrder {

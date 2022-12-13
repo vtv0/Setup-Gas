@@ -108,12 +108,17 @@ class ParkingLocationController: UIViewController, MKMapViewDelegate, CLLocation
         let token = UserDefaults.standard.string(forKey: "accessToken") ?? ""
         let iassetID = UserDefaults.standard.string(forKey: "iassetID") ?? ""
         
-        let parameters: [String: [String: [String: [String: [Double]]]]] = ["properties": ["values": ["location": ["coordinates": [mapLong, mapLat] ] ] ] ]
+        let infoLocation: [String: Any] = ["coordinates": [mapLong, mapLat], "type": ""]
+        let valueCoordinates: [String: Any] = ["location": infoLocation ]
+        let properties: [String: Any] = ["values": valueCoordinates ]
+        let parameters: [String: Any] = ["properties": properties]
+       
+        print(parameters)
         let urlGetAsset = "https://\(companyCode).kiiapps.com/am/api/assets/\(iassetID)"
         self.showActivity()
         
         
-        AF.request(urlGetAsset, method: .patch, parameters: parameters, encoding: CustomPATCHEncoding(), headers: self.makeHeaders(token: token)).validate(statusCode: (200...299))
+        AF.request(urlGetAsset, method: .patch, parameters: parameters, encoding: JSONEncoding.default, headers: self.makeHeaders(token: token))  // .validate(statusCode: (200...299))
             .response { response1 in
                 
                 print(response1.response?.statusCode ?? 0)

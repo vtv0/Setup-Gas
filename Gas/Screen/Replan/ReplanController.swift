@@ -33,6 +33,7 @@ class ReplanController: UIViewController, FloatingPanelControllerDelegate {
     var numberCustomer = 0
     var arrAssetID = [String]()
     var arrAssetIDDidSelected = [String]()
+    
     @IBOutlet weak var btnClear: UIButton!
     @IBAction func btnClear(_ sender: Any) {
         print("bo chon")
@@ -40,8 +41,6 @@ class ReplanController: UIViewController, FloatingPanelControllerDelegate {
         totalCellSelect = 0
         view.selectedRows.removeAll()
         view.myTableView.reloadData()
-        
-        
     }
     
     @IBOutlet weak var btnReplace: UIButton!
@@ -89,8 +88,6 @@ class ReplanController: UIViewController, FloatingPanelControllerDelegate {
         // btnReplace.isHidden = true
         
         fpc.delegate = self
-        self.sevenDay()
-        
         
         pickerDriver.dataSource = self
         pickerDriver.delegate = self
@@ -99,13 +96,16 @@ class ReplanController: UIViewController, FloatingPanelControllerDelegate {
         
         //     navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
         
-        getLatestWorkerRouteLocationList()
+        // getLatestWorkerRouteLocationList()
         mapView.delegate = self
         
         let userCoordinate = CLLocationCoordinate2D(latitude: 35.73774428640241, longitude: 139.6194163709879)
         let eyeCoordinate = CLLocationCoordinate2D(latitude: 35.73774428640241, longitude: 139.6194163709879)
         let mapCamera = MKMapCamera(lookingAtCenter: userCoordinate, fromEyeCoordinate: eyeCoordinate, eyeAltitude: 1000000.0)
         mapView.setCamera(mapCamera, animated: false)
+        
+        
+        reDrawMarkers()
         
     }
     
@@ -130,88 +130,14 @@ class ReplanController: UIViewController, FloatingPanelControllerDelegate {
         self.view.bringSubviewToFront(btnClear)
         self.view.bringSubviewToFront(btnReplace)
         self.locationDidSelected()
-    }
-    
-    func getLatestWorkerRouteLocationList() {
-        //        showActivity()
-        let token = UserDefaults.standard.string(forKey: "accessToken") ?? ""
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd"
         
-        for iday in dateYMD {
-            let dateString: String = formatter.string(from: iday)
-            let url: String = "https://\(companyCode).kiiapps.com/am/exapi/vrp/tenants/\(tenantId)/latest_route/worker_users/\(userId)?workDate=\(dateString)"
-            AF.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default ,headers: self.makeHeadersExtension(token: token)).validate(statusCode: (200...299))
-                .responseDecodable(of: GetLatestWorkerRouteLocationListInfo.self) { response in
-                    self.t += 1
-                    switch response.result {
-                    case .success(_):
-                        let countObject = response.value?.locations?.count
-                        let locations1: [LocationElement] = response.value?.locations ?? []
-                        if countObject != 0 {
-                            var arrLocationValue: [Location] = []
-                            for itemObject in locations1 {
-                                arrLocationValue.append(Location.init(elem: itemObject, asset: nil))
-                                
-                            }
-                            for iLocationValue in arrLocationValue {
-                                if let  assetID = iLocationValue.elem?.location?.assetID {
-                                    
-                                    self.getGetAsset(forAsset: assetID) { iasset in
-                                        
-                                        iLocationValue.asset = iasset
-                                        
-                                    }
-                                    
-                                } else {
-                                    print("No assetID -> Supplier")
-                                }
-                            }
-                            self.dicDataReplan[iday] = arrLocationValue
-                            
-                        } else {
-                            
-                            print("\(url) =>> Array Empty, No Object ")
-                        }
-                    case .failure(let error):
-                        print("Error: \(response.response?.statusCode ?? 000000)")
-                        print("Error: \(error)")
-                    }
-                    if self.t == self.dateYMD.count {
-                        self.hideActivity()
-                        self.reDrawMarkers()
-                    }
-                }
-        }
         
-    }
-    
-    func getGetAsset(forAsset iassetID: String, completion: @escaping  ((GetAsset?) -> Void)) {
-        
-        let token = UserDefaults.standard.string(forKey: "accessToken") ?? ""
-        let urlGetAsset = "https://\(companyCode).kiiapps.com/am/api/assets/\(iassetID)"
-        AF.request(urlGetAsset,method: .get, parameters: nil, headers: self.makeHeadersExtension(token: token))
-            .responseDecodable(of: GetAsset.self ) { response1 in
-                switch response1.result {
-                case .success( let value):
-                    
-                    //self.hideActivity()
-                    
-                    
-                    completion(value)
-                case .failure( let error):
-                    print(error)
-                    completion(nil)
-                }
-            }
     }
     
     func getDataFiltered(date: Date, driver: Int) -> [Location] {
         
         var locationsByDriver: [Int: [Location]] = [:]
-        dataDidFilter = dicDataReplan[date] ?? []
-        
-        var elemLocationADay = dataDidFilter
+        var elemLocationADay = dicDataReplan[date] ?? []
         
         // chia ra xe trong 1 ngay
         
@@ -266,16 +192,17 @@ class ReplanController: UIViewController, FloatingPanelControllerDelegate {
         viewBtnAnimation.backgroundColor = .white
         viewBtnAnimation.addTarget(self, action: #selector(clickBtn), for: .touchUpInside)
         viewBtnAnimation.setImage(UIImage(named: "upAnimation"), for: .normal)
-        viewBtnAnimation.frame = CGRect(x: 0, y: 270, width: self.viewAnimation.frame.size.width, height: 30)
-        
+        //viewBtnAnimation.frame = CGRect(x: 0, y: 270, width: self.viewAnimation.frame.size.width, height: 30)
         self.view.insertSubview(viewBtnAnimation, aboveSubview: viewAnimation)
         
-        //        let verticalConstraint = NSLayoutConstraint(item: viewBtnAnimation, attribute: NSLayoutConstraint.Attribute.top, relatedBy: NSLayoutConstraint.Relation.equal, toItem: viewAnimation, attribute: NSLayoutConstraint.Attribute.bottom , multiplier: 1, constant: 0)
-        //
-        //        let widthConstraint = NSLayoutConstraint(item: viewBtnAnimation, attribute: NSLayoutConstraint.Attribute.width, relatedBy: NSLayoutConstraint.Relation.equal, toItem: nil, attribute: NSLayoutConstraint.Attribute.notAnAttribute, multiplier: 1, constant: self.viewAnimation.frame.size.width )
-        //        let heightConstraint = NSLayoutConstraint(item: viewBtnAnimation, attribute: NSLayoutConstraint.Attribute.height, relatedBy: NSLayoutConstraint.Relation.equal, toItem: nil, attribute: NSLayoutConstraint.Attribute.notAnAttribute, multiplier: 1, constant: 30)
-        //        viewBtnAnimation.translatesAutoresizingMaskIntoConstraints = false
-        //        view.addConstraints([verticalConstraint, widthConstraint, heightConstraint])
+        
+        let verticalConstraint = NSLayoutConstraint(item: viewBtnAnimation, attribute: NSLayoutConstraint.Attribute.top, relatedBy: NSLayoutConstraint.Relation.equal, toItem: viewAnimation, attribute: NSLayoutConstraint.Attribute.bottom , multiplier: 1, constant: 0)
+        
+        let widthConstraint = NSLayoutConstraint(item: viewBtnAnimation, attribute: NSLayoutConstraint.Attribute.width, relatedBy: NSLayoutConstraint.Relation.equal, toItem: nil, attribute: NSLayoutConstraint.Attribute.notAnAttribute, multiplier: 1, constant: self.viewAnimation.frame.size.width )
+        let heightConstraint = NSLayoutConstraint(item: viewBtnAnimation, attribute: NSLayoutConstraint.Attribute.height, relatedBy: NSLayoutConstraint.Relation.equal, toItem: nil, attribute: NSLayoutConstraint.Attribute.notAnAttribute, multiplier: 1, constant: 30)
+        viewBtnAnimation.translatesAutoresizingMaskIntoConstraints = false
+        view.addConstraints([verticalConstraint, widthConstraint, heightConstraint])
+        
         
         
     }
@@ -286,9 +213,9 @@ class ReplanController: UIViewController, FloatingPanelControllerDelegate {
         status = !status
         
         //let horizontalConstraint = NSLayoutConstraint(item: viewBtnAnimation, attribute: NSLayoutConstraint.Attribute.leading , relatedBy: NSLayoutConstraint.Relation.equal, toItem: viewAnimation, attribute: NSLayoutConstraint.Attribute.centerX, multiplier: 1, constant: 0)
-        //        let verticalConstraint = NSLayoutConstraint(item: viewBtnAnimation, attribute: NSLayoutConstraint.Attribute.top, relatedBy: NSLayoutConstraint.Relation.equal, toItem: viewAnimation, attribute: NSLayoutConstraint.Attribute.bottom, multiplier: 1, constant: 0)
-        //        let widthConstraint = NSLayoutConstraint(item: viewBtnAnimation, attribute: NSLayoutConstraint.Attribute.width, relatedBy: NSLayoutConstraint.Relation.equal, toItem: nil, attribute: NSLayoutConstraint.Attribute.notAnAttribute, multiplier: 1, constant: self.viewAnimation.frame.size.width )
-        //        let heightConstraint = NSLayoutConstraint(item: viewBtnAnimation, attribute: NSLayoutConstraint.Attribute.height, relatedBy: NSLayoutConstraint.Relation.equal, toItem: nil, attribute: NSLayoutConstraint.Attribute.notAnAttribute, multiplier: 1, constant: 30)
+        let verticalConstraint = NSLayoutConstraint(item: viewBtnAnimation, attribute: NSLayoutConstraint.Attribute.top, relatedBy: NSLayoutConstraint.Relation.equal, toItem: viewAnimation, attribute: NSLayoutConstraint.Attribute.bottom, multiplier: 1, constant: 0)
+        let widthConstraint = NSLayoutConstraint(item: viewBtnAnimation, attribute: NSLayoutConstraint.Attribute.width, relatedBy: NSLayoutConstraint.Relation.equal, toItem: nil, attribute: NSLayoutConstraint.Attribute.notAnAttribute, multiplier: 1, constant: self.viewAnimation.frame.size.width )
+        let heightConstraint = NSLayoutConstraint(item: viewBtnAnimation, attribute: NSLayoutConstraint.Attribute.height, relatedBy: NSLayoutConstraint.Relation.equal, toItem: nil, attribute: NSLayoutConstraint.Attribute.notAnAttribute, multiplier: 1, constant: 30)
         
         if status {
             
@@ -298,7 +225,9 @@ class ReplanController: UIViewController, FloatingPanelControllerDelegate {
             viewBtnAnimation.setImage(UIImage(named: "downAnimation"), for: .normal)
             
             viewBtnAnimation.frame = CGRect(x: 0, y: 161, width: self.viewAnimation.frame.width, height: 30)
-            view.insertSubview(viewBtnAnimation, belowSubview: viewAnimation)
+            viewBtnAnimation.translatesAutoresizingMaskIntoConstraints = true
+            //view.addConstraints([verticalConstraint, widthConstraint, heightConstraint])
+            //view.insertSubview(viewBtnAnimation, belowSubview: viewAnimation)
             
             
         } else {
@@ -308,9 +237,11 @@ class ReplanController: UIViewController, FloatingPanelControllerDelegate {
             // viewBtnAnimation.removeConstraints([verticalConstraint, widthConstraint, heightConstraint])
             viewAnimation.isHidden = false
             viewBtnAnimation.setImage(UIImage(named: "upAnimation"), for: .normal)
+            viewBtnAnimation.translatesAutoresizingMaskIntoConstraints = false
+            view.addConstraints([verticalConstraint, widthConstraint, heightConstraint])
             //viewBtnAnimation.translatesAutoresizingMaskIntoConstraints = false
             // view.addConstraints([verticalConstraint, widthConstraint, heightConstraint])
-            viewBtnAnimation.frame = CGRect(x: 0, y: 270, width: self.viewAnimation.frame.size.width, height: 30)
+            //viewBtnAnimation.frame = CGRect(x: 0, y: 270, width: self.viewAnimation.frame.size.width, height: 30)
             //  view.addSubview(viewBtnAnimation)
             
         }
@@ -331,6 +262,8 @@ class ReplanController: UIViewController, FloatingPanelControllerDelegate {
         var numberType25: Int = 0
         var numberType20: Int = 0
         var numberTypeOther: Int = 0
+        
+        
         arrFacilityData.removeAll()
         for facilityData in dataDidFilter {
             arrFacilityData.append(facilityData.elem?.metadata?.facility_data ?? [])
@@ -366,17 +299,7 @@ class ReplanController: UIViewController, FloatingPanelControllerDelegate {
 
 extension ReplanController: UIPickerViewDelegate, UIPickerViewDataSource {
     
-    func sevenDay() {
-        let anchor = Date()
-        let calendar = Calendar.current
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd"
-        for dayOffset in 0...6 {
-            if let date1 = calendar.date(byAdding: .day, value: dayOffset, to: anchor) {
-                dateYMD.append(date1)
-            }
-        }
-    }
+    
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
@@ -438,6 +361,11 @@ extension ReplanController: MKMapViewDelegate {
         }
         dataDidFilter = getDataFiltered(date: dateYMD[selectedIdxDate], driver: selectedIdxDriver)
         if dataDidFilter.count == 0 {
+            lblType50kg.text = "\(0)"
+            lblType30kg.text = "\(0)"
+            lblType25kg.text = "\(0)"
+            lblType20kg.text = "\(0)"
+            lblTypeOther.text = "\(0)"
             print("_______________________________________________________________________________Không có đơn hàng nào!")
             self.showAlert(message: "không có khách hàng nào")
         } else {
@@ -517,7 +445,7 @@ extension ReplanController: InfoACellDelegateProtocol {
     }
     
     func passData(index: Int, assetID: String) {
-
+        
         selectedRows1.append(index)
         totalCellSelect += 1
         arrAssetIDDidSelected.append(assetID)
@@ -535,27 +463,27 @@ extension ReplanController: InfoACellDelegateProtocol {
                 arrAssetID.enumerated().forEach { idx, ivalue in
                     if ivalue == iassetID {
                         print(ivalue)
-                        print("\(dataForAday[idx])")
                         
                         
                         // luu vao properties
-
-//                        var detailLocation = LocationOfReplan(elem: <#LocationElement#>, asset: <#GetAsset#>)
-//                        detailLocation.elem =
+                        //                        var detailLocation = LocationOfReplan(elem: <#LocationElement#>, asset: <#GetAsset#>)
+                        //                        detailLocation.elem =
                         
-                        
-                        // xoa trong mang cac iassetID nay
-                        dataForAday.remove(at: idx)
+                        // xoa trong mang cac iassetID nay trong [Location]
+                        // dataForAday.remove(at: idx)
+                        // dataForAday.enumerated().forEach { ind, ivalue in
+                        //    print("\(ind)-> \(ivalue)")
+                        // }
                     }
                 }
             }
         }
         
-        print(dataForAday.count)
         
         // them cac phan tu -> vao cuoi ngay 1
         // dicDataReplan.updateValue(, forKey: dateYMD[0])
-        dicDataReplan[dateYMD[0]] = []
+        
+        //        dicDataReplan[dateYMD[0]] = []
     }
     
     
@@ -563,12 +491,32 @@ extension ReplanController: InfoACellDelegateProtocol {
 
 
 extension ReplanController: ClickOkDelegateProtocol {
-    
     // truyen vi tri cac cell  da ddc chon sang ContentReplanVC --> to mau
+    
     func clickOk() {
-        floatingPanel()
+        guard let contentVC = storyboard?.instantiateViewController(withIdentifier: "ContentReplanController") as? ContentReplanController else { return }
         
+        contentVC.delegateContenReplant = self
+        contentVC.dataDidFilter = dataDidFilter
+        
+        contentVC.selectedRows1 = selectedRows1
+        contentVC.arrAssetID = arrAssetID
+        fpc.contentMode = .fitToBounds
+        fpc.set(contentViewController: contentVC)
+        fpc.addPanel(toParent: self)
+        //        self.present(fpc, animated: true)
+        fpc.trackingScrollView?.automaticallyAdjustsScrollIndicatorInsets = true
+        
+        // self.view.insertSubview(viewBtnAnimation, belowSubview: contentVC.myTableView )
+        //        fpc.trackingScrollView?.isScrollEnabled = true
+        
+        self.view.bringSubviewToFront(btnClear)
+        self.view.bringSubviewToFront(btnReplace)
+        self.locationDidSelected()
     }
+    
+    
+    
 }
 
 
