@@ -146,12 +146,6 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         
         mapView.setCamera(mapCamera, animated: false)
         
-        lblType50kg.text = "\(0)"
-        lblType30kg.text = "\(0)"
-        lblType25kg.text = "\(0)"
-        lblType20kg.text = "\(0)"
-        lblOtherType.text = "\(0)"
-        
         
     }
     
@@ -267,11 +261,9 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         let urlGetAsset = "https://\(companyCode).kiiapps.com/am/api/assets/\(iassetID)"
         AF.request(urlGetAsset,method: .get, parameters: nil, headers: self.makeHeaders(token: token))
             .responseDecodable(of: GetAsset.self ) { response1 in
-                
                 switch response1.result {
                 case .success( let value):
-                    //                    self.reDrawMarkers()
-                    
+                    self.customFloatingPanel()
                     completion(value)
                 case .failure(let error):
                     print("\(error)")
@@ -370,6 +362,12 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         } else {
             // btnShipping.removeFromSuperview()
             fpc.removePanelFromParent(animated: true)
+            lblType50kg.text = "\(0)"
+            lblType30kg.text = "\(0)"
+            lblType25kg.text = "\(0)"
+            lblType20kg.text = "\(0)"
+            lblOtherType.text = "\(0)"
+            
         }
         
         

@@ -28,8 +28,8 @@ class ContentReplanController: UIViewController, UITableViewDataSource, UITableV
     var arrStringDateMMDD = [String]()
     var arrAssetID: [String] = []
     
-    var infomationDelivery = LocationOfReplan(elem: LocationElement.init(locationOrder: 0), asset: GetAsset())
-   
+    var infomationDelivery = Location(elem: LocationElement.init(locationOrder: 0), asset: GetAsset())
+    
     
     @IBOutlet weak var myTableView: UITableView!
     
@@ -44,11 +44,12 @@ class ContentReplanController: UIViewController, UITableViewDataSource, UITableV
         detailsCustomer()
         
         
-        
     }
     
     func detailsCustomer() {
         for iCutomer in dataDidFilter {
+            
+            
             if let locationOrder = iCutomer.elem?.locationOrder,
                let kyokyusetsubiCode = iCutomer.asset?.properties?.values.kyokyusetsubi_code,
                let customerName = iCutomer.asset?.properties?.values.customer_name,
@@ -57,7 +58,7 @@ class ContentReplanController: UIViewController, UITableViewDataSource, UITableV
                 arrKyokyusetsubi_code.append(kyokyusetsubiCode)
                 arrCustomer_name.append(customerName)
                 arrPlanned_date.append(plannedDate)
-                
+                print(iCutomer.elem?.location?.metadata?.display_data?.move_to_firstday)
             }
         }
         self.convertArrDateMMDD()
@@ -111,37 +112,34 @@ class ContentReplanController: UIViewController, UITableViewDataSource, UITableV
         // ngày 1 exclude_firstday
         
         // từ ngày 2 move_to_first = false
-        print((infomationDelivery.elem?.location?.metadata?.display_data?.move_to_firstday = false) != nil)
+        if ((infomationDelivery.elem?.location?.metadata?.display_data?.move_to_firstday = true) != nil) {
+            
+        }
         //if ((infomationDelivery.elem?.location?.metadata?.display_data?.move_to_firstday = false) != nil) {
-            cell?.lbl_kyokyusetsubi_code.text = arrKyokyusetsubi_code[indexPath.row]
-            
-            cell?.lbl_locationOrder.layer.borderWidth = 1
-            cell?.lbl_locationOrder.layer.borderColor = UIColor.black.cgColor
-            cell?.lbl_locationOrder.textAlignment = .center
-            cell?.lbl_locationOrder.layer.cornerRadius = (cell?.lbl_locationOrder.frame.size.width ?? 45) / 2
-            cell?.lbl_locationOrder.layer.masksToBounds = true
-            
-            cell?.lbl_locationOrder.text = "\(arrLocationOrder[indexPath.row] - 1)"
-            cell?.lbl_customer_name.text = arrCustomer_name[indexPath.row]
-            
-            cell?.lbl_planned_date.text = arrStringDateMMDD[indexPath.row]
-            
-            cell?.btnCheckbox.setImage(UIImage(named: "ic_check_off"), for: .normal)
-      //  }
+        cell?.lbl_kyokyusetsubi_code.text = arrKyokyusetsubi_code[indexPath.row]
+        
+        cell?.lbl_locationOrder.layer.borderWidth = 1
+        cell?.lbl_locationOrder.layer.borderColor = UIColor.black.cgColor
+        cell?.lbl_locationOrder.textAlignment = .center
+        cell?.lbl_locationOrder.layer.cornerRadius = (cell?.lbl_locationOrder.frame.size.width ?? 45) / 2
+        cell?.lbl_locationOrder.layer.masksToBounds = true
+        
+        cell?.lbl_locationOrder.text = "\(arrLocationOrder[indexPath.row] - 1)"
+        cell?.lbl_customer_name.text = arrCustomer_name[indexPath.row]
+        
+        cell?.lbl_planned_date.text = arrStringDateMMDD[indexPath.row]
+        
+        cell?.btnCheckbox.setImage(UIImage(named: "ic_check_off"), for: .normal)
+        //  }
         
         
         // move_to_firstday = true -> to den cell
+        // trong object co truong move_to_firstday = true
         
-        selectedRows1.forEach() { cellDidSelected in
-            
-            if indexPath.row == cellDidSelected {
-                cell?.btnCheckbox.setImage(UIImage(named: "ic_check_on"), for: .normal)
-                cell?.contentView.backgroundColor = .darkGray
-            } else {
-                print("\(indexPath.row)")
-            }
+        if ((infomationDelivery.elem?.location?.metadata?.display_data?.move_to_firstday = true) != nil) {
+            cell?.btnCheckbox.setImage(UIImage(named: "ic_check_on"), for: .normal)
+            cell?.contentView.backgroundColor = .darkGray
         }
-        
         
         return cell!
     }
@@ -177,7 +175,6 @@ class ContentReplanController: UIViewController, UITableViewDataSource, UITableV
             
             // chuyen move_to_firstday = true 
             infomationDelivery.elem?.location?.metadata?.display_data?.move_to_firstday = true
-            
             
             delegateContenReplant?.passData(index: indexPath.row, assetID: arrAssetID[indexPath.row])
             
