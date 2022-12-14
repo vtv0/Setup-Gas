@@ -17,10 +17,12 @@ extension UIViewController {
         greyView.backgroundColor = UIColor.black
         greyView.alpha = 0.3
         greyView.tag = 999
+//        window?.rootViewController?.view.addSubview(greyView)
+        self.navigationController?.view.addSubview(greyView)
         greyView.layer.zPosition = 1000
         self.view.addSubview(greyView)
-        self.view.bringSubviewToFront(greyView)
-        self.view.layer.zPosition = 1000
+        //self.view.bringSubviewToFront(greyView)
+//    self.view.layer.zPosition
         
 //        UIApplication.shared.keyWindow?.addSubview(greyView)
 //        UIApplication.shared.keyWindow?.bringSubviewToFront(greyView)

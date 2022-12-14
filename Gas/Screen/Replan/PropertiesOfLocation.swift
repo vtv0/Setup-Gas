@@ -1,15 +1,9 @@
-
-
 //  PropertiesGetAsset.swift
 //  Gas
 //
 //  Created by Vuong The Vu on 12/12/2022.
 
-
-
-
 import UIKit
-
 
 class LocationToObject: NSObject {
     public var elem: LocationElement?

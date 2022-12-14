@@ -244,6 +244,15 @@ class FluffyMetadata: NSObject, Decodable {
 // MARK: - FacilityDatum
 class Facility_data: NSObject, Codable {
     var count, type: Int?
+    
+    enum Count: Int {
+        case kg50 = 50
+        case kg30 = 30
+        case kg25 = 25
+        case kg20 = 20
+        case kgOther = 0
+    }
+    
     init(count: Int? = nil, type: Int? = nil) {
         self.count = count
         self.type = type

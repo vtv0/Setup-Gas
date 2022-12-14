@@ -134,7 +134,7 @@ class ContentReplanController: UIViewController, UITableViewDataSource, UITableV
 
         cell.lbl_customer_name.text = dataDidFilter[indexPath.row].asset?.properties?.values.customer_name
         
-        cell.lbl_planned_date.text = arrPlanned_date[indexPath.row]
+        cell.lbl_planned_date.text = arrStringDateMMDD[indexPath.row]
         
         
         
@@ -163,7 +163,7 @@ class ContentReplanController: UIViewController, UITableViewDataSource, UITableV
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         guard let cell = myTableView.cellForRow(at: indexPath) as? ContentReplanTableViewCell else { return }
-        cell.setSelected(false, animated: false)
+
         if selectedIdxDate == 0  {
             // neu la ngay dau tien thi chi dc exclude_firstday
             print("ngày đầu tiên đi học")
@@ -193,10 +193,10 @@ class ContentReplanController: UIViewController, UITableViewDataSource, UITableV
                 
                 for iCustomer in dataIsCustomer {
                     print(iCustomer.elem?.location?.metadata?.display_data)
-                    if ((iCustomer.elem?.location?.metadata?.display_data?.move_to_firstday == false || iCustomer.elem?.location?.metadata?.display_data?.move_to_firstday == nil) && arrAssetID[indexPath.row] == iCustomer.elem?.location?.assetID) {
-                        
+                    if (iCustomer.elem?.location?.metadata?.display_data?.move_to_firstday == false || iCustomer.elem?.location?.metadata?.display_data?.move_to_firstday == nil) {
+
                         iCustomer.elem?.location?.metadata?.display_data?.move_to_firstday = true
-                        print("iCustomer.elem?.location?.metadata?.display_data?.move_to_firstday", "\(arrAssetID[indexPath.row]) ")
+                     
                         
                     }
                 }

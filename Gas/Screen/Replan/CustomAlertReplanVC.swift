@@ -18,7 +18,7 @@ class CustomAlertReplanVC: UIViewController {
     weak var delegateClickOK: ClickOkDelegateProtocol?
     
     var date: String = ""
-    var t: Int = 0
+    var totalNumberOfBottle: Int = 0
     var totalCellSelect: Int = 0
     var displayInfomation: String = ""
     var selectedIdxDate = 0
@@ -49,7 +49,7 @@ class CustomAlertReplanVC: UIViewController {
                                     ※ 選択された配送先は初日の配送へ移動されます。\n移動した配送先は計画に残りますが、次回計画作成時に除外されます。
                                     ※ 再作成後は配送順が変更となります (ngày hôm nay sang hôm sau)
                                     """ )"
-            lbl_number.text = "\(t)Bottle -> \(t - totalCellSelect)Bottle"
+            lbl_number.text = "\(totalNumberOfBottle)Bottle -> \(totalNumberOfBottle - totalCellSelect)Bottle"
             lbl_changeType.text = "\(date) Remove"
             
         } else {
@@ -60,7 +60,7 @@ class CustomAlertReplanVC: UIViewController {
                                     ※ 初日分の計画再作成には時間がかかります。 再作成後は配送順が変更となります。 別途当日内で入れ替えを実施してください。
                                     """ )"
             
-            lbl_number.text = "\(t)Bottle -> \(t + totalCellSelect)Bottle"
+            lbl_number.text = "\(totalNumberOfBottle)Bottle -> \(totalNumberOfBottle + totalCellSelect)Bottle"
             lbl_changeType.text = "\(date) Add"
             
         }

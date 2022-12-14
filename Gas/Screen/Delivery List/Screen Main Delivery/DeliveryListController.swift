@@ -404,18 +404,43 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         self.view.bringSubviewToFront(btnShipping)
     }
     
+    enum quantityOfEachType: Int {
+        case lblType50kg = 50
+        case lblType30kg = 30
+        case lblType25kg = 25
+        case lblType20kg = 20
+        case lblTypeOther = 0
+    }
     func totalType() {
         var numberType50: Int = 0
         var numberType30: Int = 0
         var numberType25: Int = 0
         var numberType20: Int = 0
         var numberTypeOther: Int = 0
+        
+       
         for facilityData in dataDidFilter {
             arrFacilityData.append(facilityData.elem?.metadata?.facility_data ?? [])
         }
         
         for iFacilityData in arrFacilityData {
+            
             for detailFacilityData in iFacilityData {
+//                print(detailFacilityData)
+//                var size = quantityOfEachType.lblType50kg
+//                switch (size) {
+//                case .lblType50kg:
+//                    numberType50 = numberType50 + (detailFacilityData.count ?? 0)
+//                case .lblType30kg:
+//                    numberType30 = numberType30 + (detailFacilityData.count ?? 0)
+//                case .lblType25kg:
+//                    numberType25 = numberType25 + (detailFacilityData.count ?? 0)
+//                case .lblType20kg:
+//                    numberType20 = numberType20 + (detailFacilityData.count ?? 0)
+//                case .lblTypeOther:
+//                    numberTypeOther = numberTypeOther + (detailFacilityData.count ?? 0)
+//                }
+                
                 if detailFacilityData.type == 50 {
                     numberType50 = numberType50 + (detailFacilityData.count ?? 0)
                 } else if detailFacilityData.type == 30 {
@@ -427,6 +452,7 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
                 } else {
                     numberTypeOther = numberTypeOther + (detailFacilityData.count ?? 0)
                 }
+                
             }
         }
         lblType50kg.text = "\(numberType50)"

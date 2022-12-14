@@ -34,7 +34,7 @@ class ReplanController: UIViewController, FloatingPanelControllerDelegate {
     var arrAssetID = [String]()
     var arrAssetIDDidSelected = [String]()
     var selectedRows1: [Int] = []
-    
+    var totalNumberOfBottle = 0
     @IBOutlet weak var btnClear: UIButton!
     @IBAction func btnClear(_ sender: Any) {
         print("bo chon")
@@ -55,7 +55,7 @@ class ReplanController: UIViewController, FloatingPanelControllerDelegate {
         destinationVC.delegateClickOK = self
         destinationVC.selectedIdxDate = selectedIdxDate
         destinationVC.totalCellSelect = totalCellSelect
-        destinationVC.t = numberCustomer
+        destinationVC.totalNumberOfBottle = totalNumberOfBottle
         destinationVC.date = dateString
         present(destinationVC, animated: false, completion: nil)
     }
@@ -173,7 +173,7 @@ class ReplanController: UIViewController, FloatingPanelControllerDelegate {
             }
             btnReplace.isHidden = false
             btnClear.isHidden = false
-            self.totalType(EachType: .lblTypeOther)
+            self.totalType(EachType: 20)
             self.floatingPanel()
         } else {
             fpc.removePanelFromParent(animated: true)
@@ -253,7 +253,7 @@ class ReplanController: UIViewController, FloatingPanelControllerDelegate {
         case lblTypeOther
     }
     
-    func totalType(EachType: quantityOfEachType) -> Int {
+    func totalType(EachType: Int) -> quantityOfEachType  {
         var numberType50: Int = 0
         var numberType30: Int = 0
         var numberType25: Int = 0
@@ -290,13 +290,11 @@ class ReplanController: UIViewController, FloatingPanelControllerDelegate {
         lblType20kg.text = "\(numberType20)"
         lblTypeOther.text = "\(numberTypeOther)"
         
-        return 0
+        return .lblTypeOther
     }
 }
 
 extension ReplanController: UIPickerViewDelegate, UIPickerViewDataSource {
-    
-    
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
