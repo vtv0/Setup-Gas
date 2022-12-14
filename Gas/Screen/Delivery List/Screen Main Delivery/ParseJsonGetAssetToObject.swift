@@ -7,7 +7,7 @@
 
 import UIKit
 
-struct GetAsset: Decodable {
+class GetAsset: NSObject, Decodable {
     var assetModelID: Int?
     var createdAt: String?
     var enabled: Bool?
@@ -36,7 +36,7 @@ struct GetAsset: Decodable {
         self.vendorThingID = vendorThingID
     }
 }
-struct PropertiesDetail: Decodable {
+class PropertiesDetail: Decodable {
     //var etag: Int?
     var updatedAt: String
     var values: ValuesDetail
@@ -46,7 +46,7 @@ struct PropertiesDetail: Decodable {
         self.values = values
     }
 }
-struct ValuesDetail: Decodable {
+class ValuesDetail: Decodable {
     var address: String?
     var customer_location: [Double]
     var customer_name: String?
@@ -92,7 +92,7 @@ struct ValuesDetail: Decodable {
     
     
 }
-struct LocationDetail: Decodable {
+class LocationDetail: Decodable {
     var coordinates: [Double]?
     var type: String?
     init(coordinates: [Double]? = nil, type: String? = nil) {
@@ -100,19 +100,21 @@ struct LocationDetail: Decodable {
         self.type = type
     }
 }
-struct Display_dataDetail: Decodable {
+class Display_dataDetail: Decodable {
     var delivery_history: Dictionary<String,String>?
     var exclude_firstday: Bool?
+    var move_to_firstday: Bool? = false
     var origin_route_id: Int?
     
-    init(delivery_history: Dictionary<String, String>? = nil, exclude_firstday: Bool? = nil, origin_route_id: Int? = nil) {
+    init(delivery_history: Dictionary<String, String>? = nil, exclude_firstday: Bool? = nil, origin_route_id: Int? = nil, move_to_firstday: Bool? = false) {
         self.delivery_history = delivery_history
         self.exclude_firstday = exclude_firstday
         self.origin_route_id = origin_route_id
+        self.move_to_firstday = move_to_firstday
     }
 }
 
-struct GeolocDetail: Decodable {
+class GeolocDetail: Decodable {
     var coordinates : [Double]?
     var type: String?
     init(coordinates: [Double]? = nil, type: String? = nil) {

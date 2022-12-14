@@ -29,10 +29,11 @@ class ReplanController: UIViewController, FloatingPanelControllerDelegate {
     var selectedIdxDriver = 0
     var arrLocationOrder = [Int]()
     var arrFacilityData: [[Facility_data]] = []
-    var selectedRows1: [Int] = []
+
     var numberCustomer = 0
     var arrAssetID = [String]()
     var arrAssetIDDidSelected = [String]()
+    var selectedRows1: [Int] = []
     
     @IBOutlet weak var btnClear: UIButton!
     @IBAction func btnClear(_ sender: Any) {
@@ -114,6 +115,7 @@ class ReplanController: UIViewController, FloatingPanelControllerDelegate {
         contentVC.delegateContenReplant = self
         contentVC.dataDidFilter = dataDidFilter
         
+        contentVC.selectedIdxDate = selectedIdxDate
         contentVC.selectedRows1 = selectedRows1
         contentVC.arrAssetID = arrAssetID
         fpc.contentMode = .fitToBounds
@@ -129,9 +131,7 @@ class ReplanController: UIViewController, FloatingPanelControllerDelegate {
         
         self.view.bringSubviewToFront(btnClear)
         self.view.bringSubviewToFront(btnReplace)
-        self.locationDidSelected()
-        
-        
+       // self.locationDidSelected()
     }
     
     func getDataFiltered(date: Date, driver: Int) -> [Location] {
@@ -202,9 +202,6 @@ class ReplanController: UIViewController, FloatingPanelControllerDelegate {
         let heightConstraint = NSLayoutConstraint(item: viewBtnAnimation, attribute: NSLayoutConstraint.Attribute.height, relatedBy: NSLayoutConstraint.Relation.equal, toItem: nil, attribute: NSLayoutConstraint.Attribute.notAnAttribute, multiplier: 1, constant: 30)
         viewBtnAnimation.translatesAutoresizingMaskIntoConstraints = false
         view.addConstraints([verticalConstraint, widthConstraint, heightConstraint])
-        
-        
-        
     }
     
     
@@ -452,39 +449,39 @@ extension ReplanController: InfoACellDelegateProtocol {
     }
     
     
-    func locationDidSelected() {
-        
-        // chuyen khach hang tu ngay sau -> ngay dau tien
-        var dataForAday: [Location] = dicDataReplan[dateYMD[selectedIdxDate]] ?? []
-        
-        // xoa cac phan tu duoc chon
-        if !arrAssetIDDidSelected.isEmpty {
-            for iassetID in arrAssetIDDidSelected {
-                arrAssetID.enumerated().forEach { idx, ivalue in
-                    if ivalue == iassetID {
-                        print(ivalue)
-                        
-                        
-                        // luu vao properties
-                        //                        var detailLocation = LocationOfReplan(elem: <#LocationElement#>, asset: <#GetAsset#>)
-                        //                        detailLocation.elem =
-                        
-                        // xoa trong mang cac iassetID nay trong [Location]
-                        // dataForAday.remove(at: idx)
-                        // dataForAday.enumerated().forEach { ind, ivalue in
-                        //    print("\(ind)-> \(ivalue)")
-                        // }
-                    }
-                }
-            }
-        }
-        
-        
-        // them cac phan tu -> vao cuoi ngay 1
-        // dicDataReplan.updateValue(, forKey: dateYMD[0])
-        
-        //        dicDataReplan[dateYMD[0]] = []
-    }
+//    func locationDidSelected() {
+//
+//        // chuyen khach hang tu ngay sau -> ngay dau tien
+//        var dataForAday: [Location] = dicDataReplan[dateYMD[selectedIdxDate]] ?? []
+//
+//        // xoa cac phan tu duoc chon
+//        if !arrAssetIDDidSelected.isEmpty {
+//            for iassetID in arrAssetIDDidSelected {
+//                arrAssetID.enumerated().forEach { idx, ivalue in
+//                    if ivalue == iassetID {
+//                        print(ivalue)
+//
+//
+//                        // luu vao properties
+//                        //                        var detailLocation = LocationOfReplan(elem: <#LocationElement#>, asset: <#GetAsset#>)
+//                        //                        detailLocation.elem =
+//
+//                        // xoa trong mang cac iassetID nay trong [Location]
+//                        // dataForAday.remove(at: idx)
+//                        // dataForAday.enumerated().forEach { ind, ivalue in
+//                        //    print("\(ind)-> \(ivalue)")
+//                        // }
+//                    }
+//                }
+//            }
+//        }
+//
+//
+//        // them cac phan tu -> vao cuoi ngay 1
+//        // dicDataReplan.updateValue(, forKey: dateYMD[0])
+//
+//        //        dicDataReplan[dateYMD[0]] = []
+//    }
     
     
 }
@@ -498,9 +495,11 @@ extension ReplanController: ClickOkDelegateProtocol {
         
         contentVC.delegateContenReplant = self
         contentVC.dataDidFilter = dataDidFilter
-        
+        contentVC.selectedIdxDate = selectedIdxDate
         contentVC.selectedRows1 = selectedRows1
+        contentVC.arrAssetIDDidSelected = arrAssetIDDidSelected 
         contentVC.arrAssetID = arrAssetID
+        
         fpc.contentMode = .fitToBounds
         fpc.set(contentViewController: contentVC)
         fpc.addPanel(toParent: self)
@@ -512,7 +511,7 @@ extension ReplanController: ClickOkDelegateProtocol {
         
         self.view.bringSubviewToFront(btnClear)
         self.view.bringSubviewToFront(btnReplace)
-        self.locationDidSelected()
+       // self.locationDidSelected()
     }
     
     

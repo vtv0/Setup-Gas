@@ -28,8 +28,12 @@ class ContentReplanController: UIViewController, UITableViewDataSource, UITableV
     var arrStringDateMMDD = [String]()
     var arrAssetID: [String] = []
     
-    var infomationDelivery = Location(elem: LocationElement.init(locationOrder: 0), asset: GetAsset())
+    var isCustomer: Location = Location(elem: LocationElement(locationOrder: 0), asset: GetAsset())
+    var dataIsCustomer: [Location] = []
+    var dataIsCustomerToObject: [LocationToObject] = []
+    var arrAssetIDDidSelected = [String]()
     
+    var selectedIdxDate = 0
     
     @IBOutlet weak var myTableView: UITableView!
     
@@ -42,23 +46,31 @@ class ContentReplanController: UIViewController, UITableViewDataSource, UITableV
         //self.view.bringSubviewToFront(myTableView)
         
         detailsCustomer()
-        
-        
     }
     
     func detailsCustomer() {
-        for iCutomer in dataDidFilter {
+        
+        arrLocationOrder.removeAll()
+        arrKyokyusetsubi_code.removeAll()
+        arrCustomer_name.removeAll()
+        arrPlanned_date.removeAll()
+        arrAssetID.removeAll()
+        
+        for iCustomer in dataDidFilter where iCustomer.type == .customer {
+            dataIsCustomer.append(iCustomer)
             
-            
-            if let locationOrder = iCutomer.elem?.locationOrder,
-               let kyokyusetsubiCode = iCutomer.asset?.properties?.values.kyokyusetsubi_code,
-               let customerName = iCutomer.asset?.properties?.values.customer_name,
-               let plannedDate = iCutomer.elem?.metadata?.planned_date {
+            if let locationOrder = iCustomer.elem?.locationOrder,
+               let kyokyusetsubiCode = iCustomer.asset?.properties?.values.kyokyusetsubi_code,
+               let customerName = iCustomer.asset?.properties?.values.customer_name,
+               let plannedDate = iCustomer.elem?.metadata?.planned_date,
+               let assetID = iCustomer.elem?.location?.assetID {
+                
                 arrLocationOrder.append(locationOrder)
                 arrKyokyusetsubi_code.append(kyokyusetsubiCode)
                 arrCustomer_name.append(customerName)
                 arrPlanned_date.append(plannedDate)
-                print(iCutomer.elem?.location?.metadata?.display_data?.move_to_firstday)
+                arrAssetID.append(assetID)
+                
             }
         }
         self.convertArrDateMMDD()
@@ -79,6 +91,7 @@ class ContentReplanController: UIViewController, UITableViewDataSource, UITableV
     func convertDateToString() {
         let dateFomater = DateFormatter()
         dateFomater.dateFormat = "MM/dd"
+        
         for idate in arrDateMMDD {
             arrStringDateMMDD.append(dateFomater.string(from: idate))
         }
@@ -108,40 +121,37 @@ class ContentReplanController: UIViewController, UITableViewDataSource, UITableV
     // myTableView dataSource
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = myTableView.dequeueReusableCell(withIdentifier: "ContentReplanTableViewCell", for: indexPath) as? ContentReplanTableViewCell
+        let cell = myTableView.dequeueReusableCell(withIdentifier: "ContentReplanTableViewCell", for: indexPath) as! ContentReplanTableViewCell
         // ngày 1 exclude_firstday
+        cell.lbl_locationOrder.text = "\((dataDidFilter[indexPath.row].elem?.locationOrder ?? 0) - 1)"
+        cell.lbl_kyokyusetsubi_code.text = dataDidFilter[indexPath.row].asset?.properties?.values.kyokyusetsubi_code
         
-        // từ ngày 2 move_to_first = false
-        if ((infomationDelivery.elem?.location?.metadata?.display_data?.move_to_firstday = true) != nil) {
-            
-        }
-        //if ((infomationDelivery.elem?.location?.metadata?.display_data?.move_to_firstday = false) != nil) {
-        cell?.lbl_kyokyusetsubi_code.text = arrKyokyusetsubi_code[indexPath.row]
+        cell.lbl_locationOrder.layer.borderWidth = 1
+        cell.lbl_locationOrder.layer.borderColor = UIColor.black.cgColor
+        cell.lbl_locationOrder.textAlignment = .center
+        cell.lbl_locationOrder.layer.cornerRadius = (cell.lbl_locationOrder.frame.size.width) / 2
+        cell.lbl_locationOrder.layer.masksToBounds = true
+
+        cell.lbl_customer_name.text = dataDidFilter[indexPath.row].asset?.properties?.values.customer_name
         
-        cell?.lbl_locationOrder.layer.borderWidth = 1
-        cell?.lbl_locationOrder.layer.borderColor = UIColor.black.cgColor
-        cell?.lbl_locationOrder.textAlignment = .center
-        cell?.lbl_locationOrder.layer.cornerRadius = (cell?.lbl_locationOrder.frame.size.width ?? 45) / 2
-        cell?.lbl_locationOrder.layer.masksToBounds = true
+        cell.lbl_planned_date.text = arrPlanned_date[indexPath.row]
         
-        cell?.lbl_locationOrder.text = "\(arrLocationOrder[indexPath.row] - 1)"
-        cell?.lbl_customer_name.text = arrCustomer_name[indexPath.row]
-        
-        cell?.lbl_planned_date.text = arrStringDateMMDD[indexPath.row]
-        
-        cell?.btnCheckbox.setImage(UIImage(named: "ic_check_off"), for: .normal)
-        //  }
         
         
         // move_to_firstday = true -> to den cell
         // trong object co truong move_to_firstday = true
+      
+       if  dataIsCustomer[indexPath.row].elem?.location?.metadata?.display_data?.move_to_firstday == true {
+                cell.btnCheckbox.setImage(UIImage(named: "ic_check_on"), for: .normal)
+                cell.contentView.backgroundColor = .darkGray
+            } else {
+                cell.btnCheckbox.setImage(UIImage(named: "ic_check_off"), for: .normal)
+                cell.contentView.backgroundColor = .systemBackground
+            }
+
         
-        if ((infomationDelivery.elem?.location?.metadata?.display_data?.move_to_firstday = true) != nil) {
-            cell?.btnCheckbox.setImage(UIImage(named: "ic_check_on"), for: .normal)
-            cell?.contentView.backgroundColor = .darkGray
-        }
         
-        return cell!
+        return cell
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -153,31 +163,46 @@ class ContentReplanController: UIViewController, UITableViewDataSource, UITableV
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         guard let cell = myTableView.cellForRow(at: indexPath) as? ContentReplanTableViewCell else { return }
-        cell.selectionStyle = .none
-        
-        myTableView.deselectRow(at: indexPath, animated: false)
-        
-        if self.selectedRows.contains(indexPath) {
-            // uncheck
-            self.selectedRows.remove(at: self.selectedRows.firstIndex(of: indexPath)!)
-            
-            infomationDelivery.elem?.location?.metadata?.display_data?.move_to_firstday = false
-            cell.btnCheckbox.setImage(UIImage(named: "ic_check_off"), for: .normal)
-            delegateContenReplant?.unselected(index: indexPath.row, assetID: arrAssetID[indexPath.row])
+        cell.setSelected(false, animated: false)
+        if selectedIdxDate == 0  {
+            // neu la ngay dau tien thi chi dc exclude_firstday
+            print("ngày đầu tiên đi học")
             
         } else {
-            // click cell add
-            // move_to_firstday = true
+            // chi dược move_to_firstday
             
-            self.selectedRows.append(indexPath)
-            
-            cell.btnCheckbox.setImage(UIImage(named: "ic_check_on"), for: .normal)
-            
-            // chuyen move_to_firstday = true 
-            infomationDelivery.elem?.location?.metadata?.display_data?.move_to_firstday = true
-            
-            delegateContenReplant?.passData(index: indexPath.row, assetID: arrAssetID[indexPath.row])
-            
+            if self.selectedRows.contains(indexPath) {
+                // uncheck
+                self.selectedRows.remove(at: self.selectedRows.firstIndex(of: indexPath)!)
+                
+               
+                cell.btnCheckbox.setImage(UIImage(named: "ic_check_off"), for: .normal)
+                delegateContenReplant?.unselected(index: indexPath.row, assetID: arrAssetID[indexPath.row])
+                
+            } else {
+                // click cell add
+                // move_to_firstday = true
+                
+                self.selectedRows.append(indexPath)
+                
+                cell.btnCheckbox.setImage(UIImage(named: "ic_check_on"), for: .normal)
+                
+                
+                // chuyen move_to_firstday = true
+                // tao khi khong co properties: move_to_firstday
+                
+                for iCustomer in dataIsCustomer {
+                    print(iCustomer.elem?.location?.metadata?.display_data)
+                    if ((iCustomer.elem?.location?.metadata?.display_data?.move_to_firstday == false || iCustomer.elem?.location?.metadata?.display_data?.move_to_firstday == nil) && arrAssetID[indexPath.row] == iCustomer.elem?.location?.assetID) {
+                        
+                        iCustomer.elem?.location?.metadata?.display_data?.move_to_firstday = true
+                        print("iCustomer.elem?.location?.metadata?.display_data?.move_to_firstday", "\(arrAssetID[indexPath.row]) ")
+                        
+                    }
+                }
+                
+                delegateContenReplant?.passData(index: indexPath.row, assetID: arrAssetID[indexPath.row])
+            }
         }
     }
     

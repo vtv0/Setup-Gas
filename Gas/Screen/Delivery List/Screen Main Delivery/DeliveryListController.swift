@@ -228,8 +228,10 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
                                 if let  assetID = iLocationValue.elem?.location?.assetID {
                                     self.getGetAsset(forAsset: assetID) { iasset in
                                         iLocationValue.asset = iasset
+                                        
                                     }
                                 } else {
+                             
                                     print("No assetID -> Supplier")
                                 }
                             }
@@ -247,8 +249,10 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
                     }
                     
                     if self.t == self.dateYMD.count {
-                        self.hideActivity()
-                        self.reDrawMarkers()
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                            self.hideActivity()
+                            self.reDrawMarkers()
+                        }
                     }
                 }
         }
@@ -263,7 +267,6 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
             .responseDecodable(of: GetAsset.self ) { response1 in
                 switch response1.result {
                 case .success( let value):
-                    self.customFloatingPanel()
                     completion(value)
                 case .failure(let error):
                     print("\(error)")

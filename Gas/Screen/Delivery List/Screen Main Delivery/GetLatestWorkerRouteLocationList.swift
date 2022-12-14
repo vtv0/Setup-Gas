@@ -6,7 +6,7 @@
 
 import UIKit
 
-class Location {
+class Location: NSObject {
     var type: LocationType {
         if elem?.location?.assetID == nil {
             return .supplier
@@ -31,16 +31,16 @@ class Location {
 
 
 // MARK: - GetLatestWorkerRouteLocationListInfo
-class GetLatestWorkerRouteLocationListInfo: Decodable {
+class GetLatestWorkerRouteLocationListInfo: NSObject, Decodable {
     var locations: [LocationElement]?
     var workerRoute: WorkerRoute?
 }
 
 // MARK: - LocationElement
-class LocationElement: Decodable {
-    var description: String {
-        return "locationOrder: \(locationOrder)"
-    }
+class LocationElement: NSObject, Decodable {
+//    var description: String {
+//        return "locationOrder: \(locationOrder)"
+//    }
     
     var arrivalTime: ArrivalTime?
     var breakTimeSEC: Int?
@@ -75,7 +75,7 @@ class LocationElement: Decodable {
 }
 
 // MARK: - ArrivalTime
-class ArrivalTime: Decodable {
+class ArrivalTime: NSObject, Decodable {
     var hours, minutes, nanos, seconds: Int?
     init(hours: Int? = nil, minutes: Int? = nil, nanos: Int? = nil, seconds: Int? = nil) {
         self.hours = hours
@@ -86,7 +86,7 @@ class ArrivalTime: Decodable {
 }
 
 // MARK: - LocationLocation
-class LocationLocation: Decodable {
+class LocationLocation: NSObject, Decodable {
     var areaID: Int?
     var comment, createdAt: String?
     var id, importance: Int?
@@ -137,7 +137,7 @@ class LocationLocation: Decodable {
 
 
 // MARK: - PurpleMetadata
-class PurpleMetadata: Codable {
+class PurpleMetadata: NSObject, Codable {
     var kyokyusetsubiCode: String?
     var display_data: DisplayData?
     var operators: [String?]?
@@ -148,7 +148,7 @@ class PurpleMetadata: Codable {
         case operators
     }
     
-    init(kyokyusetsubiCode: String? = nil, display_data: DisplayData? = nil, operators: [String?]? = nil) {
+    init(kyokyusetsubiCode: String? = nil, display_data: DisplayData, operators: [String?]? = nil) {
         self.kyokyusetsubiCode = kyokyusetsubiCode
         self.display_data = display_data
         self.operators = operators
@@ -156,16 +156,16 @@ class PurpleMetadata: Codable {
 }
 
 // MARK: - DisplayData
-class DisplayData: Codable {
+class DisplayData: NSObject, Codable {
     var delivery_history: [String: String]?
     var origin_route_id: Int?
     var exclude_firstday: Bool?
-    var move_to_firstday: Bool?
+    var move_to_firstday: Bool? = false
     
-    init(delivery_history: [String : String]? = nil, exclude_firstday: Bool? = nil, origin_route_id: Int? = nil, move_to_firstday: Bool? = nil) {
+    init(delivery_history: [String : String]? = nil, origin_route_id: Int? = nil, exclude_firstday: Bool = false, move_to_firstday: Bool = false) {
         self.delivery_history = delivery_history
         self.origin_route_id = origin_route_id
-        self.exclude_firstday = false
+        self.exclude_firstday = exclude_firstday
         self.move_to_firstday = move_to_firstday
     }
     
@@ -177,12 +177,7 @@ class DisplayData: Codable {
         case waiting = "waiting"  //chua giao
     }
     
-    func moveToFirstDay() -> Bool {
-        
-        
-        
-        return false
-    }
+    
     
     func valueDeliveryHistory() -> DeliveryHistory {
         var arrStringDate: [String] = []
@@ -221,15 +216,13 @@ class DisplayData: Codable {
         }
         
         return .waiting
-        
-        
     }
     
 }
 
 
 // MARK: - FluffyMetadata
-class FluffyMetadata: Decodable {
+class FluffyMetadata: NSObject, Decodable {
     var customer_id, deliverType: String?
     var facility_data: [Facility_data]?
     var optionalDays: Int?
@@ -249,7 +242,7 @@ class FluffyMetadata: Decodable {
 }
 
 // MARK: - FacilityDatum
-class Facility_data: Codable {
+class Facility_data: NSObject, Codable {
     var count, type: Int?
     init(count: Int? = nil, type: Int? = nil) {
         self.count = count
@@ -258,7 +251,7 @@ class Facility_data: Codable {
 }
 
 // MARK: - WorkerRoute
-class WorkerRoute: Codable {
+class WorkerRoute: NSObject, Codable {
     var createdAt: String?
     var id, loadRemain, routeID, totalTimeSEC: Int?
     var workDate: String?
