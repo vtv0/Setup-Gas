@@ -28,7 +28,7 @@ class FloatingPanelDeliveryVC: UIViewController, UIPageViewControllerDelegate, U
     var pageController: UIPageViewController!
     var customer_LocationType = [String]()
     var dataDidFilter: [Location] = []
-   
+    
     var comment: [String] = []
     
     @IBOutlet weak var detailsTabsView: TabsView!

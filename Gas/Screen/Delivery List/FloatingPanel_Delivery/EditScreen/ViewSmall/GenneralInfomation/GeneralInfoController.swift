@@ -118,48 +118,38 @@ extension GeneralInfoController: ImageLabelViewDelegate {
 
 extension GeneralInfoController: PassImageDelegateProtocol {
     func passNotes(notes: String) {
-        UserDefaults.standard.removeObject(forKey: "Notes")
         UserDefaults.standard.set(notes, forKey: "Notes")
     }
     
     func passUrlGasLocation1(urlImage1: String) {
-        UserDefaults.standard.removeObject(forKey: "GasLocation1")
         UserDefaults.standard.set(urlImage1, forKey: "GasLocation1")
     }
     
     func passUrlGasLocation2(urlImage2: String) {
-        UserDefaults.standard.removeObject(forKey: "GasLocation2")
         UserDefaults.standard.set(urlImage2, forKey: "GasLocation2")
-
     }
     
     func passUrlGasLocation3(urlImage3: String) {
-        UserDefaults.standard.removeObject(forKey: "GasLocation3")
         UserDefaults.standard.set(urlImage3, forKey: "GasLocation3")
     }
     
     func passUrlGasLocation4(urlImage4: String) {
-        UserDefaults.standard.removeObject(forKey: "GasLocation4")
         UserDefaults.standard.set(urlImage4, forKey: "GasLocation4")
     }
     
     func passUrlParkingPlace5(urlImage5: String) {
-        UserDefaults.standard.removeObject(forKey: "ParkingPlace5")
         UserDefaults.standard.set(urlImage5, forKey: "ParkingPlace5")
     }
     
     func passUrlParkingPlace6(urlImage6: String) {
-        UserDefaults.standard.removeObject(forKey: "ParkingPlace6")
         UserDefaults.standard.set(urlImage6, forKey: "ParkingPlace6")
     }
     
     func passUrlParkingPlace7(urlImage7: String) {
-        UserDefaults.standard.removeObject(forKey: "ParkingPlace7")
         UserDefaults.standard.set(urlImage7, forKey: "ParkingPlace7")
     }
     
     func passUrlParkingPlace8(urlImage8: String) {
-        UserDefaults.standard.removeObject(forKey: "ParkingPlace8")
         UserDefaults.standard.set(urlImage8, forKey: "ParkingPlace8")
     }
     

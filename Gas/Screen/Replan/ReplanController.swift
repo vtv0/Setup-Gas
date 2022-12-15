@@ -23,16 +23,18 @@ class ReplanController: UIViewController, FloatingPanelControllerDelegate {
     var dicDataReplan: [Date : [Location]] = [:]
     var dateYMD: [Date] = []
     let companyCode = UserDefaults.standard.string(forKey: "companyCode") ?? ""
-    var dataDidFilter = [Location]()
+    var dataDidFilterReplan = [Location]()
     var indxes = [Int]()
     var selectedIdxDate = 0
     var selectedIdxDriver = 0
     var arrLocationOrder = [Int]()
     var arrFacilityData: [[Facility_data]] = []
-
+    
     var numberCustomer = 0
     var arrAssetID = [String]()
-    var arrAssetIDDidSelected = [String]()
+    
+    var locationDidSelected = [Location]()
+    
     var selectedRows1: [Int] = []
     var totalNumberOfBottle = 0
     @IBOutlet weak var btnClear: UIButton!
@@ -40,6 +42,7 @@ class ReplanController: UIViewController, FloatingPanelControllerDelegate {
         print("bo chon")
         let view = fpc.contentViewController as! ContentReplanController
         totalCellSelect = 0
+        view
         view.selectedRows.removeAll()
         view.myTableView.reloadData()
     }
@@ -50,14 +53,16 @@ class ReplanController: UIViewController, FloatingPanelControllerDelegate {
         formatter.dateFormat = "MM/dd"
         let dateString: String = formatter.string(from: dateYMD[0])
         
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let destinationVC = storyboard.instantiateViewController(withIdentifier: "CustomAlertReplanVC") as! CustomAlertReplanVC
-        destinationVC.delegateClickOK = self
-        destinationVC.selectedIdxDate = selectedIdxDate
-        destinationVC.totalCellSelect = totalCellSelect
-        destinationVC.totalNumberOfBottle = totalNumberOfBottle
-        destinationVC.date = dateString
-        present(destinationVC, animated: false, completion: nil)
+        if totalCellSelect > 0 {
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let destinationVC = storyboard.instantiateViewController(withIdentifier: "CustomAlertReplanVC") as! CustomAlertReplanVC
+            destinationVC.delegateClickOK = self
+            destinationVC.selectedIdxDate = selectedIdxDate
+            destinationVC.totalCellSelect = totalCellSelect
+            destinationVC.totalNumberOfBottle = totalNumberOfBottle
+            destinationVC.date = dateString
+            present(destinationVC, animated: false, completion: nil)
+        }
     }
     
     
@@ -83,8 +88,6 @@ class ReplanController: UIViewController, FloatingPanelControllerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Replan"
-        
-        
         //btnReplace.isEnabled = false
         // btnReplace.isHidden = true
         
@@ -104,16 +107,13 @@ class ReplanController: UIViewController, FloatingPanelControllerDelegate {
         let eyeCoordinate = CLLocationCoordinate2D(latitude: 35.73774428640241, longitude: 139.6194163709879)
         let mapCamera = MKMapCamera(lookingAtCenter: userCoordinate, fromEyeCoordinate: eyeCoordinate, eyeAltitude: 1000000.0)
         mapView.setCamera(mapCamera, animated: false)
-        
-        
         reDrawMarkers()
-        
     }
     
     func floatingPanel() {
         guard let contentVC = storyboard?.instantiateViewController(withIdentifier: "ContentReplanController") as? ContentReplanController else { return }
         contentVC.delegateContenReplant = self
-        contentVC.dataDidFilter = dataDidFilter
+        contentVC.dataDidFilterContent = dataDidFilterReplan
         
         contentVC.selectedIdxDate = selectedIdxDate
         contentVC.selectedRows1 = selectedRows1
@@ -131,14 +131,12 @@ class ReplanController: UIViewController, FloatingPanelControllerDelegate {
         
         self.view.bringSubviewToFront(btnClear)
         self.view.bringSubviewToFront(btnReplace)
-       // self.locationDidSelected()
+        // self.locationDidSelected()
     }
     
     func getDataFiltered(date: Date, driver: Int) -> [Location] {
-        
         var locationsByDriver: [Int: [Location]] = [:]
         var elemLocationADay = dicDataReplan[date] ?? []
-        
         // chia ra xe trong 1 ngay
         
         if elemLocationADay.count > 0 && elemLocationADay[0].type == .supplier && elemLocationADay[0].elem?.locationOrder == 1 {
@@ -148,10 +146,8 @@ class ReplanController: UIViewController, FloatingPanelControllerDelegate {
         elemLocationADay.enumerated().forEach { vehicleIdx, vehicle in
             if (vehicle.type == .supplier) {
                 indxes.append(vehicleIdx)
-                
             }
         }
-        
         indxes.enumerated().forEach { idx, item in
             
             if Array(elemLocationADay).count > 0 {
@@ -162,13 +158,12 @@ class ReplanController: UIViewController, FloatingPanelControllerDelegate {
                 }
             }
         }
-        
         self.selectedIdxDriver = driver
         self.pickerDriver.reloadAllComponents()
-        dataDidFilter = locationsByDriver[driver] ?? []
+        dataDidFilterReplan = locationsByDriver[driver] ?? []
         
-        if dataDidFilter.count > 0 {
-            for i in dataDidFilter {
+        if dataDidFilterReplan.count > 0 {
+            for i in dataDidFilterReplan {
                 arrAssetID.append(i.elem?.location?.assetID ?? "")
             }
             btnReplace.isHidden = false
@@ -182,7 +177,7 @@ class ReplanController: UIViewController, FloatingPanelControllerDelegate {
         }
         
         self.createViewBtnAnimation()
-        return dataDidFilter
+        return dataDidFilterReplan
     }
     
     // create button with code
@@ -262,7 +257,7 @@ class ReplanController: UIViewController, FloatingPanelControllerDelegate {
         
         
         arrFacilityData.removeAll()
-        for facilityData in dataDidFilter {
+        for facilityData in dataDidFilterReplan {
             arrFacilityData.append(facilityData.elem?.metadata?.facility_data ?? [])
         }
         
@@ -347,15 +342,17 @@ extension ReplanController: MKMapViewDelegate {
     }
     
     func reDrawMarkers() {
-        dataDidFilter.removeAll()
+        dataDidFilterReplan.removeAll()
         arrLocationOrder.removeAll()
         numberCustomer = 0
         
         if mapView != nil {
             mapView.removeAnnotations(mapView.annotations)
         }
-        dataDidFilter = getDataFiltered(date: dateYMD[selectedIdxDate], driver: selectedIdxDriver)
-        if dataDidFilter.count == 0 {
+        
+        dataDidFilterReplan = getDataFiltered(date: dateYMD[selectedIdxDate], driver: selectedIdxDriver)
+        
+        if dataDidFilterReplan.count == 0 {
             lblType50kg.text = "\(0)"
             lblType30kg.text = "\(0)"
             lblType25kg.text = "\(0)"
@@ -364,10 +361,8 @@ extension ReplanController: MKMapViewDelegate {
             print("_______________________________________________________________________________Không có đơn hàng nào!")
             self.showAlert(message: "không có khách hàng nào")
         } else {
-            
             //            let dataDidFilter1 = dataDidFilter.sorted(by: { $0.elem?.locationOrder ?? 0 > $1.elem?.locationOrder ?? 0 })
-            
-            for picker in dataDidFilter where picker.type == .customer  {
+            for picker in dataDidFilterReplan where picker.type == .customer  {
                 numberCustomer += 1
                 if let lat = picker.elem?.latitude, let long = picker.elem?.longitude, let locationOrder = picker.elem?.locationOrder {
                     let locationOfCustomer = CustomPin(title: locationOrder , coordinate: CLLocationCoordinate2D(latitude: lat, longitude: long))
@@ -381,8 +376,9 @@ extension ReplanController: MKMapViewDelegate {
         
     }
     
+    
+    // ve ra marker
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-        
         guard let annotation = annotation as? CustomPin else { return nil }
         let identifier = "Annotation"
         var view: MyPinView
@@ -414,11 +410,23 @@ extension ReplanController: MKMapViewDelegate {
                 view.image = UIImage(named: "marker")
             }
         }
+        
         return view
     }
 }
 
 extension ReplanController: InfoACellDelegateProtocol {
+    func passData(index: Int, isCustomer: Location) {
+        selectedRows1.append(index)
+        totalCellSelect += 1
+        locationDidSelected.append(isCustomer)
+        
+    }
+    
+    func unselected(index: Int, isCustomer: Location) {
+        print("click bo chon")
+    }
+    
     // delegateContenReplant
     func unselected(index: Int, assetID: String) {
         totalCellSelect -= 1
@@ -430,87 +438,76 @@ extension ReplanController: InfoACellDelegateProtocol {
             }
         }
         
-        if !arrAssetIDDidSelected.isEmpty {
-            arrAssetIDDidSelected.enumerated().forEach() { ind, value in
-                if value == assetID {
-                    arrAssetIDDidSelected.remove(at: ind)
-                }
+        if !locationDidSelected.isEmpty {
+            dataDidFilterReplan.enumerated().forEach() { ind, value in
+                print("\(ind)->> \(value)")
+                //                if value == locationDidSelected {
+                //                    locationDidSelected.remove(at: ind)
+                //                }
             }
         }
     }
-    
-    func passData(index: Int, assetID: String) {
-        
-        selectedRows1.append(index)
-        totalCellSelect += 1
-        arrAssetIDDidSelected.append(assetID)
-    }
-    
-    
-//    func locationDidSelected() {
-//
-//        // chuyen khach hang tu ngay sau -> ngay dau tien
-//        var dataForAday: [Location] = dicDataReplan[dateYMD[selectedIdxDate]] ?? []
-//
-//        // xoa cac phan tu duoc chon
-//        if !arrAssetIDDidSelected.isEmpty {
-//            for iassetID in arrAssetIDDidSelected {
-//                arrAssetID.enumerated().forEach { idx, ivalue in
-//                    if ivalue == iassetID {
-//                        print(ivalue)
-//
-//
-//                        // luu vao properties
-//                        //                        var detailLocation = LocationOfReplan(elem: <#LocationElement#>, asset: <#GetAsset#>)
-//                        //                        detailLocation.elem =
-//
-//                        // xoa trong mang cac iassetID nay trong [Location]
-//                        // dataForAday.remove(at: idx)
-//                        // dataForAday.enumerated().forEach { ind, ivalue in
-//                        //    print("\(ind)-> \(ivalue)")
-//                        // }
-//                    }
-//                }
-//            }
-//        }
-//
-//
-//        // them cac phan tu -> vao cuoi ngay 1
-//        // dicDataReplan.updateValue(, forKey: dateYMD[0])
-//
-//        //        dicDataReplan[dateYMD[0]] = []
-//    }
     
     
 }
 
 
 extension ReplanController: ClickOkDelegateProtocol {
-    // truyen vi tri cac cell  da ddc chon sang ContentReplanVC --> to mau
-    
     func clickOk() {
         guard let contentVC = storyboard?.instantiateViewController(withIdentifier: "ContentReplanController") as? ContentReplanController else { return }
         
         contentVC.delegateContenReplant = self
-        contentVC.dataDidFilter = dataDidFilter
+        contentVC.dataDidFilterContent = dataDidFilterReplan
         contentVC.selectedIdxDate = selectedIdxDate
         contentVC.selectedRows1 = selectedRows1
-        contentVC.arrAssetIDDidSelected = arrAssetIDDidSelected 
+        //        contentVC.arrAssetIDDidSelected = arrAssetIDDidSelected
         contentVC.arrAssetID = arrAssetID
         
-        fpc.contentMode = .fitToBounds
+        //        fpc.contentMode = .fitToBounds
         fpc.set(contentViewController: contentVC)
         fpc.addPanel(toParent: self)
         //        self.present(fpc, animated: true)
         fpc.trackingScrollView?.automaticallyAdjustsScrollIndicatorInsets = true
         
         // self.view.insertSubview(viewBtnAnimation, belowSubview: contentVC.myTableView )
-        //        fpc.trackingScrollView?.isScrollEnabled = true
+        fpc.trackingScrollView?.isScrollEnabled = false
         
         self.view.bringSubviewToFront(btnClear)
         self.view.bringSubviewToFront(btnReplace)
-       // self.locationDidSelected()
+        
+        
+        // delete ngay 2
+        var dataIsObject: [Location] = []
+        dataDidFilterReplan.enumerated().forEach { ind, data in
+            print(dataDidFilterReplan.count) //  12/16  co 21 diem Customer
+            if data.elem?.location?.metadata?.display_data?.moveToFirstDay == true {
+                //  dataDidFilterReplan.remove(at: ind) // sau khi tru di con < 21
+            } else if selectedIdxDate == 0 {
+                dataIsObject.append(data)
+            }
+            
+        }
+        // add
+        dicDataReplan.updateValue(dataIsObject, forKey: dateYMD[0])
+        
+        
+        
+        // ve lai marker
+        // danh so lai LocationOrder
+        mapView.removeAnnotations(mapView.annotations)
+        print(dataDidFilterReplan.count)
+        for picker in dataDidFilterReplan where picker.type == .customer  {
+            numberCustomer += 1
+            
+            if let lat = picker.elem?.latitude, let long = picker.elem?.longitude, let locationOrder = picker.elem?.locationOrder {
+                let locationOfCustomer = CustomPin(title: locationOrder , coordinate: CLLocationCoordinate2D(latitude: lat, longitude: long))
+                arrLocationOrder.append(locationOfCustomer.title)
+                mapView.addAnnotation(locationOfCustomer)
+            }
+        }
+        mapView.reloadInputViews()
     }
+    
     
     
     

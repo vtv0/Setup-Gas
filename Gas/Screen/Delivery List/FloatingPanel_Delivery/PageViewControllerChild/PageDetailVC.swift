@@ -38,7 +38,7 @@ class PageDetailVC: UIViewController, UIScrollViewDelegate, UICollectionViewDele
     
     weak var delegatePassInfoOneCustomer: PassInfoOneCustomerDelegateProtocol?
     weak var delegatePassImage: PassImageDelegateProtocol?
-//    weak var delegatePassAsset: PassAssetDelegateProtocol?
+    //    weak var delegatePassAsset: PassAssetDelegateProtocol?
     
     var pageIndex: Int!
     
@@ -110,24 +110,24 @@ class PageDetailVC: UIViewController, UIScrollViewDelegate, UICollectionViewDele
         collectionView.dataSource = self
         
         pageControl.numberOfPages = arrImage.count
-
-//        guard let editViewVC = storyboard?.instantiateViewController(withIdentifier: "EditViewController") as? EditViewController else { return }
-//        delegatePassAsset = editViewVC as! PassAssetDelegateProtocol
-//        if let asset = dataInfoOneCustomer.asset {
-//            delegatePassAsset?.passAssetOfCustomer(asset: asset)
-//           editViewVC.asset = asset
-//        }
-                
+        
+        //        guard let editViewVC = storyboard?.instantiateViewController(withIdentifier: "EditViewController") as? EditViewController else { return }
+        //        delegatePassAsset = editViewVC as! PassAssetDelegateProtocol
+        //        if let asset = dataInfoOneCustomer.asset {
+        //            delegatePassAsset?.passAssetOfCustomer(asset: asset)
+        //           editViewVC.asset = asset
+        //        }
+        
         
         guard let parkingVC = storyboard?.instantiateViewController(withIdentifier: "ParkingLocationController") as? ParkingLocationController else { return }
         delegatePassInfoOneCustomer = parkingVC
         if let mapCoordinate = dataInfoOneCustomer.asset?.properties?.values.location?.coordinates,
-            let iassetID = dataInfoOneCustomer.elem?.location?.assetID {
+           let iassetID = dataInfoOneCustomer.elem?.location?.assetID {
             delegatePassInfoOneCustomer?.passiassetID(iassetID: iassetID )
             delegatePassInfoOneCustomer?.passCoordinate(coordinate: mapCoordinate)
-//            parkingVC.iassetID = iassetID
+            //            parkingVC.iassetID = iassetID
         }
-
+        
         guard let customerLocation = storyboard?.instantiateViewController(withIdentifier: "CustomerLocationController") as? CustomerLocationController else { return }
         delegatePassInfoOneCustomer = customerLocation
         
@@ -162,7 +162,7 @@ class PageDetailVC: UIViewController, UIScrollViewDelegate, UICollectionViewDele
             
             delegatePassImage?.passNotes(notes: notes)
         }
-         
+        
         
         if dataInfoOneCustomer.type == .supplier {
             lblCustomer_id?.text = comment
@@ -184,12 +184,14 @@ class PageDetailVC: UIViewController, UIScrollViewDelegate, UICollectionViewDele
             
             lblAddress?.text = dataInfoOneCustomer.asset?.properties?.values.address
             
-            if dataInfoOneCustomer.elem?.arrivalTime?.minutes ?? 0 < 10 {
-                lblDeliveryTime?.text = "Estimate Time : \(dataInfoOneCustomer.elem?.arrivalTime?.hours ?? 00):0\(dataInfoOneCustomer.elem?.arrivalTime?.minutes ?? 0)"
-            } else {
-                lblDeliveryTime?.text = "Estimate Time : \(dataInfoOneCustomer.elem?.arrivalTime?.hours ?? 00):\(dataInfoOneCustomer.elem?.arrivalTime?.minutes ?? 0)"
+            if let minutes = dataInfoOneCustomer.elem?.arrivalTime?.minutes,
+               let hours = dataInfoOneCustomer.elem?.arrivalTime?.hours {
+                if minutes < 10 {
+                    lblDeliveryTime?.text = "Estimate Time : \(hours):0\(minutes)"
+                } else {
+                    lblDeliveryTime?.text = "Estimate Time : \(hours):\(minutes)"
+                }
             }
-            
             arrImage.removeAll()
             if let gasLocation1 = dataInfoOneCustomer.asset?.properties?.values.gas_location1,
                let gasLocation2 = dataInfoOneCustomer.asset?.properties?.values.gas_location2,
@@ -283,22 +285,30 @@ extension PageDetailVC: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         let count = arrImage.count
         pageControl.numberOfPages = count
-       // pageControl.isHidden = !(count > 1)
+        // pageControl.isHidden = !(count > 1)
         return count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath)  as? PageDetailCollectionViewCell
+        let cellImage = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath)  as! PageDetailCollectionViewCell
         if !arrImage.isEmpty {
             let iurl = arrImage[indexPath.row]
+            
+            cellImage.imgImage.loadImageExtension(URLAddress: iurl)
+            
             if let data = try? Data(contentsOf: URL(string: "\(iurl)")! ) {
-                cell?.imgImage.image = UIImage(data: data)
-                
+                DispatchQueue.main.async { /// execute on main thread
+                    cellImage.imgImage.image = UIImage(data: data)
+                }
             }
         }
         
-        return cell!
+        cellImage.layer.shouldRasterize = true
+        
+        
+        
+        return cellImage
     }
 }
 

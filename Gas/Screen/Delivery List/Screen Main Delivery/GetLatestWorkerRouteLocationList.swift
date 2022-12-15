@@ -159,14 +159,14 @@ class PurpleMetadata: NSObject, Codable {
 class DisplayData: NSObject, Codable {
     var delivery_history: [String: String]?
     var origin_route_id: Int?
-    var exclude_firstday: Bool?
-    var move_to_firstday: Bool? = false
+    var excludeFirstDay: Bool?
+    var moveToFirstDay: Bool? = false
     
-    init(delivery_history: [String : String]? = nil, origin_route_id: Int? = nil, exclude_firstday: Bool = false, move_to_firstday: Bool = false) {
+    init(delivery_history: [String : String]? = nil, origin_route_id: Int? = nil, excludeFirstDay: Bool? = false, moveToFirstDay: Bool? = false) {
         self.delivery_history = delivery_history
         self.origin_route_id = origin_route_id
-        self.exclude_firstday = exclude_firstday
-        self.move_to_firstday = move_to_firstday
+        self.excludeFirstDay = excludeFirstDay
+        self.moveToFirstDay = moveToFirstDay
     }
     
     enum DeliveryHistory: String, Codable {
@@ -208,8 +208,7 @@ class DisplayData: NSObject, Codable {
             if let d1 = df.date(from: h1.date), let d2 = df.date(from: h2.date) {
                 return d1 < d2
             }
-            
-            return false
+            return true
         }
         if let status = arr.last?.status {
             return DeliveryHistory.init(rawValue: status) ?? .waiting
