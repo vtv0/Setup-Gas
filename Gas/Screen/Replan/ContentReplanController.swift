@@ -7,24 +7,35 @@
 
 import UIKit
 
-protocol InfoACellDelegateProtocol: AnyObject {
-    func passData(index: Int, isCustomer: Location)
-    func unselected(index: Int, isCustomer: Location)
+protocol MoveToFirstDayDelegateProtocol: AnyObject {
+    func passData(isCustomer: Location, indexDate: Int)
+    func unselected(isCustomer: Location, indexDate: Int)
+}
+protocol ExcludeFirstDayDelegateProtocol: AnyObject {
+    func check(isCustomer: Location, indexDriver: Int)
+    func uncheck(isCustomer: Location, indexDriver: Int)
 }
 
 class ContentReplanController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
-    weak var delegateContenReplant: InfoACellDelegateProtocol?
-    var selectedRows1: [Int] = []
+    weak var delegateContenReplant: MoveToFirstDayDelegateProtocol?
+    weak var delegateExclude_Replan: ExcludeFirstDayDelegateProtocol?
     
-    var selectedRows: [IndexPath] = []
+    var dicData: [Date: [Location]] = [:]
+    var dateYMD: [Date] = []
+    var selectedIdxDate = 0
+    var selectedIdxDriver = 0
+    var selectedRows = [IndexPath]()
     
-    var dataDidFilterContent: [Location] = []
+    var dataDidFilter_Content: [Location] = []
     var arrAssetID: [String] = []
     var isCustomer: Location = Location(elem: LocationElement(locationOrder: 0), asset: GetAsset())
     var dataIsCustomer: [Location] = []
     var arrAssetIDDidSelected = [String]()
-    var selectedIdxDate = 0
+    
+    
+    
+    var listExcludeLocation = [Location]()
     
     @IBOutlet weak var myTableView: UITableView!
     
@@ -34,20 +45,41 @@ class ContentReplanController: UIViewController, UITableViewDataSource, UITableV
         myTableView.dataSource = self
         myTableView.delegate = self
         
-        detailsCustomer()
+//        if let dataDidFilter_Content = dicData[dateYMD[selectedIdxDate]] {
+//            self.dataDidFilter_Content = dataDidFilter_Content
+//        }
+        dataDidFilter_Content = getDataFiltered(date: dateYMD[selectedIdxDate], driver: selectedIdxDriver)
     }
     
-    func detailsCustomer() {
-        arrAssetID.removeAll()
+    func getDataFiltered(date: Date, driver: Int) -> [Location] {
+        var locationsByDriver: [Int: [Location]] = [:]
+        var elemLocationADay = dicData[date] ?? []
+        var indxes = [Int]()
+        // chia ra xe trong 1 ngay
         
-        for iCustomer in dataDidFilterContent where iCustomer.type == .customer {
-            dataIsCustomer.append(iCustomer)
+        if elemLocationADay.count > 0 && elemLocationADay[0].type == .supplier && elemLocationADay[0].elem?.locationOrder == 1 {
+            elemLocationADay.remove(at: 0)
         }
-        
+        indxes = []
+        elemLocationADay.enumerated().forEach { vehicleIdx, vehicle in
+            if (vehicle.type == .supplier) {
+                indxes.append(vehicleIdx)
+            }
+        }
+        indxes.enumerated().forEach { idx, item in
+            
+            if Array(elemLocationADay).count > 0 {
+                if idx == 0 && indxes[0] > 0 {
+                    locationsByDriver[idx] = Array(elemLocationADay[0...indxes[idx]])
+                } else if indxes[idx-1]+1 < indxes[idx] {
+                    locationsByDriver[idx] = Array(elemLocationADay[indxes[idx-1]+1...indxes[idx]])
+                }
+            }
+        }
+        self.selectedIdxDriver = driver
+        dataDidFilter_Content = locationsByDriver[driver] ?? []
+        return dataDidFilter_Content
     }
-    
-    
-    
     //    func deleteRows() {
     //        if let selectedRows = myTableView.indexPathsForSelectedRows {
     //            // 1
@@ -71,11 +103,12 @@ class ContentReplanController: UIViewController, UITableViewDataSource, UITableV
     
     // myTableView dataSource
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
+       
+
         let cell = myTableView.dequeueReusableCell(withIdentifier: "ContentReplanTableViewCell", for: indexPath) as! ContentReplanTableViewCell
         // ngày 1 exclude_firstday
-        cell.lbl_locationOrder.text = "\((dataDidFilterContent[indexPath.row].elem?.locationOrder ?? 0) - 1)"
-        cell.lbl_kyokyusetsubi_code.text = dataDidFilterContent[indexPath.row].asset?.properties?.values.kyokyusetsubi_code
+        cell.lbl_locationOrder.text = "\((dataDidFilter_Content[indexPath.row].elem?.locationOrder ?? 0) - 1)"
+        cell.lbl_kyokyusetsubi_code.text = dataDidFilter_Content[indexPath.row].asset?.properties?.values.kyokyusetsubi_code
         
         cell.lbl_locationOrder.layer.borderWidth = 1
         cell.lbl_locationOrder.layer.borderColor = UIColor.black.cgColor
@@ -83,9 +116,9 @@ class ContentReplanController: UIViewController, UITableViewDataSource, UITableV
         cell.lbl_locationOrder.layer.cornerRadius = (cell.lbl_locationOrder.frame.size.width) / 2
         cell.lbl_locationOrder.layer.masksToBounds = true
         
-        cell.lbl_customer_name.text = dataDidFilterContent[indexPath.row].asset?.properties?.values.customer_name
+        cell.lbl_customer_name.text = dataDidFilter_Content[indexPath.row].asset?.properties?.values.customer_name
         
-        if let iday = dataDidFilterContent[indexPath.row].elem?.metadata?.planned_date {
+        if let iday = dataDidFilter_Content[indexPath.row].elem?.metadata?.planned_date {
             let dateFomatter = DateFormatter()
             dateFomatter.dateFormat = "yyyy-MM-dd"
             if let date = dateFomatter.date(from: iday) {
@@ -93,12 +126,11 @@ class ContentReplanController: UIViewController, UITableViewDataSource, UITableV
                 let stringDate = dateFomatter.string(from: date)
                 cell.lbl_planned_date.text = stringDate
             }
-            
         }
         
         // move_to_firstday = true -> to den cell
         // trong object co truong move_to_firstday = true
-        if  dataDidFilterContent[indexPath.row].elem?.location?.metadata?.display_data?.moveToFirstDay == true {
+        if  dataDidFilter_Content[indexPath.row].elem?.location?.metadata?.display_data?.moveToFirstDay == true {
             cell.btnCheckbox.setImage(UIImage(named: "ic_check_on"), for: .normal)
             cell.contentView.backgroundColor = .darkGray
         } else {
@@ -109,7 +141,13 @@ class ContentReplanController: UIViewController, UITableViewDataSource, UITableV
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return dataDidFilterContent.count - 1
+
+        if listExcludeLocation.count > 0 {
+            let number = dataDidFilter_Content.count - listExcludeLocation.count
+            return number - 1
+        } else {
+            return dataDidFilter_Content.count - 1
+        }
     }
     
     
@@ -119,20 +157,17 @@ class ContentReplanController: UIViewController, UITableViewDataSource, UITableV
         guard let cell = myTableView.cellForRow(at: indexPath) as? ContentReplanTableViewCell else { return }
         
         if selectedIdxDate == 0  {
-            // neu la ngay dau tien thi chi dc exclude_firstday
+            // la ngay dau tien chi dc exclude_firstday
             // tao ra danh sach moi sau cac xe cua ngay 1
             
             if self.selectedRows.contains(indexPath) {
                 // uncheck
                 self.selectedRows.remove(at: self.selectedRows.firstIndex(of: indexPath)!)
-                
-                
                 cell.btnCheckbox.setImage(UIImage(named: "ic_check_off"), for: .normal)
-                if dataDidFilterContent[indexPath.row].elem?.location?.metadata?.display_data?.excludeFirstDay == true {
-                    dataDidFilterContent[indexPath.row].elem?.location?.metadata?.display_data?.excludeFirstDay = false
+                if dataDidFilter_Content[indexPath.row].elem?.location?.metadata?.display_data?.excludeFirstDay == true {
+                    dataDidFilter_Content[indexPath.row].elem?.location?.metadata?.display_data?.excludeFirstDay = false
                 }
-                
-                // delegateContenReplant?.unselected(index: indexPath.row, assetID: arrAssetID[indexPath.row])
+                delegateExclude_Replan?.uncheck(isCustomer: dataDidFilter_Content[indexPath.row], indexDriver: selectedIdxDriver)
                 
             } else {
                 // click cell add
@@ -142,25 +177,23 @@ class ContentReplanController: UIViewController, UITableViewDataSource, UITableV
                 
                 // chuyen move_to_firstday = true
                 // tao khi khong co properties: move_to_firstday
-                if dataDidFilterContent[indexPath.row].elem?.location?.metadata?.display_data?.excludeFirstDay == nil || dataDidFilterContent[indexPath.row].elem?.location?.metadata?.display_data?.excludeFirstDay == false {
-                    dataDidFilterContent[indexPath.row].elem?.location?.metadata?.display_data?.excludeFirstDay = true
+                if dataDidFilter_Content[indexPath.row].elem?.location?.metadata?.display_data?.excludeFirstDay == nil || dataDidFilter_Content[indexPath.row].elem?.location?.metadata?.display_data?.excludeFirstDay == false {
+                    dataDidFilter_Content[indexPath.row].elem?.location?.metadata?.display_data?.excludeFirstDay = true
                 }
-                // delegateContenReplant?.passData(index: indexPath.row, assetID: arrAssetID[indexPath.row])
+                delegateExclude_Replan?.check(isCustomer: dataDidFilter_Content[indexPath.row], indexDriver: selectedIdxDriver)
             }
             
         } else {
             // chi dược move_to_firstday
-            
             if self.selectedRows.contains(indexPath) {
                 // uncheck
                 self.selectedRows.remove(at: self.selectedRows.firstIndex(of: indexPath)!)
                 
                 cell.btnCheckbox.setImage(UIImage(named: "ic_check_off"), for: .normal)
-                if dataDidFilterContent[indexPath.row].elem?.location?.metadata?.display_data?.moveToFirstDay == true {
-                    dataDidFilterContent[indexPath.row].elem?.location?.metadata?.display_data?.moveToFirstDay = false
+                if dataDidFilter_Content[indexPath.row].elem?.location?.metadata?.display_data?.moveToFirstDay == true {
+                    dataDidFilter_Content[indexPath.row].elem?.location?.metadata?.display_data?.moveToFirstDay = false
                 }
-                
-                delegateContenReplant?.unselected(index: indexPath.row, isCustomer: dataDidFilterContent[indexPath.row])
+                delegateContenReplant?.unselected(isCustomer: dataDidFilter_Content[indexPath.row], indexDate: selectedIdxDate)
                 
             } else {
                 // click cell add
@@ -170,10 +203,10 @@ class ContentReplanController: UIViewController, UITableViewDataSource, UITableV
                 
                 // chuyen move_to_firstday = true
                 // tao khi khong co properties: move_to_firstday
-                if dataDidFilterContent[indexPath.row].elem?.location?.metadata?.display_data?.moveToFirstDay == nil || dataDidFilterContent[indexPath.row].elem?.location?.metadata?.display_data?.moveToFirstDay == false {
-                    dataDidFilterContent[indexPath.row].elem?.location?.metadata?.display_data?.moveToFirstDay = true
+                if dataDidFilter_Content[indexPath.row].elem?.location?.metadata?.display_data?.moveToFirstDay == nil || dataDidFilter_Content[indexPath.row].elem?.location?.metadata?.display_data?.moveToFirstDay == false {
+                    dataDidFilter_Content[indexPath.row].elem?.location?.metadata?.display_data?.moveToFirstDay = true
                 }
-                delegateContenReplant?.passData(index: indexPath.row, isCustomer: dataDidFilterContent[indexPath.row])
+                delegateContenReplant?.passData(isCustomer: dataDidFilter_Content[indexPath.row],  indexDate: selectedIdxDate)
             }
         }
     }

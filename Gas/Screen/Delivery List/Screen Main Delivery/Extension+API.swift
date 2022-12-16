@@ -108,7 +108,7 @@ extension UIViewController {
                     if t == dateYMD.count {
                         //  self.reDrawMarkers()
                         guard let replanVC = self.storyboard?.instantiateViewController(withIdentifier: "ReplanController") as? ReplanController else { return }
-                        replanVC.dicDataReplan = dicData
+                        replanVC.dicData = dicData
                         self.hideActivity()
                     }
                 }

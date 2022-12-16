@@ -32,22 +32,23 @@ struct GetLatestWorkerRouteLocationList : Decodable {
 
 class ViewController: UIViewController, UITextFieldDelegate {
     
-    let showUserName = UserDefaults.standard.string(forKey: "userName")
+    let showUserName = UserDefaults.standard.string(forKey: "userName") ?? ""
     let showPass = UserDefaults.standard.string(forKey: "pass")
     let showcompanyCode = UserDefaults.standard.string(forKey: "companyCode")
     var token = UserDefaults.standard.string(forKey: "response") ?? ""
     let expiredDate = Calendar.current.date(byAdding: .hour, value: 12, to: Date())!
+    var dicData: [Date: [Location]] = [:]
     
     @IBOutlet weak var imgIcon: UIImageView!
     @IBOutlet weak var txtUserName: UITextField!
     @IBOutlet weak var txtPass: UITextField!
     @IBOutlet weak var txtcompanyCode: UITextField!
     
-    var bRec:Bool = true
+    var bRec: Bool = true
     @IBOutlet weak var btnSaveAccount: UIButton!
     @IBAction func btnSaveAccount(_ sender: Any) {
         bRec = !bRec
-        if (bRec ){
+        if (bRec ){ // khong luu
             self.btnSaveAccount.setImage(UIImage(named: "checkmarkEmpty"), for: .normal)
             UserDefaults.standard.removeObject(forKey: "userName")
             UserDefaults.standard.removeObject(forKey: "pass")
@@ -55,7 +56,6 @@ class ViewController: UIViewController, UITextFieldDelegate {
             UserDefaults.standard.removeObject(forKey: "accessToken")
         } else {
             self.btnSaveAccount.setImage(UIImage(named: "checkmark"), for: .normal)
-            
             UserDefaults.standard.set(txtUserName.text, forKey: "userName")
             UserDefaults.standard.set(txtPass.text, forKey: "pass")
             UserDefaults.standard.set(txtcompanyCode.text, forKey: "companyCode")
@@ -82,16 +82,21 @@ class ViewController: UIViewController, UITextFieldDelegate {
     }
     
     
-    var dicData: [Date: [Location]] = [:]
+
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.hidesBackButton = true
-        txtUserName.text = showUserName
-        txtPass.text = showPass
-        txtcompanyCode.text = showcompanyCode
-        imgIcon.image = UIImage(named:"Icon-1024")
+        if !showUserName.isEmpty {
+            btnSaveAccount.setImage(UIImage(named: "checkmark"), for: .normal)
+        }
         
-     
+        if (bRec){
+            txtUserName.text = showUserName
+            txtPass.text = showPass
+            txtcompanyCode.text = showcompanyCode
+            imgIcon.image = UIImage(named:"Icon-1024")
+        }
+        
     }
     
     @objc func onInputUserName(_ sender: UITextField) {

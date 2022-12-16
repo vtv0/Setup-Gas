@@ -113,7 +113,7 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
     }
     @IBAction func btnReplan(_ sender: Any) {
         let screenReplan = storyboard?.instantiateViewController(withIdentifier: "ReplanController") as! ReplanController
-        screenReplan.dicDataReplan = self.dicData
+        screenReplan.dicData = self.dicData
         screenReplan.dateYMD = dateYMD
         self.navigationController?.pushViewController(screenReplan, animated: true)
     }
