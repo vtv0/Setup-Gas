@@ -12,8 +12,8 @@ protocol MoveToFirstDayDelegateProtocol: AnyObject {
     func unselected(isCustomer: Location, indexDate: Int)
 }
 protocol ExcludeFirstDayDelegateProtocol: AnyObject {
-    func check(isCustomer: Location, indexDriver: Int)
-    func uncheck(isCustomer: Location, indexDriver: Int)
+    func check(isCustomer: Location, indexDriver: Int, indexDate: Int)
+    func uncheck(isCustomer: Location, indexDriver: Int, indexDate: Int)
 }
 
 class ContentReplanController: UIViewController, UITableViewDataSource, UITableViewDelegate {
@@ -26,6 +26,8 @@ class ContentReplanController: UIViewController, UITableViewDataSource, UITableV
     var selectedIdxDate = 0
     var selectedIdxDriver = 0
     var selectedRows = [IndexPath]()
+    
+    var listExclude: [Location] = []
     
     var dataDidFilter_Content: [Location] = []
     var arrAssetID: [String] = []
@@ -45,15 +47,16 @@ class ContentReplanController: UIViewController, UITableViewDataSource, UITableV
         myTableView.dataSource = self
         myTableView.delegate = self
         
-//        if let dataDidFilter_Content = dicData[dateYMD[selectedIdxDate]] {
-//            self.dataDidFilter_Content = dataDidFilter_Content
-//        }
+        //        if let dataDidFilter_Content = dicData[dateYMD[selectedIdxDate]] {
+        //            self.dataDidFilter_Content = dataDidFilter_Content
+        //        }
         dataDidFilter_Content = getDataFiltered(date: dateYMD[selectedIdxDate], driver: selectedIdxDriver)
     }
     
     func getDataFiltered(date: Date, driver: Int) -> [Location] {
         var locationsByDriver: [Int: [Location]] = [:]
         var elemLocationADay = dicData[date] ?? []
+        
         var indxes = [Int]()
         // chia ra xe trong 1 ngay
         
@@ -103,34 +106,77 @@ class ContentReplanController: UIViewController, UITableViewDataSource, UITableV
     
     // myTableView dataSource
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-       
-
         let cell = myTableView.dequeueReusableCell(withIdentifier: "ContentReplanTableViewCell", for: indexPath) as! ContentReplanTableViewCell
-        // ngày 1 exclude_firstday
-        cell.lbl_locationOrder.text = "\((dataDidFilter_Content[indexPath.row].elem?.locationOrder ?? 0) - 1)"
-        cell.lbl_kyokyusetsubi_code.text = dataDidFilter_Content[indexPath.row].asset?.properties?.values.kyokyusetsubi_code
         
-        cell.lbl_locationOrder.layer.borderWidth = 1
-        cell.lbl_locationOrder.layer.borderColor = UIColor.black.cgColor
-        cell.lbl_locationOrder.textAlignment = .center
-        cell.lbl_locationOrder.layer.cornerRadius = (cell.lbl_locationOrder.frame.size.width) / 2
-        cell.lbl_locationOrder.layer.masksToBounds = true
-        
-        cell.lbl_customer_name.text = dataDidFilter_Content[indexPath.row].asset?.properties?.values.customer_name
-        
-        if let iday = dataDidFilter_Content[indexPath.row].elem?.metadata?.planned_date {
-            let dateFomatter = DateFormatter()
-            dateFomatter.dateFormat = "yyyy-MM-dd"
-            if let date = dateFomatter.date(from: iday) {
-                dateFomatter.dateFormat = "MM/dd"
-                let stringDate = dateFomatter.string(from: date)
-                cell.lbl_planned_date.text = stringDate
+        if selectedIdxDate == 0 && dicData[dateYMD[0]]?[indexPath.row].elem?.location?.metadata?.display_data?.excludeFirstDay != true {
+            // ve ra ngay mot
+            //            dicData[dateYMD[0]]?[indexPath.row].type == .supplier
+            
+            cell.lbl_locationOrder.text = "\((dataDidFilter_Content[indexPath.row].elem?.locationOrder ?? 0) - 1)"
+            cell.lbl_kyokyusetsubi_code.text = dataDidFilter_Content[indexPath.row].asset?.properties?.values.kyokyusetsubi_code
+            
+            cell.lbl_locationOrder.layer.borderWidth = 1
+            cell.lbl_locationOrder.layer.borderColor = UIColor.black.cgColor
+            cell.lbl_locationOrder.textAlignment = .center
+            cell.lbl_locationOrder.layer.cornerRadius = (cell.lbl_locationOrder.frame.size.width) / 2
+            cell.lbl_locationOrder.layer.masksToBounds = true
+            
+            cell.lbl_customer_name.text = dataDidFilter_Content[indexPath.row].asset?.properties?.values.customer_name
+            
+            if let iday = dataDidFilter_Content[indexPath.row].elem?.metadata?.planned_date {
+                let dateFomatter = DateFormatter()
+                dateFomatter.dateFormat = "yyyy-MM-dd"
+                if let date = dateFomatter.date(from: iday) {
+                    dateFomatter.dateFormat = "MM/dd"
+                    let stringDate = dateFomatter.string(from: date)
+                    cell.lbl_planned_date.text = stringDate
+                }
+            }
+            
+        } else {
+            
+            // ve ra ngay sau
+            cell.lbl_locationOrder.text = "\((dataDidFilter_Content[indexPath.row].elem?.locationOrder ?? 0) - 1)"
+            cell.lbl_kyokyusetsubi_code.text = dataDidFilter_Content[indexPath.row].asset?.properties?.values.kyokyusetsubi_code
+            
+            cell.lbl_locationOrder.layer.borderWidth = 1
+            cell.lbl_locationOrder.layer.borderColor = UIColor.black.cgColor
+            cell.lbl_locationOrder.textAlignment = .center
+            cell.lbl_locationOrder.layer.cornerRadius = (cell.lbl_locationOrder.frame.size.width) / 2
+            cell.lbl_locationOrder.layer.masksToBounds = true
+            
+            cell.lbl_customer_name.text = dataDidFilter_Content[indexPath.row].asset?.properties?.values.customer_name
+            
+            if let iday = dataDidFilter_Content[indexPath.row].elem?.metadata?.planned_date {
+                let dateFomatter = DateFormatter()
+                dateFomatter.dateFormat = "yyyy-MM-dd"
+                if let date = dateFomatter.date(from: iday) {
+                    dateFomatter.dateFormat = "MM/dd"
+                    let stringDate = dateFomatter.string(from: date)
+                    cell.lbl_planned_date.text = stringDate
+                }
             }
         }
         
+        
         // move_to_firstday = true -> to den cell
         // trong object co truong move_to_firstday = true
-        if  dataDidFilter_Content[indexPath.row].elem?.location?.metadata?.display_data?.moveToFirstDay == true {
+        
+        
+        //        if selectedIdxDate != 0 {
+        //
+        //        } else { // ngay dau khong co mau
+        //
+        //            // duoc hien thi excludeFirstDay = false
+        //            if dicData[dateYMD[0]]![indexPath.row].elem?.location?.metadata?.display_data?.excludeFirstDay == false &&
+        //                 dicData[dateYMD[0]]![indexPath.row].elem?.location?.metadata?.display_data?.excludeFirstDay == nil {
+        //                print("sssssssssssssssssssssssss")
+        //            }
+        //
+        //        }
+        
+        
+        if  dataDidFilter_Content[indexPath.row].elem?.location?.metadata?.display_data?.moveToFirstDay == true && selectedIdxDate != 0  {
             cell.btnCheckbox.setImage(UIImage(named: "ic_check_on"), for: .normal)
             cell.contentView.backgroundColor = .darkGray
         } else {
@@ -141,8 +187,9 @@ class ContentReplanController: UIViewController, UITableViewDataSource, UITableV
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-
+        
         if listExcludeLocation.count > 0 {
+            print("\(dataDidFilter_Content.count) - \(listExcludeLocation.count)")
             let number = dataDidFilter_Content.count - listExcludeLocation.count
             return number - 1
         } else {
@@ -157,17 +204,18 @@ class ContentReplanController: UIViewController, UITableViewDataSource, UITableV
         guard let cell = myTableView.cellForRow(at: indexPath) as? ContentReplanTableViewCell else { return }
         
         if selectedIdxDate == 0  {
+            // tao ra danh sach moi   sau cac xe cua ngay 1
             // la ngay dau tien chi dc exclude_firstday
-            // tao ra danh sach moi sau cac xe cua ngay 1
-            
             if self.selectedRows.contains(indexPath) {
                 // uncheck
+                // move_to_firstday = false
                 self.selectedRows.remove(at: self.selectedRows.firstIndex(of: indexPath)!)
                 cell.btnCheckbox.setImage(UIImage(named: "ic_check_off"), for: .normal)
-                if dataDidFilter_Content[indexPath.row].elem?.location?.metadata?.display_data?.excludeFirstDay == true {
-                    dataDidFilter_Content[indexPath.row].elem?.location?.metadata?.display_data?.excludeFirstDay = false
+                if dicData[dateYMD[0]]?[indexPath.row].elem?.location?.metadata?.display_data?.excludeFirstDay == true {
+                    dicData[dateYMD[0]]?[indexPath.row].elem?.location?.metadata?.display_data?.excludeFirstDay = false
                 }
-                delegateExclude_Replan?.uncheck(isCustomer: dataDidFilter_Content[indexPath.row], indexDriver: selectedIdxDriver)
+                
+                delegateExclude_Replan?.uncheck(isCustomer: (dicData[dateYMD[selectedIdxDate]]?[indexPath.row])!, indexDriver: selectedIdxDriver, indexDate: selectedIdxDate)
                 
             } else {
                 // click cell add
@@ -177,10 +225,11 @@ class ContentReplanController: UIViewController, UITableViewDataSource, UITableV
                 
                 // chuyen move_to_firstday = true
                 // tao khi khong co properties: move_to_firstday
-                if dataDidFilter_Content[indexPath.row].elem?.location?.metadata?.display_data?.excludeFirstDay == nil || dataDidFilter_Content[indexPath.row].elem?.location?.metadata?.display_data?.excludeFirstDay == false {
-                    dataDidFilter_Content[indexPath.row].elem?.location?.metadata?.display_data?.excludeFirstDay = true
+                if dicData[dateYMD[0]]?[indexPath.row].elem?.location?.metadata?.display_data?.excludeFirstDay == nil || dicData[dateYMD[0]]?[indexPath.row].elem?.location?.metadata?.display_data?.excludeFirstDay == false {
+                    dicData[dateYMD[0]]?[indexPath.row].elem?.location?.metadata?.display_data?.excludeFirstDay = true
                 }
-                delegateExclude_Replan?.check(isCustomer: dataDidFilter_Content[indexPath.row], indexDriver: selectedIdxDriver)
+                // listExclude.append((dicData[dateYMD[0]]?[indexPath.row])!)
+                delegateExclude_Replan?.check(isCustomer: (dicData[dateYMD[selectedIdxDate]]?[indexPath.row])!, indexDriver: selectedIdxDriver, indexDate: selectedIdxDate)
             }
             
         } else {
@@ -193,7 +242,7 @@ class ContentReplanController: UIViewController, UITableViewDataSource, UITableV
                 if dataDidFilter_Content[indexPath.row].elem?.location?.metadata?.display_data?.moveToFirstDay == true {
                     dataDidFilter_Content[indexPath.row].elem?.location?.metadata?.display_data?.moveToFirstDay = false
                 }
-                delegateContenReplant?.unselected(isCustomer: dataDidFilter_Content[indexPath.row], indexDate: selectedIdxDate)
+                delegateContenReplant?.unselected(isCustomer: (dicData[dateYMD[selectedIdxDate]]?[indexPath.row])!, indexDate: selectedIdxDate)
                 
             } else {
                 // click cell add
@@ -206,7 +255,7 @@ class ContentReplanController: UIViewController, UITableViewDataSource, UITableV
                 if dataDidFilter_Content[indexPath.row].elem?.location?.metadata?.display_data?.moveToFirstDay == nil || dataDidFilter_Content[indexPath.row].elem?.location?.metadata?.display_data?.moveToFirstDay == false {
                     dataDidFilter_Content[indexPath.row].elem?.location?.metadata?.display_data?.moveToFirstDay = true
                 }
-                delegateContenReplant?.passData(isCustomer: dataDidFilter_Content[indexPath.row],  indexDate: selectedIdxDate)
+                delegateContenReplant?.passData(isCustomer: (dicData[dateYMD[selectedIdxDate]]?[indexPath.row])!, indexDate: selectedIdxDate)
             }
         }
     }
