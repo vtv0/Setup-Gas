@@ -7,13 +7,16 @@
 
 import UIKit
 
+
 protocol MoveToFirstDayDelegateProtocol: AnyObject {
-    func passData(isCustomer: Location, indexDate: Int)
-    func unselected(isCustomer: Location, indexDate: Int)
+    func passData(isCustomer: Location, indexDate: Int, indexDriver: Int)
+    func unselected(isCustomer: Location, indexDate: Int, indexDriver: Int)
+ //   func passDicMoveToMini(indexDriver: Int, indexDate: Int, dataDicMoveTo: [Int: [Location]])
 }
 protocol ExcludeFirstDayDelegateProtocol: AnyObject {
-    func check(isCustomer: Location, indexDriver: Int, indexDate: Int)
-    func uncheck(isCustomer: Location, indexDriver: Int, indexDate: Int)
+   // func check(isCustomer: Location, indexDriver: Int, indexDate: Int)
+   // func uncheck(isCustomer: Location, indexDriver: Int, indexDate: Int)
+   
 }
 
 class ContentReplanController: UIViewController, UITableViewDataSource, UITableViewDelegate {
@@ -27,12 +30,16 @@ class ContentReplanController: UIViewController, UITableViewDataSource, UITableV
     var selectedIdxDriver = 0
     var selectedRows = [IndexPath]()
     
+    var isCustomer: Location = Location(elem: LocationElement(locationOrder: 0), asset: GetAsset())
+    
     var listExclude: [Location] = []
+    var dicMoveTo: [Int: [Location]] = [:]
     
     var dataDidFilter_Content: [Location] = []
     var arrAssetID: [String] = []
-    var isCustomer: Location = Location(elem: LocationElement(locationOrder: 0), asset: GetAsset())
+ 
     var dataIsCustomer: [Location] = []
+    var listMoveTo: [Location] = []
     var arrAssetIDDidSelected = [String]()
     
     
@@ -50,39 +57,61 @@ class ContentReplanController: UIViewController, UITableViewDataSource, UITableV
         //        if let dataDidFilter_Content = dicData[dateYMD[selectedIdxDate]] {
         //            self.dataDidFilter_Content = dataDidFilter_Content
         //        }
-        dataDidFilter_Content = getDataFiltered(date: dateYMD[selectedIdxDate], driver: selectedIdxDriver)
+//        dataDidFilter_Content = getDataFiltered(date: dateYMD[selectedIdxDate], driver: selectedIdxDriver) //  data goc
+        
+//        for idetailMoveTo in dicMoveTo {
+//            for ivalue in idetailMoveTo.value where ivalue.elem?.location?.metadata?.display_data?.moveToFirstDay != true {
+//                ivalue.elem?.location?.metadata?.display_data?.moveToFirstDay = true
+//            }
+//        }
+//
+//        for idetailMoveTo in dicMoveTo {
+//            for ivalue in idetailMoveTo.value  {
+//                print(ivalue.elem?.location?.metadata?.display_data?.moveToFirstDay)
+//            }
+//        }
+//
+//        if selectedIdxDate > 0 {
+//            for idetailMoveTo in dicMoveTo where idetailMoveTo.key == selectedIdxDate {
+//                dataDidFilter_Content.enumerated().forEach { ind, ivalue in
+//
+//                }
+//            }
+//        }
     }
     
-    func getDataFiltered(date: Date, driver: Int) -> [Location] {
-        var locationsByDriver: [Int: [Location]] = [:]
-        var elemLocationADay = dicData[date] ?? []
-        
-        var indxes = [Int]()
-        // chia ra xe trong 1 ngay
-        
-        if elemLocationADay.count > 0 && elemLocationADay[0].type == .supplier && elemLocationADay[0].elem?.locationOrder == 1 {
-            elemLocationADay.remove(at: 0)
-        }
-        indxes = []
-        elemLocationADay.enumerated().forEach { vehicleIdx, vehicle in
-            if (vehicle.type == .supplier) {
-                indxes.append(vehicleIdx)
-            }
-        }
-        indxes.enumerated().forEach { idx, item in
-            
-            if Array(elemLocationADay).count > 0 {
-                if idx == 0 && indxes[0] > 0 {
-                    locationsByDriver[idx] = Array(elemLocationADay[0...indxes[idx]])
-                } else if indxes[idx-1]+1 < indxes[idx] {
-                    locationsByDriver[idx] = Array(elemLocationADay[indxes[idx-1]+1...indxes[idx]])
-                }
-            }
-        }
-        self.selectedIdxDriver = driver
-        dataDidFilter_Content = locationsByDriver[driver] ?? []
-        return dataDidFilter_Content
-    }
+//    func getDataFiltered(date: Date, driver: Int) -> [Location] {
+//        var locationsByDriver: [Int: [Location]] = [:]
+//        var elemLocationADay = dicData[date] ?? []
+//
+//        var indxes = [Int]()
+//        // chia ra xe trong 1 ngay
+//
+//        if elemLocationADay.count > 0 && elemLocationADay[0].type == .supplier && elemLocationADay[0].elem?.locationOrder == 1 {
+//            elemLocationADay.remove(at: 0)
+//        }
+//        indxes = []
+//        elemLocationADay.enumerated().forEach { vehicleIdx, vehicle in
+//            if (vehicle.type == .supplier) {
+//                indxes.append(vehicleIdx)
+//            }
+//        }
+//        indxes.enumerated().forEach { idx, item in
+//
+//            if Array(elemLocationADay).count > 0 {
+//                if idx == 0 && indxes[0] > 0 {
+//                    locationsByDriver[idx] = Array(elemLocationADay[0...indxes[idx]])
+//                } else if indxes[idx-1]+1 < indxes[idx] {
+//                    locationsByDriver[idx] = Array(elemLocationADay[indxes[idx-1]+1...indxes[idx]])
+//                }
+//            }
+//        }
+//        self.selectedIdxDriver = driver
+//        dataDidFilter_Content = locationsByDriver[driver] ?? []
+//        return dataDidFilter_Content
+//    }
+    
+    
     //    func deleteRows() {
     //        if let selectedRows = myTableView.indexPathsForSelectedRows {
     //            // 1
@@ -211,11 +240,8 @@ class ContentReplanController: UIViewController, UITableViewDataSource, UITableV
                 // move_to_firstday = false
                 self.selectedRows.remove(at: self.selectedRows.firstIndex(of: indexPath)!)
                 cell.btnCheckbox.setImage(UIImage(named: "ic_check_off"), for: .normal)
-                if dicData[dateYMD[0]]?[indexPath.row].elem?.location?.metadata?.display_data?.excludeFirstDay == true {
-                    dicData[dateYMD[0]]?[indexPath.row].elem?.location?.metadata?.display_data?.excludeFirstDay = false
-                }
                 
-                delegateExclude_Replan?.uncheck(isCustomer: (dicData[dateYMD[selectedIdxDate]]?[indexPath.row])!, indexDriver: selectedIdxDriver, indexDate: selectedIdxDate)
+             //   delegateExclude_Replan?.uncheck(isCustomer: (dicData[dateYMD[selectedIdxDate]]?[indexPath.row])!, indexDriver: selectedIdxDriver, indexDate: selectedIdxDate)
                 
             } else {
                 // click cell add
@@ -225,11 +251,11 @@ class ContentReplanController: UIViewController, UITableViewDataSource, UITableV
                 
                 // chuyen move_to_firstday = true
                 // tao khi khong co properties: move_to_firstday
-                if dicData[dateYMD[0]]?[indexPath.row].elem?.location?.metadata?.display_data?.excludeFirstDay == nil || dicData[dateYMD[0]]?[indexPath.row].elem?.location?.metadata?.display_data?.excludeFirstDay == false {
-                    dicData[dateYMD[0]]?[indexPath.row].elem?.location?.metadata?.display_data?.excludeFirstDay = true
-                }
+                //                if dataDidFilter_Content[indexPath.row].elem?.location?.metadata?.display_data?.excludeFirstDay == nil || dataDidFilter_Content[indexPath.row].elem?.location?.metadata?.display_data?.excludeFirstDay == false {
+                //                    dataDidFilter_Content[indexPath.row].elem?.location?.metadata?.display_data?.excludeFirstDay = true
+                //                }
                 // listExclude.append((dicData[dateYMD[0]]?[indexPath.row])!)
-                delegateExclude_Replan?.check(isCustomer: (dicData[dateYMD[selectedIdxDate]]?[indexPath.row])!, indexDriver: selectedIdxDriver, indexDate: selectedIdxDate)
+             //   delegateExclude_Replan?.check(isCustomer: dataDidFilter_Content[indexPath.row], indexDriver: selectedIdxDriver, indexDate: selectedIdxDate)
             }
             
         } else {
@@ -237,26 +263,34 @@ class ContentReplanController: UIViewController, UITableViewDataSource, UITableV
             if self.selectedRows.contains(indexPath) {
                 // uncheck
                 self.selectedRows.remove(at: self.selectedRows.firstIndex(of: indexPath)!)
-                
                 cell.btnCheckbox.setImage(UIImage(named: "ic_check_off"), for: .normal)
-                if dataDidFilter_Content[indexPath.row].elem?.location?.metadata?.display_data?.moveToFirstDay == true {
-                    dataDidFilter_Content[indexPath.row].elem?.location?.metadata?.display_data?.moveToFirstDay = false
-                }
-                delegateContenReplant?.unselected(isCustomer: (dicData[dateYMD[selectedIdxDate]]?[indexPath.row])!, indexDate: selectedIdxDate)
                 
+                delegateContenReplant?.unselected(isCustomer: dataDidFilter_Content[indexPath.row], indexDate: selectedIdxDate, indexDriver: selectedIdxDriver)
+                
+//                if !listMoveTo.isEmpty {
+//                    listMoveTo.enumerated().forEach { ind, ilocation in
+//                        if ilocation == dataDidFilter_Content[indexPath.row] {
+//                            listMoveTo.remove(at: ind)
+//                        }
+//                    }
+//                }
+//                dicMoveTo.updateValue(listMoveTo, forKey: selectedIdxDate)
             } else {
                 // click cell add
-                // move_to_firstday = true
                 self.selectedRows.append(indexPath)
                 cell.btnCheckbox.setImage(UIImage(named: "ic_check_on"), for: .normal)
                 
                 // chuyen move_to_firstday = true
                 // tao khi khong co properties: move_to_firstday
-                if dataDidFilter_Content[indexPath.row].elem?.location?.metadata?.display_data?.moveToFirstDay == nil || dataDidFilter_Content[indexPath.row].elem?.location?.metadata?.display_data?.moveToFirstDay == false {
-                    dataDidFilter_Content[indexPath.row].elem?.location?.metadata?.display_data?.moveToFirstDay = true
-                }
-                delegateContenReplant?.passData(isCustomer: (dicData[dateYMD[selectedIdxDate]]?[indexPath.row])!, indexDate: selectedIdxDate)
+                //                if dataDidFilter_Content[indexPath.row].elem?.location?.metadata?.display_data?.moveToFirstDay == nil || dataDidFilter_Content[indexPath.row].elem?.location?.metadata?.display_data?.moveToFirstDay == false {
+                //                    dataDidFilter_Content[indexPath.row].elem?.location?.metadata?.display_data?.moveToFirstDay = true
+                //                }
+                 
+//                listMoveTo.append(dataDidFilter_Content[indexPath.row])
+//                dicMoveTo.updateValue(listMoveTo, forKey: selectedIdxDate)
+                delegateContenReplant?.passData(isCustomer: dataDidFilter_Content[indexPath.row], indexDate: selectedIdxDate, indexDriver: selectedIdxDriver)
             }
+//            delegateContenReplant?.passDicMoveToMini(indexDriver: selectedIdxDriver, indexDate: selectedIdxDate, dataDicMoveTo: dicMoveTo)
         }
     }
     
