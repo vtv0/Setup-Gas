@@ -341,7 +341,7 @@ extension ReplanController: UIPickerViewDelegate, UIPickerViewDataSource {
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         if pickerView == pickerDate {
             selectedIdxDriver = 0
-            listMoveToLocation.removeAll()
+            //            listMoveToLocation.removeAll()
             selectedIdxDate = row
             totalCellSelect = 0
             
@@ -374,20 +374,24 @@ extension ReplanController: MKMapViewDelegate {
         
         dataDidFilter_Replan = getDataFiltered(date: dateYMD[selectedIdxDate], driver: selectedIdxDriver)
         
-        for i in dataDidFilter_Replan  {
-            print(i.elem?.location?.metadata?.display_data?.moveToFirstDay  )
-        }
-        
-//        print(dicMoveTo)
-//        if selectedIdxDate > 0 {
-//            for idic in dicMoveTo {
-//                if idic.key == selectedIdxDate {
-//                    dataDidFilter_Replan = dataDidFilter_Replan.filter( { !idic.value.contains($0) } )
-//                }
-//            }
-//        } else if selectedIdxDate == 0 && (selectedIdxDriver + 1) == indxes.count {
-//            dataDidFilter_Replan.insert(contentsOf: listMoveToLocation, at: dataDidFilter_Replan.count)
+        // them vao xe cuoi cung cua ngay 1
+//        if selectedIdxDate == 0 {
+//            print(listMoveToLocation.count)
+//            dataDidFilter_Replan.insert(contentsOf: listExcludeLocation, at: dataDidFilter_Replan.count)
+//
 //        }
+
+        
+                print(dicMoveTo)
+                if selectedIdxDate > 0 {
+                    for idic in dicMoveTo {
+                        if idic.key == selectedIdxDate {
+                            dataDidFilter_Replan = dataDidFilter_Replan.filter( { !idic.value.contains($0) } )
+                        }
+                    }
+                } else if selectedIdxDate == 0 && (selectedIdxDriver + 1) == indxes.count {
+                    dataDidFilter_Replan.insert(contentsOf: listMoveToLocation, at: dataDidFilter_Replan.count)
+                }
         
         if dataDidFilter_Replan.count == 0  { // && locationDidSelected.count == 0
             lblType50kg.text = "\(0)"
@@ -398,19 +402,38 @@ extension ReplanController: MKMapViewDelegate {
             print("_______________________________________________________________________________Không có đơn hàng nào!")
             self.showAlert(message: "không có khách hàng nào")
         } else {
-            //            let dataDidFilter1 = dataDidFilter.sorted(by: { $0.elem?.locationOrder ?? 0 > $1.elem?.locationOrder ?? 0 })
-            for picker in dataDidFilter_Replan {
-                if ((picker.type == .customer  && picker.elem?.location?.metadata?.display_data?.excludeFirstDay !=  true) || (picker.type == .customer  && picker.elem?.location?.metadata?.display_data?.moveToFirstDay !=  true)) {
-                    
+            if listMoveToLocation.count > 0 || listExcludeLocation.count > 0 {
+                for picker in dataDidFilter_Replan {
+//                    print(picker.elem?.location?.metadata?.display_data?.moveToFirstDay)
+                    if picker.type == .customer  && picker.elem?.location?.metadata?.display_data?.excludeFirstDay !=  true && listExcludeLocation.count > 0 {
+                        
+                        if let lat = picker.elem?.latitude, let long = picker.elem?.longitude, let locationOrder = picker.elem?.locationOrder {
+                            //                    numberCustomer += 1
+                            let locationOfCustomer = CustomPin(title: locationOrder , coordinate: CLLocationCoordinate2D(latitude: lat, longitude: long))
+                            arrLocationOrder.append(locationOfCustomer.title)
+                            mapView.addAnnotation(locationOfCustomer)
+                        }
+                    } else if picker.type == .customer  && picker.elem?.location?.metadata?.display_data?.moveToFirstDay !=  true && listMoveToLocation.count > 0 {
+                        if let lat = picker.elem?.latitude, let long = picker.elem?.longitude, let locationOrder = picker.elem?.locationOrder {
+                            let locationOfCustomer = CustomPin(title: locationOrder , coordinate: CLLocationCoordinate2D(latitude: lat, longitude: long))
+                            arrLocationOrder.append(locationOfCustomer.title)
+                            mapView.addAnnotation(locationOfCustomer)
+                        }
+                    }
+                }
+                
+            } else {
+                for picker in dataDidFilter_Replan  {
                     if let lat = picker.elem?.latitude, let long = picker.elem?.longitude, let locationOrder = picker.elem?.locationOrder {
-                        //                    numberCustomer += 1
                         let locationOfCustomer = CustomPin(title: locationOrder , coordinate: CLLocationCoordinate2D(latitude: lat, longitude: long))
                         arrLocationOrder.append(locationOfCustomer.title)
                         mapView.addAnnotation(locationOfCustomer)
                     }
                 }
             }
+            
         }
+        listExcludeLocation.removeAll()
     }
     
     
@@ -479,8 +502,6 @@ extension ReplanController: MoveToFirstDayDelegateProtocol {
     // chọn trong table view cell
     func passData(isCustomer: Location, indexDate: Int, indexDriver: Int) {
         listMoveToLocation.append(isCustomer)
-        //        dicMoveTo.updateValue(listMoveToLocation, forKey: indexDate)
-        //        print(dicMoveTo)
     }
     // bỏ chọn trong table view cell
     func unselected(isCustomer: Location, indexDate: Int, indexDriver: Int) {
@@ -507,17 +528,24 @@ extension ReplanController: ClickOkDelegateProtocol {
             }
         }
         
-        for idetailMoveTo in dicMoveTo {
-            for ivalue in idetailMoveTo.value  {
-                print(ivalue.elem?.location?.metadata?.display_data?.moveToFirstDay)
-            }
-        }
+//        for idetailMoveTo in dicMoveTo {
+//            for ivalue in idetailMoveTo.value  {
+//                print(ivalue.elem?.location?.metadata?.display_data?.moveToFirstDay)
+//            }
+//        }
         
-        if selectedIdxDate > 0 {
-            for idetailMoveTo in dicMoveTo where idetailMoveTo.key == selectedIdxDate {
-                dataDidFilter_Replan = dataDidFilter_Replan.filter( { !idetailMoveTo.value.contains($0) })
-            }
-        }
+//        // them vao xe cuoi cung cua ngay 1
+//        if selectedIdxDate == 0 {
+//            print(listMoveToLocation.count)
+//            dataDidFilter_Replan.insert(contentsOf: listExcludeLocation, at: dataDidFilter_Replan.count)
+//
+//        }
+        
+        //        if selectedIdxDate > 0 {
+        //            for idetailMoveTo in dicMoveTo where idetailMoveTo.key == selectedIdxDate {
+        //                dataDidFilter_Replan = dataDidFilter_Replan.filter( { !idetailMoveTo.value.contains($0) })
+        //            }
+        //        }
         
         
         
@@ -537,8 +565,6 @@ extension ReplanController: ClickOkDelegateProtocol {
         //                        listMoveToFirstIsReplace.append(iLocation)
         //                    }
         
-        //        dicData[dateYMD[0]]?.insert(contentsOf: listMoveToFirstIsReplace, at: indexInsert - 1)
-        // duoc them khi la xe Cuoi cung
         
         
         // Exclude firstDay
@@ -579,7 +605,7 @@ extension ReplanController: ClickOkDelegateProtocol {
         contentVC2.delegateContenReplant = self
         contentVC2.delegateExclude_Replan = self
         
-      //  contentVC2.dicMoveTo = dicMoveTo
+        //  contentVC2.dicMoveTo = dicMoveTo
         contentVC2.dicData = dicData
         contentVC2.dateYMD = dateYMD
         contentVC2.selectedIdxDate = selectedIdxDate
