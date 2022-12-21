@@ -10,6 +10,8 @@ import FloatingPanel
 import Alamofire
 import MapKit
 
+
+
 class ReplanController: UIViewController, FloatingPanelControllerDelegate {
     
     let viewBtnAnimation = UIButton()
@@ -46,15 +48,13 @@ class ReplanController: UIViewController, FloatingPanelControllerDelegate {
         listMoveToLocation.removeAll()
         listExcludeLocation.removeAll()
         dicMoveTo.updateValue(listMoveToLocation, forKey: selectedIdxDate)
-        
-        
         let view = fpc.contentViewController as! ContentReplanController
-        
         view.myTableView.reloadData()
     }
     
     @IBOutlet weak var btnReplace: UIButton!
     @IBAction func btnReplace(_ sender: Any) {
+        
         
         if listMoveToLocation.count > 0 || listExcludeLocation.count > 0 {
             
@@ -64,6 +64,7 @@ class ReplanController: UIViewController, FloatingPanelControllerDelegate {
             
             destinationVC.selectedIdxDate = selectedIdxDate
             destinationVC.listMoveToLocation = listMoveToLocation
+            
             
             destinationVC.totalCellSelect = totalCellSelect
             destinationVC.totalNumberOfBottle = totalNumberOfBottle
@@ -116,6 +117,7 @@ class ReplanController: UIViewController, FloatingPanelControllerDelegate {
         mapView.setCamera(mapCamera, animated: false)
         reDrawMarkers()
         
+      
     }
     
     func floatingPanel() {
@@ -128,10 +130,11 @@ class ReplanController: UIViewController, FloatingPanelControllerDelegate {
         contentVC.dateYMD = dateYMD
         contentVC.selectedIdxDate = selectedIdxDate
         contentVC.selectedIdxDriver = selectedIdxDriver
+        contentVC.indxes = indxes
         
-        // contentVC.listMoveTo = listMoveToLocation
+        //        contentVC.listMoveTo = listMoveToLocation
+        
         //        print(dataDidFilter_Replan.count)
-        //        contentVC.dataDidFilter_Content = dataDidFilter_Replan
         //        contentVC.listExcludeLocation = listExcludeLocation
         //contentVC.arrAssetID = arrAssetID
         
@@ -249,7 +252,6 @@ class ReplanController: UIViewController, FloatingPanelControllerDelegate {
             //  view.addSubview(viewBtnAnimation)
             
         }
-        
     }
     
     enum quantityOfEachType {
@@ -266,7 +268,6 @@ class ReplanController: UIViewController, FloatingPanelControllerDelegate {
         var numberType25: Int = 0
         var numberType20: Int = 0
         var numberTypeOther: Int = 0
-        
         
         arrFacilityData.removeAll()
         for facilityData in dataDidFilter_Replan {
@@ -322,7 +323,7 @@ extension ReplanController: UIPickerViewDelegate, UIPickerViewDataSource {
     }
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         if pickerView == pickerDriver {
-            if listExcludeLocation.count == 0 {
+            if listExcludeLocation.count == 0 || listMoveToLocation.count > 0 {
                 return car[row]
             } else {
                 return car[row] + remove[0]
@@ -374,25 +375,31 @@ extension ReplanController: MKMapViewDelegate {
         
         dataDidFilter_Replan = getDataFiltered(date: dateYMD[selectedIdxDate], driver: selectedIdxDriver)
         
-        // them vao xe cuoi cung cua ngay 1
-//        if selectedIdxDate == 0 {
-//            print(listMoveToLocation.count)
-//            dataDidFilter_Replan.insert(contentsOf: listExcludeLocation, at: dataDidFilter_Replan.count)
-//
-//        }
-
         
-                print(dicMoveTo)
-                if selectedIdxDate > 0 {
-                    for idic in dicMoveTo {
-                        if idic.key == selectedIdxDate {
-                            dataDidFilter_Replan = dataDidFilter_Replan.filter( { !idic.value.contains($0) } )
-                        }
-                    }
-                } else if selectedIdxDate == 0 && (selectedIdxDriver + 1) == indxes.count {
-                    dataDidFilter_Replan.insert(contentsOf: listMoveToLocation, at: dataDidFilter_Replan.count)
+        //kiem tra xem du lieu goc co bi bien doi khong
+        for i in dicData {
+            if i.key == dateYMD[1] {
+                for ivalue in i.value {
+                    print(ivalue.elem?.location?.metadata?.display_data?.moveToFirstDay)
                 }
+            }
+        }
+     
+        if selectedIdxDate == 0 {
+            print(listMoveToLocation.count)
+            dataDidFilter_Replan.insert(contentsOf: listExcludeLocation, at: dataDidFilter_Replan.count)
+
+        }
         
+        //        print(dicMoveTo)
+        //        if selectedIdxDate > 0 {
+        //            for idic in dicMoveTo {
+        //                if idic.key == selectedIdxDate {
+        //                    dataDidFilter_Replan = dataDidFilter_Replan.filter( { !idic.value.contains($0) } )
+        //                }
+        //            }
+        //        } else
+      
         if dataDidFilter_Replan.count == 0  { // && locationDidSelected.count == 0
             lblType50kg.text = "\(0)"
             lblType30kg.text = "\(0)"
@@ -404,7 +411,7 @@ extension ReplanController: MKMapViewDelegate {
         } else {
             if listMoveToLocation.count > 0 || listExcludeLocation.count > 0 {
                 for picker in dataDidFilter_Replan {
-//                    print(picker.elem?.location?.metadata?.display_data?.moveToFirstDay)
+                    //                    print(picker.elem?.location?.metadata?.display_data?.moveToFirstDay)
                     if picker.type == .customer  && picker.elem?.location?.metadata?.display_data?.excludeFirstDay !=  true && listExcludeLocation.count > 0 {
                         
                         if let lat = picker.elem?.latitude, let long = picker.elem?.longitude, let locationOrder = picker.elem?.locationOrder {
@@ -413,12 +420,21 @@ extension ReplanController: MKMapViewDelegate {
                             arrLocationOrder.append(locationOfCustomer.title)
                             mapView.addAnnotation(locationOfCustomer)
                         }
-                    } else if picker.type == .customer  && picker.elem?.location?.metadata?.display_data?.moveToFirstDay !=  true && listMoveToLocation.count > 0 {
-                        if let lat = picker.elem?.latitude, let long = picker.elem?.longitude, let locationOrder = picker.elem?.locationOrder {
-                            let locationOfCustomer = CustomPin(title: locationOrder , coordinate: CLLocationCoordinate2D(latitude: lat, longitude: long))
-                            arrLocationOrder.append(locationOfCustomer.title)
-                            mapView.addAnnotation(locationOfCustomer)
+                    } else if picker.type == .customer && listMoveToLocation.count > 0 {
+                        if selectedIdxDate > 0 && picker.elem?.location?.metadata?.display_data?.moveToFirstDay != true {
+                            if let lat = picker.elem?.latitude, let long = picker.elem?.longitude, let locationOrder = picker.elem?.locationOrder {
+                                let locationOfCustomer = CustomPin(title: locationOrder , coordinate: CLLocationCoordinate2D(latitude: lat, longitude: long))
+                                arrLocationOrder.append(locationOfCustomer.title)
+                                mapView.addAnnotation(locationOfCustomer)
+                            }
+                        } else if selectedIdxDate == 0 {
+                            if let lat = picker.elem?.latitude, let long = picker.elem?.longitude, let locationOrder = picker.elem?.locationOrder {
+                                let locationOfCustomer = CustomPin(title: locationOrder , coordinate: CLLocationCoordinate2D(latitude: lat, longitude: long))
+                                arrLocationOrder.append(locationOfCustomer.title)
+                                mapView.addAnnotation(locationOfCustomer)
+                            }
                         }
+                        
                     }
                 }
                 
@@ -433,7 +449,7 @@ extension ReplanController: MKMapViewDelegate {
             }
             
         }
-        listExcludeLocation.removeAll()
+        //        listMoveToLocation.removeAll()
     }
     
     
@@ -477,9 +493,9 @@ extension ReplanController: MKMapViewDelegate {
 
 extension ReplanController: ExcludeFirstDayDelegateProtocol {
     
-    func passDicMoveToMini(indexDriver: Int, indexDate: Int, dataDicMoveTo: [Int : [Location]]) {
-        print(dataDicMoveTo)
-    }
+//    func passDicMoveToMini(indexDriver: Int, indexDate: Int, dataDicMoveTo: [Int : [Location]]) {
+//        print(dataDicMoveTo)
+//    }
     
     func check(isCustomer: Location, indexDriver: Int, indexDate: Int) {
         listExcludeLocation.append(isCustomer)
@@ -503,6 +519,7 @@ extension ReplanController: MoveToFirstDayDelegateProtocol {
     func passData(isCustomer: Location, indexDate: Int, indexDriver: Int) {
         listMoveToLocation.append(isCustomer)
     }
+    
     // bỏ chọn trong table view cell
     func unselected(isCustomer: Location, indexDate: Int, indexDriver: Int) {
         if !listMoveToLocation.isEmpty {
@@ -519,9 +536,10 @@ extension ReplanController: MoveToFirstDayDelegateProtocol {
 
 extension ReplanController: ClickOkDelegateProtocol {
     func clickOk(dicMoveTo: [Int : [Location]]) {
-        print(dicMoveTo)
+      
         // bien doi move to first == true
         // ngay > 0
+        
         for idetailMoveTo in dicMoveTo {
             for ivalue in idetailMoveTo.value where ivalue.elem?.location?.metadata?.display_data?.moveToFirstDay != true {
                 ivalue.elem?.location?.metadata?.display_data?.moveToFirstDay = true
@@ -534,12 +552,12 @@ extension ReplanController: ClickOkDelegateProtocol {
 //            }
 //        }
         
-//        // them vao xe cuoi cung cua ngay 1
-//        if selectedIdxDate == 0 {
-//            print(listMoveToLocation.count)
-//            dataDidFilter_Replan.insert(contentsOf: listExcludeLocation, at: dataDidFilter_Replan.count)
-//
-//        }
+        // them vao xe cuoi cung cua ngay 1
+        if selectedIdxDate == 0 {
+            print(listMoveToLocation.count)
+            dataDidFilter_Replan.insert(contentsOf: listExcludeLocation, at: dataDidFilter_Replan.count)
+
+        }
         
         //        if selectedIdxDate > 0 {
         //            for idetailMoveTo in dicMoveTo where idetailMoveTo.key == selectedIdxDate {
@@ -558,19 +576,6 @@ extension ReplanController: ClickOkDelegateProtocol {
         // dicDataReplan.updateValue(locationDidSelected, forKey: dateYMD[0])
         // move to firstDay
         
-        //                if let indexInsert = dicData[dateYMD[0]]?.count {
-        //                    var listMoveToFirstIsReplace = [Location]()
-        //                    for iLocation in locationDidSelected where iLocation.elem?.location?.metadata?.display_data?.moveToFirstDay == true {
-        //                     iLocation.elem?.location?.metadata?.display_data?.moveToFirstDay = false
-        //                        listMoveToFirstIsReplace.append(iLocation)
-        //                    }
-        
-        
-        
-        // Exclude firstDay
-        //        let arrayRemaining = dicData[dateYMD[0]]?.filter( { !listExcludeLocation.contains($0) } )
-        //        dicData[dateYMD[0]] = arrayRemaining
-        //        pickerDriver.reloadAllComponents()
         
         
         // ve lai marker
@@ -599,32 +604,34 @@ extension ReplanController: ClickOkDelegateProtocol {
             }
         }
         
-        
         // locationDidSelected.removeAll()
-        guard let contentVC2 = storyboard?.instantiateViewController(withIdentifier: "ContentReplanController") as? ContentReplanController else { return }
-        contentVC2.delegateContenReplant = self
-        contentVC2.delegateExclude_Replan = self
-        
-        //  contentVC2.dicMoveTo = dicMoveTo
-        contentVC2.dicData = dicData
-        contentVC2.dateYMD = dateYMD
-        contentVC2.selectedIdxDate = selectedIdxDate
-        contentVC2.selectedIdxDriver = selectedIdxDriver
-        contentVC2.dataDidFilter_Content = dataDidFilter_Replan
-        
-        fpc.contentMode = .fitToBounds
-        fpc.set(contentViewController: contentVC2)
-        fpc.addPanel(toParent: self)
+//        guard let contentVC2 = storyboard?.instantiateViewController(withIdentifier: "ContentReplanController") as? ContentReplanController else { return }
+//        contentVC2.delegateContenReplant = self
+//        contentVC2.delegateExclude_Replan = self
+//
+//        //  contentVC2.dicMoveTo = dicMoveTo
+//        contentVC2.dicData = dicData
+//        contentVC2.dateYMD = dateYMD
+//        contentVC2.selectedIdxDate = selectedIdxDate
+//        contentVC2.selectedIdxDriver = selectedIdxDriver
+//        contentVC2.dataDidFilter_Content = dataDidFilter_Replan
+//        contentVC2.indxes = indxes
+//
+//        //        contentVC2.listMoveTo = listMoveToLocation
+//
+//        fpc.contentMode = .fitToBounds
+//        fpc.set(contentViewController: contentVC2)
+//        fpc.addPanel(toParent: self)
         
         //        contentVC.listMoveTo = locationDidSelected
         //        print(dataDidFilter_Replan.count)
-        //        contentVC.dataDidFilter_Content = dataDidFilter_Replan
         //        contentVC.listExcludeLocation = listExcludeLocation
         //contentVC.arrAssetID = arrAssetID
         
         
         // listExcludeLocation.removeAll()
         //   dataDidFilter_Replan.removeAll()
+        self.floatingPanel()
     }
     
     

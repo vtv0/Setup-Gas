@@ -13,7 +13,7 @@ protocol ClickOkDelegateProtocol: AnyObject {
 }
 
 class CustomAlertReplanVC: UIViewController {
-
+    
     
     weak var delegateClickOK: ClickOkDelegateProtocol?
     
@@ -33,20 +33,22 @@ class CustomAlertReplanVC: UIViewController {
     @IBOutlet weak var txt_displayInfomation: UITextView!
     
     @IBAction func btnCancel(_ sender: Any) {
-        
+        listMoveToLocation.removeAll()
         dismiss(animated: false)
     }
     @IBAction func btnOK(_ sender: Any) {
         dismiss(animated: false)
-       
         delegateClickOK?.clickOk(dicMoveTo: dicMoveTo)
     }
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         viewAlert.layer.cornerRadius = 10
         viewAlert.layer.masksToBounds = true
+       
         
+        //tao Dictionary MoveToFirstDay
         dicMoveTo.updateValue(listMoveToLocation, forKey: selectedIdxDate)
         
         
@@ -61,7 +63,7 @@ class CustomAlertReplanVC: UIViewController {
             
         } else {
             
-        // chuyển điểm hàng từ ngày sau về ngày đầu -> số lượng tăng
+            // chuyển điểm hàng từ ngày sau về ngày đầu -> số lượng tăng
             txt_displayInfomation.text = "\( """
                                     ※ 選択された配送先は初日の配送へ移動されます。 移動した配送先は計画に残りますが、次回計画作成時に除外されます。\n
                                     ※ 初日分の計画再作成には時間がかかります。 再作成後は配送順が変更となります。 別途当日内で入れ替えを実施してください。
@@ -72,5 +74,5 @@ class CustomAlertReplanVC: UIViewController {
             
         }
     }
-
+    
 }

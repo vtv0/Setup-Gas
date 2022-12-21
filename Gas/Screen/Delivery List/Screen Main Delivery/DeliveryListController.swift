@@ -146,7 +146,7 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         
         mapView.setCamera(mapCamera, animated: false)
         
-        
+        getWorkerVehicleList()
     }
     
     func showAlert(title: String? = "", message: String?, completion: (() -> Void)? = nil) {
@@ -201,6 +201,9 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
             }
     }
     
+    
+    
+    
     func getLatestWorkerRouteLocationList() {
         let token = UserDefaults.standard.string(forKey: "accessToken") ?? ""
         let formatter = DateFormatter()
@@ -231,7 +234,7 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
                                         
                                     }
                                 } else {
-                             
+                                    
                                     print("No assetID -> Supplier")
                                 }
                             }
@@ -260,10 +263,34 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
     }
     
     
+    func getWorkerVehicleList() {
+        let token = UserDefaults.standard.string(forKey: "accessToken") ?? ""
+        let url = "https://\(companyCode).kiiapps.com/am/exapi/vrp/tenants/\(tenantId)/worker-vehicles"
+        AF.request(url, method: .get, encoding: JSONEncoding.default, headers: self.makeHeaders(token: token)) .validate(statusCode: (200...299))
+            .responseDecodable(of: WorkerVehicleList.self) { response in
+                print(response.response?.statusCode)
+                switch response.result {
+                case .success(let value):
+                    let ivalue = value
+                    print(ivalue)
+                    
+                case .failure(let error):
+                 print(error)
+                }
+            }
+        
+    }
+    
+    
+    func GetRouteList() {
+        let url =  "https://\(companyCode).kiiapps.com/am/exapi/vrp/tenants/\(tenantId)/routes?zoneID=&areaCriteria={{areaID}}&pageSize=&pageToken="
+        AF.request(url, method: .get, encoding: JSONEncoding.default )
+    }
+    
     func getGetAsset(forAsset iassetID: String, completion: @escaping ((GetAsset?) -> Void)) {
         let token = UserDefaults.standard.string(forKey: "accessToken") ?? ""
         let urlGetAsset = "https://\(companyCode).kiiapps.com/am/api/assets/\(iassetID)"
-        AF.request(urlGetAsset,method: .get, parameters: nil, headers: self.makeHeaders(token: token))
+        AF.request(urlGetAsset, method: .get, parameters: nil, headers: self.makeHeaders(token: token))
             .responseDecodable(of: GetAsset.self ) { response1 in
                 switch response1.result {
                 case .success( let value):
@@ -418,7 +445,7 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         var numberType20: Int = 0
         var numberTypeOther: Int = 0
         
-       
+        
         for facilityData in dataDidFilter {
             arrFacilityData.append(facilityData.elem?.metadata?.facility_data ?? [])
         }
@@ -426,20 +453,20 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         for iFacilityData in arrFacilityData {
             
             for detailFacilityData in iFacilityData {
-//                print(detailFacilityData)
-//                var size = quantityOfEachType.lblType50kg
-//                switch (size) {
-//                case .lblType50kg:
-//                    numberType50 = numberType50 + (detailFacilityData.count ?? 0)
-//                case .lblType30kg:
-//                    numberType30 = numberType30 + (detailFacilityData.count ?? 0)
-//                case .lblType25kg:
-//                    numberType25 = numberType25 + (detailFacilityData.count ?? 0)
-//                case .lblType20kg:
-//                    numberType20 = numberType20 + (detailFacilityData.count ?? 0)
-//                case .lblTypeOther:
-//                    numberTypeOther = numberTypeOther + (detailFacilityData.count ?? 0)
-//                }
+                //                print(detailFacilityData)
+                //                var size = quantityOfEachType.lblType50kg
+                //                switch (size) {
+                //                case .lblType50kg:
+                //                    numberType50 = numberType50 + (detailFacilityData.count ?? 0)
+                //                case .lblType30kg:
+                //                    numberType30 = numberType30 + (detailFacilityData.count ?? 0)
+                //                case .lblType25kg:
+                //                    numberType25 = numberType25 + (detailFacilityData.count ?? 0)
+                //                case .lblType20kg:
+                //                    numberType20 = numberType20 + (detailFacilityData.count ?? 0)
+                //                case .lblTypeOther:
+                //                    numberTypeOther = numberTypeOther + (detailFacilityData.count ?? 0)
+                //                }
                 
                 if detailFacilityData.type == 50 {
                     numberType50 = numberType50 + (detailFacilityData.count ?? 0)

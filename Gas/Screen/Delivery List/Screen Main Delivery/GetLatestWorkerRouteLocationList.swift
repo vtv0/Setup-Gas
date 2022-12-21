@@ -6,7 +6,7 @@
 
 import UIKit
 
-class Location: NSObject {
+class Location: NSObject, NSCopying {
     var type: LocationType {
         if elem?.location?.assetID == nil {
             return .supplier
@@ -26,14 +26,29 @@ class Location: NSObject {
         case customer = "customer"
         case supplier = "supplier"
     }
+    
+    // clone Location
+    func copy(with zone: NSZone? = nil) -> Any {
+        let copy = Location(elem: LocationElement(locationOrder: 0), asset: GetAsset())
+        return copy
+    }
+    
 }
 
-
-
 // MARK: - GetLatestWorkerRouteLocationListInfo
-class GetLatestWorkerRouteLocationListInfo: NSObject, Decodable {
+class GetLatestWorkerRouteLocationListInfo: NSObject, Decodable, NSCopying {
+    func copy(with zone: NSZone? = nil) -> Any {
+        let copy = GetLatestWorkerRouteLocationListInfo()
+        return copy
+    }
+    
     var locations: [LocationElement]?
     var workerRoute: WorkerRoute?
+    
+    init(locations: [LocationElement]? = nil, workerRoute: WorkerRoute? = nil) {
+        self.locations = locations
+        self.workerRoute = workerRoute
+    }
 }
 
 // MARK: - LocationElement
