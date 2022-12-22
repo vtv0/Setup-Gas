@@ -43,18 +43,17 @@ class ContentReplanController: UIViewController, UITableViewDataSource, UITableV
     var listMoveTo: [Location] = []
     var listExcludeLocation = [Location]()
     
+    var arrIsCustomer = [Location]()
     @IBOutlet weak var myTableView: UITableView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        for iCustomer in dataDidFilter_Content where iCustomer.type == .customer {
+            arrIsCustomer.append(iCustomer)
+        }
         myTableView.dataSource = self
         myTableView.delegate = self
-    
         
-        for i in dataDidFilter_Content {
-            print(i.elem?.location?.metadata?.display_data?.moveToFirstDay  )
-        }
         
         
     }
@@ -109,7 +108,7 @@ class ContentReplanController: UIViewController, UITableViewDataSource, UITableV
         //        } else {
         //            return dataDidFilter_Content.count - 1
         //        }
-        return dataDidFilter_Content.count - 1
+        return arrIsCustomer.count
     }
     
     

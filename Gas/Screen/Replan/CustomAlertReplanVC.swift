@@ -9,7 +9,7 @@ import UIKit
 
 
 protocol ClickOkDelegateProtocol: AnyObject {
-    func clickOk(dicMoveTo: [Int: [Int: [Location]]], dicExclude: [Int: [Int: [Location]]])
+    func clickOk(dicMoveTo: [Int: [Int: [Location]]], dicExclude: [Int: [Int: [Location]]], backList: [Location])
 }
 
 class CustomAlertReplanVC: UIViewController {
@@ -27,10 +27,13 @@ class CustomAlertReplanVC: UIViewController {
     var selectedIdxDriver = 0
     var dicExcludeOfDriver: [Int: [Location]] = [:]
     var dicExcludeOfDate: [Int: [Int: [Location]]]  = [:]
-    
+   
     var dicMoveToOFDRV = [Int: [Location]]()
     var dicMoveTo = [Int: [Int: [Location]]]()
 
+    var arrLocationRemoveISTrue = [Location]()  // danh sach quay lai
+    
+    var numberGasAdd: Int = 0  // so luong binh chon de them 
     
     @IBOutlet weak var viewAlert: UIView!
     @IBOutlet weak var lbl_number: UILabel!
@@ -45,9 +48,8 @@ class CustomAlertReplanVC: UIViewController {
     }
     @IBAction func btnOK(_ sender: Any) {
         dismiss(animated: false)
-        delegateClickOK?.clickOk(dicMoveTo: dicMoveTo, dicExclude: dicExcludeOfDate)
+        delegateClickOK?.clickOk(dicMoveTo: dicMoveTo, dicExclude: dicExcludeOfDate, backList: arrLocationRemoveISTrue)
     }
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -66,7 +68,29 @@ class CustomAlertReplanVC: UIViewController {
         // tao dic [Int: [Int: [Location]]] key == ind Date
         dicExcludeOfDate.updateValue(dicExcludeOfDriver, forKey: selectedIdxDate)
         
+        calculateTheNumberOfGas()
+       
+    }
+    
+    func calculateTheNumberOfGas() {
+        // number of Bottle added
+        print(listMoveToLocation)
         
+        for i in listMoveToLocation {
+            if let facility_dataDetail = i.elem?.metadata?.facility_data {
+                for inumber in facility_dataDetail {
+                    numberGasAdd += inumber.count ?? 0
+                }
+            }
+            
+        }
+        print(numberGasAdd)
+        
+        ShowInfomationOfAlert()
+    }
+    
+    
+    func ShowInfomationOfAlert() {
         // loại bỏ điểm giao hàng ngày đầu tiên -> số lượng giảm
         if ( selectedIdxDate == 0) {
             txt_displayInfomation.text = "\( """
@@ -84,10 +108,10 @@ class CustomAlertReplanVC: UIViewController {
                                     ※ 初日分の計画再作成には時間がかかります。 再作成後は配送順が変更となります。 別途当日内で入れ替えを実施してください。
                                     """ )"
             
-            lbl_number.text = "\(totalNumberOfBottle)Bottle -> \(totalNumberOfBottle + totalCellSelect)Bottle"
+            lbl_number.text = "\(totalNumberOfBottle)Bottle -> \(totalNumberOfBottle + numberGasAdd)Bottle"
             lbl_changeType.text = "\(date) Add"
             
         }
+
     }
-    
 }
