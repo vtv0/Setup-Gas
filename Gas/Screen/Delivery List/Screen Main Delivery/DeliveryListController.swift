@@ -322,12 +322,19 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         return 0
     }
     
-    var car: [String] = ["Car1", "Car2", "Car3", "Car4", "Car5", "Car6", "Car7", "Car8", "Car9"]
+   
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         if pickerView == pickerStatus {
             return statusDelivery[row]
         } else if pickerView == pickerDriver {
-            return car[row]
+            var arrCar: [String] = []
+            if indxes.count > 0 {
+                for (ind, _) in indxes.enumerated() {
+                    arrCar.append("Car\(ind + 1)")
+                }
+                return arrCar[row]
+            }
+            return "Car1"
         } else if pickerView == pickerDate {
             let formatter = DateFormatter()
             formatter.dateFormat = "MM/dd"

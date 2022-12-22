@@ -9,22 +9,28 @@ import UIKit
 
 
 protocol ClickOkDelegateProtocol: AnyObject {
-    func clickOk(dicMoveTo: [Int: [Location]])
+    func clickOk(dicMoveTo: [Int: [Int: [Location]]], dicExclude: [Int: [Int: [Location]]])
 }
 
 class CustomAlertReplanVC: UIViewController {
-    
-    
     weak var delegateClickOK: ClickOkDelegateProtocol?
-    
-    var dicMoveTo: [Int: [Location]] = [:]
+    // Exclude
+    var arrLocationRemove: [Location] = []
     var listMoveToLocation: [Location] = []
     
     var date: String = ""
     var totalNumberOfBottle: Int = 0
     var totalCellSelect: Int = 0
     var displayInfomation: String = ""
+    
     var selectedIdxDate = 0
+    var selectedIdxDriver = 0
+    var dicExcludeOfDriver: [Int: [Location]] = [:]
+    var dicExcludeOfDate: [Int: [Int: [Location]]]  = [:]
+    
+    var dicMoveToOFDRV = [Int: [Location]]()
+    var dicMoveTo = [Int: [Int: [Location]]]()
+
     
     @IBOutlet weak var viewAlert: UIView!
     @IBOutlet weak var lbl_number: UILabel!
@@ -34,11 +40,12 @@ class CustomAlertReplanVC: UIViewController {
     
     @IBAction func btnCancel(_ sender: Any) {
         listMoveToLocation.removeAll()
+        arrLocationRemove.removeAll()
         dismiss(animated: false)
     }
     @IBAction func btnOK(_ sender: Any) {
         dismiss(animated: false)
-        delegateClickOK?.clickOk(dicMoveTo: dicMoveTo)
+        delegateClickOK?.clickOk(dicMoveTo: dicMoveTo, dicExclude: dicExcludeOfDate)
     }
     
     
@@ -46,10 +53,18 @@ class CustomAlertReplanVC: UIViewController {
         super.viewDidLoad()
         viewAlert.layer.cornerRadius = 10
         viewAlert.layer.masksToBounds = true
-       
         
-        //tao Dictionary MoveToFirstDay
-        dicMoveTo.updateValue(listMoveToLocation, forKey: selectedIdxDate)
+        // tao Dictionary MoveToFirstDay
+        dicMoveToOFDRV.updateValue(listMoveToLocation, forKey: selectedIdxDriver)
+        // tao dicMoveTo
+        dicMoveTo.updateValue(dicMoveToOFDRV, forKey: selectedIdxDate)
+        
+        
+        // tao dictionary voi key == ind Driver
+        dicExcludeOfDriver.updateValue(arrLocationRemove, forKey: selectedIdxDriver)
+         
+        // tao dic [Int: [Int: [Location]]] key == ind Date
+        dicExcludeOfDate.updateValue(dicExcludeOfDriver, forKey: selectedIdxDate)
         
         
         // loại bỏ điểm giao hàng ngày đầu tiên -> số lượng giảm
