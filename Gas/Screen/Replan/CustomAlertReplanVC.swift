@@ -27,13 +27,14 @@ class CustomAlertReplanVC: UIViewController {
     var selectedIdxDriver = 0
     var dicExcludeOfDriver: [Int: [Location]] = [:]
     var dicExcludeOfDate: [Int: [Int: [Location]]]  = [:]
-   
+    
     var dicMoveToOFDRV = [Int: [Location]]()
     var dicMoveTo = [Int: [Int: [Location]]]()
-
+    
     var arrLocationRemoveISTrue = [Location]()  // danh sach quay lai
     
-    var numberGasAdd: Int = 0  // so luong binh chon de them 
+    var numberGasAdd: Int = 0  // so luong binh chon de them
+    var indxes = [Int]()
     
     @IBOutlet weak var viewAlert: UIView!
     @IBOutlet weak var lbl_number: UILabel!
@@ -44,6 +45,7 @@ class CustomAlertReplanVC: UIViewController {
     @IBAction func btnCancel(_ sender: Any) {
         listMoveToLocation.removeAll()
         arrLocationRemove.removeAll()
+        arrLocationRemoveISTrue.removeAll()
         dismiss(animated: false)
     }
     @IBAction func btnOK(_ sender: Any) {
@@ -56,6 +58,8 @@ class CustomAlertReplanVC: UIViewController {
         viewAlert.layer.cornerRadius = 10
         viewAlert.layer.masksToBounds = true
         
+        print(arrLocationRemoveISTrue)  // ds Remove -> ban dau
+        
         // tao Dictionary MoveToFirstDay
         dicMoveToOFDRV.updateValue(listMoveToLocation, forKey: selectedIdxDriver)
         // tao dicMoveTo
@@ -64,42 +68,50 @@ class CustomAlertReplanVC: UIViewController {
         
         // tao dictionary voi key == ind Driver
         dicExcludeOfDriver.updateValue(arrLocationRemove, forKey: selectedIdxDriver)
-         
+        
         // tao dic [Int: [Int: [Location]]] key == ind Date
         dicExcludeOfDate.updateValue(dicExcludeOfDriver, forKey: selectedIdxDate)
         
         calculateTheNumberOfGas()
-       
+        
+        
+        
+        
     }
     
     func calculateTheNumberOfGas() {
         // number of Bottle added
-        print(listMoveToLocation)
-        
         for i in listMoveToLocation {
             if let facility_dataDetail = i.elem?.metadata?.facility_data {
                 for inumber in facility_dataDetail {
                     numberGasAdd += inumber.count ?? 0
                 }
             }
-            
         }
-        print(numberGasAdd)
-        
         ShowInfomationOfAlert()
     }
     
-    
     func ShowInfomationOfAlert() {
         // loại bỏ điểm giao hàng ngày đầu tiên -> số lượng giảm
-        if ( selectedIdxDate == 0) {
-            txt_displayInfomation.text = "\( """
+        if selectedIdxDate == 0 {
+            
+            if  selectedIdxDriver + 1 == indxes.count + 1 {
+                // chuyển điểm hàng từ DS REMOVE -> ban đầu (Ngày 1)
+                txt_displayInfomation.text = "\( """
+                                       ※ 選択された配送先は初日の配送へ移動されます。 移動した配送先は計画に残りますが、次回計画作成時に除外されます。\n
+                                       ※ 初日分の計画再作成には時間がかかります。 再作成後は配送順が変更となります。 別途当日内で入れ替えを実施してください。
+                                       """ )"
+                
+                lbl_number.text = "\(totalNumberOfBottle)Bottle -> \(totalNumberOfBottle + numberGasAdd)Bottle"
+                lbl_changeType.text = "\(date) Add (Remove -> Date1)"
+            } else {
+                txt_displayInfomation.text = "\( """
                                     ※ 選択された配送先は初日の配送へ移動されます。\n移動した配送先は計画に残りますが、次回計画作成時に除外されます。
                                     ※ 再作成後は配送順が変更となります (ngày hôm nay sang hôm sau)
                                     """ )"
-            lbl_number.text = "\(totalNumberOfBottle)Bottle -> \(totalNumberOfBottle - totalCellSelect)Bottle"
-            lbl_changeType.text = "\(date) Remove"
-            
+                lbl_number.text = "\(totalNumberOfBottle)Bottle -> \(totalNumberOfBottle - totalCellSelect)Bottle"
+                lbl_changeType.text = "\(date) Remove"
+            }
         } else {
             
             // chuyển điểm hàng từ ngày sau về ngày đầu -> số lượng tăng
@@ -112,6 +124,6 @@ class CustomAlertReplanVC: UIViewController {
             lbl_changeType.text = "\(date) Add"
             
         }
-
+        
     }
 }

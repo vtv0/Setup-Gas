@@ -174,7 +174,7 @@ class PurpleMetadata: NSObject, Codable {
 class DisplayData: NSObject, Codable {
     var delivery_history: [String: String]?
     var origin_route_id: Int?
-    var excludeFirstDay: Bool?
+    var excludeFirstDay: Bool? = false
     var moveToFirstDay: Bool? = false
     
     init(delivery_history: [String : String]? = nil, origin_route_id: Int? = nil, excludeFirstDay: Bool? = false, moveToFirstDay: Bool? = false) {
