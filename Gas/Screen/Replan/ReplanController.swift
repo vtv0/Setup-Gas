@@ -191,10 +191,8 @@ class ReplanController: UIViewController, FloatingPanelControllerDelegate {
         return dataDidFilter_Replan
     }
     
-    
-    
     // create button with code
-    func createViewBtnAnimation () {
+    func createViewBtnAnimation() {
         viewAnimation.isHidden = false
         viewBtnAnimation.backgroundColor = .white
         viewBtnAnimation.addTarget(self, action: #selector(clickBtn), for: .touchUpInside)
@@ -208,11 +206,8 @@ class ReplanController: UIViewController, FloatingPanelControllerDelegate {
         view.addConstraints([verticalConstraint, widthConstraint, heightConstraint])
     }
     
-    
     @objc func clickBtn() {
-        
         status = !status
-        
         //let horizontalConstraint = NSLayoutConstraint(item: viewBtnAnimation, attribute: NSLayoutConstraint.Attribute.leading , relatedBy: NSLayoutConstraint.Relation.equal, toItem: viewAnimation, attribute: NSLayoutConstraint.Attribute.centerX, multiplier: 1, constant: 0)
         let verticalConstraint = NSLayoutConstraint(item: viewBtnAnimation, attribute: NSLayoutConstraint.Attribute.top, relatedBy: NSLayoutConstraint.Relation.equal, toItem: viewAnimation, attribute: NSLayoutConstraint.Attribute.bottom, multiplier: 1, constant: 0)
         let widthConstraint = NSLayoutConstraint(item: viewBtnAnimation, attribute: NSLayoutConstraint.Attribute.width, relatedBy: NSLayoutConstraint.Relation.equal, toItem: nil, attribute: NSLayoutConstraint.Attribute.notAnAttribute, multiplier: 1, constant: self.viewAnimation.frame.size.width )
@@ -237,7 +232,6 @@ class ReplanController: UIViewController, FloatingPanelControllerDelegate {
             // view.addConstraints([verticalConstraint, widthConstraint, heightConstraint])
             //viewBtnAnimation.frame = CGRect(x: 0, y: 270, width: self.viewAnimation.frame.size.width, height: 30)
             //  view.addSubview(viewBtnAnimation)
-            
         }
     }
     
@@ -343,20 +337,26 @@ extension ReplanController: UIPickerViewDelegate, UIPickerViewDataSource {
             //                }
             //                return arrCar[row]
             //            } else if indxes.isEmpty {  // ngay 1 khong co du lieu
-            print("khong co data")
+           
             // }
-            for (ind, _) in indxes.enumerated() {
-                arrCar.append("Car\(ind + 1)")
+            if !indxes.isEmpty {
+                for (ind, _) in indxes.enumerated() {
+                    arrCar.append("Car\(ind + 1)")
+                }
+                
+                return arrCar[row]
+                
+            } else {
+                return "Car1"
             }
             
-            return arrCar[row]
         } else if pickerView == pickerDate {
             let formatter = DateFormatter()
             formatter.dateFormat = "MM/dd"
             let dateString: String = formatter.string(from: dateYMD[row])
             return dateString
         }
-        return ""
+        return "Car1"
     }
     
     
@@ -419,18 +419,20 @@ extension ReplanController: MKMapViewDelegate {
         
         
         if dataDidFilter_Replan.count == 0 {
-            //            lblType50kg.text = "\(0)"
-            //            lblType30kg.text = "\(0)"
-            //            lblType25kg.text = "\(0)"
-            //            lblType20kg.text = "\(0)"
-            //            lblTypeOther.text = "\(0)"
+            lblType50kg.text = "\(0)"
+            lblType30kg.text = "\(0)"
+            lblType25kg.text = "\(0)"
+            lblType20kg.text = "\(0)"
+            lblTypeOther.text = "\(0)"
             self.showAlert(message: "không có khách hàng nào")
         } else {  // Marker in MKMap
-            for picker in dataDidFilter_Replan where picker.type == .customer {  // DEFAULT
-                if let lat = picker.elem?.latitude, let long = picker.elem?.longitude, let locationOrder = picker.elem?.locationOrder {
-                    let locationOfCustomer = CustomPin(title: locationOrder , coordinate: CLLocationCoordinate2D(latitude: lat, longitude: long))
-                    arrLocationOrder.append(locationOfCustomer.title)
-                    mapView.addAnnotation(locationOfCustomer)
+            for picker in dataDidFilter_Replan {
+               if picker.type == .customer {  // DEFAULT
+                    if let lat = picker.elem?.latitude, let long = picker.elem?.longitude, let locationOrder = picker.elem?.locationOrder {
+                        let locationOfCustomer = CustomPin(title: locationOrder , coordinate: CLLocationCoordinate2D(latitude: lat, longitude: long))
+                        arrLocationOrder.append(locationOfCustomer.title)
+                        mapView.addAnnotation(locationOfCustomer)
+                    }
                 }
             }
         }
@@ -487,23 +489,11 @@ extension ReplanController: PassDataDelegateProtocol {
             }
         }
     }
-    
 }
 
 extension ReplanController: ClickOkDelegateProtocol {
     func clickOk(listLocation: [Int: [Location]]) {
-        
-        //        for idic in dicData {
-        //            for ivalue in idic.value {
-        //                for iExclude in listExclude {
-        //                    if ivalue == iExclude && ivalue.elem?.location?.metadata?.display_data?.excludeFirstDay != true {
-        //                        ivalue.elem?.location?.metadata?.display_data?.excludeFirstDay =  true
-        //                    }
-        //                }
-        //            }
-        //        }
-        
-        
+        print(listLocation)
         
         if !listLocation.isEmpty {
             for iStorage in listLocation {
@@ -564,7 +554,7 @@ extension ReplanController: ClickOkDelegateProtocol {
         // ve lai marker
         // danh so lai LocationOrder
         mapView.removeAnnotations(mapView.annotations)
-        if !listLocation.isEmpty  {  // ve ra exclude
+        if !listLocation.isEmpty && !storageListMoveTo.isEmpty {  // ve ra exclude
             for picker in dataDidFilter_Replan where picker.type == .customer {
                 if  picker.elem?.location?.metadata?.display_data?.excludeFirstDay !=  true {
                     if let lat = picker.elem?.latitude, let long = picker.elem?.longitude, let order = picker.elem?.locationOrder {
@@ -611,7 +601,7 @@ extension ReplanController: ClickOkDelegateProtocol {
         fpc.addPanel(toParent: self)
         
         // listExcludeLocation.removeAll()
-        //   dataDidFilter_Replan.removeAll()
-        //  self.floatingPanel()
+        // dataDidFilter_Replan.removeAll()
+        // self.floatingPanel()
     }
 }

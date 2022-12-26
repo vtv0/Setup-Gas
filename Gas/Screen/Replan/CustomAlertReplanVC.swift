@@ -51,7 +51,6 @@ class CustomAlertReplanVC: UIViewController {
         viewAlert.layer.cornerRadius = 10
         viewAlert.layer.masksToBounds = true
         
-   var listLocationOfDate = [Int: [Location]]()
         listLocationOfDate.updateValue(listLocation, forKey: selectedIdxDate)
         calculateTheNumberOfGas()
     }
