@@ -8,20 +8,16 @@
 import UIKit
 
 
-protocol MoveToFirstDayDelegateProtocol: AnyObject {
-    func passData(isCustomer: Location, indexDate: Int, indexDriver: Int)
-    func unselected(isCustomer: Location, indexDate: Int, indexDriver: Int)
-}
 
-protocol ExcludeFirstDayDelegateProtocol: AnyObject {
-    func check(isCustomer: Location, indexDriver: Int, indexDate: Int)
-    func uncheck(isCustomer: Location, indexDriver: Int, indexDate: Int)
+
+protocol PassDataDelegateProtocol: AnyObject {
+    func check(isCustomer: Location, indexDriver: Int, indexDate: Int, indexPath: Int)
+    func uncheck(isCustomer: Location, indexDriver: Int, indexDate: Int, indexPath: Int)
 }
 
 class ContentReplanController: UIViewController, UITableViewDataSource, UITableViewDelegate {
-    
-    weak var delegateContenReplant: MoveToFirstDayDelegateProtocol?
-    weak var delegateExclude_Replan: ExcludeFirstDayDelegateProtocol?
+   
+    weak var delegatePassData: PassDataDelegateProtocol?
     
     var dicData: [Date: [Location]] = [:]
     var dateYMD: [Date] = []
@@ -48,14 +44,12 @@ class ContentReplanController: UIViewController, UITableViewDataSource, UITableV
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        print(dataDidFilter_Content.count)
         for iCustomer in dataDidFilter_Content where iCustomer.type == .customer {
             arrIsCustomer.append(iCustomer)
         }
         myTableView.dataSource = self
         myTableView.delegate = self
-        
-        
-        
     }
     
     // myTableView dataSource
@@ -84,7 +78,7 @@ class ContentReplanController: UIViewController, UITableViewDataSource, UITableV
             }
         }
         
-        if  dataDidFilter_Content[indexPath.row].elem?.location?.metadata?.display_data?.moveToFirstDay == true && selectedIdxDate != 0  {
+        if  dataDidFilter_Content[indexPath.row].elem?.location?.metadata?.display_data?.moveToFirstDay == true && selectedIdxDate != 0 {
             cell.btnCheckbox.setImage(UIImage(named: "ic_check_on"), for: .normal)
             cell.contentView.backgroundColor = .darkGray
         } else {
@@ -100,44 +94,17 @@ class ContentReplanController: UIViewController, UITableViewDataSource, UITableV
         return arrIsCustomer.count
     }
     
-    
     // myTable view delegate
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
         guard let cell = myTableView.cellForRow(at: indexPath) as? ContentReplanTableViewCell else { return }
-        
-        if selectedIdxDate == 0  {
-            // tao ra danh sach moi   sau cac xe cua ngay 1
-            // la ngay dau tien chi dc exclude_firstday
-            if self.selectedRows.contains(indexPath) {
-                // uncheck
-                // move_to_firstday = false
-                self.selectedRows.remove(at: self.selectedRows.firstIndex(of: indexPath)!)
-                cell.btnCheckbox.setImage(UIImage(named: "ic_check_off"), for: .normal)
-                delegateExclude_Replan?.uncheck(isCustomer: dataDidFilter_Content[indexPath.row], indexDriver: selectedIdxDriver, indexDate: selectedIdxDate)
-                
-            } else {
-                // click cell add
-                // move_to_firstday = true
-                self.selectedRows.append(indexPath)
-                cell.btnCheckbox.setImage(UIImage(named: "ic_check_on"), for: .normal)
-                delegateExclude_Replan?.check(isCustomer: dataDidFilter_Content[indexPath.row], indexDriver: selectedIdxDriver, indexDate: selectedIdxDate)
-            }
-            
+        if self.selectedRows.contains(indexPath) {
+            self.selectedRows.remove(at: self.selectedRows.firstIndex(of: indexPath)!)
+            cell.btnCheckbox.setImage(UIImage(named: "ic_check_off"), for: .normal)
+            delegatePassData?.uncheck(isCustomer: dataDidFilter_Content[indexPath.row], indexDriver: selectedIdxDriver, indexDate: selectedIdxDate, indexPath: indexPath.row)
         } else {
-            // chi dược move_to_firstday
-            if self.selectedRows.contains(indexPath) {
-                // uncheck
-                self.selectedRows.remove(at: self.selectedRows.firstIndex(of: indexPath)!)
-                cell.btnCheckbox.setImage(UIImage(named: "ic_check_off"), for: .normal)
-                delegateContenReplant?.unselected(isCustomer: dataDidFilter_Content[indexPath.row], indexDate: selectedIdxDate, indexDriver: selectedIdxDriver)
-                
-            } else {
-                // click cell add
-                self.selectedRows.append(indexPath)
-                cell.btnCheckbox.setImage(UIImage(named: "ic_check_on"), for: .normal)
-                delegateContenReplant?.passData(isCustomer: dataDidFilter_Content[indexPath.row], indexDate: selectedIdxDate, indexDriver: selectedIdxDriver)
-            }
+            self.selectedRows.append(indexPath)
+            cell.btnCheckbox.setImage(UIImage(named: "ic_check_on"), for: .normal)
+            delegatePassData?.check(isCustomer: dataDidFilter_Content[indexPath.row], indexDriver: selectedIdxDriver, indexDate: selectedIdxDate, indexPath: indexPath.row)
         }
     }
     

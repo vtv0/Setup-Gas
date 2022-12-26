@@ -9,14 +9,14 @@ import UIKit
 
 
 protocol ClickOkDelegateProtocol: AnyObject {
-    func clickOk(dicMoveTo: [Int: [Int: [Location]]], dicExclude: [Int: [Int: [Location]]], backList: [Location])
+    func clickOk(listLocation: [Int: [Location]])
 }
 
 class CustomAlertReplanVC: UIViewController {
     weak var delegateClickOK: ClickOkDelegateProtocol?
     // Exclude
-    var arrLocationRemove: [Location] = []
-    var listMoveToLocation: [Location] = []
+    var listLocation: [Location] = []
+    var listLocationOfDate = [Int: [Location]]()
     
     var date: String = ""
     var totalNumberOfBottle: Int = 0
@@ -25,13 +25,6 @@ class CustomAlertReplanVC: UIViewController {
     
     var selectedIdxDate = 0
     var selectedIdxDriver = 0
-    var dicExcludeOfDriver: [Int: [Location]] = [:]
-    var dicExcludeOfDate: [Int: [Int: [Location]]]  = [:]
-    
-    var dicMoveToOFDRV = [Int: [Location]]()
-    var dicMoveTo = [Int: [Int: [Location]]]()
-    
-    var arrLocationRemoveISTrue = [Location]()  // danh sach quay lai
     
     var numberGasAdd: Int = 0  // so luong binh chon de them
     var indxes = [Int]()
@@ -43,14 +36,14 @@ class CustomAlertReplanVC: UIViewController {
     @IBOutlet weak var txt_displayInfomation: UITextView!
     
     @IBAction func btnCancel(_ sender: Any) {
-        listMoveToLocation.removeAll()
-        arrLocationRemove.removeAll()
-        arrLocationRemoveISTrue.removeAll()
+        listLocation.removeAll()
+        
+       
         dismiss(animated: false)
     }
     @IBAction func btnOK(_ sender: Any) {
         dismiss(animated: false)
-        delegateClickOK?.clickOk(dicMoveTo: dicMoveTo, dicExclude: dicExcludeOfDate, backList: arrLocationRemoveISTrue)
+        delegateClickOK?.clickOk(listLocation: listLocationOfDate)
     }
     
     override func viewDidLoad() {
@@ -58,36 +51,20 @@ class CustomAlertReplanVC: UIViewController {
         viewAlert.layer.cornerRadius = 10
         viewAlert.layer.masksToBounds = true
         
-        print(arrLocationRemoveISTrue)  // ds Remove -> ban dau
-        
-        // tao Dictionary MoveToFirstDay
-        dicMoveToOFDRV.updateValue(listMoveToLocation, forKey: selectedIdxDriver)
-        // tao dicMoveTo
-        dicMoveTo.updateValue(dicMoveToOFDRV, forKey: selectedIdxDate)
-        
-        
-        // tao dictionary voi key == ind Driver
-        dicExcludeOfDriver.updateValue(arrLocationRemove, forKey: selectedIdxDriver)
-        
-        // tao dic [Int: [Int: [Location]]] key == ind Date
-        dicExcludeOfDate.updateValue(dicExcludeOfDriver, forKey: selectedIdxDate)
-        
+   var listLocationOfDate = [Int: [Location]]()
+        listLocationOfDate.updateValue(listLocation, forKey: selectedIdxDate)
         calculateTheNumberOfGas()
-        
-        
-        
-        
     }
     
     func calculateTheNumberOfGas() {
         // number of Bottle added
-        for i in listMoveToLocation {
-            if let facility_dataDetail = i.elem?.metadata?.facility_data {
-                for inumber in facility_dataDetail {
-                    numberGasAdd += inumber.count ?? 0
-                }
-            }
-        }
+//        for i in listMoveToLocation {
+//            if let facility_dataDetail = i.elem?.metadata?.facility_data {
+//                for inumber in facility_dataDetail {
+//                    numberGasAdd += inumber.count ?? 0
+//                }
+//            }
+//        }
         ShowInfomationOfAlert()
     }
     
