@@ -9,13 +9,13 @@ import UIKit
 
 
 protocol ClickOkDelegateProtocol: AnyObject {
-    func clickOk(listLocation: [Int: [Location]])
+    func clickOk(listIndex: [Int])
 }
 
 class CustomAlertReplanVC: UIViewController {
     weak var delegateClickOK: ClickOkDelegateProtocol?
     // Exclude
-    var listLocation: [Location] = []
+   
     var listLocationOfDate = [Int: [Location]]()
     
     var date: String = ""
@@ -25,7 +25,7 @@ class CustomAlertReplanVC: UIViewController {
     
     var selectedIdxDate = 0
     var selectedIdxDriver = 0
-    
+    var listIndex = [Int]()
     var numberGasAdd: Int = 0  // so luong binh chon de them
     var indxes = [Int]()
     
@@ -36,14 +36,11 @@ class CustomAlertReplanVC: UIViewController {
     @IBOutlet weak var txt_displayInfomation: UITextView!
     
     @IBAction func btnCancel(_ sender: Any) {
-        listLocation.removeAll()
-        
-       
         dismiss(animated: false)
     }
     @IBAction func btnOK(_ sender: Any) {
         dismiss(animated: false)
-        delegateClickOK?.clickOk(listLocation: listLocationOfDate)
+        delegateClickOK?.clickOk(listIndex: listIndex)
     }
     
     override func viewDidLoad() {
@@ -51,7 +48,7 @@ class CustomAlertReplanVC: UIViewController {
         viewAlert.layer.cornerRadius = 10
         viewAlert.layer.masksToBounds = true
         
-        listLocationOfDate.updateValue(listLocation, forKey: selectedIdxDate)
+       
         calculateTheNumberOfGas()
     }
     

@@ -7,9 +7,6 @@
 
 import UIKit
 
-
-
-
 protocol PassDataDelegateProtocol: AnyObject {
     func check(isCustomer: Location, indexDriver: Int, indexDate: Int, indexPath: Int)
     func uncheck(isCustomer: Location, indexDriver: Int, indexDate: Int, indexPath: Int)
@@ -44,7 +41,8 @@ class ContentReplanController: UIViewController, UITableViewDataSource, UITableV
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print(dataDidFilter_Content.count)
+       
+        
         for iCustomer in dataDidFilter_Content where iCustomer.type == .customer {
             arrIsCustomer.append(iCustomer)
         }
@@ -53,8 +51,10 @@ class ContentReplanController: UIViewController, UITableViewDataSource, UITableV
     }
     
     // myTableView dataSource
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = myTableView.dequeueReusableCell(withIdentifier: "ContentReplanTableViewCell", for: indexPath) as! ContentReplanTableViewCell
+        
         
         // binh thuong
         cell.lbl_locationOrder.text = "\((dataDidFilter_Content[indexPath.row].elem?.locationOrder ?? 0) - 1)"
@@ -79,12 +79,19 @@ class ContentReplanController: UIViewController, UITableViewDataSource, UITableV
         }
         
         if  dataDidFilter_Content[indexPath.row].elem?.location?.metadata?.display_data?.moveToFirstDay == true && selectedIdxDate != 0 {
-            cell.btnCheckbox.setImage(UIImage(named: "ic_check_on"), for: .normal)
             cell.contentView.backgroundColor = .darkGray
+            cell.btnCheckbox.setImage(UIImage(named: "ic_check_on"), for: .normal)
+        } else {
+            cell.contentView.backgroundColor = .systemBackground
+            cell.btnCheckbox.setImage(UIImage(named: "ic_check_off"), for: .normal)
+        }
+        
+        if selectedRows.contains(indexPath) {
+            cell.btnCheckbox.setImage(UIImage(named: "ic_check_on"), for: .normal)
         } else {
             cell.btnCheckbox.setImage(UIImage(named: "ic_check_off"), for: .normal)
-            cell.contentView.backgroundColor = .systemBackground
         }
+        
         return cell
     }
     

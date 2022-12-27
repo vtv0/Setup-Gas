@@ -69,7 +69,11 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
     var assetID: String = ""
     var dateYMD: [Date] = []
     var arrStringDate: [String] = []
+    
     var t: Int = 0
+    var numberOfCallsToGetAsset: Int = 0
+    var numberAssetIDOf7Date = 0
+
     
     var arrCoordinate = [CustomPin]()
     var customer_LocationType = [String]()
@@ -202,8 +206,6 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
     }
     
     
-    
-    
     func getLatestWorkerRouteLocationList() {
         let token = UserDefaults.standard.string(forKey: "accessToken") ?? ""
         let formatter = DateFormatter()
@@ -222,6 +224,9 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
                         let locations1: [LocationElement] = response.value?.locations ?? []
                         if countObject != 0 {
                             var arrLocationValue: [Location] = []
+                            for ilocationValue in locations1 where ilocationValue.location?.assetID != nil {
+                                self.numberAssetIDOf7Date += 1
+                            }
                             
                             for itemObject in locations1 {
                                 arrLocationValue.append(Location.init(elem: itemObject, asset: nil))
@@ -252,15 +257,42 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
                     }
                     
                     if self.t == self.dateYMD.count {
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-                            self.hideActivity()
-                            self.reDrawMarkers()
-                        }
+                        // self.hideActivity()
                     }
                 }
         }
         
     }
+    
+    
+    func getGetAsset(forAsset iassetID: String, completion: @escaping ((GetAsset?) -> Void)) {
+        let token = UserDefaults.standard.string(forKey: "accessToken") ?? ""
+        let urlGetAsset = "https://\(companyCode).kiiapps.com/am/api/assets/\(iassetID)"
+        AF.request(urlGetAsset, method: .get, parameters: nil, headers: self.makeHeaders(token: token))
+            .responseDecodable(of: GetAsset.self ) { response1 in
+                
+                self.numberOfCallsToGetAsset += 1
+                print(self.numberOfCallsToGetAsset)
+                switch response1.result {
+                case .success( let value):
+                    completion(value)
+                case .failure(let error):
+                    print("\(error)")
+                    completion(nil)
+                }
+                
+                if self.numberAssetIDOf7Date == self.numberOfCallsToGetAsset {
+                    print("ppppppppppppp")
+                    self.reDrawMarkers()
+                    self.hideActivity()
+                    //                    print(self.numberOfCallsToGetAsset)
+                    //                        self.hideActivity()
+                    //                        self.reDrawMarkers()
+                }
+            }
+    }
+    
+    
     
     
     func getWorkerVehicleList() {
@@ -273,36 +305,16 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
                 case .success(let value):
                     let ivalue = value
                     print(ivalue)
-                    
                 case .failure(let error):
-                 print(error)
+                    print(error)
                 }
             }
-        
     }
-    
     
     func GetRouteList() {
         let url =  "https://\(companyCode).kiiapps.com/am/exapi/vrp/tenants/\(tenantId)/routes?zoneID=&areaCriteria={{areaID}}&pageSize=&pageToken="
         AF.request(url, method: .get, encoding: JSONEncoding.default )
     }
-    
-    func getGetAsset(forAsset iassetID: String, completion: @escaping ((GetAsset?) -> Void)) {
-        let token = UserDefaults.standard.string(forKey: "accessToken") ?? ""
-        let urlGetAsset = "https://\(companyCode).kiiapps.com/am/api/assets/\(iassetID)"
-        AF.request(urlGetAsset, method: .get, parameters: nil, headers: self.makeHeaders(token: token))
-            .responseDecodable(of: GetAsset.self ) { response1 in
-                switch response1.result {
-                case .success( let value):
-                    completion(value)
-                case .failure(let error):
-                    print("\(error)")
-                    completion(nil)
-                }
-            }
-    }
-    
-    
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
@@ -322,7 +334,7 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         return 0
     }
     
-   
+    
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         if pickerView == pickerStatus {
             return statusDelivery[row]
