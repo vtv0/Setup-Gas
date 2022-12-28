@@ -47,8 +47,6 @@ class CustomAlertReplanVC: UIViewController {
         super.viewDidLoad()
         viewAlert.layer.cornerRadius = 10
         viewAlert.layer.masksToBounds = true
-        
-       
         calculateTheNumberOfGas()
     }
     
