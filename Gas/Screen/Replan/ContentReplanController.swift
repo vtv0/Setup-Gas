@@ -41,8 +41,7 @@ class ContentReplanController: UIViewController, UITableViewDataSource, UITableV
     
     override func viewDidLoad() {
         super.viewDidLoad()
-       
-        
+        myTableView.reloadData()
         for iCustomer in dataDidFilter_Content where iCustomer.type == .customer {
             arrIsCustomer.append(iCustomer)
         }
@@ -79,8 +78,9 @@ class ContentReplanController: UIViewController, UITableViewDataSource, UITableV
         }
         
         if  dataDidFilter_Content[indexPath.row].elem?.location?.metadata?.display_data?.moveToFirstDay == true && selectedIdxDate != 0 {
-            cell.contentView.backgroundColor = .darkGray
+            
             cell.btnCheckbox.setImage(UIImage(named: "ic_check_on"), for: .normal)
+            cell.contentView.backgroundColor = .darkGray
         } else {
             cell.contentView.backgroundColor = .systemBackground
             cell.btnCheckbox.setImage(UIImage(named: "ic_check_off"), for: .normal)
