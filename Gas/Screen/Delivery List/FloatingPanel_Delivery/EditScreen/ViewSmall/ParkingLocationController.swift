@@ -29,7 +29,7 @@ class ParkingLocationController: UIViewController, MKMapViewDelegate, CLLocation
         
         let alert = UIAlertController(title: "Thông báo ", message: "Có muốn thay đổi vị trí đỗ xe không", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
-            self.putPositionParking()
+            self.patchPositionParking()
             
         }))
         alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: nil))
@@ -104,16 +104,18 @@ class ParkingLocationController: UIViewController, MKMapViewDelegate, CLLocation
         UserDefaults.standard.removeObject(forKey: "iassetID")
         UserDefaults.standard.set(iassetID, forKey: "iassetID")
     }
-    func putPositionParking() {
+    func patchPositionParking() {
         let token = UserDefaults.standard.string(forKey: "accessToken") ?? ""
         let iassetID = UserDefaults.standard.string(forKey: "iassetID") ?? ""
         
-        let infoLocation: [String: Any] = ["coordinates": [mapLong, mapLat], "type": ""]
-        let valueCoordinates: [String: Any] = ["location": infoLocation ]
-        let properties: [String: Any] = ["values": valueCoordinates ]
-        let parameters: [String: Any] = ["properties": properties]
-       
+        let infoLocation = ["coordinates": [self.mapLong, self.mapLat], "type": ""] as [String : Any]
+        let valueCoordinates = ["location": infoLocation]
+        let properties = ["values": valueCoordinates]
+        let parameters = ["properties": properties]
+        
         print(parameters)
+        print(companyCode)
+        print(iassetID)
         let urlGetAsset = "https://\(companyCode).kiiapps.com/am/api/assets/\(iassetID)"
         self.showActivity()
         

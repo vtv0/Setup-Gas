@@ -79,7 +79,7 @@ class ContentReplanController: UIViewController, UITableViewDataSource, UITableV
         
         if  dataDidFilter_Content[indexPath.row].elem?.location?.metadata?.display_data?.moveToFirstDay == true && selectedIdxDate != 0 {
             
-            cell.btnCheckbox.setImage(UIImage(named: "ic_check_on"), for: .normal)
+           cell.btnCheckbox.setImage(UIImage(named: "ic_check_on"), for: .normal)
             cell.contentView.backgroundColor = .darkGray
         } else {
             cell.contentView.backgroundColor = .systemBackground
@@ -88,9 +88,10 @@ class ContentReplanController: UIViewController, UITableViewDataSource, UITableV
         
         if selectedRows.contains(indexPath) {
             cell.btnCheckbox.setImage(UIImage(named: "ic_check_on"), for: .normal)
-        } else {
-            cell.btnCheckbox.setImage(UIImage(named: "ic_check_off"), for: .normal)
         }
+//        else {
+//            cell.btnCheckbox.setImage(UIImage(named: "ic_check_off"), for: .normal)
+//        }
         
         return cell
     }

@@ -177,16 +177,19 @@ class ReplanController: UIViewController, FloatingPanelControllerDelegate {
                     listMoveToIsTrue.append(ilocation)
                 }
             }
-            dataDidFilter_Replan = listMoveToIsTrue
+            if selectedIdxDate == 0 {
+                dataDidFilter_Replan = listMoveToIsTrue
+            }
+            
         }
         
         var  checkListRemove = [Location]()  // check ngay 1 co ds Remove k
         if selectedIdxDate == 0 {
             for idic in dicData where idic.key == dateYMD[0] {
-                
+
                 for ilocation in idic.value where ilocation.elem?.location?.metadata?.display_data?.excludeFirstDay == true {
                     checkListRemove.append(ilocation)
-                    
+
                 }
             }
         }
@@ -264,7 +267,7 @@ class ReplanController: UIViewController, FloatingPanelControllerDelegate {
         case lblTypeOther
     }
     
-    func totalType(EachType: Int) -> quantityOfEachType  {
+    func totalType(EachType: Int) {
         var numberType50: Int = 0
         var numberType30: Int = 0
         var numberType25: Int = 0
@@ -280,7 +283,6 @@ class ReplanController: UIViewController, FloatingPanelControllerDelegate {
         for iFacilityData in arrFacilityData {
             for detailFacilityData in iFacilityData {
                 totalNumberOfBottle += detailFacilityData.count ?? 0
-                
                 if detailFacilityData.type == 50 {
                     numberType50 = numberType50 + (detailFacilityData.count ?? 0)
                 } else if detailFacilityData.type == 30 {
@@ -300,7 +302,7 @@ class ReplanController: UIViewController, FloatingPanelControllerDelegate {
         lblType20kg.text = "\(numberType20)"
         lblTypeOther.text = "\(numberTypeOther)"
         
-        return .lblTypeOther
+        //return .lblTypeOther
     }
 }
 
@@ -310,15 +312,22 @@ extension ReplanController: UIPickerViewDelegate, UIPickerViewDataSource {
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        var listRemove1: [Location] = []
+        for idic in dicData where idic.key == dateYMD.first {
+            for iLocation in idic.value where iLocation.elem?.location?.metadata?.display_data?.excludeFirstDay == true {
+                listRemove1.append(iLocation)
+            }
+        }
+        
         if pickerView == pickerDriver {
             if !indxes.isEmpty {
                 if selectedIdxDate > 0 {
                     return indxes.count
                 } else if selectedIdxDate == 0 {
-                    if !listRemove.isEmpty {
-                        return indxes.count + 1
-                    } else {
+                    if listRemove1.isEmpty {
                         return indxes.count
+                    } else {
+                        return indxes.count + 1
                     }
                 }
             } else {
@@ -333,6 +342,13 @@ extension ReplanController: UIPickerViewDelegate, UIPickerViewDataSource {
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         var arrCar: [String] = []
+        
+        var listRemove1: [Location] = []
+        for idic in dicData where idic.key == dateYMD.first {
+            for iLocation in idic.value where iLocation.elem?.location?.metadata?.display_data?.excludeFirstDay == true {
+                listRemove1.append(iLocation)
+            }
+        }
         if pickerView == pickerDriver {
             
             if !indxes.isEmpty {  // co data
@@ -347,12 +363,19 @@ extension ReplanController: UIPickerViewDelegate, UIPickerViewDataSource {
                             arrCar.append("Car\(ind + 1)")
                         }
                         return arrCar[row]
-                    } else if selectedIdxDate == 0 && !listRemove.isEmpty {  // co ds Remove
-                        for (ind, _) in indxes.enumerated() {
-                            arrCar.append("Car\(ind + 1)")
+                    } else if selectedIdxDate == 0 {  // co ds Remove
+                        if !listRemove1.isEmpty {
+                            for (ind, _) in indxes.enumerated() {
+                                arrCar.append("Car\(ind + 1)")
+                            }
+                            arrCar.append("Remove")
+                            return arrCar[row]
+                        } else if listRemove1.isEmpty  {
+                            for (ind, _) in indxes.enumerated() {
+                                arrCar.append("Car\(ind + 1)")
+                            }
+                            return arrCar[row]
                         }
-                        arrCar.append("Remove")
-                        return arrCar[row]
                     }
                 }
             } else {
@@ -367,8 +390,6 @@ extension ReplanController: UIPickerViewDelegate, UIPickerViewDataSource {
         }
         return ""
     }
-    
-    
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         if pickerView == pickerDate {
@@ -445,13 +466,15 @@ extension ReplanController: MKMapViewDelegate {
                 }
             }
         }
-        
+        print(arrMoveToIsTrue.count)
         // xoa data   Xe cuoi, ngay 1
-        if arrMoveToIsTrue.count > 0 && selectedIdxDate == 0 && selectedIdxDriver+1 == indxes.count {
+        if arrMoveToIsTrue.count > 0 && selectedIdxDate == 0 && selectedIdxDriver+1 == indxes.count {  // xe cuoi , ngay 1
             dataDidFilter_Replan.insert(contentsOf: arrMoveToIsTrue, at: dataDidFilter_Replan.count - 1)
         } else if arrMoveToIsTrue.count > 0 && selectedIdxDate == 0 && dataDidFilter_Replan.isEmpty {  // ngay 1 khong co data || sau 4h
-            dataDidFilter_Replan.insert(contentsOf: arrMoveToIsTrue, at: dataDidFilter_Replan.count - 1)
+         //   dataDidFilter_Replan.insert(contentsOf: arrMoveToIsTrue, at: dataDidFilter_Replan.count - 1)
         }
+        print(dataDidFilter_Replan.count)
+        
         
         // xoa data xe cuoi, ngay 1, TH ngay dau khong co xe
         
@@ -575,6 +598,7 @@ extension ReplanController: ClickOkDelegateProtocol {
     func clickOk(listIndex: [Int]) {
         moveToFirstDay(listIndex: listIndex)
         excludeFirst(listIndex: listIndex)
+        
     }
     
     func moveToFirstDay(listIndex: [Int]) {
@@ -607,18 +631,39 @@ extension ReplanController: ClickOkDelegateProtocol {
     }
     
     func excludeFirst(listIndex: [Int]) {  //trong TH ngay 1, xe cuoi -> da co data duoc chuyen ve
+        if selectedIdxDate > 0 {
+            for index in listIndex {  // boi den cac dong duoc chon
+                dataDidFilter_Replan[index].elem?.location?.metadata?.display_data?.moveToFirstDay = true
+            }
+        }
+        
+        
+        var arrMoveToIsTrue = [Location]()
+        for idic in dicData {  // Move To firstDay == true
+            if idic.key != dateYMD.first {
+                for iLocation in idic.value where iLocation.elem?.location?.metadata?.display_data?.moveToFirstDay == true {
+                    arrMoveToIsTrue.append(iLocation)
+                }
+            }
+        }
+        
         if selectedIdxDate == 0 {
-            print(dataDidFilter_Replan.count)
-            for (ind, idata) in dataDidFilter_Replan.enumerated() {
-                print("\(ind)->excludeFirstDay: \(idata.elem?.location?.metadata?.display_data?.excludeFirstDay)")
+            if selectedIdxDriver + 1 == indxes.count {
+                dataDidFilter_Replan.insert(contentsOf: arrMoveToIsTrue, at: dataDidFilter_Replan.count - 1)
+                for index in listIndex {
+                    for (ind, ivalue) in dataDidFilter_Replan.enumerated() {
+                        if index == ind {
+                            ivalue.elem?.location?.metadata?.display_data?.excludeFirstDay = true
+                        }
+                    }
+                }
+            } else if selectedIdxDriver + 1 < indxes.count {
+                for index in listIndex {
+                    dataDidFilter_Replan[index].elem?.location?.metadata?.display_data?.excludeFirstDay = true
+                }
             }
-            for (ind, idata) in dataDidFilter_Replan.enumerated() {
-                print("\(ind)->moveToFirstDay: \(idata.elem?.location?.metadata?.display_data?.moveToFirstDay)")
-            }
-            for index in listIndex {
-                print(index)
-                dataDidFilter_Replan[index].elem?.location?.metadata?.display_data?.excludeFirstDay = true
-            }
+            reDrawMarkers()
+            self.listIndex.removeAll()
         }
         
         if selectedIdxDriver + 1 < indxes.count + 1 {

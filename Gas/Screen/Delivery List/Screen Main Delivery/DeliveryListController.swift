@@ -227,25 +227,17 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
                             for ilocationValue in locations1 where ilocationValue.location?.assetID != nil {
                                 self.numberAssetIDOf7Date += 1
                             }
-                            
                             for itemObject in locations1 {
                                 arrLocationValue.append(Location.init(elem: itemObject, asset: nil))
                             }
-                            
                             for iLocationValue in arrLocationValue {
                                 if let  assetID = iLocationValue.elem?.location?.assetID {
                                     self.getGetAsset(forAsset: assetID) { iasset in
                                         iLocationValue.asset = iasset
-                                        
                                     }
-                                } else {
-                                    
-                                    print("No assetID -> Supplier")
-                                }
+                                } else { print("No assetID -> Supplier") }
                             }
-                            
                             self.dicData[iday] = arrLocationValue
-                            
                         } else {
                             print(response.response?.statusCode as Any)
                             print("\(url) =>> Array Empty, No Object ")

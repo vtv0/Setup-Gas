@@ -34,7 +34,6 @@ class ImageLabelView: UIView, UINavigationControllerDelegate {
     
     @IBInspectable var image: UIImage? {
         didSet {
-            print(image)
             if let image = image {
                 mainImageView.contentMode = .scaleToFill
                 mainImageView.image = image

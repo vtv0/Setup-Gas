@@ -79,7 +79,9 @@ class PageDetailVC: UIViewController, UIScrollViewDelegate, UICollectionViewDele
     @IBOutlet weak var lblTypeGasInStackView: UILabel!
     @IBOutlet weak var lblNumberGasInStackView: UILabel!
     
-    @IBOutlet weak var stackViewShowInfoGas: UIStackView!
+    
+    
+    @IBOutlet weak var viewAutomaticInfoGas: UIView!
     @IBOutlet weak var lblTextNotes: UITextView!
     
     @IBOutlet weak var viewImageScroll: UIScrollView!
@@ -220,16 +222,16 @@ class PageDetailVC: UIViewController, UIScrollViewDelegate, UICollectionViewDele
                 if iFacilityData.count == 1 {
                     lblTypeGas?.text = "\(iFacilityData[0].type ?? 0)kg"
                     lblNumberGas?.text = "\(iFacilityData[0].count  ?? 0)bottle"
-                    stackViewShowInfoGas.removeFromSuperview()
+                    viewAutomaticInfoGas.removeFromSuperview()
                     
                 } else if iFacilityData.count > 1 {
-                    self.view.addSubview(stackViewShowInfoGas)
-                    stackViewShowInfoGas.translatesAutoresizingMaskIntoConstraints = false
+                    self.view.addSubview(viewAutomaticInfoGas)
+                    viewAutomaticInfoGas.translatesAutoresizingMaskIntoConstraints = false
                     NSLayoutConstraint.activate([
-                        stackViewShowInfoGas.bottomAnchor.constraint(equalTo: viewDetail.bottomAnchor),
-                        stackViewShowInfoGas.leftAnchor.constraint(equalTo: viewDetail.leftAnchor, constant: 40),
-                        stackViewShowInfoGas.rightAnchor.constraint(equalTo: viewDetail.rightAnchor, constant: -40),
-                        stackViewShowInfoGas.heightAnchor.constraint(equalToConstant: 30)
+                        viewAutomaticInfoGas.bottomAnchor.constraint(equalTo: viewDetail.bottomAnchor),
+                        viewAutomaticInfoGas.leftAnchor.constraint(equalTo: viewDetail.leftAnchor, constant: 40),
+                        viewAutomaticInfoGas.rightAnchor.constraint(equalTo: viewDetail.rightAnchor, constant: -40),
+                        viewAutomaticInfoGas.heightAnchor.constraint(equalToConstant: 30)
                     ])
                     
                     lblTypeGas?.text = "\(iFacilityData[0].type ?? 0 )kg"

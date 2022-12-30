@@ -62,9 +62,10 @@ class CustomAlertReplanVC: UIViewController {
         
         if listIndex.count > 0 && dataDidFilter_Alert.count > 0 {
             for iIndex in listIndex {
-                print(iIndex)
+                print("Index:\(iIndex)")
                 arrFacility.append(dataDidFilter_Alert[iIndex].elem?.metadata?.facility_data ?? [])
             }
+            
         }
         
         for ifacility in arrFacility {
