@@ -14,17 +14,17 @@ struct WorkerVehicleList: Decodable {
 struct WorkerVehicleElement: Decodable {
     var areaID: Int?
     var cleanupWorkTimeSec: Int?
-    var createdAt: Date?
+    var createdAt: String?
     var destinationLocationID: Double?
     var id: Int?
     var initialLoadCapacity: Int?
     var maxLoadCapacity: Int?
     var metadata: Metadata?
     var originLocationID: Int?
-    var preparationWorkTimeSec: Int?
+    var preparationWorkTimeSec: Double?
     var tenantID: Int?
     var transitDelay: Int?
-    var updatedAt: Date?
+    var updatedAt: String?
     var userID: Int?
     var workDelay: Int?
     var workTimeID: Int?

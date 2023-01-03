@@ -141,7 +141,7 @@
                                         <subviews>
                                             <pickerView contentMode="scaleAspectFill" translatesAutoresizingMaskIntoConstraints="NO" id="yXb-a1-Ac5">
                                                 <rect key="frame" x="10" y="8" width="118" height="40"/>
-                                                <color key="backgroundColor" red="0.92143100499999997" green="0.92145264149999995" blue="0.92144101860000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                             </pickerView>
                                         </subviews>
                                         <color key="backgroundColor" white="0.82287811057097249" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -157,7 +157,7 @@
                                         <subviews>
                                             <pickerView tag="1" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gzV-pr-QEL">
                                                 <rect key="frame" x="10" y="8" width="118" height="40"/>
-                                                <color key="backgroundColor" red="0.92143100499999997" green="0.92145264149999995" blue="0.92144101860000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                             </pickerView>
                                         </subviews>
                                         <color key="backgroundColor" white="0.82065795064693881" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -173,7 +173,7 @@
                                         <subviews>
                                             <pickerView tag="2" contentMode="scaleAspectFill" semanticContentAttribute="playback" translatesAutoresizingMaskIntoConstraints="NO" id="csE-na-47a">
                                                 <rect key="frame" x="10" y="8" width="118" height="40"/>
-                                                <color key="backgroundColor" red="0.92143100499999997" green="0.92145264149999995" blue="0.92144101860000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                             </pickerView>
                                         </subviews>
                                         <color key="backgroundColor" white="0.82065795060000002" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -1027,7 +1027,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="K0u-Hd-GlN">
-                                <rect key="frame" x="52" y="841.5" width="310.5" height="34.5"/>
+                                <rect key="frame" x="52" y="807.5" width="310.5" height="34.5"/>
                                 <color key="backgroundColor" systemColor="linkColor"/>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="plain" title="btnParking">
@@ -1038,7 +1038,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1qF-g6-T6s">
-                                <rect key="frame" x="340" y="766.5" width="54" height="40"/>
+                                <rect key="frame" x="340" y="732.5" width="54" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="40" id="2og-fA-l7t"/>
                                     <constraint firstAttribute="height" constant="40" id="j8U-yy-xOW"/>
@@ -1061,7 +1061,7 @@
                             <constraint firstItem="K0u-Hd-GlN" firstAttribute="top" secondItem="1qF-g6-T6s" secondAttribute="bottom" constant="35" id="Tor-HP-Try"/>
                             <constraint firstItem="a9c-pu-hXd" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="1qF-g6-T6s" secondAttribute="trailing" id="Y4H-ag-0l6"/>
                             <constraint firstItem="a9c-pu-hXd" firstAttribute="trailing" secondItem="1qF-g6-T6s" secondAttribute="trailing" constant="20" id="d2D-2n-Iac"/>
-                            <constraint firstAttribute="bottom" secondItem="K0u-Hd-GlN" secondAttribute="bottom" constant="20" id="kyt-at-Viq"/>
+                            <constraint firstItem="a9c-pu-hXd" firstAttribute="bottom" secondItem="K0u-Hd-GlN" secondAttribute="bottom" constant="20" id="kyt-at-Viq"/>
                             <constraint firstItem="K0u-Hd-GlN" firstAttribute="width" secondItem="2jN-3O-bBa" secondAttribute="width" multiplier="0.75" id="ngW-Es-Ny9"/>
                             <constraint firstAttribute="trailing" secondItem="2jN-3O-bBa" secondAttribute="trailing" id="qmp-Qe-yaG"/>
                             <constraint firstItem="2jN-3O-bBa" firstAttribute="leading" secondItem="ErE-Ig-xNV" secondAttribute="leading" id="t2T-0G-zRB"/>
@@ -1501,7 +1501,7 @@ Tiết Liêu tỉnh dậy, vô cùng mừng rỡ. Ông làm theo lời Thần d�
                                                 <subviews>
                                                     <pickerView clearsContextBeforeDrawing="NO" contentMode="scaleToFill" semanticContentAttribute="playback" translatesAutoresizingMaskIntoConstraints="NO" id="2Lb-3g-xbi">
                                                         <rect key="frame" x="10" y="15" width="118" height="40"/>
-                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <color key="backgroundColor" systemColor="systemGroupedBackgroundColor"/>
                                                         <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     </pickerView>
                                                 </subviews>
@@ -1518,7 +1518,7 @@ Tiết Liêu tỉnh dậy, vô cùng mừng rỡ. Ông làm theo lời Thần d�
                                                 <subviews>
                                                     <pickerView opaque="NO" clearsContextBeforeDrawing="NO" tag="1" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="suF-RR-TQP">
                                                         <rect key="frame" x="10" y="15" width="118" height="40"/>
-                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <color key="backgroundColor" systemColor="systemGroupedBackgroundColor"/>
                                                     </pickerView>
                                                 </subviews>
                                                 <color key="backgroundColor" red="0.86895306070058187" green="0.87514881401919764" blue="0.89373607397504451" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1815,7 +1815,7 @@ Tiết Liêu tỉnh dậy, vô cùng mừng rỡ. Ông làm theo lời Thần d�
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="YgK-sN-fD4">
                                 <rect key="frame" x="0.0" y="44" width="414" height="818"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="backgroundColor" systemColor="systemGroupedBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleAspectFit" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="1" reuseIdentifier="ContentReplanTableViewCell" rowHeight="45" id="scP-Q8-P9v" userLabel="Cell" customClass="ContentReplanTableViewCell" customModule="Gas" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="50" width="414" height="45"/>
@@ -1902,7 +1902,7 @@ Tiết Liêu tỉnh dậy, vô cùng mừng rỡ. Ông làm theo lời Thần d�
                             </tableView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="bZs-eE-oiW"/>
-                        <color key="backgroundColor" systemColor="tintColor"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="bZs-eE-oiW" firstAttribute="bottom" secondItem="YgK-sN-fD4" secondAttribute="bottom" id="GXA-5b-HNG"/>
                             <constraint firstItem="bZs-eE-oiW" firstAttribute="trailing" secondItem="YgK-sN-fD4" secondAttribute="trailing" id="Uxs-7h-Hde"/>
@@ -2571,6 +2571,9 @@ Cgo
         </systemColor>
         <systemColor name="systemGrayColor">
             <color red="0.55686274509803924" green="0.55686274509803924" blue="0.57647058823529407" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemGroupedBackgroundColor">
+            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemMintColor">
             <color red="0.0" green="0.7803921568627451" blue="0.74509803921568629" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

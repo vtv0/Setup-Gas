@@ -5,7 +5,7 @@
 //  Created by Vuong The Vu on 21/12/2022.
 //
 
-import Foundation
+import UIKit
 
 struct GetRouteList: Decodable {
     var nextPageToken: String?

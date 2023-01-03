@@ -147,6 +147,7 @@
 		754C39B0291E3FC600793A14 /* Screen Main Delivery */ = {
 			isa = PBXGroup;
 			children = (
+				7573ADC129530D3600E8C658 /* GetRouteList.swift */,
 				750C7E6A2908ECA0009A9E27 /* Marker+ExtensionViewController.swift */,
 				750C7E6429078E52009A9E27 /* GetLatestWorkerRouteLocationList.swift */,
 				750C7E6C290FA4CE009A9E27 /* ParseJsonGetAssetToObject.swift */,
@@ -232,7 +233,6 @@
 				75A1E17D28F3AAD100EA17A2 /* Reroute */,
 				750B39CB28E2F6C900210AB9 /* Setting */,
 				7573ADBF29530A0100E8C658 /* GetWorkerVehicleList.swift */,
-				7573ADC129530D3600E8C658 /* GetRouteList.swift */,
 				7573ADC3295310B400E8C658 /* GetWorkerRouteLocationList.swift */,
 			);
 			path = Screen;

@@ -129,7 +129,7 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
     override func viewDidLoad() {
         super.viewDidLoad()
         self.sevenDay()
-        getMe()
+      //  getMe()
         fpc.delegate = self
         mapView.delegate = self
         
@@ -247,24 +247,18 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
                         print("Error: \(response.response?.statusCode ?? 000000)")
                         print("Error: \(error)")
                     }
-                    
-                    if self.t == self.dateYMD.count {
-                        // self.hideActivity()
-                    }
                 }
         }
         
     }
     
-    
     func getGetAsset(forAsset iassetID: String, completion: @escaping ((GetAsset?) -> Void)) {
         let token = UserDefaults.standard.string(forKey: "accessToken") ?? ""
         let urlGetAsset = "https://\(companyCode).kiiapps.com/am/api/assets/\(iassetID)"
         AF.request(urlGetAsset, method: .get, parameters: nil, headers: self.makeHeaders(token: token))
-            .responseDecodable(of: GetAsset.self ) { response1 in
+            .responseDecodable(of: GetAsset.self) { response1 in
                 
                 self.numberOfCallsToGetAsset += 1
-                print(self.numberOfCallsToGetAsset)
                 switch response1.result {
                 case .success( let value):
                     completion(value)
@@ -274,18 +268,11 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
                 }
                 
                 if self.numberAssetIDOf7Date == self.numberOfCallsToGetAsset {
-                    print("ppppppppppppp")
                     self.reDrawMarkers()
                     self.hideActivity()
-                    //                    print(self.numberOfCallsToGetAsset)
-                    //                        self.hideActivity()
-                    //                        self.reDrawMarkers()
                 }
             }
     }
-    
-    
-    
     
     func getWorkerVehicleList() {
         let token = UserDefaults.standard.string(forKey: "accessToken") ?? ""
@@ -295,17 +282,32 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
                 print(response.response?.statusCode)
                 switch response.result {
                 case .success(let value):
-                    let ivalue = value
-                    print(ivalue)
+                    print(value)
+                    // lay areaID
+                    if let areaID = value.workerVehicles?.first?.areaID {
+                        self.getRouteList(forAreaID: areaID) { ivalue in
+                            
+                        }
+                    }
+                    
                 case .failure(let error):
                     print(error)
                 }
             }
     }
     
-    func GetRouteList() {
-        let url =  "https://\(companyCode).kiiapps.com/am/exapi/vrp/tenants/\(tenantId)/routes?zoneID=&areaCriteria={{areaID}}&pageSize=&pageToken="
-        AF.request(url, method: .get, encoding: JSONEncoding.default )
+    func getRouteList(forAreaID areaID: Int, completion: @escaping ((GetRouteList?) -> Void)) {
+        let token = UserDefaults.standard.string(forKey: "accessToken") ?? ""
+        let url = "https://\(companyCode).kiiapps.com/am/exapi/vrp/tenants/\(tenantId)/routes?zoneID=&areaCriteria={{areaID}}&pageSize=&pageToken="
+        AF.request(url, method: .get, parameters: nil, headers: self.makeHeaders(token: token))
+            .responseDecodable(of: GetRouteList.self) { response1 in
+            switch response1.result {
+            case .success(let value):
+                completion(value)
+            case .failure(let error):
+                completion(nil)
+            }
+        }
     }
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
@@ -329,6 +331,7 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         if pickerView == pickerStatus {
+           
             return statusDelivery[row]
         } else if pickerView == pickerDriver {
             var arrCar: [String] = []
@@ -340,6 +343,7 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
             }
             return "Car1"
         } else if pickerView == pickerDate {
+            pickerDriver.selectRow(0, inComponent: component, animated: false)
             let formatter = DateFormatter()
             formatter.dateFormat = "MM/dd"
             let dateString: String = formatter.string(from: dateYMD[row])
@@ -398,7 +402,6 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         if dataDidFilter.count > 0 {
             for infoCustomer in dataDidFilter {
                 self.comment.append(infoCustomer.elem?.location?.comment ?? "")
-                
             }
         } else {
             // btnShipping.removeFromSuperview()
@@ -646,8 +649,4 @@ extension DeliveryListController: MKMapViewDelegate, ShowIndexPageDelegateProtoc
     }
     
 }
-
-
-
-
 

@@ -7,7 +7,7 @@
 
 import UIKit
 
-class GetAsset: NSObject, Decodable {
+class GetAsset: Decodable {
     var assetModelID: Int?
     var createdAt: String?
     var enabled: Bool?

@@ -54,12 +54,12 @@ class ReplanController: UIViewController, FloatingPanelControllerDelegate {
         
         let view = fpc.contentViewController as! ContentReplanController
         view.myTableView.reloadData()
+//        view.viewDidLoad()
     }
     
     @IBOutlet weak var btnReplace: UIButton!
     @IBAction func btnReplace(_ sender: Any) {
         if !listIndex.isEmpty {
-            
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let destinationVC = storyboard.instantiateViewController(withIdentifier: "CustomAlertReplanVC") as! CustomAlertReplanVC
             destinationVC.delegateClickOK = self
@@ -224,7 +224,7 @@ class ReplanController: UIViewController, FloatingPanelControllerDelegate {
         //viewBtnAnimation.frame = CGRect(x: 0, y: 270, width: self.viewAnimation.frame.size.width, height: 30)
         self.view.insertSubview(viewBtnAnimation, aboveSubview: viewAnimation)
         let verticalConstraint = NSLayoutConstraint(item: viewBtnAnimation, attribute: NSLayoutConstraint.Attribute.top, relatedBy: NSLayoutConstraint.Relation.equal, toItem: viewAnimation, attribute: NSLayoutConstraint.Attribute.bottom , multiplier: 1, constant: 0)
-        let widthConstraint = NSLayoutConstraint(item: viewBtnAnimation, attribute: NSLayoutConstraint.Attribute.width, relatedBy: NSLayoutConstraint.Relation.equal, toItem: nil, attribute: NSLayoutConstraint.Attribute.notAnAttribute, multiplier: 1, constant: self.viewAnimation.frame.size.width )
+        let widthConstraint = NSLayoutConstraint(item: viewBtnAnimation, attribute: NSLayoutConstraint.Attribute.width, relatedBy: NSLayoutConstraint.Relation.equal, toItem: nil, attribute: NSLayoutConstraint.Attribute.notAnAttribute, multiplier: 1, constant: self.viewPicker.frame.size.width )
         let heightConstraint = NSLayoutConstraint(item: viewBtnAnimation, attribute: NSLayoutConstraint.Attribute.height, relatedBy: NSLayoutConstraint.Relation.equal, toItem: nil, attribute: NSLayoutConstraint.Attribute.notAnAttribute, multiplier: 1, constant: 30)
         viewBtnAnimation.translatesAutoresizingMaskIntoConstraints = false
         view.addConstraints([verticalConstraint, widthConstraint, heightConstraint])
@@ -233,19 +233,30 @@ class ReplanController: UIViewController, FloatingPanelControllerDelegate {
     @objc func clickBtn() {
         status = !status
         //let horizontalConstraint = NSLayoutConstraint(item: viewBtnAnimation, attribute: NSLayoutConstraint.Attribute.leading , relatedBy: NSLayoutConstraint.Relation.equal, toItem: viewAnimation, attribute: NSLayoutConstraint.Attribute.centerX, multiplier: 1, constant: 0)
-        let verticalConstraint = NSLayoutConstraint(item: viewBtnAnimation, attribute: NSLayoutConstraint.Attribute.top, relatedBy: NSLayoutConstraint.Relation.equal, toItem: viewAnimation, attribute: NSLayoutConstraint.Attribute.bottom, multiplier: 1, constant: 0)
-        let widthConstraint = NSLayoutConstraint(item: viewBtnAnimation, attribute: NSLayoutConstraint.Attribute.width, relatedBy: NSLayoutConstraint.Relation.equal, toItem: nil, attribute: NSLayoutConstraint.Attribute.notAnAttribute, multiplier: 1, constant: self.viewAnimation.frame.size.width )
-        let heightConstraint = NSLayoutConstraint(item: viewBtnAnimation, attribute: NSLayoutConstraint.Attribute.height, relatedBy: NSLayoutConstraint.Relation.equal, toItem: nil, attribute: NSLayoutConstraint.Attribute.notAnAttribute, multiplier: 1, constant: 30)
         
         if status {
+//            let verticalConstraint = NSLayoutConstraint(item: viewBtnAnimation, attribute: NSLayoutConstraint.Attribute.top, relatedBy: NSLayoutConstraint.Relation.equal, toItem: viewAnimation, attribute: NSLayoutConstraint.Attribute.bottom, multiplier: 1, constant: 0)
+//            let widthConstraint = NSLayoutConstraint(item: viewBtnAnimation, attribute: NSLayoutConstraint.Attribute.width, relatedBy: NSLayoutConstraint.Relation.equal, toItem: nil, attribute: NSLayoutConstraint.Attribute.notAnAttribute, multiplier: 1, constant: self.viewAnimation.frame.size.width )
+//            let heightConstraint = NSLayoutConstraint(item: viewBtnAnimation, attribute: NSLayoutConstraint.Attribute.height, relatedBy: NSLayoutConstraint.Relation.equal, toItem: nil, attribute: NSLayoutConstraint.Attribute.notAnAttribute, multiplier: 1, constant: 30)
+
+            
             // view Animation hidden
             viewAnimation.isHidden = true
             viewBtnAnimation.setImage(UIImage(named: "downAnimation"), for: .normal)
+            let y = self.viewPicker.frame.height
+            let heightNavigation = navigationController?.navigationBar.frame.height ?? 0
+            print()
+            print(y + heightNavigation)
             viewBtnAnimation.frame = CGRect(x: 0, y: 161, width: self.viewAnimation.frame.width, height: 30)
             viewBtnAnimation.translatesAutoresizingMaskIntoConstraints = true
-            //view.addConstraints([verticalConstraint, widthConstraint, heightConstraint])
+//            view.addConstraints([verticalConstraint, widthConstraint, heightConstraint])
             //view.insertSubview(viewBtnAnimation, belowSubview: viewAnimation)
         } else {
+            
+            let verticalConstraint = NSLayoutConstraint(item: viewBtnAnimation, attribute: NSLayoutConstraint.Attribute.top, relatedBy: NSLayoutConstraint.Relation.equal, toItem: viewAnimation, attribute: NSLayoutConstraint.Attribute.bottom, multiplier: 1, constant: 0)
+            let widthConstraint = NSLayoutConstraint(item: viewBtnAnimation, attribute: NSLayoutConstraint.Attribute.width, relatedBy: NSLayoutConstraint.Relation.equal, toItem: nil, attribute: NSLayoutConstraint.Attribute.notAnAttribute, multiplier: 1, constant: self.viewPicker.frame.size.width )
+            let heightConstraint = NSLayoutConstraint(item: viewBtnAnimation, attribute: NSLayoutConstraint.Attribute.height, relatedBy: NSLayoutConstraint.Relation.equal, toItem: nil, attribute: NSLayoutConstraint.Attribute.notAnAttribute, multiplier: 1, constant: 30)
+            
             // view Animation Display
             // viewBtnAnimation.removeConstraints([verticalConstraint, widthConstraint, heightConstraint])
             viewAnimation.isHidden = false
@@ -341,21 +352,31 @@ extension ReplanController: UIPickerViewDelegate, UIPickerViewDataSource {
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        var arrCar: [String] = []
         
-        var listRemove1: [Location] = []
-        for idic in dicData where idic.key == dateYMD.first {
-            for iLocation in idic.value where iLocation.elem?.location?.metadata?.display_data?.excludeFirstDay == true {
-                listRemove1.append(iLocation)
-            }
-        }
-        if pickerView == pickerDriver {
+        if pickerView == pickerDate {
+            pickerDriver.selectRow(0, inComponent: component, animated: false)
+            let formatter = DateFormatter()
+            formatter.dateFormat = "MM/dd"
+            let dateString: String = formatter.string(from: dateYMD[row])
+            return dateString
             
+        } else if pickerView == pickerDriver {
+            var arrCar: [String] = []
+            var listRemove1: [Location] = []
+            for idic in dicData where idic.key == dateYMD.first {
+                for iLocation in idic.value where iLocation.elem?.location?.metadata?.display_data?.excludeFirstDay == true {
+                    listRemove1.append(iLocation)
+                }
+            }
+           
             if !indxes.isEmpty {  // co data
                 if selectedIdxDate > 0 {  // ngay sau
+                    print(indxes)
                     for (ind, _) in indxes.enumerated() {
                         arrCar.append("Car\(ind + 1)")
                     }
+                    print(arrCar[row])
+                    
                     return arrCar[row]
                 } else if selectedIdxDate == 0 {  // ngay dau tien
                     if listRemove.isEmpty && selectedIdxDate == 0 {
@@ -382,11 +403,6 @@ extension ReplanController: UIPickerViewDelegate, UIPickerViewDataSource {
                 return "Car1"
             }
             
-        } else if pickerView == pickerDate {
-            let formatter = DateFormatter()
-            formatter.dateFormat = "MM/dd"
-            let dateString: String = formatter.string(from: dateYMD[row])
-            return dateString
         }
         return ""
     }
@@ -395,13 +411,12 @@ extension ReplanController: UIPickerViewDelegate, UIPickerViewDataSource {
         if pickerView == pickerDate {
             selectedIdxDate = row
             selectedIdxDriver = 0
-            
             listMoveToIsTrue.removeAll()
             listIndex.removeAll()
-            pickerDriver.reloadAllComponents()
             self.reDrawMarkers()
+           // pickerView.reloadAllComponents()
+           
         } else if pickerView == pickerDriver {
-            pickerDriver.reloadAllComponents()
             listIndex.removeAll()
             selectedIdxDriver = row
             self.reDrawMarkers()
@@ -466,14 +481,12 @@ extension ReplanController: MKMapViewDelegate {
                 }
             }
         }
-        print(arrMoveToIsTrue.count)
         // xoa data   Xe cuoi, ngay 1
         if arrMoveToIsTrue.count > 0 && selectedIdxDate == 0 && selectedIdxDriver+1 == indxes.count {  // xe cuoi , ngay 1
             dataDidFilter_Replan.insert(contentsOf: arrMoveToIsTrue, at: dataDidFilter_Replan.count - 1)
         } else if arrMoveToIsTrue.count > 0 && selectedIdxDate == 0 && dataDidFilter_Replan.isEmpty {  // ngay 1 khong co data || sau 4h
          //   dataDidFilter_Replan.insert(contentsOf: arrMoveToIsTrue, at: dataDidFilter_Replan.count - 1)
         }
-        print(dataDidFilter_Replan.count)
         
         
         // xoa data xe cuoi, ngay 1, TH ngay dau khong co xe
@@ -483,12 +496,21 @@ extension ReplanController: MKMapViewDelegate {
         for picker in dataDidFilter_Replan where picker.type == .customer {
             // EXCLUDE
             if selectedIdxDriver+1 < indxes.count+1 && picker.elem?.location?.metadata?.display_data?.excludeFirstDay != true {
-                if !arrMoveToIsTrue.isEmpty && picker.elem?.location?.metadata?.display_data?.moveToFirstDay != true {
-                    if let lat = picker.elem?.latitude, let long = picker.elem?.longitude, let locationOrder = picker.elem?.locationOrder {
-                        let locationOfCustomer = CustomPin(title: locationOrder , coordinate: CLLocationCoordinate2D(latitude: lat, longitude: long))
-                        arrLocationOrder.append(locationOfCustomer.title)
-                        mapView.addAnnotation(locationOfCustomer)
+                if !arrMoveToIsTrue.isEmpty {
+                    if selectedIdxDate == 0 && picker.elem?.location?.metadata?.display_data?.moveToFirstDay == true {
+                        if let lat = picker.elem?.latitude, let long = picker.elem?.longitude, let locationOrder = picker.elem?.locationOrder {
+                            let locationOfCustomer = CustomPin(title: locationOrder , coordinate: CLLocationCoordinate2D(latitude: lat, longitude: long))
+                            arrLocationOrder.append(locationOfCustomer.title)
+                            mapView.addAnnotation(locationOfCustomer)
+                        }
+                    } else if picker.elem?.location?.metadata?.display_data?.moveToFirstDay != true {
+                        if let lat = picker.elem?.latitude, let long = picker.elem?.longitude, let locationOrder = picker.elem?.locationOrder {
+                            let locationOfCustomer = CustomPin(title: locationOrder , coordinate: CLLocationCoordinate2D(latitude: lat, longitude: long))
+                            arrLocationOrder.append(locationOfCustomer.title)
+                            mapView.addAnnotation(locationOfCustomer)
+                        }
                     }
+                    
                 } else if arrMoveToIsTrue.isEmpty  {
                     if let lat = picker.elem?.latitude, let long = picker.elem?.longitude, let locationOrder = picker.elem?.locationOrder {
                         let locationOfCustomer = CustomPin(title: locationOrder , coordinate: CLLocationCoordinate2D(latitude: lat, longitude: long))
@@ -505,13 +527,15 @@ extension ReplanController: MKMapViewDelegate {
                 }
                 
                 // MoveTo FirstDay
-            } else if selectedIdxDate > 0 && !arrMoveToIsTrue.isEmpty && picker.elem?.location?.metadata?.display_data?.moveToFirstDay != true {
-                if let lat = picker.elem?.latitude, let long = picker.elem?.longitude, let locationOrder = picker.elem?.locationOrder {
-                    let locationOfCustomer = CustomPin(title: locationOrder , coordinate: CLLocationCoordinate2D(latitude: lat, longitude: long))
-                    arrLocationOrder.append(locationOfCustomer.title)
-                    mapView.addAnnotation(locationOfCustomer)
+            } else if selectedIdxDate == 0 && selectedIdxDriver+1 == indxes.count && picker.elem?.location?.metadata?.display_data?.moveToFirstDay == true {
+                    if let lat = picker.elem?.latitude, let long = picker.elem?.longitude, let locationOrder = picker.elem?.locationOrder {
+                        let locationOfCustomer = CustomPin(title: locationOrder , coordinate: CLLocationCoordinate2D(latitude: lat, longitude: long))
+                        arrLocationOrder.append(locationOfCustomer.title)
+                        mapView.addAnnotation(locationOfCustomer)
+                    }
                 }
-            } else if selectedIdxDate == 0 && !arrMoveToIsTrue.isEmpty && picker.elem?.location?.metadata?.display_data?.moveToFirstDay == true {
+                
+             else if selectedIdxDate > 0 && !arrMoveToIsTrue.isEmpty && picker.elem?.location?.metadata?.display_data?.moveToFirstDay != true {
                 if let lat = picker.elem?.latitude, let long = picker.elem?.longitude, let locationOrder = picker.elem?.locationOrder {
                     let locationOfCustomer = CustomPin(title: locationOrder , coordinate: CLLocationCoordinate2D(latitude: lat, longitude: long))
                     arrLocationOrder.append(locationOfCustomer.title)
@@ -561,7 +585,6 @@ extension ReplanController: MKMapViewDelegate {
             }
             dequeuedView.reloadInputViews()
             view = dequeuedView
-            
         } else {
             view = MyPinView(annotation: annotation, reuseIdentifier: identifier)
             if arrLocationOrder[0] == annotation.title {

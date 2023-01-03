@@ -21,7 +21,6 @@ class ContentReplanController: UIViewController, UITableViewDataSource, UITableV
     var selectedIdxDate = 0
     var selectedIdxDriver = 0
     var selectedRows = [IndexPath]()
-    
     var isCustomer: Location = Location(elem: LocationElement(locationOrder: 0), asset: GetAsset())
     
     var dicExclude: [Int: [Location]] = [:]
@@ -52,6 +51,7 @@ class ContentReplanController: UIViewController, UITableViewDataSource, UITableV
     // myTableView dataSource
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        selectedRows.removeAll()    
         let cell = myTableView.dequeueReusableCell(withIdentifier: "ContentReplanTableViewCell", for: indexPath) as! ContentReplanTableViewCell
         
         
