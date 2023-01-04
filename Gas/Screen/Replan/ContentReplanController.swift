@@ -51,12 +51,10 @@ class ContentReplanController: UIViewController, UITableViewDataSource, UITableV
     // myTableView dataSource
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        selectedRows.removeAll()    
         let cell = myTableView.dequeueReusableCell(withIdentifier: "ContentReplanTableViewCell", for: indexPath) as! ContentReplanTableViewCell
         
-        
         // binh thuong
-        cell.lbl_locationOrder.text = "\((dataDidFilter_Content[indexPath.row].elem?.locationOrder ?? 0) - 1)"
+        cell.lbl_locationOrder.text = "\((dataDidFilter_Content[indexPath.row].elem?.locationOrder ?? 0))"
         cell.lbl_kyokyusetsubi_code.text = dataDidFilter_Content[indexPath.row].asset?.properties?.values.kyokyusetsubi_code
         
         cell.lbl_locationOrder.layer.borderWidth = 1
@@ -89,9 +87,6 @@ class ContentReplanController: UIViewController, UITableViewDataSource, UITableV
         if selectedRows.contains(indexPath) {
             cell.btnCheckbox.setImage(UIImage(named: "ic_check_on"), for: .normal)
         }
-//        else {
-//            cell.btnCheckbox.setImage(UIImage(named: "ic_check_off"), for: .normal)
-//        }
         
         return cell
     }

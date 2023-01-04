@@ -10,10 +10,8 @@ import FloatingPanel
 import Alamofire
 import MapKit
 
-
-
 class ReplanController: UIViewController, FloatingPanelControllerDelegate {
-    
+    var lastIndDriver1 = 0
     let viewBtnAnimation = UIButton()
     let fpc = FloatingPanelController()
     var t: Int = 0
@@ -54,7 +52,7 @@ class ReplanController: UIViewController, FloatingPanelControllerDelegate {
         
         let view = fpc.contentViewController as! ContentReplanController
         view.myTableView.reloadData()
-//        view.viewDidLoad()
+        //        view.viewDidLoad()
     }
     
     @IBOutlet weak var btnReplace: UIButton!
@@ -186,10 +184,10 @@ class ReplanController: UIViewController, FloatingPanelControllerDelegate {
         var  checkListRemove = [Location]()  // check ngay 1 co ds Remove k
         if selectedIdxDate == 0 {
             for idic in dicData where idic.key == dateYMD[0] {
-
+                
                 for ilocation in idic.value where ilocation.elem?.location?.metadata?.display_data?.excludeFirstDay == true {
                     checkListRemove.append(ilocation)
-
+                    
                 }
             }
         }
@@ -224,7 +222,7 @@ class ReplanController: UIViewController, FloatingPanelControllerDelegate {
         //viewBtnAnimation.frame = CGRect(x: 0, y: 270, width: self.viewAnimation.frame.size.width, height: 30)
         self.view.insertSubview(viewBtnAnimation, aboveSubview: viewAnimation)
         let verticalConstraint = NSLayoutConstraint(item: viewBtnAnimation, attribute: NSLayoutConstraint.Attribute.top, relatedBy: NSLayoutConstraint.Relation.equal, toItem: viewAnimation, attribute: NSLayoutConstraint.Attribute.bottom , multiplier: 1, constant: 0)
-        let widthConstraint = NSLayoutConstraint(item: viewBtnAnimation, attribute: NSLayoutConstraint.Attribute.width, relatedBy: NSLayoutConstraint.Relation.equal, toItem: nil, attribute: NSLayoutConstraint.Attribute.notAnAttribute, multiplier: 1, constant: self.viewPicker.frame.size.width )
+        let widthConstraint = NSLayoutConstraint(item: viewBtnAnimation, attribute: NSLayoutConstraint.Attribute.width, relatedBy: NSLayoutConstraint.Relation.equal, toItem: nil, attribute: NSLayoutConstraint.Attribute.notAnAttribute, multiplier: 1, constant: UIScreen.main.bounds.width)
         let heightConstraint = NSLayoutConstraint(item: viewBtnAnimation, attribute: NSLayoutConstraint.Attribute.height, relatedBy: NSLayoutConstraint.Relation.equal, toItem: nil, attribute: NSLayoutConstraint.Attribute.notAnAttribute, multiplier: 1, constant: 30)
         viewBtnAnimation.translatesAutoresizingMaskIntoConstraints = false
         view.addConstraints([verticalConstraint, widthConstraint, heightConstraint])
@@ -235,10 +233,10 @@ class ReplanController: UIViewController, FloatingPanelControllerDelegate {
         //let horizontalConstraint = NSLayoutConstraint(item: viewBtnAnimation, attribute: NSLayoutConstraint.Attribute.leading , relatedBy: NSLayoutConstraint.Relation.equal, toItem: viewAnimation, attribute: NSLayoutConstraint.Attribute.centerX, multiplier: 1, constant: 0)
         
         if status {
-//            let verticalConstraint = NSLayoutConstraint(item: viewBtnAnimation, attribute: NSLayoutConstraint.Attribute.top, relatedBy: NSLayoutConstraint.Relation.equal, toItem: viewAnimation, attribute: NSLayoutConstraint.Attribute.bottom, multiplier: 1, constant: 0)
-//            let widthConstraint = NSLayoutConstraint(item: viewBtnAnimation, attribute: NSLayoutConstraint.Attribute.width, relatedBy: NSLayoutConstraint.Relation.equal, toItem: nil, attribute: NSLayoutConstraint.Attribute.notAnAttribute, multiplier: 1, constant: self.viewAnimation.frame.size.width )
-//            let heightConstraint = NSLayoutConstraint(item: viewBtnAnimation, attribute: NSLayoutConstraint.Attribute.height, relatedBy: NSLayoutConstraint.Relation.equal, toItem: nil, attribute: NSLayoutConstraint.Attribute.notAnAttribute, multiplier: 1, constant: 30)
-
+            //            let verticalConstraint = NSLayoutConstraint(item: viewBtnAnimation, attribute: NSLayoutConstraint.Attribute.top, relatedBy: NSLayoutConstraint.Relation.equal, toItem: viewAnimation, attribute: NSLayoutConstraint.Attribute.bottom, multiplier: 1, constant: 0)
+            //            let widthConstraint = NSLayoutConstraint(item: viewBtnAnimation, attribute: NSLayoutConstraint.Attribute.width, relatedBy: NSLayoutConstraint.Relation.equal, toItem: nil, attribute: NSLayoutConstraint.Attribute.notAnAttribute, multiplier: 1, constant: self.viewAnimation.frame.size.width )
+            //            let heightConstraint = NSLayoutConstraint(item: viewBtnAnimation, attribute: NSLayoutConstraint.Attribute.height, relatedBy: NSLayoutConstraint.Relation.equal, toItem: nil, attribute: NSLayoutConstraint.Attribute.notAnAttribute, multiplier: 1, constant: 30)
+            
             
             // view Animation hidden
             viewAnimation.isHidden = true
@@ -247,12 +245,10 @@ class ReplanController: UIViewController, FloatingPanelControllerDelegate {
             let heightNavigation = navigationController?.navigationBar.frame.height ?? 0
             print()
             print(y + heightNavigation)
-            viewBtnAnimation.frame = CGRect(x: 0, y: 161, width: self.viewAnimation.frame.width, height: 30)
+            viewBtnAnimation.frame = CGRect(x: 0, y: 167, width: self.viewAnimation.frame.width, height: 30)
             viewBtnAnimation.translatesAutoresizingMaskIntoConstraints = true
-//            view.addConstraints([verticalConstraint, widthConstraint, heightConstraint])
-            //view.insertSubview(viewBtnAnimation, belowSubview: viewAnimation)
+            //            view.addConstraints([verticalConstraint, widthConstraint, heightConstraint])
         } else {
-            
             let verticalConstraint = NSLayoutConstraint(item: viewBtnAnimation, attribute: NSLayoutConstraint.Attribute.top, relatedBy: NSLayoutConstraint.Relation.equal, toItem: viewAnimation, attribute: NSLayoutConstraint.Attribute.bottom, multiplier: 1, constant: 0)
             let widthConstraint = NSLayoutConstraint(item: viewBtnAnimation, attribute: NSLayoutConstraint.Attribute.width, relatedBy: NSLayoutConstraint.Relation.equal, toItem: nil, attribute: NSLayoutConstraint.Attribute.notAnAttribute, multiplier: 1, constant: self.viewPicker.frame.size.width )
             let heightConstraint = NSLayoutConstraint(item: viewBtnAnimation, attribute: NSLayoutConstraint.Attribute.height, relatedBy: NSLayoutConstraint.Relation.equal, toItem: nil, attribute: NSLayoutConstraint.Attribute.notAnAttribute, multiplier: 1, constant: 30)
@@ -368,15 +364,12 @@ extension ReplanController: UIPickerViewDelegate, UIPickerViewDataSource {
                     listRemove1.append(iLocation)
                 }
             }
-           
+            
             if !indxes.isEmpty {  // co data
                 if selectedIdxDate > 0 {  // ngay sau
-                    print(indxes)
                     for (ind, _) in indxes.enumerated() {
                         arrCar.append("Car\(ind + 1)")
                     }
-                    print(arrCar[row])
-                    
                     return arrCar[row]
                 } else if selectedIdxDate == 0 {  // ngay dau tien
                     if listRemove.isEmpty && selectedIdxDate == 0 {
@@ -391,7 +384,7 @@ extension ReplanController: UIPickerViewDelegate, UIPickerViewDataSource {
                             }
                             arrCar.append("Remove")
                             return arrCar[row]
-                        } else if listRemove1.isEmpty  {
+                        } else if listRemove1.isEmpty {
                             for (ind, _) in indxes.enumerated() {
                                 arrCar.append("Car\(ind + 1)")
                             }
@@ -414,8 +407,7 @@ extension ReplanController: UIPickerViewDelegate, UIPickerViewDataSource {
             listMoveToIsTrue.removeAll()
             listIndex.removeAll()
             self.reDrawMarkers()
-           // pickerView.reloadAllComponents()
-           
+            
         } else if pickerView == pickerDriver {
             listIndex.removeAll()
             selectedIdxDriver = row
@@ -485,14 +477,30 @@ extension ReplanController: MKMapViewDelegate {
         if arrMoveToIsTrue.count > 0 && selectedIdxDate == 0 && selectedIdxDriver+1 == indxes.count {  // xe cuoi , ngay 1
             dataDidFilter_Replan.insert(contentsOf: arrMoveToIsTrue, at: dataDidFilter_Replan.count - 1)
         } else if arrMoveToIsTrue.count > 0 && selectedIdxDate == 0 && dataDidFilter_Replan.isEmpty {  // ngay 1 khong co data || sau 4h
-         //   dataDidFilter_Replan.insert(contentsOf: arrMoveToIsTrue, at: dataDidFilter_Replan.count - 1)
+            //   dataDidFilter_Replan.insert(contentsOf: arrMoveToIsTrue, at: dataDidFilter_Replan.count - 1)
         }
         
-        
-        // xoa data xe cuoi, ngay 1, TH ngay dau khong co xe
+        // danh so lai
+        var listLocationOrder = [Int]()
+        if selectedIdxDriver == 0 {
+            for (ind, picker) in dataDidFilter_Replan.enumerated() where picker.type == .customer {
+                listLocationOrder.append(ind + 1)
+                picker.elem?.locationOrder = ind + 1
+            }
+            lastIndDriver1 = listLocationOrder.last ?? 0
+        } else if selectedIdxDriver+1 == indxes.count + 1 {
+            for (ind, picker) in dataDidFilter_Replan.enumerated() where picker.type == .customer {
+                listLocationOrder.append(ind + 1)
+                picker.elem?.locationOrder = ind + 1
+            }
+        }
+        else if selectedIdxDriver > 0 {
+            for (ind, picker) in dataDidFilter_Replan.enumerated() where picker.type == .customer {
+                picker.elem?.locationOrder = lastIndDriver1 + 2 + ind
+            }
+        }
         
         // Marker in MKMap
-        
         for picker in dataDidFilter_Replan where picker.type == .customer {
             // EXCLUDE
             if selectedIdxDriver+1 < indxes.count+1 && picker.elem?.location?.metadata?.display_data?.excludeFirstDay != true {
@@ -528,22 +536,20 @@ extension ReplanController: MKMapViewDelegate {
                 
                 // MoveTo FirstDay
             } else if selectedIdxDate == 0 && selectedIdxDriver+1 == indxes.count && picker.elem?.location?.metadata?.display_data?.moveToFirstDay == true {
-                    if let lat = picker.elem?.latitude, let long = picker.elem?.longitude, let locationOrder = picker.elem?.locationOrder {
-                        let locationOfCustomer = CustomPin(title: locationOrder , coordinate: CLLocationCoordinate2D(latitude: lat, longitude: long))
-                        arrLocationOrder.append(locationOfCustomer.title)
-                        mapView.addAnnotation(locationOfCustomer)
-                    }
+                if let lat = picker.elem?.latitude, let long = picker.elem?.longitude, let locationOrder = picker.elem?.locationOrder  {
+                    let locationOfCustomer = CustomPin(title: locationOrder, coordinate: CLLocationCoordinate2D(latitude: lat, longitude: long))
+                    arrLocationOrder.append(locationOfCustomer.title)
+                    mapView.addAnnotation(locationOfCustomer)
                 }
-                
-             else if selectedIdxDate > 0 && !arrMoveToIsTrue.isEmpty && picker.elem?.location?.metadata?.display_data?.moveToFirstDay != true {
+            } else if selectedIdxDate > 0 && !arrMoveToIsTrue.isEmpty && picker.elem?.location?.metadata?.display_data?.moveToFirstDay != true {
                 if let lat = picker.elem?.latitude, let long = picker.elem?.longitude, let locationOrder = picker.elem?.locationOrder {
-                    let locationOfCustomer = CustomPin(title: locationOrder , coordinate: CLLocationCoordinate2D(latitude: lat, longitude: long))
+                    let locationOfCustomer = CustomPin(title: locationOrder, coordinate: CLLocationCoordinate2D(latitude: lat, longitude: long))
                     arrLocationOrder.append(locationOfCustomer.title)
                     mapView.addAnnotation(locationOfCustomer)
                 }
             }
+            
         }
-        
         
         if dataDidFilter_Replan.count > 0 {
             btnReplace.isHidden = false
@@ -575,11 +581,11 @@ extension ReplanController: MKMapViewDelegate {
             dequeuedView.annotation = annotation
             
             if  arrLocationOrder[0] == annotation.title {
-                dequeuedView.lblView.text = "\(annotation.title - 1)"
+                dequeuedView.lblView.text = "\(annotation.title)"
                 dequeuedView.image = UIImage(named: "marker")
                 dequeuedView.zPriority = MKAnnotationViewZPriority.max
             } else {
-                dequeuedView.lblView.text = "\(annotation.title - 1)"
+                dequeuedView.lblView.text = "\(annotation.title)"
                 dequeuedView.image = UIImage(named: "marker")
                 dequeuedView.zPriority = MKAnnotationViewZPriority.init(rawValue: 999 - Float(annotation.title))
             }
@@ -588,11 +594,11 @@ extension ReplanController: MKMapViewDelegate {
         } else {
             view = MyPinView(annotation: annotation, reuseIdentifier: identifier)
             if arrLocationOrder[0] == annotation.title {
-                view.lblView.text = "\(annotation.title - 1)"
+                view.lblView.text = "\(annotation.title)"
                 view.zPriority = MKAnnotationViewZPriority.max
                 view.image = UIImage(named: "marker")
             } else {
-                view.lblView.text = "\(annotation.title - 1)"
+                view.lblView.text = "\(annotation.title)"
                 view.zPriority = MKAnnotationViewZPriority.init(rawValue: 999 - Float(annotation.title))
                 view.image = UIImage(named: "marker")
             }

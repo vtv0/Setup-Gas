@@ -1824,18 +1824,8 @@ Tiết Liêu tỉnh dậy, vô cùng mừng rỡ. Ông làm theo lời Thần d�
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="45"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="252" verticalHuggingPriority="252" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vkG-IJ-jog">
-                                                    <rect key="frame" x="3" y="0.0" width="44" height="45"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="44" id="ayg-ld-WDh"/>
-                                                    </constraints>
-                                                    <state key="normal" title="Button"/>
-                                                    <buttonConfiguration key="configuration" style="plain" image="ic_check_off">
-                                                        <color key="baseForegroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                    </buttonConfiguration>
-                                                </button>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fZk-zo-SQX">
-                                                    <rect key="frame" x="55" y="0.0" width="45" height="45"/>
+                                                    <rect key="frame" x="65" y="0.0" width="45" height="45"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="45" id="EL7-1p-VlN"/>
                                                         <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="45" id="M5Y-l0-eXb"/>
@@ -1844,8 +1834,8 @@ Tiết Liêu tỉnh dậy, vô cùng mừng rỡ. Ông làm theo lời Thần d�
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="249" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PkX-iA-wOq">
-                                                    <rect key="frame" x="105" y="0.0" width="66" height="45"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="256" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PkX-iA-wOq">
+                                                    <rect key="frame" x="115" y="0.0" width="66" height="45"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="66" id="Aaw-KK-J4y"/>
                                                     </constraints>
@@ -1853,14 +1843,14 @@ Tiết Liêu tỉnh dậy, vô cùng mừng rỡ. Ông làm theo lời Thần d�
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="247" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ydz-7U-rV2">
-                                                    <rect key="frame" x="364.5" y="0.0" width="41.5" height="45"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="240" verticalHuggingPriority="244" horizontalCompressionResistancePriority="751" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ydz-7U-rV2">
+                                                    <rect key="frame" x="354.5" y="0.0" width="51.5" height="45"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="248" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RL7-dz-tQL">
-                                                    <rect key="frame" x="176" y="0.0" width="151" height="45"/>
+                                                    <rect key="frame" x="186" y="0.0" width="151" height="45"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="151" id="8ea-tB-EMI"/>
                                                     </constraints>
@@ -1868,22 +1858,36 @@ Tiết Liêu tỉnh dậy, vô cùng mừng rỡ. Ông làm theo lời Thần d�
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vkG-IJ-jog">
+                                                    <rect key="frame" x="8" y="11" width="42" height="20"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="19" id="ayg-ld-WDh"/>
+                                                    </constraints>
+                                                    <state key="normal" title="Button"/>
+                                                    <buttonConfiguration key="configuration" style="plain" image="ic_check_off">
+                                                        <color key="baseForegroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    </buttonConfiguration>
+                                                    <connections>
+                                                        <action selector="btnCheckBox:" destination="scP-Q8-P9v" eventType="touchUpInside" id="ssT-6J-4U2"/>
+                                                    </connections>
+                                                </button>
                                             </subviews>
                                             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                             <constraints>
                                                 <constraint firstItem="PkX-iA-wOq" firstAttribute="leading" secondItem="fZk-zo-SQX" secondAttribute="trailing" constant="5" id="3lY-vS-bd5"/>
+                                                <constraint firstItem="fZk-zo-SQX" firstAttribute="leading" relation="lessThanOrEqual" secondItem="vkG-IJ-jog" secondAttribute="trailing" constant="15" id="56J-5t-oLG"/>
                                                 <constraint firstItem="Ydz-7U-rV2" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="RL7-dz-tQL" secondAttribute="trailing" constant="9" id="57d-gi-aYe"/>
-                                                <constraint firstItem="Ydz-7U-rV2" firstAttribute="top" secondItem="vkG-IJ-jog" secondAttribute="top" id="Oyh-Az-x32"/>
+                                                <constraint firstItem="Ydz-7U-rV2" firstAttribute="leading" secondItem="RL7-dz-tQL" secondAttribute="trailing" constant="17.5" id="N2Z-sJ-f1K"/>
+                                                <constraint firstItem="Ydz-7U-rV2" firstAttribute="top" secondItem="vkG-IJ-jog" secondAttribute="top" constant="-11" id="Oyh-Az-x32"/>
                                                 <constraint firstItem="RL7-dz-tQL" firstAttribute="leading" secondItem="PkX-iA-wOq" secondAttribute="trailing" constant="5" id="WCO-qH-l94"/>
-                                                <constraint firstItem="vkG-IJ-jog" firstAttribute="leading" secondItem="kOe-RQ-M39" secondAttribute="leading" constant="3" id="YVr-U6-QNO"/>
+                                                <constraint firstItem="vkG-IJ-jog" firstAttribute="leading" secondItem="kOe-RQ-M39" secondAttribute="leading" constant="8" id="YVr-U6-QNO"/>
                                                 <constraint firstItem="PkX-iA-wOq" firstAttribute="baseline" secondItem="fZk-zo-SQX" secondAttribute="baseline" id="ZvI-Ew-NxT"/>
-                                                <constraint firstItem="fZk-zo-SQX" firstAttribute="leading" secondItem="vkG-IJ-jog" secondAttribute="trailing" constant="8" id="ah8-4V-53y"/>
-                                                <constraint firstItem="Ydz-7U-rV2" firstAttribute="bottom" secondItem="vkG-IJ-jog" secondAttribute="bottom" id="bOc-pT-4IO"/>
+                                                <constraint firstItem="Ydz-7U-rV2" firstAttribute="bottom" secondItem="vkG-IJ-jog" secondAttribute="bottom" constant="14" id="bOc-pT-4IO"/>
                                                 <constraint firstAttribute="trailing" secondItem="Ydz-7U-rV2" secondAttribute="trailing" constant="8" id="drc-bz-SXz"/>
-                                                <constraint firstItem="PkX-iA-wOq" firstAttribute="bottom" secondItem="vkG-IJ-jog" secondAttribute="bottom" id="edJ-Og-KCv"/>
-                                                <constraint firstItem="PkX-iA-wOq" firstAttribute="top" secondItem="vkG-IJ-jog" secondAttribute="top" id="fIi-CP-Kmo"/>
-                                                <constraint firstItem="RL7-dz-tQL" firstAttribute="bottom" secondItem="vkG-IJ-jog" secondAttribute="bottom" id="fOW-nS-He9"/>
-                                                <constraint firstItem="RL7-dz-tQL" firstAttribute="top" secondItem="vkG-IJ-jog" secondAttribute="top" id="h5S-YG-xMG"/>
+                                                <constraint firstItem="PkX-iA-wOq" firstAttribute="bottom" secondItem="vkG-IJ-jog" secondAttribute="bottom" constant="14" id="edJ-Og-KCv"/>
+                                                <constraint firstItem="PkX-iA-wOq" firstAttribute="top" secondItem="vkG-IJ-jog" secondAttribute="top" constant="-11" id="fIi-CP-Kmo"/>
+                                                <constraint firstItem="RL7-dz-tQL" firstAttribute="bottom" secondItem="vkG-IJ-jog" secondAttribute="bottom" constant="14" id="fOW-nS-He9"/>
+                                                <constraint firstItem="RL7-dz-tQL" firstAttribute="top" secondItem="vkG-IJ-jog" secondAttribute="top" constant="-11" id="h5S-YG-xMG"/>
                                                 <constraint firstAttribute="bottom" secondItem="fZk-zo-SQX" secondAttribute="bottom" id="hd6-aD-Xwd"/>
                                                 <constraint firstItem="fZk-zo-SQX" firstAttribute="top" secondItem="kOe-RQ-M39" secondAttribute="top" id="xKU-mt-FLi"/>
                                                 <constraint firstItem="PkX-iA-wOq" firstAttribute="firstBaseline" secondItem="fZk-zo-SQX" secondAttribute="firstBaseline" id="yq9-GC-ltX"/>
@@ -1916,7 +1920,7 @@ Tiết Liêu tỉnh dậy, vô cùng mừng rỡ. Ông làm theo lời Thần d�
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ymm-uS-kcZ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-635.87786259541986" y="2432.3943661971834"/>
+            <point key="canvasLocation" x="-636.23188405797111" y="2432.1428571428569"/>
         </scene>
         <!--Custom Alert ReplanVC-->
         <scene sceneID="eB0-b3-gvi">
@@ -1929,7 +1933,7 @@ Tiết Liêu tỉnh dậy, vô cùng mừng rỡ. Ông làm theo lời Thần d�
                                 <rect key="frame" x="10" y="323" width="394" height="250"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0pZ-EI-JPv">
-                                        <rect key="frame" x="192.5" y="215.5" width="201.5" height="34.5"/>
+                                        <rect key="frame" x="193.5" y="215.5" width="200.5" height="34.5"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <state key="normal" title="Button"/>
                                         <buttonConfiguration key="configuration" style="plain" title="OK"/>
@@ -1938,7 +1942,7 @@ Tiết Liêu tỉnh dậy, vô cùng mừng rỡ. Ông làm theo lời Thần d�
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="A77-Sj-IIh">
-                                        <rect key="frame" x="0.0" y="215.5" width="191.5" height="34.5"/>
+                                        <rect key="frame" x="0.0" y="215.5" width="192.5" height="34.5"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="A77-Sj-IIh" secondAttribute="height" multiplier="173:31" id="uIB-6f-DxP"/>

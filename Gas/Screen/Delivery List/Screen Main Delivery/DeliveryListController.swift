@@ -129,7 +129,7 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
     override func viewDidLoad() {
         super.viewDidLoad()
         self.sevenDay()
-      //  getMe()
+        getMe()
         fpc.delegate = self
         mapView.delegate = self
         
@@ -150,7 +150,7 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         
         mapView.setCamera(mapCamera, animated: false)
         
-        getWorkerVehicleList()
+//        getWorkerVehicleList()
     }
     
     func showAlert(title: String? = "", message: String?, completion: (() -> Void)? = nil) {
@@ -279,35 +279,37 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         let url = "https://\(companyCode).kiiapps.com/am/exapi/vrp/tenants/\(tenantId)/worker-vehicles"
         AF.request(url, method: .get, encoding: JSONEncoding.default, headers: self.makeHeaders(token: token)) .validate(statusCode: (200...299))
             .responseDecodable(of: WorkerVehicleList.self) { response in
-                print(response.response?.statusCode)
                 switch response.result {
                 case .success(let value):
-                    print(value)
-                    // lay areaID
                     if let areaID = value.workerVehicles?.first?.areaID {
-                        self.getRouteList(forAreaID: areaID) { ivalue in
-                            
-                        }
+                        UserDefaults.standard.set(areaID, forKey: "AreaID")
                     }
-                    
+                    self.getRouteList()
                 case .failure(let error):
                     print(error)
                 }
             }
     }
     
-    func getRouteList(forAreaID areaID: Int, completion: @escaping ((GetRouteList?) -> Void)) {
+    func getRouteList() {
+        let areaID = UserDefaults.standard.string(forKey: "AreaID") ?? ""
         let token = UserDefaults.standard.string(forKey: "accessToken") ?? ""
-        let url = "https://\(companyCode).kiiapps.com/am/exapi/vrp/tenants/\(tenantId)/routes?zoneID=&areaCriteria={{areaID}}&pageSize=&pageToken="
+        let url = "https://\(companyCode).kiiapps.com/am/exapi/vrp/tenants/\(tenantId)/routes?zoneID=&areaCriteria=\(areaID)&pageSize=&pageToken="
         AF.request(url, method: .get, parameters: nil, headers: self.makeHeaders(token: token))
             .responseDecodable(of: GetRouteList.self) { response1 in
             switch response1.result {
             case .success(let value):
-                completion(value)
+              print(value)
             case .failure(let error):
-                completion(nil)
+             print(error)
             }
         }
+    }
+    
+    func getWorkerRouteLocationList() {
+        
+        
+        let url = "https://am-stg-iw01j.kiiapps.com/am/exapi/vrp/tenants/{{tenantID}}/routes/{{routeID}}/workers/{{workerRouteID}}"
     }
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {

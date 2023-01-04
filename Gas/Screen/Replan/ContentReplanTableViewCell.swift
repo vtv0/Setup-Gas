@@ -9,10 +9,14 @@ import UIKit
 
 class ContentReplanTableViewCell: UITableViewCell {
 
-    //@IBOutlet weak var imgCheckbox: UIImageView!
+   
     
     @IBOutlet weak var btnCheckbox: UIButton!
 
+    @IBAction func btnCheckBox(_ sender: UIButton) {
+        
+        print("click")
+    }
     @IBOutlet weak var lbl_locationOrder: UILabel!
 
     @IBOutlet weak var lbl_kyokyusetsubi_code: UILabel!

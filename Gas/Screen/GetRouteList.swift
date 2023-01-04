@@ -15,14 +15,14 @@ struct GetRouteList: Decodable {
 
 struct RoutesElement: Decodable {
     var areaID: Int?
-    var createdAt: Date?
+    var createdAt: String?
     //  var errorMessage:?
     var id: Int?
     var message: String?
     var operationStartTime: OperationStartTimeElement?
     var status: String?
     var tenantID: Int?
-    var updatedAt: Date?
+    var updatedAt: String?
     
 }
 
