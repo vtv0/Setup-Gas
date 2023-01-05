@@ -191,7 +191,6 @@
 		75BF39FA28E161A800BC0F0C = {
 			isa = PBXGroup;
 			children = (
-				75123F6929027E3D00A08972 /* PassScreenViewController.swift */,
 				75BF3A0528E161A800BC0F0C /* Gas */,
 				75BF3A0428E161A800BC0F0C /* Products */,
 				93EFFF63360890F6D094E8E9 /* Pods */,
@@ -224,6 +223,7 @@
 		75BF3A1C28E2877900BC0F0C /* Screen */ = {
 			isa = PBXGroup;
 			children = (
+				75123F6929027E3D00A08972 /* PassScreenViewController.swift */,
 				8A4064A828F86F710011DA9A /* ActivityIndicator */,
 				75BF3A1F28E2AE7900BC0F0C /* Login */,
 				75BF3A2228E2AF2F00BC0F0C /* Delivery List */,

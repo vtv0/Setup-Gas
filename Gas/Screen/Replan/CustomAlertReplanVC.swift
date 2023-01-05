@@ -50,7 +50,7 @@ class CustomAlertReplanVC: UIViewController {
         viewAlert.layer.cornerRadius = 10
         viewAlert.layer.masksToBounds = true
         calculateTheNumberOfGas()
-        print(dateString)
+       
     }
     
     func calculateTheNumberOfGas() {

@@ -10,7 +10,14 @@ import FloatingPanel
 import Alamofire
 import MapKit
 
-class ReplanController: UIViewController, FloatingPanelControllerDelegate {
+class ReplanController: UIViewController, FloatingPanelControllerDelegate, FloatingPanelLayout {
+    var position: FloatingPanel.FloatingPanelPosition = .bottom
+    var initialState: FloatingPanel.FloatingPanelState = .full
+    let anchors: [FloatingPanelState: FloatingPanelLayoutAnchoring] = [
+        .full: FloatingPanelLayoutAnchor(absoluteInset: 16.0, edge: .top, referenceGuide: .superview),
+        .half: FloatingPanelLayoutAnchor(fractionalInset: 0.5, edge: .bottom, referenceGuide: .superview),
+        .tip: FloatingPanelLayoutAnchor(absoluteInset: 44.0, edge: .bottom, referenceGuide: .superview),
+    ]
     
     let fpc = FloatingPanelController()
     var t: Int = 0
@@ -28,7 +35,7 @@ class ReplanController: UIViewController, FloatingPanelControllerDelegate {
     var arrFacilityData: [[Facility_data]] = []
     var totalNumberOfBottle: Int = 0
     var listIndex = [Int]()
-   
+    
     var backList_Replan: [Location] = []
     var listRemove = [Location]()
     var lastIndDriver1 = 0
@@ -45,17 +52,17 @@ class ReplanController: UIViewController, FloatingPanelControllerDelegate {
                 self.viewAnimation.isHidden = true
             },
                            completion: { aniDown in
-                    self.clickBtnAnimation.setImage(UIImage(named: "downAnimation"), for: .normal)
+                self.clickBtnAnimation.setImage(UIImage(named: "downAnimation"), for: .normal)
             }
             )
-
+            
         } else {
             UIView.animate(withDuration: 0.6, delay: 0.2, options: [],
                            animations: {
                 self.viewAnimation.isHidden = false
             },
                            completion:  { aniUp  in
-                    self.clickBtnAnimation.setImage(UIImage(named: "upAnimation"), for: .normal)
+                self.clickBtnAnimation.setImage(UIImage(named: "upAnimation"), for: .normal)
             }
             )
         }
@@ -75,7 +82,12 @@ class ReplanController: UIViewController, FloatingPanelControllerDelegate {
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let destinationVC = storyboard.instantiateViewController(withIdentifier: "CustomAlertReplanVC") as! CustomAlertReplanVC
             destinationVC.delegateClickOK = self
-//            destinationVC.dateString =
+            
+            let fomatDate = DateFormatter()
+            fomatDate.dateFormat = "MM/DD"
+            let dateString = fomatDate.string(from: dateYMD[0])
+            
+            destinationVC.dateString = dateString
             destinationVC.indxes = indxes  // so luong xe trong 1 ngay
             destinationVC.selectedIdxDate = selectedIdxDate
             destinationVC.selectedIdxDriver = selectedIdxDriver
@@ -108,12 +120,13 @@ class ReplanController: UIViewController, FloatingPanelControllerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Replan"
-        //btnReplace.isEnabled = false
+        // btnReplace.isEnabled = false
         // btnReplace.isHidden = true
         
         self.view.bringSubviewToFront(stackViewLarge)
         self.view.bringSubviewToFront(viewPicker)
         fpc.delegate = self
+//        fpc.behavior = FloatingPanelLayout
         
         pickerDriver.dataSource = self
         pickerDriver.delegate = self
@@ -192,10 +205,9 @@ class ReplanController: UIViewController, FloatingPanelControllerDelegate {
             if selectedIdxDate == 0 {
                 dataDidFilter_Replan = listMoveToIsTrue
             }
-            
         }
         
-        var  checkListRemove = [Location]()  // check ngay 1 co ds Remove k
+        var checkListRemove = [Location]()  // check ngay 1 co ds Remove k
         if selectedIdxDate == 0 {
             for idic in dicData where idic.key == dateYMD[0] {
                 for ilocation in idic.value where ilocation.elem?.location?.metadata?.display_data?.excludeFirstDay == true {
@@ -204,8 +216,6 @@ class ReplanController: UIViewController, FloatingPanelControllerDelegate {
             }
         }
         
-        
-        //else
         if dataDidFilter_Replan.isEmpty && selectedIdxDate == 0 && selectedIdxDriver + 1 == indxes.count + 1 {  // driver Remove Date 1
             dataDidFilter_Replan = listRemove
         }
@@ -215,6 +225,7 @@ class ReplanController: UIViewController, FloatingPanelControllerDelegate {
             btnClear.isHidden = false
             totalType(EachType: 0)
             floatingPanel()
+            checkListRemove.removeAll()
         } else {
             fpc.removePanelFromParent(animated: true)
             btnReplace.isHidden = true
@@ -439,7 +450,7 @@ extension ReplanController: MKMapViewDelegate {
             //   dataDidFilter_Replan.insert(contentsOf: arrMoveToIsTrue, at: dataDidFilter_Replan.count - 1)
         }
         
-        // danh so lai
+        // danh so lai    /// sai vi khi co 3, 4, 5 xe
         var listLocationOrder = [Int]()
         if selectedIdxDriver == 0 {
             for (ind, picker) in dataDidFilter_Replan.enumerated() where picker.type == .customer {
@@ -455,8 +466,14 @@ extension ReplanController: MKMapViewDelegate {
         }
         else if selectedIdxDriver > 0 {
             for (ind, picker) in dataDidFilter_Replan.enumerated() where picker.type == .customer {
+                
                 picker.elem?.locationOrder = lastIndDriver1 + 2 + ind
+                listLocationOrder.append(lastIndDriver1 + 2 + ind)
             }
+            print(selectedIdxDriver+1)
+            print(indxes.count)
+           // lastIndDriver1 = listLocationOrder.last ?? 0
+            listLocationOrder.removeAll()
         }
         
         // Marker in MKMap
@@ -669,7 +686,7 @@ extension ReplanController: ClickOkDelegateProtocol {
         
         if selectedIdxDate == 0 && selectedIdxDriver + 1 == indxes.count + 1 {
             for index in listIndex {
-               // dataDidFilter_Replan[index].elem?.location?.metadata?.display_data?.excludeFirstDay = false
+                // dataDidFilter_Replan[index].elem?.location?.metadata?.display_data?.excludeFirstDay = false
                 for (ind, idataReplan) in dataDidFilter_Replan.enumerated() where index == ind {
                     idataReplan.elem?.location?.metadata?.display_data?.excludeFirstDay = false
                 }
