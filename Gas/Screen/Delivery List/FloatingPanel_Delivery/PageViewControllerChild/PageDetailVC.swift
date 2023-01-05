@@ -300,7 +300,7 @@ extension PageDetailVC: UICollectionViewDataSource {
             cellImage.imgImage.loadImageExtension(URLAddress: iurl)
             
             if let data = try? Data(contentsOf: URL(string: "\(iurl)")! ) {
-                DispatchQueue.main.async { /// execute on main thread
+                DispatchQueue.main.async {  // execute on main thread
                     cellImage.imgImage.image = UIImage(data: data)
                 }
             }

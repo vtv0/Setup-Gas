@@ -49,7 +49,6 @@ class ContentReplanController: UIViewController, UITableViewDataSource, UITableV
     }
     
     // myTableView dataSource
-    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = myTableView.dequeueReusableCell(withIdentifier: "ContentReplanTableViewCell", for: indexPath) as! ContentReplanTableViewCell
         

@@ -11,40 +11,55 @@ import Alamofire
 import MapKit
 
 class ReplanController: UIViewController, FloatingPanelControllerDelegate {
-    var lastIndDriver1 = 0
-    let viewBtnAnimation = UIButton()
+    
     let fpc = FloatingPanelController()
     var t: Int = 0
-    
     var status: Bool = false
     let tenantId = UserDefaults.standard.string(forKey: "tenantId") ?? ""
     let userId = UserDefaults.standard.string(forKey: "userId") ?? ""
+    let companyCode = UserDefaults.standard.string(forKey: "companyCode") ?? ""
     var dicData: [Date : [Location]] = [:]
     var dateYMD: [Date] = []
-    let companyCode = UserDefaults.standard.string(forKey: "companyCode") ?? ""
     var dataDidFilter_Replan = [Location]()
     var indxes = [Int]()
     var selectedIdxDate = 0
     var selectedIdxDriver = 0
     var arrLocationOrder = [Int]()
-    
     var arrFacilityData: [[Facility_data]] = []
     var totalNumberOfBottle: Int = 0
-    
-    var arrAssetID = [String]()
-    
-    
     var listIndex = [Int]()
-    var dicExcludeOfDriver: [Int: [Location]] = [:]
-    
-    var selectedRows1: [Int] = []
-    var storageListExclude: [Location] = []
-    var listMoveToIsTrue: [Location] = []
-    
+   
     var backList_Replan: [Location] = []
     var listRemove = [Location]()
+    var lastIndDriver1 = 0
     
-    
+    @IBOutlet weak var stackViewLarge: UIStackView!
+    @IBOutlet weak var clickBtnAnimation: UIButton!
+    @IBAction func clickBtnAnimation(_ sender: Any) {
+        status = !status
+        
+        if status {
+            self.viewPicker.bringSubviewToFront(self.viewAnimation)
+            UIView.animate(withDuration: 0.6, delay: 0.2, options: UIView.AnimationOptions.layoutSubviews,
+                           animations: {
+                self.viewAnimation.isHidden = true
+            },
+                           completion: { aniDown in
+                    self.clickBtnAnimation.setImage(UIImage(named: "downAnimation"), for: .normal)
+            }
+            )
+
+        } else {
+            UIView.animate(withDuration: 0.6, delay: 0.2, options: [],
+                           animations: {
+                self.viewAnimation.isHidden = false
+            },
+                           completion:  { aniUp  in
+                    self.clickBtnAnimation.setImage(UIImage(named: "upAnimation"), for: .normal)
+            }
+            )
+        }
+    }
     
     @IBOutlet weak var btnClear: UIButton!
     @IBAction func btnClear(_ sender: Any) {
@@ -52,7 +67,6 @@ class ReplanController: UIViewController, FloatingPanelControllerDelegate {
         
         let view = fpc.contentViewController as! ContentReplanController
         view.myTableView.reloadData()
-        //        view.viewDidLoad()
     }
     
     @IBOutlet weak var btnReplace: UIButton!
@@ -61,7 +75,7 @@ class ReplanController: UIViewController, FloatingPanelControllerDelegate {
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let destinationVC = storyboard.instantiateViewController(withIdentifier: "CustomAlertReplanVC") as! CustomAlertReplanVC
             destinationVC.delegateClickOK = self
-            
+//            destinationVC.dateString =
             destinationVC.indxes = indxes  // so luong xe trong 1 ngay
             destinationVC.selectedIdxDate = selectedIdxDate
             destinationVC.selectedIdxDriver = selectedIdxDriver
@@ -72,7 +86,6 @@ class ReplanController: UIViewController, FloatingPanelControllerDelegate {
             present(destinationVC, animated: false, completion: nil)
         }
     }
-    
     
     @IBAction func btnHideReplan(_ sender: Any) {
         navigationController?.popViewController(animated: true)
@@ -92,13 +105,14 @@ class ReplanController: UIViewController, FloatingPanelControllerDelegate {
     @IBOutlet weak var lblType20kg: UILabel!
     @IBOutlet weak var lblTypeOther: UILabel!
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Replan"
         //btnReplace.isEnabled = false
         // btnReplace.isHidden = true
         
+        self.view.bringSubviewToFront(stackViewLarge)
+        self.view.bringSubviewToFront(viewPicker)
         fpc.delegate = self
         
         pickerDriver.dataSource = self
@@ -167,7 +181,7 @@ class ReplanController: UIViewController, FloatingPanelControllerDelegate {
         self.selectedIdxDriver = driver
         self.pickerDriver.reloadAllComponents()
         dataDidFilter_Replan = locationsByDriver[driver] ?? []
-        
+        var listMoveToIsTrue: [Location] = []
         if dataDidFilter_Replan.isEmpty {  // hom dau khong co data
             // value 6 ngay con lai
             for idic in dicData where idic.key != dateYMD[0] {
@@ -184,10 +198,8 @@ class ReplanController: UIViewController, FloatingPanelControllerDelegate {
         var  checkListRemove = [Location]()  // check ngay 1 co ds Remove k
         if selectedIdxDate == 0 {
             for idic in dicData where idic.key == dateYMD[0] {
-                
                 for ilocation in idic.value where ilocation.elem?.location?.metadata?.display_data?.excludeFirstDay == true {
                     checkListRemove.append(ilocation)
-                    
                 }
             }
         }
@@ -209,62 +221,9 @@ class ReplanController: UIViewController, FloatingPanelControllerDelegate {
             btnClear.isHidden = true
         }
         self.pickerDriver.reloadAllComponents()
-        self.createViewBtnAnimation()
         return dataDidFilter_Replan
     }
     
-    // create button with code
-    func createViewBtnAnimation() {
-        viewAnimation.isHidden = false
-        viewBtnAnimation.backgroundColor = .white
-        viewBtnAnimation.addTarget(self, action: #selector(clickBtn), for: .touchUpInside)
-        viewBtnAnimation.setImage(UIImage(named: "upAnimation"), for: .normal)
-        //viewBtnAnimation.frame = CGRect(x: 0, y: 270, width: self.viewAnimation.frame.size.width, height: 30)
-        self.view.insertSubview(viewBtnAnimation, aboveSubview: viewAnimation)
-        let verticalConstraint = NSLayoutConstraint(item: viewBtnAnimation, attribute: NSLayoutConstraint.Attribute.top, relatedBy: NSLayoutConstraint.Relation.equal, toItem: viewAnimation, attribute: NSLayoutConstraint.Attribute.bottom , multiplier: 1, constant: 0)
-        let widthConstraint = NSLayoutConstraint(item: viewBtnAnimation, attribute: NSLayoutConstraint.Attribute.width, relatedBy: NSLayoutConstraint.Relation.equal, toItem: nil, attribute: NSLayoutConstraint.Attribute.notAnAttribute, multiplier: 1, constant: UIScreen.main.bounds.width)
-        let heightConstraint = NSLayoutConstraint(item: viewBtnAnimation, attribute: NSLayoutConstraint.Attribute.height, relatedBy: NSLayoutConstraint.Relation.equal, toItem: nil, attribute: NSLayoutConstraint.Attribute.notAnAttribute, multiplier: 1, constant: 30)
-        viewBtnAnimation.translatesAutoresizingMaskIntoConstraints = false
-        view.addConstraints([verticalConstraint, widthConstraint, heightConstraint])
-    }
-    
-    @objc func clickBtn() {
-        status = !status
-        //let horizontalConstraint = NSLayoutConstraint(item: viewBtnAnimation, attribute: NSLayoutConstraint.Attribute.leading , relatedBy: NSLayoutConstraint.Relation.equal, toItem: viewAnimation, attribute: NSLayoutConstraint.Attribute.centerX, multiplier: 1, constant: 0)
-        
-        if status {
-            //            let verticalConstraint = NSLayoutConstraint(item: viewBtnAnimation, attribute: NSLayoutConstraint.Attribute.top, relatedBy: NSLayoutConstraint.Relation.equal, toItem: viewAnimation, attribute: NSLayoutConstraint.Attribute.bottom, multiplier: 1, constant: 0)
-            //            let widthConstraint = NSLayoutConstraint(item: viewBtnAnimation, attribute: NSLayoutConstraint.Attribute.width, relatedBy: NSLayoutConstraint.Relation.equal, toItem: nil, attribute: NSLayoutConstraint.Attribute.notAnAttribute, multiplier: 1, constant: self.viewAnimation.frame.size.width )
-            //            let heightConstraint = NSLayoutConstraint(item: viewBtnAnimation, attribute: NSLayoutConstraint.Attribute.height, relatedBy: NSLayoutConstraint.Relation.equal, toItem: nil, attribute: NSLayoutConstraint.Attribute.notAnAttribute, multiplier: 1, constant: 30)
-            
-            
-            // view Animation hidden
-            viewAnimation.isHidden = true
-            viewBtnAnimation.setImage(UIImage(named: "downAnimation"), for: .normal)
-            let y = self.viewPicker.frame.height
-            let heightNavigation = navigationController?.navigationBar.frame.height ?? 0
-            print()
-            print(y + heightNavigation)
-            viewBtnAnimation.frame = CGRect(x: 0, y: 167, width: self.viewAnimation.frame.width, height: 30)
-            viewBtnAnimation.translatesAutoresizingMaskIntoConstraints = true
-            //            view.addConstraints([verticalConstraint, widthConstraint, heightConstraint])
-        } else {
-            let verticalConstraint = NSLayoutConstraint(item: viewBtnAnimation, attribute: NSLayoutConstraint.Attribute.top, relatedBy: NSLayoutConstraint.Relation.equal, toItem: viewAnimation, attribute: NSLayoutConstraint.Attribute.bottom, multiplier: 1, constant: 0)
-            let widthConstraint = NSLayoutConstraint(item: viewBtnAnimation, attribute: NSLayoutConstraint.Attribute.width, relatedBy: NSLayoutConstraint.Relation.equal, toItem: nil, attribute: NSLayoutConstraint.Attribute.notAnAttribute, multiplier: 1, constant: self.viewPicker.frame.size.width )
-            let heightConstraint = NSLayoutConstraint(item: viewBtnAnimation, attribute: NSLayoutConstraint.Attribute.height, relatedBy: NSLayoutConstraint.Relation.equal, toItem: nil, attribute: NSLayoutConstraint.Attribute.notAnAttribute, multiplier: 1, constant: 30)
-            
-            // view Animation Display
-            // viewBtnAnimation.removeConstraints([verticalConstraint, widthConstraint, heightConstraint])
-            viewAnimation.isHidden = false
-            viewBtnAnimation.setImage(UIImage(named: "upAnimation"), for: .normal)
-            viewBtnAnimation.translatesAutoresizingMaskIntoConstraints = false
-            view.addConstraints([verticalConstraint, widthConstraint, heightConstraint])
-            //viewBtnAnimation.translatesAutoresizingMaskIntoConstraints = false
-            // view.addConstraints([verticalConstraint, widthConstraint, heightConstraint])
-            //viewBtnAnimation.frame = CGRect(x: 0, y: 270, width: self.viewAnimation.frame.size.width, height: 30)
-            //  view.addSubview(viewBtnAnimation)
-        }
-    }
     
     enum quantityOfEachType {
         case lblType50kg
@@ -404,7 +363,7 @@ extension ReplanController: UIPickerViewDelegate, UIPickerViewDataSource {
         if pickerView == pickerDate {
             selectedIdxDate = row
             selectedIdxDriver = 0
-            listMoveToIsTrue.removeAll()
+            
             listIndex.removeAll()
             self.reDrawMarkers()
             
@@ -554,9 +513,9 @@ extension ReplanController: MKMapViewDelegate {
         if dataDidFilter_Replan.count > 0 {
             btnReplace.isHidden = false
             btnClear.isHidden = false
-            
+            totalType(EachType: 0)
             floatingPanel()
-//            dataDidFilter_Replan.removeAll()
+            //            dataDidFilter_Replan.removeAll()
         } else {
             lblType50kg.text = "\(0)"
             lblType30kg.text = "\(0)"
@@ -710,7 +669,10 @@ extension ReplanController: ClickOkDelegateProtocol {
         
         if selectedIdxDate == 0 && selectedIdxDriver + 1 == indxes.count + 1 {
             for index in listIndex {
-                dataDidFilter_Replan[index].elem?.location?.metadata?.display_data?.excludeFirstDay = false
+               // dataDidFilter_Replan[index].elem?.location?.metadata?.display_data?.excludeFirstDay = false
+                for (ind, idataReplan) in dataDidFilter_Replan.enumerated() where index == ind {
+                    idataReplan.elem?.location?.metadata?.display_data?.excludeFirstDay = false
+                }
             }
         }
         

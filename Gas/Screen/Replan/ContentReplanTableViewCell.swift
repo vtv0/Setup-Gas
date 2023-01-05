@@ -8,17 +8,10 @@
 import UIKit
 
 class ContentReplanTableViewCell: UITableViewCell {
-
-   
-    
     @IBOutlet weak var btnCheckbox: UIButton!
-
     @IBAction func btnCheckBox(_ sender: UIButton) {
-        
-        print("click")
     }
     @IBOutlet weak var lbl_locationOrder: UILabel!
-
     @IBOutlet weak var lbl_kyokyusetsubi_code: UILabel!
     @IBOutlet weak var lbl_customer_name: UILabel!
     @IBOutlet weak var lbl_planned_date: UILabel!
@@ -26,6 +19,7 @@ class ContentReplanTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        btnCheckbox.isEnabled = false
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

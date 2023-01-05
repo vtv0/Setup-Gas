@@ -51,43 +51,29 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
     
     weak var delegateGetIndex: GetIndexMarkerDelegateProtocol?
     
-    
     let companyCode = UserDefaults.standard.string(forKey: "companyCode") ?? ""
     let tenantId = UserDefaults.standard.string(forKey: "tenantId") ?? ""
     let userId = UserDefaults.standard.string(forKey: "userId") ?? ""
     let statusDelivery = ["Not Delivery", "All"]
     var arrGetAsset: [String] = []
-    
     var coordinate: [Double] = []
     var selectedIdxDate: Int = 0
     var selectedIdxDriver: Int = 0
     var selectesIdxStatus: Int = 0
-    var arr: [Int] = []
     var arrLocationOrder = [Int]()
     var dicData: [Date : [Location]] = [:]
     var indxes: [Int] = []
     var assetID: String = ""
     var dateYMD: [Date] = []
-    var arrStringDate: [String] = []
-    
-    var t: Int = 0
     var numberOfCallsToGetAsset: Int = 0
     var numberAssetIDOf7Date = 0
-
-    
-    var arrCoordinate = [CustomPin]()
     var customer_LocationType = [String]()
-    
     var comment: [String] = []
-    
     var passIndexSelectedMarker = 0
-    var currentIndex = 0
     let fpc = FloatingPanelController()
-    
     var dataDidFilter: [Location] = []
     var assetAday: [GetAsset] = []
     var locations: [Location] = []
-    var scrollView: UIScrollView!
     var arrFacilityData: [[Facility_data]] = []
     
     @IBOutlet weak var lblType50kg: UILabel!
@@ -146,7 +132,6 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         let userCoordinate = CLLocationCoordinate2D(latitude: 35.73774428640241, longitude: 139.6194163709879)
         let eyeCoordinate = CLLocationCoordinate2D(latitude: 35.73774428640241, longitude: 139.6194163709879)
         let mapCamera = MKMapCamera(lookingAtCenter: userCoordinate, fromEyeCoordinate: eyeCoordinate, eyeAltitude: 1000000.0)
-        
         
         mapView.setCamera(mapCamera, animated: false)
         
@@ -216,7 +201,7 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
             let url: String = "https://\(companyCode).kiiapps.com/am/exapi/vrp/tenants/\(tenantId)/latest_route/worker_users/\(userId)?workDate=\(dateString)"
             AF.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default ,headers: self.makeHeaders(token: token)).validate(statusCode: (200...299))
                 .responseDecodable(of: GetLatestWorkerRouteLocationListInfo.self) { response in
-                    self.t += 1
+                  
                     switch response.result {
                         
                     case .success(_):
@@ -266,13 +251,16 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
                     print("\(error)")
                     completion(nil)
                 }
-                
+               // print(self.numberAssetIDOf7Date)
+                print(self.numberOfCallsToGetAsset)
                 if self.numberAssetIDOf7Date == self.numberOfCallsToGetAsset {
                     self.reDrawMarkers()
                     self.hideActivity()
                 }
             }
     }
+    
+    //MARK: - call API after 4 hour
     
     func getWorkerVehicleList() {
         let token = UserDefaults.standard.string(forKey: "accessToken") ?? ""
@@ -307,10 +295,19 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
     }
     
     func getWorkerRouteLocationList() {
-        
-        
-        let url = "https://am-stg-iw01j.kiiapps.com/am/exapi/vrp/tenants/{{tenantID}}/routes/{{routeID}}/workers/{{workerRouteID}}"
+        let token = UserDefaults.standard.string(forKey: "accessToken") ?? ""
+        let url = "https://\(companyCode).kiiapps.com/am/exapi/vrp/tenants/{{tenantID}}/routes/{{routeID}}/workers/{{workerRouteID}}"
+        AF.request(url, method: .get, parameters: nil, headers: self.makeHeaders(token: token))
+            .responseDecodable(of: GetWorkerRouteLocationList.self) { response2 in
+                switch response2.result {
+                case .success(let value):
+                    print(value)
+                case .failure(let error):
+                    print(error)
+                }
+            }
     }
+    
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
@@ -522,7 +519,7 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
     func reDrawMarkers() {
         dataDidFilter.removeAll()
         arrLocationOrder.removeAll()
-        arrCoordinate.removeAll()
+      
         if mapView != nil {
             mapView.removeAnnotations(mapView.annotations)
         }

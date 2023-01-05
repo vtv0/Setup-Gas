@@ -15,7 +15,7 @@ protocol ClickOkDelegateProtocol: AnyObject {
 class CustomAlertReplanVC: UIViewController {
     weak var delegateClickOK: ClickOkDelegateProtocol?
     
-    var date: String = ""
+    var dateString: String = ""
     
     var totalCellSelect: Int = 0
     var displayInfomation: String = ""
@@ -50,6 +50,7 @@ class CustomAlertReplanVC: UIViewController {
         viewAlert.layer.cornerRadius = 10
         viewAlert.layer.masksToBounds = true
         calculateTheNumberOfGas()
+        print(dateString)
     }
     
     func calculateTheNumberOfGas() {
@@ -91,14 +92,14 @@ class CustomAlertReplanVC: UIViewController {
                                        """ )"
                 
                 lbl_number.text = "\(totalNumberOfBottle)Bottle -> \(totalNumberOfBottle + sum1)Bottle"
-                lbl_changeType.text = "\(date) Add (Remove -> Date1)"
+                lbl_changeType.text = "\(dateString) Add (Remove -> Date1)"
             } else {
                 txt_displayInfomation.text = "\( """
                                     ※ 選択された配送先は初日の配送へ移動されます。\n移動した配送先は計画に残りますが、次回計画作成時に除外されます。
                                     ※ 再作成後は配送順が変更となります (ngày hôm nay sang hôm sau)
                                     """ )"
                 lbl_number.text = "\(totalNumberOfBottle)Bottle -> \(totalNumberOfBottle - sum1)Bottle"
-                lbl_changeType.text = "\(date) Remove"
+                lbl_changeType.text = "\(dateString) Remove"
             }
         } else {
             
@@ -109,7 +110,7 @@ class CustomAlertReplanVC: UIViewController {
                                     """ )"
             
             lbl_number.text = "\(totalNumberOfBottle)Bottle -> \(totalNumberOfBottle + sum1)Bottle"
-            lbl_changeType.text = "\(date) Add"
+            lbl_changeType.text = "\(dateString) Add"
             
         }
         
