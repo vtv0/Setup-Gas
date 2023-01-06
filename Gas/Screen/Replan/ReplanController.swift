@@ -10,16 +10,19 @@ import FloatingPanel
 import Alamofire
 import MapKit
 
-class ReplanController: UIViewController, FloatingPanelControllerDelegate, FloatingPanelLayout {
+class MyFloatingPanelLayout1: FloatingPanelLayout {
     var position: FloatingPanel.FloatingPanelPosition = .bottom
-    var initialState: FloatingPanel.FloatingPanelState = .full
+    var initialState: FloatingPanel.FloatingPanelState = .tip
     let anchors: [FloatingPanelState: FloatingPanelLayoutAnchoring] = [
-        .full: FloatingPanelLayoutAnchor(absoluteInset: 16.0, edge: .top, referenceGuide: .superview),
-        .half: FloatingPanelLayoutAnchor(fractionalInset: 0.5, edge: .bottom, referenceGuide: .superview),
-        .tip: FloatingPanelLayoutAnchor(absoluteInset: 44.0, edge: .bottom, referenceGuide: .superview),
+        .tip: FloatingPanelLayoutAnchor(absoluteInset: 147.0, edge: .bottom, referenceGuide: .safeArea),
+        .full: FloatingPanelLayoutAnchor(absoluteInset: 1.0, edge: .top, referenceGuide: .safeArea),
     ]
+}
+
+class ReplanController: UIViewController, FloatingPanelControllerDelegate {
     
-    let fpc = FloatingPanelController()
+    
+    var fpc = FloatingPanelController()
     var t: Int = 0
     var status: Bool = false
     let tenantId = UserDefaults.standard.string(forKey: "tenantId") ?? ""
@@ -38,7 +41,10 @@ class ReplanController: UIViewController, FloatingPanelControllerDelegate, Float
     
     var backList_Replan: [Location] = []
     var listRemove = [Location]()
+   
+    var listLastIndDriver = [Int]()
     var lastIndDriver1 = 0
+    var lastIndDriver2 = 0
     
     @IBOutlet weak var stackViewLarge: UIStackView!
     @IBOutlet weak var clickBtnAnimation: UIButton!
@@ -74,6 +80,7 @@ class ReplanController: UIViewController, FloatingPanelControllerDelegate, Float
         
         let view = fpc.contentViewController as! ContentReplanController
         view.myTableView.reloadData()
+        
     }
     
     @IBOutlet weak var btnReplace: UIButton!
@@ -125,8 +132,9 @@ class ReplanController: UIViewController, FloatingPanelControllerDelegate, Float
         
         self.view.bringSubviewToFront(stackViewLarge)
         self.view.bringSubviewToFront(viewPicker)
-        fpc.delegate = self
-//        fpc.behavior = FloatingPanelLayout
+     
+        fpc = FloatingPanelController(delegate: self)
+        fpc.layout = MyFloatingPanelLayout1()
         
         pickerDriver.dataSource = self
         pickerDriver.delegate = self
@@ -159,7 +167,8 @@ class ReplanController: UIViewController, FloatingPanelControllerDelegate, Float
         fpc.contentMode = .fitToBounds
         fpc.set(contentViewController: contentVC)
         fpc.addPanel(toParent: self)
-        fpc.trackingScrollView?.automaticallyAdjustsScrollIndicatorInsets = false
+        fpc.track(scrollView: (contentVC.myTableView))
+                               
         
         self.view.bringSubviewToFront(btnClear)
         self.view.bringSubviewToFront(btnReplace)
@@ -452,6 +461,35 @@ extension ReplanController: MKMapViewDelegate {
         
         // danh so lai    /// sai vi khi co 3, 4, 5 xe
         var listLocationOrder = [Int]()
+        
+        // tao [10, 31, 56]
+//        for (ind, ivalue) in indxes.enumerated() {
+//            if ind == 0 {
+//                for (ind, picker) in dataDidFilter_Replan.enumerated() where picker.type == .customer {
+//                    listLocationOrder.append(ind + 1)
+//                    picker.elem?.locationOrder = ind + 1
+//                }
+//                listLastIndDriver.append(listLocationOrder.last ?? 0)
+//                print(listLastIndDriver)
+//            } else if selectedIdxDriver > 0 {
+//
+//            }
+//        }
+
+        // thay doi so luong cua tung xe ->  thi duoc cap nhat lai
+//        for idic in dicData where idic.key == dateYMD[selectedIdxDate] {
+//            for (ind, ivalue) in idic.value.enumerated() where ivalue.type == .customer {   // 54 customer
+//                if ivalue.elem?.location?.metadata?.display_data?.moveToFirstDay != true  {
+//                    print(ind)
+//                }
+//            }
+//        }
+        
+        if selectedIdxDriver == 1 {
+            print(dataDidFilter_Replan.count)   // 20 xe
+        }
+        
+        //  danh so cho 3 xe
         if selectedIdxDriver == 0 {
             for (ind, picker) in dataDidFilter_Replan.enumerated() where picker.type == .customer {
                 listLocationOrder.append(ind + 1)
@@ -463,18 +501,29 @@ extension ReplanController: MKMapViewDelegate {
                 listLocationOrder.append(ind + 1)
                 picker.elem?.locationOrder = ind + 1
             }
-        }
-        else if selectedIdxDriver > 0 {
-            for (ind, picker) in dataDidFilter_Replan.enumerated() where picker.type == .customer {
-                
-                picker.elem?.locationOrder = lastIndDriver1 + 2 + ind
-                listLocationOrder.append(lastIndDriver1 + 2 + ind)
+        } else if selectedIdxDriver > 0 {
+            if selectedIdxDriver == 1 {
+                for (ind, picker) in dataDidFilter_Replan.enumerated() where picker.type == .customer {
+                   picker.elem?.locationOrder = lastIndDriver1 + 2 + ind
+                   listLocationOrder.append(lastIndDriver1 + 2 + ind)
+                }
+                lastIndDriver2 = listLocationOrder.last ?? 0
+            } else if selectedIdxDriver+1 == indxes.count {
+                for (ind, picker) in dataDidFilter_Replan.enumerated() where picker.type == .customer {
+                   picker.elem?.locationOrder = lastIndDriver2 + 2 + ind
+                   listLocationOrder.append(lastIndDriver2 + 2 + ind)
+                }
             }
-            print(selectedIdxDriver+1)
-            print(indxes.count)
-           // lastIndDriver1 = listLocationOrder.last ?? 0
-            listLocationOrder.removeAll()
         }
+        
+        
+//
+//        for idic in dicData where idic.key == dateYMD[selectedIdxDate] {
+//            for (ind, ivalue) in idic.value.enumerated() where ivalue.type == .customer {   // 54 customer
+//                print(ivalue.elem?.locationOrder)
+//            }
+//        }
+        
         
         // Marker in MKMap
         for picker in dataDidFilter_Replan where picker.type == .customer {

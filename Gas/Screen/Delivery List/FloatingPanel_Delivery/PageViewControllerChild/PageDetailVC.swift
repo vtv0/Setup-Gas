@@ -41,56 +41,42 @@ class PageDetailVC: UIViewController, UIScrollViewDelegate, UICollectionViewDele
     //    weak var delegatePassAsset: PassAssetDelegateProtocol?
     
     var pageIndex: Int!
-    
     var comment: String = ""
     var arrUrlImage: [[String]] = []
-    
     var dateYMD: [Date] = []
     let companyCode = UserDefaults.standard.string(forKey: "companyCode") ?? ""
     let tenantId = UserDefaults.standard.string(forKey: "tenantId") ?? ""
     let userId = UserDefaults.standard.string(forKey: "userId") ?? ""
-    
     var dicData: [Date : [LocationElement]] = [:]
     var locations: [LocationElement] = []
-    
     var totalObjectSevenDate: Int = 0
     var arrCustomer_id: [String] = []
     var data: [String] = []
     var arrFacilityData = [[Facility_data]]()
-    
     var arrImage = [String]()
-    
     var dataInfoOneCustomer: Location = Location(elem: LocationElement(arrivalTime: nil, breakTimeSEC: nil, createdAt: nil, latitude: 0, loadCapacity: 0, loadSupply: 0, location: nil, locationID: 0, locationOrder: 0, longitude: 0, metadata: nil, travelTimeSECToNext: 0, waitingTimeSEC: 0, workTimeSEC: 0), asset: GetAsset(assetModelID: 0, createdAt: "", enabled: true, geoloc: nil, id: "", metedata: "", name: "", properties: nil, tenantID: 0, updatedAt: "", version: 0, vendorThingID: ""))
     
+    @IBOutlet weak var viewContainerScrollview: UIScrollView!
     
     @IBOutlet weak var scrollView: UIScrollView!
     
     @IBOutlet weak var collectionView: UICollectionView!
-    
     @IBOutlet weak var lblCustomer_id: UILabel!
     @IBOutlet weak var lblCustomerName: UILabel!
     @IBOutlet weak var lblAddress: UILabel!
     @IBOutlet weak var lblDeliveryTime: UILabel!
-    
     @IBOutlet weak var lblAstimateDelivery: UILabel!
-    
     @IBOutlet weak var lblTypeGas: UILabel!
     @IBOutlet weak var lblNumberGas: UILabel!
+    @IBOutlet weak var viewAutomaticInfoGas: UIView!
     @IBOutlet weak var lblTypeGasInStackView: UILabel!
     @IBOutlet weak var lblNumberGasInStackView: UILabel!
-    
-    
-    
-    @IBOutlet weak var viewAutomaticInfoGas: UIView!
     @IBOutlet weak var lblTextNotes: UITextView!
-    
     @IBOutlet weak var viewImageScroll: UIScrollView!
     @IBOutlet weak var viewDetail: UIView!
     @IBOutlet weak var pageControl: UIPageControl!
-    
     @IBOutlet weak var viewType: UIView!
     @IBOutlet weak var viewNote: UIView!
-    
     
     
     @IBAction func btnEdit(_ sender: Any) {
@@ -103,7 +89,6 @@ class PageDetailVC: UIViewController, UIScrollViewDelegate, UICollectionViewDele
         
     }
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         lblTextNotes.isEditable = false
@@ -112,22 +97,13 @@ class PageDetailVC: UIViewController, UIScrollViewDelegate, UICollectionViewDele
         collectionView.dataSource = self
         
         pageControl.numberOfPages = arrImage.count
-        
-        //        guard let editViewVC = storyboard?.instantiateViewController(withIdentifier: "EditViewController") as? EditViewController else { return }
-        //        delegatePassAsset = editViewVC as! PassAssetDelegateProtocol
-        //        if let asset = dataInfoOneCustomer.asset {
-        //            delegatePassAsset?.passAssetOfCustomer(asset: asset)
-        //           editViewVC.asset = asset
-        //        }
-        
-        
+
         guard let parkingVC = storyboard?.instantiateViewController(withIdentifier: "ParkingLocationController") as? ParkingLocationController else { return }
         delegatePassInfoOneCustomer = parkingVC
         if let mapCoordinate = dataInfoOneCustomer.asset?.properties?.values.location?.coordinates,
            let iassetID = dataInfoOneCustomer.elem?.location?.assetID {
             delegatePassInfoOneCustomer?.passiassetID(iassetID: iassetID )
             delegatePassInfoOneCustomer?.passCoordinate(coordinate: mapCoordinate)
-            //            parkingVC.iassetID = iassetID
         }
         
         guard let customerLocation = storyboard?.instantiateViewController(withIdentifier: "CustomerLocationController") as? CustomerLocationController else { return }
@@ -181,11 +157,8 @@ class PageDetailVC: UIViewController, UIScrollViewDelegate, UICollectionViewDele
         } else {
             
             lblCustomer_id?.text = dataInfoOneCustomer.elem?.location?.comment
-            
             lblCustomerName?.text = dataInfoOneCustomer.asset?.properties?.values.customer_name
-            
             lblAddress?.text = dataInfoOneCustomer.asset?.properties?.values.address
-            
             if let minutes = dataInfoOneCustomer.elem?.arrivalTime?.minutes,
                let hours = dataInfoOneCustomer.elem?.arrivalTime?.hours {
                 if minutes < 10 {
@@ -259,8 +232,8 @@ class PageDetailVC: UIViewController, UIScrollViewDelegate, UICollectionViewDele
     
     
     func scrollViewDidEndDecelerating(scrollImage: UIScrollView) {
-        //pageControl.currentPage = Int(viewImageScroll.contentOffset.x / viewImageScroll.bounds.width)
-        pageControl?.currentPage = Int(scrollView.contentOffset.x) / Int(scrollView.frame.width)
+        pageControl.currentPage = Int(viewImageScroll.contentOffset.x / viewImageScroll.bounds.width)
+//        pageControl?.currentPage = Int(scrollView.contentOffset.x) / Int(scrollView.frame.width)
     }
     
     func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
@@ -287,29 +260,16 @@ extension PageDetailVC: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         let count = arrImage.count
         pageControl.numberOfPages = count
-        // pageControl.isHidden = !(count > 1)
         return count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
         let cellImage = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath)  as! PageDetailCollectionViewCell
         if !arrImage.isEmpty {
             let iurl = arrImage[indexPath.row]
-            
             cellImage.imgImage.loadImageExtension(URLAddress: iurl)
-            
-            if let data = try? Data(contentsOf: URL(string: "\(iurl)")! ) {
-                DispatchQueue.main.async {  // execute on main thread
-                    cellImage.imgImage.image = UIImage(data: data)
-                }
-            }
         }
-        
         cellImage.layer.shouldRasterize = true
-        
-        
-        
         return cellImage
     }
 }

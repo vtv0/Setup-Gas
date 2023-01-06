@@ -36,6 +36,7 @@ class ContentReplanController: UIViewController, UITableViewDataSource, UITableV
     var arrIsCustomer = [Location]()
     
     var backList = [Location]()
+    
     @IBOutlet weak var myTableView: UITableView!
     
     override func viewDidLoad() {

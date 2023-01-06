@@ -23,23 +23,25 @@ protocol ShowIndexPageDelegateProtocol: AnyObject {
 class FloatingPanelDeliveryVC: UIViewController, UIPageViewControllerDelegate, UIPageViewControllerDataSource {
     
     weak var delegate1: ShowIndexPageDelegateProtocol?
+    
     var passIndexSelectedMarker = 0
     var currentIndex: Int = 0
     var pageController: UIPageViewController!
     var customer_LocationType = [String]()
     var dataDidFilter: [Location] = []
-    
     var comment: [String] = []
+    
+  
     
     @IBOutlet weak var detailsTabsView: TabsView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         title = "FloatingPanel PageVC"
-        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
+       // navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
         setupTabs()
         setupPageViewController()
+        guard let pageDetailVC = storyboard?.instantiateViewController(withIdentifier: "PageDetailVC") as? PageDetailVC else { return }
     }
     
     func setupTabs() {
@@ -108,6 +110,7 @@ class FloatingPanelDeliveryVC: UIViewController, UIPageViewControllerDelegate, U
         contentVC.pageIndex = currentIndex
         contentVC.dataInfoOneCustomer = dataDidFilter[index]
         contentVC.comment = comment[index]
+        
         
         return contentVC
     }

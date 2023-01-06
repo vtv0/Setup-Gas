@@ -21,27 +21,14 @@ class CustomPin: NSObject, MKAnnotation {
     }
 }
 
-//class DeliveryListController: FloatingPanelLayout {
-//    var position: FloatingPanelPosition
-//
-//    var initialState: FloatingPanelState
-//
-//    var anchors: [FloatingPanelState : FloatingPanelLayoutAnchoring] = [:]
-//
-//
-//    var initialPosition: FloatingPanelPosition {
-//        return .tip
-//    }
-//
-//    public func insetFor(position: FloatingPanelPosition) -> CGFloat? {
-//        switch position {
-//        case .top: return 16.0 // A top inset from safe area
-//        case .half: return 216.0 // A bottom inset from the safe area
-//        case .tip: return 44.0 // A bottom inset from the safe area
-//        default: return nil // Or `case .hidden: return nil`
-//        }
-//    }
-//}
+class MyFloatingPanelLayout: FloatingPanelLayout {
+    let position: FloatingPanelPosition = .bottom
+    let initialState: FloatingPanelState = .tip
+    let anchors: [FloatingPanelState: FloatingPanelLayoutAnchoring] = [
+        .full: FloatingPanelLayoutAnchor(absoluteInset: 1.0, edge: .top, referenceGuide: .safeArea),
+        .tip: FloatingPanelLayoutAnchor(absoluteInset: 190.0, edge: .bottom, referenceGuide: .safeArea),
+    ]
+}
 
 protocol GetIndexMarkerDelegateProtocol: AnyObject {
     func getIndexMarker(indexDidSelected: Int)
@@ -70,11 +57,12 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
     var customer_LocationType = [String]()
     var comment: [String] = []
     var passIndexSelectedMarker = 0
-    let fpc = FloatingPanelController()
+    var fpc = FloatingPanelController()
     var dataDidFilter: [Location] = []
     var assetAday: [GetAsset] = []
     var locations: [Location] = []
     var arrFacilityData: [[Facility_data]] = []
+    var t = 0
     
     @IBOutlet weak var lblType50kg: UILabel!
     @IBOutlet weak var lblType30kg: UILabel!
@@ -116,7 +104,9 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         super.viewDidLoad()
         self.sevenDay()
         getMe()
-        fpc.delegate = self
+//        fpc.delegate = self
+        fpc = FloatingPanelController(delegate: self)
+                fpc.layout = MyFloatingPanelLayout()
         mapView.delegate = self
         
         pickerStatus.dataSource = self
@@ -201,7 +191,7 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
             let url: String = "https://\(companyCode).kiiapps.com/am/exapi/vrp/tenants/\(tenantId)/latest_route/worker_users/\(userId)?workDate=\(dateString)"
             AF.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default ,headers: self.makeHeaders(token: token)).validate(statusCode: (200...299))
                 .responseDecodable(of: GetLatestWorkerRouteLocationListInfo.self) { response in
-                  
+                    self.t += 1
                     switch response.result {
                         
                     case .success(_):
@@ -234,6 +224,10 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
                     }
                 }
         }
+        if self.t == dateYMD.count {
+            self.numberAssetIDOf7Date += numberAssetIDOf7Date
+        }
+       
         
     }
     
@@ -251,17 +245,17 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
                     print("\(error)")
                     completion(nil)
                 }
-               // print(self.numberAssetIDOf7Date)
-                print(self.numberOfCallsToGetAsset)
-                if self.numberAssetIDOf7Date == self.numberOfCallsToGetAsset {
-                    self.reDrawMarkers()
+               
+               if self.numberAssetIDOf7Date == self.numberOfCallsToGetAsset {
+                    print(self.numberAssetIDOf7Date)
+                    print(self.numberOfCallsToGetAsset)
                     self.hideActivity()
+                    self.reDrawMarkers()
                 }
             }
     }
     
     //MARK: - call API after 4 hour
-    
     func getWorkerVehicleList() {
         let token = UserDefaults.standard.string(forKey: "accessToken") ?? ""
         let url = "https://\(companyCode).kiiapps.com/am/exapi/vrp/tenants/\(tenantId)/worker-vehicles"
@@ -434,14 +428,17 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
             arrFacilityData.removeAll()
             fpc.addPanel(toParent: self)
             fpc.set(contentViewController: contentDeliveryVC)
-            //            fpc.trackingScrollView?.
-            // fpc.trackingScrollView
+           
+//            fpc.track(scrollView: contentDeliveryVC.)
         }
         var value: [ValuesDetail] = []
         for iArrGetAssetOneDay in assetAday where iArrGetAssetOneDay.properties?.values != nil {
             value.append(iArrGetAssetOneDay.properties!.values)
         }
         self.view.bringSubviewToFront(btnShipping)
+        
+        
+//
     }
     
     enum quantityOfEachType: Int {

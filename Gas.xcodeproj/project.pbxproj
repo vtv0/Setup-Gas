@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		6742855CE6C5FD60CE69B62C /* Pods_Gas.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6CFAF3E506F92E6E776EC628 /* Pods_Gas.framework */; };
 		7501250328EC0FBE003AC9EB /* FloatingPanelDeliveryVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7501250228EC0FBE003AC9EB /* FloatingPanelDeliveryVC.swift */; };
-		7501250528EC3904003AC9EB /* FloatingPanelDeliveryPVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7501250428EC3904003AC9EB /* FloatingPanelDeliveryPVC.swift */; };
 		7501250828ED2272003AC9EB /* PageDetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7501250728ED2272003AC9EB /* PageDetailVC.swift */; };
 		750B39CD28E2F8D800210AB9 /* SettingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750B39CC28E2F8D800210AB9 /* SettingController.swift */; };
 		750B39D028E3036300210AB9 /* ReplanController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750B39CF28E3036300210AB9 /* ReplanController.swift */; };
@@ -53,7 +52,6 @@
 		4E232B68B29631223EEA634E /* Pods-Gas.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Gas.release.xcconfig"; path = "Target Support Files/Pods-Gas/Pods-Gas.release.xcconfig"; sourceTree = "<group>"; };
 		6CFAF3E506F92E6E776EC628 /* Pods_Gas.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Gas.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7501250228EC0FBE003AC9EB /* FloatingPanelDeliveryVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingPanelDeliveryVC.swift; sourceTree = "<group>"; };
-		7501250428EC3904003AC9EB /* FloatingPanelDeliveryPVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingPanelDeliveryPVC.swift; sourceTree = "<group>"; };
 		7501250728ED2272003AC9EB /* PageDetailVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageDetailVC.swift; sourceTree = "<group>"; };
 		750B39CC28E2F8D800210AB9 /* SettingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingController.swift; sourceTree = "<group>"; };
 		750B39CF28E3036300210AB9 /* ReplanController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplanController.swift; sourceTree = "<group>"; };
@@ -160,7 +158,6 @@
 			isa = PBXGroup;
 			children = (
 				7501250228EC0FBE003AC9EB /* FloatingPanelDeliveryVC.swift */,
-				7501250428EC3904003AC9EB /* FloatingPanelDeliveryPVC.swift */,
 				7501250628ED21F5003AC9EB /* PageViewControllerChild */,
 				757F496C28E41EFB008B8C05 /* EditScreen */,
 			);
@@ -451,7 +448,6 @@
 				7573ADC029530A0100E8C658 /* GetWorkerVehicleList.swift in Sources */,
 				75FDF73028EAB0F700AADB99 /* TabsView.swift in Sources */,
 				75FDF73728EAB65800AADB99 /* GeneralInfoController.swift in Sources */,
-				7501250528EC3904003AC9EB /* FloatingPanelDeliveryPVC.swift in Sources */,
 				75BF3A0928E161A800BC0F0C /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
