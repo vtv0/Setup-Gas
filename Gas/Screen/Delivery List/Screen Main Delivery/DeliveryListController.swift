@@ -78,10 +78,12 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
     
     @IBOutlet weak var btnShipping: UIButton!
     @IBAction func btnShipping(_ sender: Any) {
+        let vc = storyboard?.instantiateViewController(withIdentifier: "ShippingViewController") as! ShippingViewController
+        self.navigationController?.pushViewController(vc, animated: false)
         print("click Shipping tren MH chinh")
-        let alert = UIAlertController(title: "Lỗi", message: "Có một địa chỉ giao hàng được chỉ định", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-        self.present(alert, animated: true, completion: nil)
+//        let alert = UIAlertController(title: "Lỗi", message: "Có một địa chỉ giao hàng được chỉ định", preferredStyle: .alert)
+//        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+//        self.present(alert, animated: true, completion: nil)
     }
     
     @IBAction func btnSetting(_ sender: Any) {

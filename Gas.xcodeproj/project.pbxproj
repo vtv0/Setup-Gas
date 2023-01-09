@@ -18,12 +18,15 @@
 		750C7E6D290FA4CE009A9E27 /* ParseJsonGetAssetToObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750C7E6C290FA4CE009A9E27 /* ParseJsonGetAssetToObject.swift */; };
 		75123F6A29027E3D00A08972 /* PassScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75123F6929027E3D00A08972 /* PassScreenViewController.swift */; };
 		7517A0F028F660FE00994CBD /* CustomAlertReplanVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7517A0EF28F660FE00994CBD /* CustomAlertReplanVC.swift */; };
+		753BA388296BB1D100C7136F /* GetWorkerRouteLocationList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753BA387296BB1D100C7136F /* GetWorkerRouteLocationList.swift */; };
+		753BA38C296BB72500C7136F /* ShippingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753BA38B296BB72500C7136F /* ShippingViewController.swift */; };
 		754B942028EAE8CB0059D4F2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 754B941F28EAE8CB0059D4F2 /* Assets.xcassets */; };
 		754C39B2291E409500793A14 /* Extension+API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754C39B1291E409500793A14 /* Extension+API.swift */; };
 		7573ADC029530A0100E8C658 /* GetWorkerVehicleList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7573ADBF29530A0100E8C658 /* GetWorkerVehicleList.swift */; };
 		7573ADC229530D3600E8C658 /* GetRouteList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7573ADC129530D3600E8C658 /* GetRouteList.swift */; };
-		7573ADC4295310B400E8C658 /* GetWorkerRouteLocationList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7573ADC3295310B400E8C658 /* GetWorkerRouteLocationList.swift */; };
+		7573ADC4295310B400E8C658 /* GetWorkerRouteLocationList4.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7573ADC3295310B400E8C658 /* GetWorkerRouteLocationList4.swift */; };
 		7598E46128EFC4DC00EA9FA9 /* PageDetailCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7598E46028EFC4DC00EA9FA9 /* PageDetailCollectionViewCell.swift */; };
+		759AF859296BC8DC003138CF /* RadioTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 759AF858296BC8DC003138CF /* RadioTableViewCell.swift */; };
 		75A1E17C28EFE6F200EA17A2 /* ContentReplanTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75A1E17B28EFE6F200EA17A2 /* ContentReplanTableViewCell.swift */; };
 		75A1E17F28F3AB6300EA17A2 /* RerouteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75A1E17E28F3AB6300EA17A2 /* RerouteViewController.swift */; };
 		75BF3A0728E161A800BC0F0C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BF3A0628E161A800BC0F0C /* AppDelegate.swift */; };
@@ -61,12 +64,15 @@
 		750C7E6C290FA4CE009A9E27 /* ParseJsonGetAssetToObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParseJsonGetAssetToObject.swift; sourceTree = "<group>"; };
 		75123F6929027E3D00A08972 /* PassScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassScreenViewController.swift; sourceTree = "<group>"; };
 		7517A0EF28F660FE00994CBD /* CustomAlertReplanVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAlertReplanVC.swift; sourceTree = "<group>"; };
+		753BA387296BB1D100C7136F /* GetWorkerRouteLocationList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetWorkerRouteLocationList.swift; sourceTree = "<group>"; };
+		753BA38B296BB72500C7136F /* ShippingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShippingViewController.swift; sourceTree = "<group>"; };
 		754B941F28EAE8CB0059D4F2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		754C39B1291E409500793A14 /* Extension+API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+API.swift"; sourceTree = "<group>"; };
 		7573ADBF29530A0100E8C658 /* GetWorkerVehicleList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetWorkerVehicleList.swift; sourceTree = "<group>"; };
 		7573ADC129530D3600E8C658 /* GetRouteList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetRouteList.swift; sourceTree = "<group>"; };
-		7573ADC3295310B400E8C658 /* GetWorkerRouteLocationList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetWorkerRouteLocationList.swift; sourceTree = "<group>"; };
+		7573ADC3295310B400E8C658 /* GetWorkerRouteLocationList4.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetWorkerRouteLocationList4.swift; sourceTree = "<group>"; };
 		7598E46028EFC4DC00EA9FA9 /* PageDetailCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageDetailCollectionViewCell.swift; sourceTree = "<group>"; };
+		759AF858296BC8DC003138CF /* RadioTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadioTableViewCell.swift; sourceTree = "<group>"; };
 		75A1E17B28EFE6F200EA17A2 /* ContentReplanTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentReplanTableViewCell.swift; sourceTree = "<group>"; };
 		75A1E17E28F3AB6300EA17A2 /* RerouteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RerouteViewController.swift; sourceTree = "<group>"; };
 		75BF3A0328E161A800BC0F0C /* Gas.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Gas.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -110,6 +116,7 @@
 			isa = PBXGroup;
 			children = (
 				7501250728ED2272003AC9EB /* PageDetailVC.swift */,
+				7598E46028EFC4DC00EA9FA9 /* PageDetailCollectionViewCell.swift */,
 			);
 			path = PageViewControllerChild;
 			sourceTree = "<group>";
@@ -133,6 +140,14 @@
 			path = Replan;
 			sourceTree = "<group>";
 		};
+		753BA386296BB19600C7136F /* Call API  */ = {
+			isa = PBXGroup;
+			children = (
+				753BA387296BB1D100C7136F /* GetWorkerRouteLocationList.swift */,
+			);
+			path = "Call API ";
+			sourceTree = "<group>";
+		};
 		754B942128EBC6DC0059D4F2 /* GenneralInfomation */ = {
 			isa = PBXGroup;
 			children = (
@@ -150,6 +165,7 @@
 				750C7E6C290FA4CE009A9E27 /* ParseJsonGetAssetToObject.swift */,
 				754C39B1291E409500793A14 /* Extension+API.swift */,
 				75BF3A1D28E2883100BC0F0C /* DeliveryListController.swift */,
+				759AF855296BC80D003138CF /* ShippingVC */,
 			);
 			path = "Screen Main Delivery";
 			sourceTree = "<group>";
@@ -174,6 +190,15 @@
 				75FDF73428EAB30200AADB99 /* TabCell.swift */,
 			);
 			path = EditScreen;
+			sourceTree = "<group>";
+		};
+		759AF855296BC80D003138CF /* ShippingVC */ = {
+			isa = PBXGroup;
+			children = (
+				753BA38B296BB72500C7136F /* ShippingViewController.swift */,
+				759AF858296BC8DC003138CF /* RadioTableViewCell.swift */,
+			);
+			path = ShippingVC;
 			sourceTree = "<group>";
 		};
 		75A1E17D28F3AAD100EA17A2 /* Reroute */ = {
@@ -224,13 +249,13 @@
 				8A4064A828F86F710011DA9A /* ActivityIndicator */,
 				75BF3A1F28E2AE7900BC0F0C /* Login */,
 				75BF3A2228E2AF2F00BC0F0C /* Delivery List */,
-				7598E46028EFC4DC00EA9FA9 /* PageDetailCollectionViewCell.swift */,
 				750B39CE28E3034200210AB9 /* Replan */,
 				75A1E17D28F3AAD100EA17A2 /* Reroute */,
 				750B39CB28E2F6C900210AB9 /* Setting */,
+				753BA386296BB19600C7136F /* Call API  */,
 				7573ADBF29530A0100E8C658 /* GetWorkerVehicleList.swift */,
 				7573ADC129530D3600E8C658 /* GetRouteList.swift */,
-				7573ADC3295310B400E8C658 /* GetWorkerRouteLocationList.swift */,
+				7573ADC3295310B400E8C658 /* GetWorkerRouteLocationList4.swift */,
 			);
 			path = Screen;
 			sourceTree = "<group>";
@@ -429,8 +454,10 @@
 				750C7E6B2908ECA0009A9E27 /* Marker+ExtensionViewController.swift in Sources */,
 				7573ADC229530D3600E8C658 /* GetRouteList.swift in Sources */,
 				75BF3A0B28E161A800BC0F0C /* LoginController.swift in Sources */,
+				759AF859296BC8DC003138CF /* RadioTableViewCell.swift in Sources */,
 				7517A0F028F660FE00994CBD /* CustomAlertReplanVC.swift in Sources */,
 				7501250828ED2272003AC9EB /* PageDetailVC.swift in Sources */,
+				753BA38C296BB72500C7136F /* ShippingViewController.swift in Sources */,
 				75FDF73B28EAB6B300AADB99 /* CustomerLocationController.swift in Sources */,
 				75123F6A29027E3D00A08972 /* PassScreenViewController.swift in Sources */,
 				75FDF73D28EABABA00AADB99 /* EditViewController.swift in Sources */,
@@ -442,9 +469,10 @@
 				750C7E6D290FA4CE009A9E27 /* ParseJsonGetAssetToObject.swift in Sources */,
 				75D2CE8528F80F1C00B51CED /* FacilityImageView.swift in Sources */,
 				75BF3A0728E161A800BC0F0C /* AppDelegate.swift in Sources */,
-				7573ADC4295310B400E8C658 /* GetWorkerRouteLocationList.swift in Sources */,
+				7573ADC4295310B400E8C658 /* GetWorkerRouteLocationList4.swift in Sources */,
 				750B39D028E3036300210AB9 /* ReplanController.swift in Sources */,
 				75A1E17F28F3AB6300EA17A2 /* RerouteViewController.swift in Sources */,
+				753BA388296BB1D100C7136F /* GetWorkerRouteLocationList.swift in Sources */,
 				7573ADC029530A0100E8C658 /* GetWorkerVehicleList.swift in Sources */,
 				75FDF73028EAB0F700AADB99 /* TabsView.swift in Sources */,
 				75FDF73728EAB65800AADB99 /* GeneralInfoController.swift in Sources */,
