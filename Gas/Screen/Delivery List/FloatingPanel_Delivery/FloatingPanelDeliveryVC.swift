@@ -42,6 +42,8 @@ class FloatingPanelDeliveryVC: UIViewController, UIPageViewControllerDelegate, U
         setupTabs()
         setupPageViewController()
         guard let pageDetailVC = storyboard?.instantiateViewController(withIdentifier: "PageDetailVC") as? PageDetailVC else { return }
+//        fpc.track(scrollView: pageDetailVC.scrollView)
+        
     }
     
     func setupTabs() {
@@ -105,12 +107,13 @@ class FloatingPanelDeliveryVC: UIViewController, UIPageViewControllerDelegate, U
         if (self.detailsTabsView.tabs.count == 0) || (index >= self.detailsTabsView.tabs.count) {
             return nil
         }
+        
         currentIndex = index
         let contentVC = storyboard?.instantiateViewController(withIdentifier: "PageDetailVC") as! PageDetailVC
         contentVC.pageIndex = currentIndex
         contentVC.dataInfoOneCustomer = dataDidFilter[index]
         contentVC.comment = comment[index]
-        
+     
         
         return contentVC
     }

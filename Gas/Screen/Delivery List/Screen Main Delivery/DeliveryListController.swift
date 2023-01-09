@@ -81,6 +81,7 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         let vc = storyboard?.instantiateViewController(withIdentifier: "ShippingViewController") as! ShippingViewController
         self.navigationController?.pushViewController(vc, animated: false)
         print("click Shipping tren MH chinh")
+        
 //        let alert = UIAlertController(title: "Lỗi", message: "Có một địa chỉ giao hàng được chỉ định", preferredStyle: .alert)
 //        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
 //        self.present(alert, animated: true, completion: nil)
@@ -106,9 +107,10 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         super.viewDidLoad()
         self.sevenDay()
         getMe()
-//        fpc.delegate = self
         fpc = FloatingPanelController(delegate: self)
                 fpc.layout = MyFloatingPanelLayout()
+        
+
         mapView.delegate = self
         
         pickerStatus.dataSource = self
@@ -431,7 +433,7 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
             fpc.addPanel(toParent: self)
             fpc.set(contentViewController: contentDeliveryVC)
            
-//            fpc.track(scrollView: contentDeliveryVC.)
+//            fpc.track(scrollView: contentDeliveryVC)
         }
         var value: [ValuesDetail] = []
         for iArrGetAssetOneDay in assetAday where iArrGetAssetOneDay.properties?.values != nil {
@@ -439,8 +441,6 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         }
         self.view.bringSubviewToFront(btnShipping)
         
-        
-//
     }
     
     enum quantityOfEachType: Int {

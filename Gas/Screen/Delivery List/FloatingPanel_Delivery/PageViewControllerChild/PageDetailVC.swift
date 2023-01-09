@@ -247,7 +247,6 @@ class PageDetailVC: UIViewController, UIScrollViewDelegate, UICollectionViewDele
         let roundedIndex = round(index)
         self.pageControl?.currentPage = Int(roundedIndex)
     }
-    
 }
 
 
