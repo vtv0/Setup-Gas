@@ -34,9 +34,13 @@ protocol GetIndexMarkerDelegateProtocol: AnyObject {
     func getIndexMarker(indexDidSelected: Int)
 }
 
+
+
 class DeliveryListController: UIViewController , FloatingPanelControllerDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
     
     weak var delegateGetIndex: GetIndexMarkerDelegateProtocol?
+    
+   
     
     let companyCode = UserDefaults.standard.string(forKey: "companyCode") ?? ""
     let tenantId = UserDefaults.standard.string(forKey: "tenantId") ?? ""
@@ -130,6 +134,10 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         mapView.setCamera(mapCamera, animated: false)
         
 //        getWorkerVehicleList()
+        
+        
+        
+      
     }
     
     func showAlert(title: String? = "", message: String?, completion: (() -> Void)? = nil) {
@@ -258,6 +266,8 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
                 }
             }
     }
+    
+    
     
     //MARK: - call API after 4 hour
     func getWorkerVehicleList() {
@@ -410,8 +420,6 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
             lblOtherType.text = "\(0)"
             
         }
-        
-        
         customFloatingPanel()
         return dataDidFilter
     }
@@ -422,6 +430,7 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
             
             delegateGetIndex = contentDeliveryVC
             contentDeliveryVC.delegate1 = self
+            contentDeliveryVC.delegateScrollView = self
             
             contentDeliveryVC.dataDidFilter = dataDidFilter
             contentDeliveryVC.customer_LocationType = customer_LocationType
@@ -432,8 +441,6 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
             arrFacilityData.removeAll()
             fpc.addPanel(toParent: self)
             fpc.set(contentViewController: contentDeliveryVC)
-           
-//            fpc.track(scrollView: contentDeliveryVC)
         }
         var value: [ValuesDetail] = []
         for iArrGetAssetOneDay in assetAday where iArrGetAssetOneDay.properties?.values != nil {
@@ -631,7 +638,6 @@ extension DeliveryListController: MKMapViewDelegate, ShowIndexPageDelegateProtoc
             
             // remove marker
             mapView.removeAnnotations(mapView.annotations)
-            
             if dataDidFilter.count == 0 {
                 self.showAlert(message: "Không có đơn hàng nào!")
                 
@@ -648,3 +654,13 @@ extension DeliveryListController: MKMapViewDelegate, ShowIndexPageDelegateProtoc
     
 }
 
+
+extension DeliveryListController: PassScrollView {
+    
+    func passScrollView(scrollView: UIScrollView) {
+        print(scrollView)
+        fpc.track(scrollView: scrollView)
+    }
+    
+    
+}

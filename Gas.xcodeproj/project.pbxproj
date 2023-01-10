@@ -35,6 +35,7 @@
 		75BF3A1328E161A900BC0F0C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 75BF3A1128E161A900BC0F0C /* LaunchScreen.storyboard */; };
 		75BF3A1E28E2883100BC0F0C /* DeliveryListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BF3A1D28E2883100BC0F0C /* DeliveryListController.swift */; };
 		75C0F47628F425A50091FB84 /* CustomAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75C0F47528F425A50091FB84 /* CustomAlertViewController.swift */; };
+		75CC4584296D1F7F00BE203B /* GetToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75CC4583296D1F7F00BE203B /* GetToken.swift */; };
 		75D2CE7D28F8038D00B51CED /* UIApplacation+TopVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75D2CE7C28F8038D00B51CED /* UIApplacation+TopVC.swift */; };
 		75D2CE8528F80F1C00B51CED /* FacilityImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75D2CE8428F80F1C00B51CED /* FacilityImageView.swift */; };
 		75D2CE8728F80F3400B51CED /* ImageLabelView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 75D2CE8628F80F3400B51CED /* ImageLabelView.xib */; };
@@ -82,6 +83,7 @@
 		75BF3A1428E161A900BC0F0C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		75BF3A1D28E2883100BC0F0C /* DeliveryListController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeliveryListController.swift; sourceTree = "<group>"; };
 		75C0F47528F425A50091FB84 /* CustomAlertViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAlertViewController.swift; sourceTree = "<group>"; };
+		75CC4583296D1F7F00BE203B /* GetToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetToken.swift; sourceTree = "<group>"; };
 		75D2CE7C28F8038D00B51CED /* UIApplacation+TopVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplacation+TopVC.swift"; sourceTree = "<group>"; };
 		75D2CE8428F80F1C00B51CED /* FacilityImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacilityImageView.swift; sourceTree = "<group>"; };
 		75D2CE8628F80F3400B51CED /* ImageLabelView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ImageLabelView.xib; sourceTree = "<group>"; };
@@ -141,6 +143,7 @@
 		753BA386296BB19600C7136F /* Call API  */ = {
 			isa = PBXGroup;
 			children = (
+				75CC4583296D1F7F00BE203B /* GetToken.swift */,
 				753BA387296BB1D100C7136F /* GetWorkerRouteLocationList.swift */,
 			);
 			path = "Call API ";
@@ -437,6 +440,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				75CC4584296D1F7F00BE203B /* GetToken.swift in Sources */,
 				750B39CD28E2F8D800210AB9 /* SettingController.swift in Sources */,
 				75D2CE8B28F80FDF00B51CED /* DeliveryLocationImageType.swift in Sources */,
 				75FDF73528EAB30200AADB99 /* TabCell.swift in Sources */,

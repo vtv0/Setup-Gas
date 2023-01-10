@@ -10,7 +10,6 @@ import Alamofire
 import FloatingPanel
 import AlamofireImage
 
-
 protocol PassInfoOneCustomerDelegateProtocol: AnyObject {
     func passiassetID(iassetID: String)
     func passCoordinate(coordinate: [Double])
@@ -30,15 +29,14 @@ protocol PassImageDelegateProtocol: AnyObject {
     func passNotes(notes: String)
 }
 
-//protocol PassAssetDelegateProtocol: AnyObject {
-//    func passAssetOfCustomer(asset: AnyObject)
-//}
+
 
 class PageDetailVC: UIViewController, UIScrollViewDelegate, UICollectionViewDelegate {
     
     weak var delegatePassInfoOneCustomer: PassInfoOneCustomerDelegateProtocol?
     weak var delegatePassImage: PassImageDelegateProtocol?
-    //    weak var delegatePassAsset: PassAssetDelegateProtocol?
+   
+    
     
     var pageIndex: Int!
     var comment: String = ""
@@ -228,6 +226,7 @@ class PageDetailVC: UIViewController, UIScrollViewDelegate, UICollectionViewDele
             }
             arrImage = arrDataUrlImage
         }
+     
     }
     
     
@@ -272,4 +271,5 @@ extension PageDetailVC: UICollectionViewDataSource {
         return cellImage
     }
 }
+
 

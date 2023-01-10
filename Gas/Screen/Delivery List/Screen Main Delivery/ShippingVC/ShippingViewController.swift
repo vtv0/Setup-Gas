@@ -17,10 +17,6 @@ class ShippingViewController: UIViewController {
         self.navigationController?.pushViewController(mainScreen, animated: true)
      }
 
-    
-    @IBOutlet weak var viewRadioButton: UIView!
-
-    
     @IBAction func btnSubmit(_ sender: Any) {
         print("CLICK SUBMIT")
     }

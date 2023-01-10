@@ -164,6 +164,30 @@ class ViewController: UIViewController, UITextFieldDelegate {
             }
     }
     
+    
+    enum FetcherError: Error {
+            case invalidURL
+            case missingData
+        }
+    
+//    func postGetToken1() async -> String {
+//        let parameters: [String: Any] = ["username": txtUserName.text!, "password": txtPass.text!, "expiresAt": Int64(Calendar.current.date(byAdding: .hour, value: 12, to: Date())!.timeIntervalSince1970 * 1000), "grant_type": "password" ]
+//        
+//        guard let url = URL(string: "https://\(txtcompanyCode.text!).kiiapps.com/am/api/oauth2/token" ) else {
+//            throw FetcherError.invalidURL
+//        }
+//        
+//        self.showActivity()
+//    
+//        let (data, _) = try await URLSession.shared.dataTask(with: request)
+//        return try JSONDecoder().decode(String, from: data)
+//        
+//        
+//        return ""
+//    }
+    
+    
+    
     func getMe() {
         let urlGetMe = "https://\(txtcompanyCode.text!).kiiapps.com/am/api/me"
         let token = UserDefaults.standard.string(forKey: "accessToken") ?? ""

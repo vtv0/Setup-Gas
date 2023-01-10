@@ -20,9 +20,15 @@ protocol ShowIndexPageDelegateProtocol: AnyObject {
     func passIndexPVC(currentIndexPageVC: Int)
 }
 
+protocol PassScrollView: AnyObject {
+    func passScrollView(scrollView: UIScrollView)
+}
+
 class FloatingPanelDeliveryVC: UIViewController, UIPageViewControllerDelegate, UIPageViewControllerDataSource {
     
     weak var delegate1: ShowIndexPageDelegateProtocol?
+    
+    weak var delegateScrollView: PassScrollView?
     
     var passIndexSelectedMarker = 0
     var currentIndex: Int = 0
@@ -31,18 +37,15 @@ class FloatingPanelDeliveryVC: UIViewController, UIPageViewControllerDelegate, U
     var dataDidFilter: [Location] = []
     var comment: [String] = []
     
-  
-    
     @IBOutlet weak var detailsTabsView: TabsView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "FloatingPanel PageVC"
-       // navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
+        // navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
         setupTabs()
         setupPageViewController()
-        guard let pageDetailVC = storyboard?.instantiateViewController(withIdentifier: "PageDetailVC") as? PageDetailVC else { return }
-//        fpc.track(scrollView: pageDetailVC.scrollView)
+        
         
     }
     
@@ -125,6 +128,14 @@ class FloatingPanelDeliveryVC: UIViewController, UIPageViewControllerDelegate, U
         if finished {
             if completed {
                 guard let vc = pageViewController.viewControllers?.first else { return }
+               // vc.
+                //delegateScrollView?.passScrollView(scrollView: vc.scrollView)
+                
+                let pageView = vc.presentedViewController.
+      
+                print(pageView?.scrollView)
+                delegateScrollView?.passScrollView(scrollView: pageView?.scrollView)
+                
                 var index: Int
                 
                 index = getVCPageIndex(vc)
@@ -132,6 +143,8 @@ class FloatingPanelDeliveryVC: UIViewController, UIPageViewControllerDelegate, U
                 
                 // Animate the tab in the detailsTabsView to be centered when you are scrolling using .scrollable
                 detailsTabsView.collectionView.scrollToItem(at: IndexPath(item: index, section: 0), at: .bottom, animated: true)
+//                guard let pageViewDetail = storyboard?.instantiateViewController(withIdentifier: "PageDetailVC") as? PageDetailVC else { return }
+//                print(pageViewDetail.delegateScrollView)
             }
         }
     }
@@ -141,9 +154,9 @@ class FloatingPanelDeliveryVC: UIViewController, UIPageViewControllerDelegate, U
         switch viewController {
         case is PageDetailVC:
             let vc = viewController as! PageDetailVC
+          
             return vc.pageIndex
         default:
-            
             return currentIndex
         }
     }
@@ -175,7 +188,6 @@ class FloatingPanelDeliveryVC: UIViewController, UIPageViewControllerDelegate, U
             return self.showViewController(index)
         }
     }
-    
 }
 
 
@@ -203,4 +215,10 @@ extension FloatingPanelDeliveryVC: TabsDelegate, GetIndexMarkerDelegateProtocol 
         }
     }
     
+}
+
+extension FloatingPanelDeliveryVC: PassScrollView {
+    func passScrollView(scrollView: UIScrollView) {
+        printContent(scrollView)
+    }
 }

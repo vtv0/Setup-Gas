@@ -167,6 +167,7 @@ class ReplanController: UIViewController, FloatingPanelControllerDelegate {
         fpc.contentMode = .fitToBounds
         fpc.set(contentViewController: contentVC)
         fpc.addPanel(toParent: self)
+        
         fpc.track(scrollView: (contentVC.myTableView))
                                
         
