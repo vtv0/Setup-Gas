@@ -145,8 +145,8 @@
 		753BA386296BB19600C7136F /* Call API  */ = {
 			isa = PBXGroup;
 			children = (
-				75CC4587296E5E4500BE203B /* Async+await */,
 				75CC4585296E5E2800BE203B /* Block */,
+				75CC4587296E5E4500BE203B /* Async+await */,
 			);
 			path = "Call API ";
 			sourceTree = "<group>";
@@ -681,7 +681,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = B2546FL4T8;
+				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Gas/Info.plist;
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "";
