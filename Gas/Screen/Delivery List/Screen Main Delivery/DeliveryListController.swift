@@ -40,7 +40,7 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
     
     weak var delegateGetIndex: GetIndexMarkerDelegateProtocol?
     
-   
+    
     
     let companyCode = UserDefaults.standard.string(forKey: "companyCode") ?? ""
     let tenantId = UserDefaults.standard.string(forKey: "tenantId") ?? ""
@@ -83,12 +83,12 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
     @IBOutlet weak var btnShipping: UIButton!
     @IBAction func btnShipping(_ sender: Any) {
         let vc = storyboard?.instantiateViewController(withIdentifier: "ShippingViewController") as! ShippingViewController
-        self.navigationController?.pushViewController(vc, animated: false)
+        self.navigationController?.pushViewController(vc, animated: true)
         print("click Shipping tren MH chinh")
         
-//        let alert = UIAlertController(title: "Lỗi", message: "Có một địa chỉ giao hàng được chỉ định", preferredStyle: .alert)
-//        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-//        self.present(alert, animated: true, completion: nil)
+        //        let alert = UIAlertController(title: "Lỗi", message: "Có một địa chỉ giao hàng được chỉ định", preferredStyle: .alert)
+        //        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        //        self.present(alert, animated: true, completion: nil)
     }
     
     @IBAction func btnSetting(_ sender: Any) {
@@ -112,9 +112,9 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         self.sevenDay()
         getMe()
         fpc = FloatingPanelController(delegate: self)
-                fpc.layout = MyFloatingPanelLayout()
+        fpc.layout = MyFloatingPanelLayout()
         
-
+        
         mapView.delegate = self
         
         pickerStatus.dataSource = self
@@ -133,11 +133,7 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         
         mapView.setCamera(mapCamera, animated: false)
         
-//        getWorkerVehicleList()
-        
-        
-        
-      
+        //        getWorkerVehicleList()
     }
     
     func showAlert(title: String? = "", message: String?, completion: (() -> Void)? = nil) {
@@ -239,7 +235,7 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         if self.t == dateYMD.count {
             self.numberAssetIDOf7Date += numberAssetIDOf7Date
         }
-       
+        
         
     }
     
@@ -257,8 +253,8 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
                     print("\(error)")
                     completion(nil)
                 }
-               
-               if self.numberAssetIDOf7Date == self.numberOfCallsToGetAsset {
+                
+                if self.numberAssetIDOf7Date == self.numberOfCallsToGetAsset {
                     print(self.numberAssetIDOf7Date)
                     print(self.numberOfCallsToGetAsset)
                     self.hideActivity()
@@ -293,13 +289,13 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         let url = "https://\(companyCode).kiiapps.com/am/exapi/vrp/tenants/\(tenantId)/routes?zoneID=&areaCriteria=\(areaID)&pageSize=&pageToken="
         AF.request(url, method: .get, parameters: nil, headers: self.makeHeaders(token: token))
             .responseDecodable(of: GetRouteList.self) { response1 in
-            switch response1.result {
-            case .success(let value):
-              print(value)
-            case .failure(let error):
-             print(error)
+                switch response1.result {
+                case .success(let value):
+                    print(value)
+                case .failure(let error):
+                    print(error)
+                }
             }
-        }
     }
     
     func getWorkerRouteLocationList() {
@@ -338,7 +334,7 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         if pickerView == pickerStatus {
-           
+            
             return statusDelivery[row]
         } else if pickerView == pickerDriver {
             var arrCar: [String] = []
@@ -525,7 +521,7 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
     func reDrawMarkers() {
         dataDidFilter.removeAll()
         arrLocationOrder.removeAll()
-      
+        
         if mapView != nil {
             mapView.removeAnnotations(mapView.annotations)
         }
@@ -656,11 +652,7 @@ extension DeliveryListController: MKMapViewDelegate, ShowIndexPageDelegateProtoc
 
 
 extension DeliveryListController: PassScrollView {
-    
     func passScrollView(scrollView: UIScrollView) {
-        print(scrollView)
         fpc.track(scrollView: scrollView)
     }
-    
-    
 }

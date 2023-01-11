@@ -13,8 +13,7 @@ class ShippingViewController: UIViewController {
     var selectedRows = [IndexPath]()
     
     @IBAction func btnExit(_ sender: Any) {
-        let mainScreen = storyboard?.instantiateViewController(withIdentifier: "DeliveryListController") as! DeliveryListController
-        self.navigationController?.pushViewController(mainScreen, animated: true)
+        navigationController?.popViewController(animated: true)
      }
 
     @IBAction func btnSubmit(_ sender: Any) {
@@ -30,6 +29,7 @@ class ShippingViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.black]
         title = "Determine delivery content"
         self.navigationItem.setHidesBackButton(true, animated: false)
         

@@ -54,42 +54,42 @@ class GeneralInfoController: UIViewController, UINavigationControllerDelegate, U
 
         if let url1 = UserDefaults.standard.string(forKey: "GasLocation1") {
            
-            viewGasLocation1.mainImageView.loadImageExtension(URLAddress: url1)
+            viewGasLocation1.mainImageView.downloaded(from: url1)
         }
         
         if let url2 = UserDefaults.standard.string(forKey: "GasLocation2") {
            
-            viewGasLocation2.mainImageView.loadImageExtension(URLAddress: url2)
+            viewGasLocation2.mainImageView.downloaded(from: url2)
         }
         
         if let url3 = UserDefaults.standard.string(forKey: "GasLocation3") {
           
-            viewGasLocation3.mainImageView.loadImageExtension(URLAddress: url3)
+            viewGasLocation3.mainImageView.downloaded(from: url3)
         }
         
         if let url4 = UserDefaults.standard.string(forKey: "GasLocation4") {
            
-            viewGasLocation4.mainImageView.loadImageExtension(URLAddress: url4)
+            viewGasLocation4.mainImageView.downloaded(from: url4)
         }
         
         if let url5 = UserDefaults.standard.string(forKey: "ParkingPlace5") {
          
-            viewParkingLocation5.mainImageView.loadImageExtension(URLAddress: url5)
+            viewParkingLocation5.mainImageView.downloaded(from: url5)
         }
 
         if let url6 = UserDefaults.standard.string(forKey: "ParkingPlace6") {
            
-            viewParkingLocation6.mainImageView.loadImageExtension(URLAddress: url6)
+            viewParkingLocation6.mainImageView.downloaded(from: url6)
         }
 
         if let url7 = UserDefaults.standard.string(forKey: "ParkingPlace7") {
            
-            viewParkingLocation7.mainImageView.loadImageExtension(URLAddress: url7)
+            viewParkingLocation7.mainImageView.downloaded(from: url7)
         }
 
         if let url8 = UserDefaults.standard.string(forKey: "ParkingPlace8") {
            
-            viewParkingLocation8.mainImageView.loadImageExtension(URLAddress: url8)
+            viewParkingLocation8.mainImageView.downloaded(from: url8)
         }
         
         if let notes = UserDefaults.standard.string(forKey: "Notes") {

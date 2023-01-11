@@ -30,9 +30,11 @@ class RerouteViewController: UIViewController {
         let alert  = UIAlertController(title: "Thông báo", message: "Bạn có muốn thoát màn hình Reroute", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler:{ action in
             let screenOther = self.storyboard?.instantiateViewController(withIdentifier: "DeliveryListController") as! DeliveryListController
-            self.navigationController?.setViewControllers([screenOther], animated: true)}))
+            self.navigationController?.popViewController(animated: true)
+        }))
+        
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-        self.present(alert, animated:true , completion: nil)
+        self.present(alert, animated: false , completion: nil)
     }
     
     override func viewDidLoad() {

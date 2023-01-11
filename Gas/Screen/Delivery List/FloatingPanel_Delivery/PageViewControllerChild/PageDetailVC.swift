@@ -35,7 +35,7 @@ class PageDetailVC: UIViewController, UIScrollViewDelegate, UICollectionViewDele
     
     weak var delegatePassInfoOneCustomer: PassInfoOneCustomerDelegateProtocol?
     weak var delegatePassImage: PassImageDelegateProtocol?
-   
+    
     
     
     var pageIndex: Int!
@@ -95,7 +95,7 @@ class PageDetailVC: UIViewController, UIScrollViewDelegate, UICollectionViewDele
         collectionView.dataSource = self
         
         pageControl.numberOfPages = arrImage.count
-
+        
         guard let parkingVC = storyboard?.instantiateViewController(withIdentifier: "ParkingLocationController") as? ParkingLocationController else { return }
         delegatePassInfoOneCustomer = parkingVC
         if let mapCoordinate = dataInfoOneCustomer.asset?.properties?.values.location?.coordinates,
@@ -226,13 +226,13 @@ class PageDetailVC: UIViewController, UIScrollViewDelegate, UICollectionViewDele
             }
             arrImage = arrDataUrlImage
         }
-     
+        
     }
     
     
     func scrollViewDidEndDecelerating(scrollImage: UIScrollView) {
         pageControl.currentPage = Int(viewImageScroll.contentOffset.x / viewImageScroll.bounds.width)
-//        pageControl?.currentPage = Int(scrollView.contentOffset.x) / Int(scrollView.frame.width)
+        //        pageControl?.currentPage = Int(scrollView.contentOffset.x) / Int(scrollView.frame.width)
     }
     
     func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
@@ -265,7 +265,16 @@ extension PageDetailVC: UICollectionViewDataSource {
         let cellImage = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath)  as! PageDetailCollectionViewCell
         if !arrImage.isEmpty {
             let iurl = arrImage[indexPath.row]
-            cellImage.imgImage.loadImageExtension(URLAddress: iurl)
+            
+            // Alamofire
+            AF.request( iurl, method: .get).response{ response in
+                switch response.result {
+                case .success(let responseData):
+                    cellImage.imgImage.image = UIImage(data: responseData!, scale:1)
+                case .failure(let error):
+                    print("error--->",error)
+                }
+            }
         }
         cellImage.layer.shouldRasterize = true
         return cellImage
@@ -273,3 +282,23 @@ extension PageDetailVC: UICollectionViewDataSource {
 }
 
 
+extension UIImageView {
+    func downloaded(from url: URL, contentMode mode: ContentMode = .scaleAspectFit) {
+        contentMode = mode
+        URLSession.shared.dataTask(with: url) { data, response, error in
+            guard
+                let httpURLResponse = response as? HTTPURLResponse, httpURLResponse.statusCode == 200,
+                let mimeType = response?.mimeType, mimeType.hasPrefix("image"),
+                let data = data, error == nil,
+                let image = UIImage(data: data)
+            else { return }
+            DispatchQueue.main.async() { [weak self] in
+                self?.image = image
+            }
+        }.resume()
+    }
+    func downloaded(from link: String, contentMode mode: ContentMode = .scaleAspectFit) {
+        guard let url = URL(string: link) else { return }
+        downloaded(from: url, contentMode: mode)
+    }
+}

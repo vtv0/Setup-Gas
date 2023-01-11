@@ -36,6 +36,7 @@
 		75BF3A1E28E2883100BC0F0C /* DeliveryListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BF3A1D28E2883100BC0F0C /* DeliveryListController.swift */; };
 		75C0F47628F425A50091FB84 /* CustomAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75C0F47528F425A50091FB84 /* CustomAlertViewController.swift */; };
 		75CC4584296D1F7F00BE203B /* GetToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75CC4583296D1F7F00BE203B /* GetToken.swift */; };
+		75CC4589296E615E00BE203B /* GetToken_Block.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75CC4588296E615E00BE203B /* GetToken_Block.swift */; };
 		75D2CE7D28F8038D00B51CED /* UIApplacation+TopVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75D2CE7C28F8038D00B51CED /* UIApplacation+TopVC.swift */; };
 		75D2CE8528F80F1C00B51CED /* FacilityImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75D2CE8428F80F1C00B51CED /* FacilityImageView.swift */; };
 		75D2CE8728F80F3400B51CED /* ImageLabelView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 75D2CE8628F80F3400B51CED /* ImageLabelView.xib */; };
@@ -55,7 +56,7 @@
 		4E232B68B29631223EEA634E /* Pods-Gas.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Gas.release.xcconfig"; path = "Target Support Files/Pods-Gas/Pods-Gas.release.xcconfig"; sourceTree = "<group>"; };
 		6CFAF3E506F92E6E776EC628 /* Pods_Gas.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Gas.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7501250228EC0FBE003AC9EB /* FloatingPanelDeliveryVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingPanelDeliveryVC.swift; sourceTree = "<group>"; };
-		7501250728ED2272003AC9EB /* PageDetailVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageDetailVC.swift; sourceTree = "<group>"; };
+		7501250728ED2272003AC9EB /* PageDetailVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageDetailVC.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		750B39CC28E2F8D800210AB9 /* SettingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingController.swift; sourceTree = "<group>"; };
 		750B39CF28E3036300210AB9 /* ReplanController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplanController.swift; sourceTree = "<group>"; };
 		750B39D128E3E71900210AB9 /* ContentReplanController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentReplanController.swift; sourceTree = "<group>"; };
@@ -84,6 +85,7 @@
 		75BF3A1D28E2883100BC0F0C /* DeliveryListController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeliveryListController.swift; sourceTree = "<group>"; };
 		75C0F47528F425A50091FB84 /* CustomAlertViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAlertViewController.swift; sourceTree = "<group>"; };
 		75CC4583296D1F7F00BE203B /* GetToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetToken.swift; sourceTree = "<group>"; };
+		75CC4588296E615E00BE203B /* GetToken_Block.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetToken_Block.swift; sourceTree = "<group>"; };
 		75D2CE7C28F8038D00B51CED /* UIApplacation+TopVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplacation+TopVC.swift"; sourceTree = "<group>"; };
 		75D2CE8428F80F1C00B51CED /* FacilityImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacilityImageView.swift; sourceTree = "<group>"; };
 		75D2CE8628F80F3400B51CED /* ImageLabelView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ImageLabelView.xib; sourceTree = "<group>"; };
@@ -143,8 +145,8 @@
 		753BA386296BB19600C7136F /* Call API  */ = {
 			isa = PBXGroup;
 			children = (
-				75CC4583296D1F7F00BE203B /* GetToken.swift */,
-				753BA387296BB1D100C7136F /* GetWorkerRouteLocationList.swift */,
+				75CC4587296E5E4500BE203B /* Async+await */,
+				75CC4585296E5E2800BE203B /* Block */,
 			);
 			path = "Call API ";
 			sourceTree = "<group>";
@@ -275,6 +277,23 @@
 				757F496B28E3FD23008B8C05 /* FloatingPanel_Delivery */,
 			);
 			path = "Delivery List";
+			sourceTree = "<group>";
+		};
+		75CC4585296E5E2800BE203B /* Block */ = {
+			isa = PBXGroup;
+			children = (
+				75CC4588296E615E00BE203B /* GetToken_Block.swift */,
+				753BA387296BB1D100C7136F /* GetWorkerRouteLocationList.swift */,
+			);
+			path = Block;
+			sourceTree = "<group>";
+		};
+		75CC4587296E5E4500BE203B /* Async+await */ = {
+			isa = PBXGroup;
+			children = (
+				75CC4583296D1F7F00BE203B /* GetToken.swift */,
+			);
+			path = "Async+await";
 			sourceTree = "<group>";
 		};
 		75D2CE7728F7ACDC00B51CED /* ReusableImage */ = {
@@ -452,6 +471,7 @@
 				75FDF73228EAB18400AADB99 /* TabsPageViewController.swift in Sources */,
 				75D2CE7D28F8038D00B51CED /* UIApplacation+TopVC.swift in Sources */,
 				754C39B2291E409500793A14 /* Extension+API.swift in Sources */,
+				75CC4589296E615E00BE203B /* GetToken_Block.swift in Sources */,
 				750C7E6B2908ECA0009A9E27 /* Marker+ExtensionViewController.swift in Sources */,
 				7573ADC229530D3600E8C658 /* GetRouteList.swift in Sources */,
 				75BF3A0B28E161A800BC0F0C /* LoginController.swift in Sources */,
