@@ -36,7 +36,6 @@ class ShippingViewController: UIViewController {
         lblStatus.layer.cornerRadius = 8
         lblStatus.layer.masksToBounds = true
         
-//
 //        self.myTableView.rowHeight = myTableView.frame.height / 3
 //        myTableView.isScrollEnabled = false
    

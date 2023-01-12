@@ -40,8 +40,6 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
     
     weak var delegateGetIndex: GetIndexMarkerDelegateProtocol?
     
-    
-    
     let companyCode = UserDefaults.standard.string(forKey: "companyCode") ?? ""
     let tenantId = UserDefaults.standard.string(forKey: "tenantId") ?? ""
     let userId = UserDefaults.standard.string(forKey: "userId") ?? ""
@@ -110,7 +108,12 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
     override func viewDidLoad() {
         super.viewDidLoad()
         self.sevenDay()
-        getMe()
+//        getMe()
+        
+        let getMe = GetMe(url: "")
+//        getMe.getMe_Block()
+        
+        
         fpc = FloatingPanelController(delegate: self)
         fpc.layout = MyFloatingPanelLayout()
         
@@ -134,6 +137,10 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         mapView.setCamera(mapCamera, animated: false)
         
         //        getWorkerVehicleList()
+        
+        let dicData11 = GetWorkerRouteLocationList.dicData
+        print(dicData11)
+      
     }
     
     func showAlert(title: String? = "", message: String?, completion: (() -> Void)? = nil) {
@@ -162,106 +169,108 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         }
     }
     
-    func getMe() {
-        self.showActivity()
-        let showcompanyCode = UserDefaults.standard.string(forKey: "companyCode") ?? ""
-        let urlGetMe = "https://\(showcompanyCode).kiiapps.com/am/api/me"
-        let token = UserDefaults.standard.string(forKey: "accessToken") ?? ""
-        
-        AF.request(urlGetMe, method: .get, parameters: nil, encoding: JSONEncoding.default,headers: self.makeHeaders(token: token))
-            .responseDecodable(of: GetMeInfo.self) { response1 in
-                switch response1.result {
-                case .success(let getMeInfo):
-                    UserDefaults.standard.set(getMeInfo.tenants[0].id, forKey: "tenantId")
-                    UserDefaults.standard.set(getMeInfo.id, forKey: "userId")
-                    self.getLatestWorkerRouteLocationList()
-                case .failure(let error):
-                    if response1.response?.statusCode == 401 {
-                        let src = self.storyboard?.instantiateViewController(withIdentifier: "LoginViewController") as! ViewController
-                        self.navigationController?.pushViewController(src, animated: true)
-                        break
-                    } else {
-                        print("Error: \(response1.response?.statusCode ?? 000000)")
-                        print("Error: \(error)")
-                    }
-                }
-            }
-    }
+//    func getMe() {
+//        self.showActivity()
+//        let showcompanyCode = UserDefaults.standard.string(forKey: "companyCode") ?? ""
+//        let urlGetMe = "https://\(showcompanyCode).kiiapps.com/am/api/me"
+//        let token = UserDefaults.standard.string(forKey: "accessToken") ?? ""
+//
+//        AF.request(urlGetMe, method: .get, parameters: nil, encoding: JSONEncoding.default,headers: self.makeHeaders(token: token))
+//            .responseDecodable(of: GetMeInfo.self) { response1 in
+//                switch response1.result {
+//                case .success(let getMeInfo):
+//                    UserDefaults.standard.set(getMeInfo.tenants[0].id, forKey: "tenantId")
+//                    UserDefaults.standard.set(getMeInfo.id, forKey: "userId")
+////                    self.getLatestWorkerRouteLocationList()
+//                case .failure(let error):
+//                    if response1.response?.statusCode == 401 {
+//                        let src = self.storyboard?.instantiateViewController(withIdentifier: "LoginViewController") as! ViewController
+//                        self.navigationController?.pushViewController(src, animated: true)
+//                        break
+//                    } else {
+//
+//                        print("Error: \(response1.response?.statusCode ?? 000000)")
+//                        print("Error: \(error)")
+//                    }
+//                    self.hideActivity()
+//                }
+//            }
+//    }
     
     
-    func getLatestWorkerRouteLocationList() {
-        let token = UserDefaults.standard.string(forKey: "accessToken") ?? ""
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd"
-        
-        for iday in dateYMD {
-            let dateString: String = formatter.string(from: iday)
-            let url: String = "https://\(companyCode).kiiapps.com/am/exapi/vrp/tenants/\(tenantId)/latest_route/worker_users/\(userId)?workDate=\(dateString)"
-            AF.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default ,headers: self.makeHeaders(token: token)).validate(statusCode: (200...299))
-                .responseDecodable(of: GetLatestWorkerRouteLocationListInfo.self) { response in
-                    self.t += 1
-                    switch response.result {
-                        
-                    case .success(_):
-                        let countObject = response.value?.locations?.count
-                        let locations1: [LocationElement] = response.value?.locations ?? []
-                        if countObject != 0 {
-                            var arrLocationValue: [Location] = []
-                            for ilocationValue in locations1 where ilocationValue.location?.assetID != nil {
-                                self.numberAssetIDOf7Date += 1
-                            }
-                            for itemObject in locations1 {
-                                arrLocationValue.append(Location.init(elem: itemObject, asset: nil))
-                            }
-                            for iLocationValue in arrLocationValue {
-                                if let  assetID = iLocationValue.elem?.location?.assetID {
-                                    self.getGetAsset(forAsset: assetID) { iasset in
-                                        iLocationValue.asset = iasset
-                                    }
-                                } else { print("No assetID -> Supplier") }
-                            }
-                            self.dicData[iday] = arrLocationValue
-                        } else {
-                            print(response.response?.statusCode as Any)
-                            print("\(url) =>> Array Empty, No Object ")
-                        }
-                        
-                    case .failure(let error):
-                        print("Error: \(response.response?.statusCode ?? 000000)")
-                        print("Error: \(error)")
-                    }
-                }
-        }
-        if self.t == dateYMD.count {
-            self.numberAssetIDOf7Date += numberAssetIDOf7Date
-        }
-        
-        
-    }
+//    func getLatestWorkerRouteLocationList() {
+//        let token = UserDefaults.standard.string(forKey: "accessToken") ?? ""
+//        let formatter = DateFormatter()
+//        formatter.dateFormat = "yyyy-MM-dd"
+//        
+//        for iday in dateYMD {
+//            let dateString: String = formatter.string(from: iday)
+//            let url: String = "https://\(companyCode).kiiapps.com/am/exapi/vrp/tenants/\(tenantId)/latest_route/worker_users/\(userId)?workDate=\(dateString)"
+//            AF.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default ,headers: self.makeHeaders(token: token)).validate(statusCode: (200...299))
+//                .responseDecodable(of: GetLatestWorkerRouteLocationListInfo.self) { response in
+//                    self.t += 1
+//                    switch response.result {
+//                        
+//                    case .success(_):
+//                        let countObject = response.value?.locations?.count
+//                        let locations1: [LocationElement] = response.value?.locations ?? []
+//                        if countObject != 0 {
+//                            var arrLocationValue: [Location] = []
+//                            for ilocationValue in locations1 where ilocationValue.location?.assetID != nil {
+//                                self.numberAssetIDOf7Date += 1
+//                            }
+//                            for itemObject in locations1 {
+//                                arrLocationValue.append(Location.init(elem: itemObject, asset: nil))
+//                            }
+//                            for iLocationValue in arrLocationValue {
+//                                if let  assetID = iLocationValue.elem?.location?.assetID {
+//                                    self.getGetAsset(forAsset: assetID) { iasset in
+//                                        iLocationValue.asset = iasset
+//                                    }
+//                                } else { print("No assetID -> Supplier") }
+//                            }
+//                            self.dicData[iday] = arrLocationValue
+//                        } else {
+//                            print(response.response?.statusCode as Any)
+//                            print("\(url) =>> Array Empty, No Object ")
+//                        }
+//                        
+//                    case .failure(let error):
+//                        print("Error: \(response.response?.statusCode ?? 000000)")
+//                        print("Error: \(error)")
+//                    }
+//                }
+//        }
+//        if self.t == dateYMD.count {
+//            self.numberAssetIDOf7Date += numberAssetIDOf7Date
+//        }
+//        
+//        
+//    }
     
-    func getGetAsset(forAsset iassetID: String, completion: @escaping ((GetAsset?) -> Void)) {
-        let token = UserDefaults.standard.string(forKey: "accessToken") ?? ""
-        let urlGetAsset = "https://\(companyCode).kiiapps.com/am/api/assets/\(iassetID)"
-        AF.request(urlGetAsset, method: .get, parameters: nil, headers: self.makeHeaders(token: token))
-            .responseDecodable(of: GetAsset.self) { response1 in
-                
-                self.numberOfCallsToGetAsset += 1
-                switch response1.result {
-                case .success( let value):
-                    completion(value)
-                case .failure(let error):
-                    print("\(error)")
-                    completion(nil)
-                }
-                
-                if self.numberAssetIDOf7Date == self.numberOfCallsToGetAsset {
-                    print(self.numberAssetIDOf7Date)
-                    print(self.numberOfCallsToGetAsset)
-                    self.hideActivity()
-                    self.reDrawMarkers()
-                }
-            }
-    }
+//    func getGetAsset(forAsset iassetID: String, completion: @escaping ((GetAsset?) -> Void)) {
+//        let token = UserDefaults.standard.string(forKey: "accessToken") ?? ""
+//        let urlGetAsset = "https://\(companyCode).kiiapps.com/am/api/assets/\(iassetID)"
+//        AF.request(urlGetAsset, method: .get, parameters: nil, headers: self.makeHeaders(token: token))
+//            .responseDecodable(of: GetAsset.self) { response1 in
+//                
+//                self.numberOfCallsToGetAsset += 1
+//                switch response1.result {
+//                case .success( let value):
+//                    completion(value)
+//                case .failure(let error):
+//                    print("\(error)")
+//                    completion(nil)
+//                }
+//                
+//                if self.numberAssetIDOf7Date == self.numberOfCallsToGetAsset {
+//                    print(self.numberAssetIDOf7Date)
+//                    print(self.numberOfCallsToGetAsset)
+//                    self.hideActivity()
+//                    self.reDrawMarkers()
+//                }
+//            }
+//    }
     
     
     
@@ -298,20 +307,22 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
             }
     }
     
-    func getWorkerRouteLocationList() {
-        let token = UserDefaults.standard.string(forKey: "accessToken") ?? ""
-        let url = "https://\(companyCode).kiiapps.com/am/exapi/vrp/tenants/{{tenantID}}/routes/{{routeID}}/workers/{{workerRouteID}}"
-        AF.request(url, method: .get, parameters: nil, headers: self.makeHeaders(token: token))
-            .responseDecodable(of: GetWorkerRouteLocationList.self) { response2 in
-                switch response2.result {
-                case .success(let value):
-                    print(value)
-                case .failure(let error):
-                    print(error)
-                }
-            }
-    }
+//    func getWorkerRouteLocationList() {
+//        let token = UserDefaults.standard.string(forKey: "accessToken") ?? ""
+//        let url = "https://\(companyCode).kiiapps.com/am/exapi/vrp/tenants/{{tenantID}}/routes/{{routeID}}/workers/{{workerRouteID}}"
+//        AF.request(url, method: .get, parameters: nil, headers: self.makeHeaders(token: token))
+//            .responseDecodable(of: GetWorkerRouteLocationList.self) { response2 in
+//                switch response2.result {
+//                case .success(let value):
+//                    print(value)
+//                case .failure(let error):
+//                    print(error)
+//                }
+//            }
+//    }
     
+    
+    //MARK: -
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1

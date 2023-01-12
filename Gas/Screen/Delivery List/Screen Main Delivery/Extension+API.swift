@@ -127,8 +127,7 @@ extension UIViewController {
             .responseDecodable(of: GetAsset.self ) { response1 in
                 switch response1.result {
                 case .success( let value):
-                    
-                    
+                   
                     completion(value)
                 case .failure(let error):
                     print("\(error)")

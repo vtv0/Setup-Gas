@@ -10,25 +10,6 @@ import Alamofire
 import Network
 import SystemConfiguration
 
-struct AccountInfo: Decodable {
-    var access_token: String
-    var expires_in: Int
-    var token_type: String
-}
-struct GetMeInfo: Decodable {
-    var id: Int
-    var tenants: [Tenant]
-    //    var workerDate: Date
-    
-}
-struct  Tenant: Decodable {
-    var admin: Bool
-    var id: Int
-    var roleName: String
-}
-struct GetLatestWorkerRouteLocationList : Decodable {
-    //    var
-}
 
 class ViewController: UIViewController, UITextFieldDelegate {
     
@@ -66,18 +47,16 @@ class ViewController: UIViewController, UITextFieldDelegate {
     
     @IBOutlet weak var btnLogin: UIButton!
     @IBAction func btnLogin(_ sender: UITextField) {
-        let showUserName = UserDefaults.standard.string(forKey: "userName")
-        let showPass = UserDefaults.standard.string(forKey: "pass")
-        let showcompanyCode = UserDefaults.standard.string(forKey: "companyCode")
-        print("\(String(describing: showUserName))")
-        print("\(String(describing: showPass))")
-        print("\(String(describing: showcompanyCode))")
-        
+//        let showUserName = UserDefaults.standard.string(forKey: "userName")
+//        let showPass = UserDefaults.standard.string(forKey: "pass")
+//        let showcompanyCode = UserDefaults.standard.string(forKey: "companyCode")
+
         if txtUserName.text!.isEmpty || txtPass.text!.isEmpty || txtcompanyCode.text!.isEmpty {
             self.showAlert(message: "Nhập đầy đủ thông tin tài khoản")
         } else  {
-            self.postGetToken()
-            
+//            self.postGetToken()
+            let postGetToken = PostGetToken(url: "")
+            postGetToken.postGetToken_Block()
         }
     }
     
@@ -89,14 +68,12 @@ class ViewController: UIViewController, UITextFieldDelegate {
         if !showUserName.isEmpty {
             btnSaveAccount.setImage(UIImage(named: "checkmark"), for: .normal)
         }
-        
         if (bRec){
             txtUserName.text = showUserName
             txtPass.text = showPass
             txtcompanyCode.text = showcompanyCode
             imgIcon.image = UIImage(named:"Icon-1024")
         }
-        
     }
     
     @objc func onInputUserName(_ sender: UITextField) {
@@ -143,6 +120,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
                     
                     self.getMe()
                     if let httpURLResponse = response.response {
+                        print(httpURLResponse)
                         UserDefaults.standard.set(self.txtUserName.text, forKey: "userName")
                         UserDefaults.standard.set(self.txtPass.text, forKey: "pass")
                         UserDefaults.standard.set(self.txtcompanyCode.text, forKey: "companyCode")
@@ -172,17 +150,17 @@ class ViewController: UIViewController, UITextFieldDelegate {
     
 //    func postGetToken1() async -> String {
 //        let parameters: [String: Any] = ["username": txtUserName.text!, "password": txtPass.text!, "expiresAt": Int64(Calendar.current.date(byAdding: .hour, value: 12, to: Date())!.timeIntervalSince1970 * 1000), "grant_type": "password" ]
-//        
+//
 //        guard let url = URL(string: "https://\(txtcompanyCode.text!).kiiapps.com/am/api/oauth2/token" ) else {
 //            throw FetcherError.invalidURL
 //        }
-//        
+//
 //        self.showActivity()
-//    
+//
 //        let (data, _) = try await URLSession.shared.dataTask(with: request)
 //        return try JSONDecoder().decode(String, from: data)
-//        
-//        
+//
+//
 //        return ""
 //    }
     

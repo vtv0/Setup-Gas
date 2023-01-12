@@ -7,7 +7,7 @@
 
 import UIKit
 
-class GetWorkerRouteLocationList: Decodable {
+class GetWorkerRouteLocationList4: Decodable {
     var locations: [LocationElement4]?
     var workerRoute: WorkerRoute4?
 

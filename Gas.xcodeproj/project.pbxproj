@@ -25,6 +25,9 @@
 		7573ADC029530A0100E8C658 /* GetWorkerVehicleList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7573ADBF29530A0100E8C658 /* GetWorkerVehicleList.swift */; };
 		7573ADC229530D3600E8C658 /* GetRouteList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7573ADC129530D3600E8C658 /* GetRouteList.swift */; };
 		7573ADC4295310B400E8C658 /* GetWorkerRouteLocationList4.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7573ADC3295310B400E8C658 /* GetWorkerRouteLocationList4.swift */; };
+		75867FEA296FAF7E005A0295 /* GetMe_Block.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75867FE9296FAF7E005A0295 /* GetMe_Block.swift */; };
+		75867FEC296FCB9E005A0295 /* GetWorkerRouteLocationList_Block.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75867FEB296FCB9E005A0295 /* GetWorkerRouteLocationList_Block.swift */; };
+		75867FEE296FDA54005A0295 /* GetAsset_Block.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75867FED296FDA54005A0295 /* GetAsset_Block.swift */; };
 		7598E46128EFC4DC00EA9FA9 /* PageDetailCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7598E46028EFC4DC00EA9FA9 /* PageDetailCollectionViewCell.swift */; };
 		75A1E17C28EFE6F200EA17A2 /* ContentReplanTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75A1E17B28EFE6F200EA17A2 /* ContentReplanTableViewCell.swift */; };
 		75A1E17F28F3AB6300EA17A2 /* RerouteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75A1E17E28F3AB6300EA17A2 /* RerouteViewController.swift */; };
@@ -35,7 +38,7 @@
 		75BF3A1328E161A900BC0F0C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 75BF3A1128E161A900BC0F0C /* LaunchScreen.storyboard */; };
 		75BF3A1E28E2883100BC0F0C /* DeliveryListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BF3A1D28E2883100BC0F0C /* DeliveryListController.swift */; };
 		75C0F47628F425A50091FB84 /* CustomAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75C0F47528F425A50091FB84 /* CustomAlertViewController.swift */; };
-		75CC4584296D1F7F00BE203B /* GetToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75CC4583296D1F7F00BE203B /* GetToken.swift */; };
+		75CC4584296D1F7F00BE203B /* GetToken_Async_Await.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75CC4583296D1F7F00BE203B /* GetToken_Async_Await.swift */; };
 		75CC4589296E615E00BE203B /* GetToken_Block.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75CC4588296E615E00BE203B /* GetToken_Block.swift */; };
 		75D2CE7D28F8038D00B51CED /* UIApplacation+TopVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75D2CE7C28F8038D00B51CED /* UIApplacation+TopVC.swift */; };
 		75D2CE8528F80F1C00B51CED /* FacilityImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75D2CE8428F80F1C00B51CED /* FacilityImageView.swift */; };
@@ -72,6 +75,9 @@
 		7573ADBF29530A0100E8C658 /* GetWorkerVehicleList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetWorkerVehicleList.swift; sourceTree = "<group>"; };
 		7573ADC129530D3600E8C658 /* GetRouteList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetRouteList.swift; sourceTree = "<group>"; };
 		7573ADC3295310B400E8C658 /* GetWorkerRouteLocationList4.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetWorkerRouteLocationList4.swift; sourceTree = "<group>"; };
+		75867FE9296FAF7E005A0295 /* GetMe_Block.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetMe_Block.swift; sourceTree = "<group>"; };
+		75867FEB296FCB9E005A0295 /* GetWorkerRouteLocationList_Block.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetWorkerRouteLocationList_Block.swift; sourceTree = "<group>"; };
+		75867FED296FDA54005A0295 /* GetAsset_Block.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetAsset_Block.swift; sourceTree = "<group>"; };
 		7598E46028EFC4DC00EA9FA9 /* PageDetailCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageDetailCollectionViewCell.swift; sourceTree = "<group>"; };
 		75A1E17B28EFE6F200EA17A2 /* ContentReplanTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentReplanTableViewCell.swift; sourceTree = "<group>"; };
 		75A1E17E28F3AB6300EA17A2 /* RerouteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RerouteViewController.swift; sourceTree = "<group>"; };
@@ -84,7 +90,7 @@
 		75BF3A1428E161A900BC0F0C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		75BF3A1D28E2883100BC0F0C /* DeliveryListController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeliveryListController.swift; sourceTree = "<group>"; };
 		75C0F47528F425A50091FB84 /* CustomAlertViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAlertViewController.swift; sourceTree = "<group>"; };
-		75CC4583296D1F7F00BE203B /* GetToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetToken.swift; sourceTree = "<group>"; };
+		75CC4583296D1F7F00BE203B /* GetToken_Async_Await.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetToken_Async_Await.swift; sourceTree = "<group>"; };
 		75CC4588296E615E00BE203B /* GetToken_Block.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetToken_Block.swift; sourceTree = "<group>"; };
 		75D2CE7C28F8038D00B51CED /* UIApplacation+TopVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplacation+TopVC.swift"; sourceTree = "<group>"; };
 		75D2CE8428F80F1C00B51CED /* FacilityImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacilityImageView.swift; sourceTree = "<group>"; };
@@ -283,7 +289,9 @@
 			isa = PBXGroup;
 			children = (
 				75CC4588296E615E00BE203B /* GetToken_Block.swift */,
-				753BA387296BB1D100C7136F /* GetWorkerRouteLocationList.swift */,
+				75867FE9296FAF7E005A0295 /* GetMe_Block.swift */,
+				75867FEB296FCB9E005A0295 /* GetWorkerRouteLocationList_Block.swift */,
+				75867FED296FDA54005A0295 /* GetAsset_Block.swift */,
 			);
 			path = Block;
 			sourceTree = "<group>";
@@ -291,7 +299,8 @@
 		75CC4587296E5E4500BE203B /* Async+await */ = {
 			isa = PBXGroup;
 			children = (
-				75CC4583296D1F7F00BE203B /* GetToken.swift */,
+				75CC4583296D1F7F00BE203B /* GetToken_Async_Await.swift */,
+				753BA387296BB1D100C7136F /* GetWorkerRouteLocationList.swift */,
 			);
 			path = "Async+await";
 			sourceTree = "<group>";
@@ -459,8 +468,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				75CC4584296D1F7F00BE203B /* GetToken.swift in Sources */,
+				75CC4584296D1F7F00BE203B /* GetToken_Async_Await.swift in Sources */,
+				75867FEC296FCB9E005A0295 /* GetWorkerRouteLocationList_Block.swift in Sources */,
 				750B39CD28E2F8D800210AB9 /* SettingController.swift in Sources */,
+				75867FEA296FAF7E005A0295 /* GetMe_Block.swift in Sources */,
 				75D2CE8B28F80FDF00B51CED /* DeliveryLocationImageType.swift in Sources */,
 				75FDF73528EAB30200AADB99 /* TabCell.swift in Sources */,
 				75C0F47628F425A50091FB84 /* CustomAlertViewController.swift in Sources */,
@@ -479,6 +490,7 @@
 				7501250828ED2272003AC9EB /* PageDetailVC.swift in Sources */,
 				753BA38C296BB72500C7136F /* ShippingViewController.swift in Sources */,
 				75FDF73B28EAB6B300AADB99 /* CustomerLocationController.swift in Sources */,
+				75867FEE296FDA54005A0295 /* GetAsset_Block.swift in Sources */,
 				75123F6A29027E3D00A08972 /* PassScreenViewController.swift in Sources */,
 				75FDF73D28EABABA00AADB99 /* EditViewController.swift in Sources */,
 				75FDF73928EAB69700AADB99 /* ParkingLocationController.swift in Sources */,
