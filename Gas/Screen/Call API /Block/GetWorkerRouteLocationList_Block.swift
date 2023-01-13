@@ -10,16 +10,17 @@ import Alamofire
 let companyCode = UserDefaults.standard.string(forKey: "companyCode") ?? ""
 let tenantId = UserDefaults.standard.string(forKey: "tenantId") ?? ""
 let userId = UserDefaults.standard.string(forKey: "userId") ?? ""
+var t = 0
 
-class GetWorkerRouteLocationList {
-   
+class GetWorkerRouteLocationList_Block {
     
     var dateYMD: [Date] = []
-    static var dicData: [Date: [Location]] = [:]
+    var dicData: [Date: [Location]] = [:]
     let url: String?
     
     init(url: String?) {
         self.url = url
+        
     }
     
     func sevenDay() {
@@ -40,7 +41,7 @@ class GetWorkerRouteLocationList {
         return HTTPHeaders(headers)
     }
     
-    func getLatestWorkerRouteLocationList_Block() {
+    func getWorkerRouteLocationList_Block(info tenantID: Int, id: Int, completion: @escaping ((Location?) -> Void)) {
         sevenDay()
         let token = UserDefaults.standard.string(forKey: "accessToken") ?? ""
         let formatter = DateFormatter()
@@ -51,7 +52,7 @@ class GetWorkerRouteLocationList {
             let url: String = "https://\(companyCode).kiiapps.com/am/exapi/vrp/tenants/\(tenantId)/latest_route/worker_users/\(userId)?workDate=\(dateString)"
             AF.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default ,headers: self.makeHeaders(token: token)).validate(statusCode: (200...299))
                 .responseDecodable(of: GetLatestWorkerRouteLocationListInfo.self) { response in
-//                    self.t += 1
+                    t += 1
                     switch response.result {
                     case .success(_):
                         let countObject = response.value?.locations?.count
@@ -74,9 +75,8 @@ class GetWorkerRouteLocationList {
                                     }
                                 } else { print("No assetID -> Supplier") }
                             }
-                            print(arrLocationValue)
-                            GetWorkerRouteLocationList.dicData[iday] = arrLocationValue
-                            print(GetWorkerRouteLocationList.dicData)
+                            self.dicData[iday] = arrLocationValue
+                 
                         } else {
                             print(response.response?.statusCode as Any)
                             print("\(url) =>> Array Empty, No Object ")
@@ -88,9 +88,36 @@ class GetWorkerRouteLocationList {
                     }
                 }
         }
-//        if self.t == dateYMD.count {
-//            self.numberAssetIDOf7Date += numberAssetIDOf7Date
-//        }
+        if t == dateYMD.count {
+          //  self.numberAssetIDOf7Date += numberAssetIDOf7Date
+           
+            for i in self.dicData {
+                print("\(i.key) --> \(i.value) ")
+                
+                for ivalue in i.value {
+                    if ivalue.asset?.properties?.values.customer_name != nil {
+                        print("ten: \(ivalue.asset?.properties?.values.customer_name)")
+                    }
+                }
+            }
+            
+            
+            //delivery.dicData = GetWorkerRouteLocationList_Block.dicData
+            
+            
+
+        }
     }
+    
+    func exclude() {
+        getWorkerRouteLocationList_Block { (dicData) in
+            print(dicData)
+        
+        }
+    }
+    
+    
+    
+    
 }
 

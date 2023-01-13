@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Alamofire
 
 extension UIViewController {
     func get () async {

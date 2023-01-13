@@ -14,9 +14,13 @@ struct AccountInfo: Decodable {
     var token_type: String
 }
 
-var txtUserName = UserDefaults.standard.string(forKey: "userName") ?? ""
-var txtPass =  UserDefaults.standard.string(forKey: "pass") ?? ""
-var txtcompanyCode = UserDefaults.standard.string(forKey: "companyCode") ?? ""
+
+
+let db = DB(UserName: "a", Pass: "b", CompanyCode: "c")
+var txtUserName = db.userName
+var txtPass =  db.pass
+var txtcompanyCode = db.companyCode
+
 
 enum FetcherError: Error {
     case invalidURL
@@ -30,15 +34,18 @@ class PostGetToken {
         self.url = url
     }
     
-    func postGetToken_Block() {
-        let parameters: [String: Any] = ["username": txtUserName, "password": txtPass, "expiresAt": Int64(Calendar.current.date(byAdding: .hour, value: 12, to: Date())!.timeIntervalSince1970 * 1000), "grant_type": "password" ]
-        let url = "https://\(txtcompanyCode).kiiapps.com/am/api/oauth2/token"
+    func postGetToken_Block(info username: String, pass: String, companyCode: String, completion: @escaping ((AccountInfo?) -> Void)) {
+      
+        let parameters: [String: Any] = ["username": username, "password": pass, "expiresAt": Int64(Calendar.current.date(byAdding: .hour, value: 12, to: Date())!.timeIntervalSince1970 * 1000), "grant_type": "password" ]
+        let url = "https://\(companyCode).kiiapps.com/am/api/oauth2/token"
+        
+
         //        self.showActivity()
         AF.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default)
             .responseDecodable(of: AccountInfo.self) { response in
                 switch response.result {
                 case .success(_):
-                    
+                    print(response.result)
                     let token = response.value?.access_token ?? ""
                     
                     if let httpURLResponse = response.response {
@@ -51,7 +58,7 @@ class PostGetToken {
                     }
 
                     let getMe = GetMe(url: "")
-                    getMe.getMe_Block()
+                    getMe.getMe_Block(info: txtcompanyCode, acccessToken: response.value?.access_token ?? "") { _ in }
 
                 case .failure(let error):
                     
@@ -63,8 +70,8 @@ class PostGetToken {
 //                        showAlert(message: "Lỗi xảy ra")
                     }
                 }
-                
             }
+//        return
     }
 }
-
+  // dung closure truyen data -> uiview...

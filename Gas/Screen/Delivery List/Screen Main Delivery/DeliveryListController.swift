@@ -34,8 +34,6 @@ protocol GetIndexMarkerDelegateProtocol: AnyObject {
     func getIndexMarker(indexDidSelected: Int)
 }
 
-
-
 class DeliveryListController: UIViewController , FloatingPanelControllerDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
     
     weak var delegateGetIndex: GetIndexMarkerDelegateProtocol?
@@ -108,15 +106,14 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
     override func viewDidLoad() {
         super.viewDidLoad()
         self.sevenDay()
-//        getMe()
-        
+
         let getMe = GetMe(url: "")
-//        getMe.getMe_Block()
-        
+        getMe.getMe_Block(info: UserDefaults.standard.string(forKey: "companyCode") ?? "", acccessToken: UserDefaults.standard.string(forKey: "acccessToken") ?? "" ) { _ in
+            
+        }
         
         fpc = FloatingPanelController(delegate: self)
         fpc.layout = MyFloatingPanelLayout()
-        
         
         mapView.delegate = self
         
@@ -138,7 +135,7 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         
         //        getWorkerVehicleList()
         
-        let dicData11 = GetWorkerRouteLocationList.dicData
+        let dicData11 = GetWorkerRouteLocationList_Block.self
         print(dicData11)
       
     }
@@ -554,7 +551,6 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         }
         passIndexSelectedMarker = 0
     }
-    
 }
 
 
