@@ -8,7 +8,7 @@
 import UIKit
 import Alamofire
 
-class GetAsset1 {
+class GetAsset_Block {
     let url: String?
     
     init(url: String?) {

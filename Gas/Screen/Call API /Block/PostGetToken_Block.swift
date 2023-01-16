@@ -16,7 +16,7 @@ struct AccountInfo: Decodable {
 
 
 
-let db = DB(UserName: "a", Pass: "b", CompanyCode: "c")
+let db = DB(UserName: "", Pass: "", CompanyCode: "")
 var txtUserName = db.userName
 var txtPass =  db.pass
 var txtcompanyCode = db.companyCode
@@ -27,14 +27,10 @@ enum FetcherError: Error {
     case missingData
 }
 
-class PostGetToken {
-    let url: String?
+class PostGetToken_Block {
+    let url: String? = nil
     
-    init(url: String?) {
-        self.url = url
-    }
-    
-    func postGetToken_Block(info username: String, pass: String, companyCode: String, completion: @escaping ((AccountInfo?) -> Void)) {
+    func postGetToken_Block(info username: String, pass: String, companyCode: String, completion: @escaping ((_ token1: String?) -> Void)) {
       
         let parameters: [String: Any] = ["username": username, "password": pass, "expiresAt": Int64(Calendar.current.date(byAdding: .hour, value: 12, to: Date())!.timeIntervalSince1970 * 1000), "grant_type": "password" ]
         let url = "https://\(companyCode).kiiapps.com/am/api/oauth2/token"
@@ -42,26 +38,24 @@ class PostGetToken {
 
         //        self.showActivity()
         AF.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default)
-            .responseDecodable(of: AccountInfo.self) { response in
+            .responseDecodable(of: AccountInfo.self) { response in  // -> UIViewController
                 switch response.result {
                 case .success(_):
                     print(response.result)
                     let token = response.value?.access_token ?? ""
+//                    let token = token1
                     
                     if let httpURLResponse = response.response {
                         UserDefaults.standard.set(txtUserName, forKey: "userName")
                         UserDefaults.standard.set(txtPass, forKey: "pass")
                         UserDefaults.standard.set(txtcompanyCode, forKey: "companyCode")
-                        UserDefaults.standard.set(token, forKey: "accessToken")
-//                        let mhDeliveryList = storyboard?.instantiateViewController(identifier:  "DeliveryListController") as! DeliveryListController
-//                        navigationController?.pushViewController(mhDeliveryList, animated: true)
+//                        UserDefaults.standard.set(token, forKey: "accessToken")
+                        
+                        completion(token)
                     }
 
-                    let getMe = GetMe(url: "")
-                    getMe.getMe_Block(info: txtcompanyCode, acccessToken: response.value?.access_token ?? "") { _ in }
 
                 case .failure(let error):
-                    
                     if (response.response?.statusCode == 403) {
 //                        showAlert(message: "Sai mk (Error: 403)")
                     } else if let urlError = error.underlyingError as? URLError , urlError.code == .cannotFindHost {
@@ -69,9 +63,14 @@ class PostGetToken {
                     } else {
 //                        showAlert(message: "Lỗi xảy ra")
                     }
+                    completion(nil)
                 }
             }
-//        return
     }
+    
+    
+    
+    
 }
+
   // dung closure truyen data -> uiview...

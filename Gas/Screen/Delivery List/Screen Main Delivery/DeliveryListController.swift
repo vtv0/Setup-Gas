@@ -105,12 +105,42 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.sevenDay()
 
-        let getMe = GetMe(url: "")
-        getMe.getMe_Block(info: UserDefaults.standard.string(forKey: "companyCode") ?? "", acccessToken: UserDefaults.standard.string(forKey: "acccessToken") ?? "" ) { _ in
+        //MARK: - Use Block
+        
+        GetMe_Block().getMe_Block(info: "", acccessToken: "") { dataID in
+            if !dataID.isEmpty {
+                UserDefaults.standard.set(dataID[0], forKey: "tenantId")
+                UserDefaults.standard.set(dataID[1], forKey: "userId")
+            }
+            
+            GetWorkerRouteLocationList_Block().getWorkerRouteLocationList_Block(tenantId: UserDefaults.standard.integer(forKey: "tenantId"), userId: UserDefaults.standard.integer(forKey: "userId")) { dic in
+                print(dic)
+            }
             
         }
+        
+        
+
+        
+        //MARK: - Use ASYNC AWAIT
+//        GetMe_Async_Await.getMe_Async_Await() { infomation in
+//            print(infomation)
+//        }
+        
+        //    func getMe_Async_Await() {
+        //        Task {
+        //            do {
+        //                let url1 = URL(string: "https://\(companyCode).kiiapps.com/am/api/me" ?? "")
+        //                let result = try await fetchAPI(url: url1 )
+        //            } catch {
+        //                printContent(error.localized)
+        //            }
+        //        }
+        //    }
+
+        
+        
         
         fpc = FloatingPanelController(delegate: self)
         fpc.layout = MyFloatingPanelLayout()
@@ -134,10 +164,13 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         mapView.setCamera(mapCamera, animated: false)
         
         //        getWorkerVehicleList()
-        
-        let dicData11 = GetWorkerRouteLocationList_Block.self
-        print(dicData11)
-      
+    }
+    
+    
+    func fetchAPI<T: Decodable>(url: URL) async throws -> T {
+        let data = try await URLSession.shared.data(url: url)
+        let decodeData = try JSONDecoder().decode(T.self, from: data)
+        return decodeData
     }
     
     func showAlert(title: String? = "", message: String?, completion: (() -> Void)? = nil) {
@@ -272,37 +305,37 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
     
     
     //MARK: - call API after 4 hour
-    func getWorkerVehicleList() {
-        let token = UserDefaults.standard.string(forKey: "accessToken") ?? ""
-        let url = "https://\(companyCode).kiiapps.com/am/exapi/vrp/tenants/\(tenantId)/worker-vehicles"
-        AF.request(url, method: .get, encoding: JSONEncoding.default, headers: self.makeHeaders(token: token)) .validate(statusCode: (200...299))
-            .responseDecodable(of: WorkerVehicleList.self) { response in
-                switch response.result {
-                case .success(let value):
-                    if let areaID = value.workerVehicles?.first?.areaID {
-                        UserDefaults.standard.set(areaID, forKey: "AreaID")
-                    }
-                    self.getRouteList()
-                case .failure(let error):
-                    print(error)
-                }
-            }
-    }
-    
-    func getRouteList() {
-        let areaID = UserDefaults.standard.string(forKey: "AreaID") ?? ""
-        let token = UserDefaults.standard.string(forKey: "accessToken") ?? ""
-        let url = "https://\(companyCode).kiiapps.com/am/exapi/vrp/tenants/\(tenantId)/routes?zoneID=&areaCriteria=\(areaID)&pageSize=&pageToken="
-        AF.request(url, method: .get, parameters: nil, headers: self.makeHeaders(token: token))
-            .responseDecodable(of: GetRouteList.self) { response1 in
-                switch response1.result {
-                case .success(let value):
-                    print(value)
-                case .failure(let error):
-                    print(error)
-                }
-            }
-    }
+//    func getWorkerVehicleList() {
+//        let token = UserDefaults.standard.string(forKey: "accessToken") ?? ""
+//        let url = "https://\(companyCode).kiiapps.com/am/exapi/vrp/tenants/\(tenantId)/worker-vehicles"
+//        AF.request(url, method: .get, encoding: JSONEncoding.default, headers: self.makeHeaders(token: token)) .validate(statusCode: (200...299))
+//            .responseDecodable(of: WorkerVehicleList.self) { response in
+//                switch response.result {
+//                case .success(let value):
+//                    if let areaID = value.workerVehicles?.first?.areaID {
+//                        UserDefaults.standard.set(areaID, forKey: "AreaID")
+//                    }
+//                    self.getRouteList()
+//                case .failure(let error):
+//                    print(error)
+//                }
+//            }
+//    }
+//
+//    func getRouteList() {
+//        let areaID = UserDefaults.standard.string(forKey: "AreaID") ?? ""
+//        let token = UserDefaults.standard.string(forKey: "accessToken") ?? ""
+//        let url = "https://\(companyCode).kiiapps.com/am/exapi/vrp/tenants/\(tenantId)/routes?zoneID=&areaCriteria=\(areaID)&pageSize=&pageToken="
+//        AF.request(url, method: .get, parameters: nil, headers: self.makeHeaders(token: token))
+//            .responseDecodable(of: GetRouteList.self) { response1 in
+//                switch response1.result {
+//                case .success(let value):
+//                    print(value)
+//                case .failure(let error):
+//                    print(error)
+//                }
+//            }
+//    }
     
 //    func getWorkerRouteLocationList() {
 //        let token = UserDefaults.standard.string(forKey: "accessToken") ?? ""

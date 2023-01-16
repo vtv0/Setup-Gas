@@ -18,14 +18,17 @@ struct Tenant: Decodable {
     var roleName: String
 }
 
-
-
-class GetMe {
-    let url: String?
+class GetMe_Block {
+    let url: String? = nil
+//    var id: String
+//    var userID: String
+//    typealias CompletionHandler = (_ success: Bool) -> Void
     
-    init(url: String?) {
-        self.url = url
-    }
+//    init(url: String?, id: String, userID: String) {
+//        self.url = url
+//        self.id = id
+//        self.userID = userID
+//    }
     
     func makeHeaders(token: String) -> HTTPHeaders {
         var headers: [String: String] = [:]
@@ -33,36 +36,34 @@ class GetMe {
         return HTTPHeaders(headers)
     }
     
-    func getMe_Block(info companyCode: String, acccessToken: String, completion: @escaping ((GetMe?) -> Void)) {
-        let urlGetMe = "https://\(txtcompanyCode).kiiapps.com/am/api/me"
-//        let token = UserDefaults.standard.string(forKey: "accessToken") ?? ""
-        print("\(acccessToken)")
-//        self.showActivity()
+    func getMe_Block(info companyCode: String, acccessToken: String, completion: @escaping ([Int]) -> Void ) {
+        let urlGetMe = "https://\(companyCode).kiiapps.com/am/api/me"
+        let flag = true
+        let token = UserDefaults.standard.string(forKey: "accessToken") ?? ""
+        var arrID = [Int]()
         AF.request(urlGetMe, method: .get, parameters: nil, encoding: JSONEncoding.default,headers: self.makeHeaders(token: acccessToken))
-            .responseDecodable(of: GetMeInfo.self) { response1 in
+            .responseDecodable(of: GetMeInfo.self) { response1 -> Void in
                 switch response1.result {
                 case .success(let getMeInfo):
-                  //  print(getMeInfo)
-                   // UserDefaults.standard.set(getMeInfo.tenants[0].id, forKey: "tenantId")
-                  //  UserDefaults.standard.set(getMeInfo.id, forKey: "userId")
-                   // print("userID: \(getMeInfo.id)")
-                   // print("tenantID: \(getMeInfo.tenants[0].id)")
-                    
-                    let getWorkerList = GetWorkerRouteLocationList_Block(url: "")
-                    getWorkerList.getWorkerRouteLocationList_Block(info: getMeInfo.tenants[0].id, id: getMeInfo.id) { asset in
-                        
-                    }
+                    let tenantId = getMeInfo.tenants[0].id
+                    let userId = getMeInfo.id
+                    arrID.append(tenantId)
+                    arrID.append(userId)
+                    //  UserDefaults.standard.set(getMeInfo.tenants[0].id, forKey: "tenantId")
+                      UserDefaults.standard.set(companyCode, forKey: "userId")
+                    completion(arrID)
                     
                 case .failure(let error):
                     print("Failed with error: \(error)")
-//                    self.showAlert(message:"lỗi xảy ra")
-                    
+                    // self.showAlert(message:"lỗi xảy ra")
+                    completion([])
                 }
             }
-//        self.hideActivity()
+        // self.hideActivity()
+        
     }
 }
 
-    
-    
-    
+
+
+

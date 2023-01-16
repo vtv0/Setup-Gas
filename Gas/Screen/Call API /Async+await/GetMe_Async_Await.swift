@@ -17,7 +17,7 @@ class GetMe_Async_Await {
     }
     
     
-    func getMe_Async_Await() async {
+    func getMe_Async_Await() async throws {  // -> String 
         let urlGetMe = "https://\(UserDefaults.standard.string(forKey: "companyCode") ?? "").kiiapps.com/am/api/me"
          let token = UserDefaults.standard.string(forKey: "accessToken") ?? ""
         
@@ -30,6 +30,7 @@ class GetMe_Async_Await {
                     //  print(getMeInfo)
                     // UserDefaults.standard.set(getMeInfo.tenants[0].id, forKey: "tenantId")
                     //  UserDefaults.standard.set(getMeInfo.id, forKey: "userId")
+                    let userID = getMeInfo.id
                      print("userID: \(getMeInfo.id)")
                      print("tenantID: \(getMeInfo.tenants[0].id)")
                     
@@ -45,5 +46,42 @@ class GetMe_Async_Await {
                 }
             }
         //        self.hideActivity()
+//        return userId
+    }
+    
+    func fetchAPI<T: Decodable>(url: URL) async throws -> T {
+        let data = try await URLSession.shared.data(url: url)
+        let decodeData = try JSONDecoder().decode(T.self, from: data)
+        return decodeData
+    }
+    
+}
+extension URLSession {
+    func data(url: URL) async throws -> Data {
+        try await withCheckedThrowingContinuation({ c in
+            dataTask(with: url) { data, _, error in
+                if let error = error {
+                    c.resume(throwing: APIError.error(error.localizedDescription))
+                } else {
+                    if let data = data {
+                        c.resume(returning: data)
+                    } else {
+                        c.resume(throwing: APIError.error("Bad response"))
+                    }
+                }
+            }.resume()
+        })
+    }
+    
+    enum APIError: Error {
+        case error(String)
+        
+        var localizedDescription: String {
+            switch self {
+            case .error(let string):
+                return string
+                
+            }
+        }
     }
 }

@@ -14,26 +14,37 @@ protocol DB_Protocol {
 }
 
 public class DB {
-//    var userNameNew: String = ""
+    var newUserName: String = ""
+    var newPass: String = ""
+    var newCompanycode: String = ""
     
     var userName: String {
         get { return "" }
         set {
-//            if newValue != userNameNew {
-//                self.userName = userNameNew
-//            }
+            if newValue != userName {
+                self.userName = newUserName
+            }
             
         }
     }
 
     var pass: String {
         get { return  "" }
-        set { }
+        set {
+            if newValue != pass {
+                self.pass = newPass
+            }
+                
+        }
     }
     
     var companyCode: String {
         get { return "" }
-        set { }
+        set {
+            if newValue != companyCode {
+                self.companyCode = newCompanycode
+            }
+        }
     }
     
     init( UserName: String, Pass: String, CompanyCode: String) {
