@@ -8,10 +8,11 @@
 import UIKit
 import Alamofire
  
-var companyCode = UserDefaults.standard.string(forKey: "companyCode")
  
 class GetAsset_Async_Await {
     let url: String?
+    let companyCode = UserDefaults.standard.string(forKey: "companyCode") ?? ""
+
     
     init(url: String?) {
         self.url = url
@@ -23,8 +24,8 @@ class GetAsset_Async_Await {
         return HTTPHeaders(headers)
     }
     
-    func getGetAsset_Async_Await(forAsset iassetID: String) async -> GetAsset {
-        var getAsset = GetAsset()
+    func getGetAsset_Async_Await(forAsset iassetID: String) async throws -> GetAsset {
+        let getAsset = GetAsset()
         let token = UserDefaults.standard.string(forKey: "accessToken") ?? ""
         let urlGetAsset = "https://\(companyCode).kiiapps.com/am/api/assets/\(iassetID)"
         AF.request(urlGetAsset, method: .get, parameters: nil, headers: self.makeHeaders(token: token))

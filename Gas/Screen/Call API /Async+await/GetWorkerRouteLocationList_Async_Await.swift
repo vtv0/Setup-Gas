@@ -13,8 +13,7 @@ class GetWorkerRouteLocationList_Async_Await {
     var dateYMD: [Date] = []
     var dicData: [Date: [Location]] = [:]
     let url: String?
-    var tenantId = UserDefaults.standard.string(forKey: "tenantId")
-    var userId = UserDefaults.standard.string(forKey: "userID")
+    
     
     init(url: String?) {
         self.url = url
@@ -40,7 +39,12 @@ class GetWorkerRouteLocationList_Async_Await {
     }
     
     func getWorkerRouteLocationList_Async_Await() async throws -> Dictionary<Date, [Location]> {
+        
+        var tenantId = UserDefaults.standard.string(forKey: "tenantId") ?? ""
+        var userId = UserDefaults.standard.string(forKey: "userID") ?? ""
         sevenDay()
+        var t = 0
+        let companyCode = UserDefaults.standard.string(forKey: "companyCode") ?? ""
         let token = UserDefaults.standard.string(forKey: "accessToken") ?? ""
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
@@ -65,10 +69,7 @@ class GetWorkerRouteLocationList_Async_Await {
                             }
                             for iLocationValue in arrLocationValue {
                                 if let assetID = iLocationValue.elem?.location?.assetID {
-                                    print(assetID)
-                                    
-                                    let getAsset = GetAsset_Block(url: "")
-                                    getAsset.getGetAsset_Block(forAsset: assetID) { iasset in
+                                    GetAsset_Block().getGetAsset_Block(forAsset: assetID) { iasset in
                                         iLocationValue.asset = iasset
                                     }
                                 } else { print("No assetID -> Supplier") }
@@ -91,11 +92,11 @@ class GetWorkerRouteLocationList_Async_Await {
             for i in self.dicData {
                 print("\(i.key) --> \(i.value) ")
                 
-                for ivalue in i.value {
-                    if ivalue.asset?.properties?.values.customer_name != nil {
-                        print("ten: \(ivalue.asset?.properties?.values.customer_name)")
-                    }
-                }
+//                for ivalue in i.value {
+//                    if ivalue.asset?.properties?.values.customer_name != nil {
+//                        print("ten: \(ivalue.asset?.properties?.values.customer_name)")
+//                    }
+//                }
             }
             //delivery.dicData = GetWorkerRouteLocationList_Block.dicData
         }

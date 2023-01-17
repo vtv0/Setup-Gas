@@ -14,14 +14,6 @@ struct AccountInfo: Decodable {
     var token_type: String
 }
 
-
-
-let db = DB(UserName: "", Pass: "", CompanyCode: "")
-var txtUserName = db.userName
-var txtPass =  db.pass
-var txtcompanyCode = db.companyCode
-
-
 enum FetcherError: Error {
     case invalidURL
     case missingData
@@ -30,46 +22,50 @@ enum FetcherError: Error {
 class PostGetToken_Block {
     let url: String? = nil
     
-    func postGetToken_Block(info username: String, pass: String, companyCode: String, completion: @escaping ((_ token1: String?) -> Void)) {
-      
+    func postGetToken_Block(username: String, pass: String, companyCode: String, completion: @escaping ( ((String?), (CaseError?) ) -> Void)) {
         let parameters: [String: Any] = ["username": username, "password": pass, "expiresAt": Int64(Calendar.current.date(byAdding: .hour, value: 12, to: Date())!.timeIntervalSince1970 * 1000), "grant_type": "password" ]
         let url = "https://\(companyCode).kiiapps.com/am/api/oauth2/token"
-        
-
-        //        self.showActivity()
         AF.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default)
-            .responseDecodable(of: AccountInfo.self) { response in  // -> UIViewController
+            .responseDecodable(of: AccountInfo.self) { response in
                 switch response.result {
+                    
                 case .success(_):
                     print(response.result)
                     let token = response.value?.access_token ?? ""
-//                    let token = token1
                     
                     if let httpURLResponse = response.response {
-                        UserDefaults.standard.set(txtUserName, forKey: "userName")
-                        UserDefaults.standard.set(txtPass, forKey: "pass")
-                        UserDefaults.standard.set(txtcompanyCode, forKey: "companyCode")
-//                        UserDefaults.standard.set(token, forKey: "accessToken")
-                        
-                        completion(token)
+                        UserDefaults.standard.set(username, forKey: "userName")
+                        UserDefaults.standard.set(pass, forKey: "pass")
+                        UserDefaults.standard.set(companyCode, forKey: "companyCode")
+                        //                        UserDefaults.standard.set(token, forKey: "accessToken")
+                        print(httpURLResponse)
+                        completion(token, PostGetToken_Block.CaseError.ok)
                     }
-
-
+                    
+                    
                 case .failure(let error):
                     if (response.response?.statusCode == 403) {
-//                        showAlert(message: "Sai mk (Error: 403)")
+
+                       // CaseError.wrongPassword
+                        completion(nil,CaseError.wrongPassword)
                     } else if let urlError = error.underlyingError as? URLError , urlError.code == .cannotFindHost {
-//                        showAlert(message: "Sai mật khẩu")
+                        
                     } else {
-//                        showAlert(message: "Lỗi xảy ra")
+                    //    PostGetToken_Block.CaseError.remain
+                        completion(nil,CaseError.remain)
                     }
-                    completion(nil)
+                    
+                    //completion(nil, PostGetToken_Block.CaseError.remain)
                 }
             }
     }
     
-    
-    
+    enum CaseError: String {
+        case ok
+        case tokenOutOfDate
+        case wrongPassword
+        case remain
+    }
     
 }
 

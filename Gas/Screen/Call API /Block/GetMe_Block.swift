@@ -20,15 +20,7 @@ struct Tenant: Decodable {
 
 class GetMe_Block {
     let url: String? = nil
-//    var id: String
-//    var userID: String
-//    typealias CompletionHandler = (_ success: Bool) -> Void
-    
-//    init(url: String?, id: String, userID: String) {
-//        self.url = url
-//        self.id = id
-//        self.userID = userID
-//    }
+    let companyCode = UserDefaults.standard.string(forKey: "companyCode") ?? ""
     
     func makeHeaders(token: String) -> HTTPHeaders {
         var headers: [String: String] = [:]
@@ -36,32 +28,48 @@ class GetMe_Block {
         return HTTPHeaders(headers)
     }
     
-    func getMe_Block(info companyCode: String, acccessToken: String, completion: @escaping ([Int]) -> Void ) {
+    func getMe_Block(commpanyCode: String, acccessToken: String, completion: @escaping ([Int],(CaseError)) -> Void ) {
         let urlGetMe = "https://\(companyCode).kiiapps.com/am/api/me"
-        let flag = true
+    
         let token = UserDefaults.standard.string(forKey: "accessToken") ?? ""
+      
         var arrID = [Int]()
-        AF.request(urlGetMe, method: .get, parameters: nil, encoding: JSONEncoding.default,headers: self.makeHeaders(token: acccessToken))
-            .responseDecodable(of: GetMeInfo.self) { response1 -> Void in
+        AF.request(urlGetMe, method: .get, parameters: nil, encoding: JSONEncoding.default,headers: self.makeHeaders(token: token))
+            .responseDecodable(of: GetMeInfo.self) { response1 in
                 switch response1.result {
                 case .success(let getMeInfo):
+                    
                     let tenantId = getMeInfo.tenants[0].id
                     let userId = getMeInfo.id
+                    print(tenantId)
+                    print(userId)
+                    
+                    
                     arrID.append(tenantId)
                     arrID.append(userId)
-                    //  UserDefaults.standard.set(getMeInfo.tenants[0].id, forKey: "tenantId")
-                      UserDefaults.standard.set(companyCode, forKey: "userId")
-                    completion(arrID)
+                  //  UserDefaults.standard.set(getMeInfo.tenants[0].id, forKey: "tenantId")
+                  //  UserDefaults.standard.set(self.companyCode, forKey: "userId")
+                    completion(arrID, GetMe_Block.CaseError.ok)
                     
-                case .failure(let error):
-                    print("Failed with error: \(error)")
+                case .failure(let detailError):
+                    
+                    print("Failed with error: \(detailError)")
                     // self.showAlert(message:"lỗi xảy ra")
-                    completion([])
+                    completion([], GetMe_Block.CaseError.remain)
                 }
             }
         // self.hideActivity()
         
     }
+    
+    enum CaseError: String {
+        case ok
+        case tokenOutOfDate
+        case wrongPassword
+        case remain
+    }
+
+    
 }
 
 

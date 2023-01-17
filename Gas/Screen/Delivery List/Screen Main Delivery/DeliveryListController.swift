@@ -42,7 +42,6 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
     let tenantId = UserDefaults.standard.string(forKey: "tenantId") ?? ""
     let userId = UserDefaults.standard.string(forKey: "userId") ?? ""
     let statusDelivery = ["Not Delivery", "All"]
-    var arrGetAsset: [String] = []
     var coordinate: [Double] = []
     var selectedIdxDate: Int = 0
     var selectedIdxDriver: Int = 0
@@ -50,10 +49,7 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
     var arrLocationOrder = [Int]()
     var dicData: [Date : [Location]] = [:]
     var indxes: [Int] = []
-    var assetID: String = ""
     var dateYMD: [Date] = []
-    var numberOfCallsToGetAsset: Int = 0
-    var numberAssetIDOf7Date = 0
     var customer_LocationType = [String]()
     var comment: [String] = []
     var passIndexSelectedMarker = 0
@@ -62,7 +58,6 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
     var assetAday: [GetAsset] = []
     var locations: [Location] = []
     var arrFacilityData: [[Facility_data]] = []
-    var t = 0
     
     @IBOutlet weak var lblType50kg: UILabel!
     @IBOutlet weak var lblType30kg: UILabel!
@@ -105,28 +100,21 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        self.sevenDay()
         //MARK: - Use Block
+        showActivity()
+        callAPI_Block_Delivery()
         
-        GetMe_Block().getMe_Block(info: "", acccessToken: "") { dataID in
-            if !dataID.isEmpty {
-                UserDefaults.standard.set(dataID[0], forKey: "tenantId")
-                UserDefaults.standard.set(dataID[1], forKey: "userId")
-            }
-            
-            GetWorkerRouteLocationList_Block().getWorkerRouteLocationList_Block(tenantId: UserDefaults.standard.integer(forKey: "tenantId"), userId: UserDefaults.standard.integer(forKey: "userId")) { dic in
-                print(dic)
-            }
-            
-        }
-        
-        
-
         
         //MARK: - Use ASYNC AWAIT
-//        GetMe_Async_Await.getMe_Async_Await() { infomation in
-//            print(infomation)
-//        }
+        
+        //        getWorkerVehicleList()
+    }
+    
+    func callAPI_Async_Await_Delivery() {
+        //        GetMe_Async_Await.getMe_Async_Await() { infomation in
+        //            print(infomation)
+        //        }
         
         //    func getMe_Async_Await() {
         //        Task {
@@ -138,33 +126,94 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         //            }
         //        }
         //    }
-
         
         
         
-        fpc = FloatingPanelController(delegate: self)
-        fpc.layout = MyFloatingPanelLayout()
         
-        mapView.delegate = self
+        //        fpc = FloatingPanelController(delegate: self)
+        //        fpc.layout = MyFloatingPanelLayout()
+        //
+        //        mapView.delegate = self
+        //
+        //        pickerStatus.dataSource = self
+        //        pickerStatus.delegate = self
+        //
+        //        pickerDriver.dataSource = self
+        //        pickerDriver.delegate = self
+        //
+        //        pickerDate.dataSource = self
+        //        pickerDate.delegate = self
+        //
+        //        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
+        //        let userCoordinate = CLLocationCoordinate2D(latitude: 35.73774428640241, longitude: 139.6194163709879)
+        //        let eyeCoordinate = CLLocationCoordinate2D(latitude: 35.73774428640241, longitude: 139.6194163709879)
+        //        let mapCamera = MKMapCamera(lookingAtCenter: userCoordinate, fromEyeCoordinate: eyeCoordinate, eyeAltitude: 1000000.0)
+        //
+        //        mapView.setCamera(mapCamera, animated: false)
         
-        pickerStatus.dataSource = self
-        pickerStatus.delegate = self
-        
-        pickerDriver.dataSource = self
-        pickerDriver.delegate = self
-        
-        pickerDate.dataSource = self
-        pickerDate.delegate = self
-        
-        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
-        let userCoordinate = CLLocationCoordinate2D(latitude: 35.73774428640241, longitude: 139.6194163709879)
-        let eyeCoordinate = CLLocationCoordinate2D(latitude: 35.73774428640241, longitude: 139.6194163709879)
-        let mapCamera = MKMapCamera(lookingAtCenter: userCoordinate, fromEyeCoordinate: eyeCoordinate, eyeAltitude: 1000000.0)
-        
-        mapView.setCamera(mapCamera, animated: false)
-        
-        //        getWorkerVehicleList()
     }
+    
+    
+    func callAPI_Block_Delivery() {
+        GetMe_Block().getMe_Block(commpanyCode: "", acccessToken: "") { [self] dataID, detailError  in
+            
+            print(dataID)
+            print(detailError)
+            
+            if !dataID.isEmpty {
+                GetWorkerRouteLocationList_Block().getWorkerRouteLocationList_Block(tenantId: 0, userId: 0) { [self] dic in
+                    
+                    GetAsset_Block().getGetAsset_Block(forAsset: "") { [self] info in
+                        dicData = dic ?? [:]
+                        
+                        fpc = FloatingPanelController(delegate: self)
+                        fpc.layout = MyFloatingPanelLayout()
+                        
+                        mapView.delegate = self
+                        
+                        pickerStatus.dataSource = self
+                        pickerStatus.delegate = self
+                        
+                        pickerDriver.dataSource = self
+                        pickerDriver.delegate = self
+                        
+                        pickerDate.dataSource = self
+                        pickerDate.delegate = self
+                        
+                        reDrawMarkers()
+                        hideActivity()
+                    }
+                    
+                }
+            }
+            
+            let err = detailError
+            switch err {
+            case .ok:
+                break
+            case .tokenOutOfDate:
+                // Login
+                if let scr = storyboard?.instantiateViewController(withIdentifier: "LoginViewController") as? ViewController {
+                    navigationController?.pushViewController(scr, animated: false)
+                    hideActivity()
+                }
+            case .wrongPassword:
+                break
+            case .remain:
+                showAlert(message: "Có lỗi xảy ra")
+                hideActivity()
+            }
+            
+            navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
+            let userCoordinate = CLLocationCoordinate2D(latitude: 35.73774428640241, longitude: 139.6194163709879)
+            let eyeCoordinate = CLLocationCoordinate2D(latitude: 35.73774428640241, longitude: 139.6194163709879)
+            let mapCamera = MKMapCamera(lookingAtCenter: userCoordinate, fromEyeCoordinate: eyeCoordinate, eyeAltitude: 1000000.0)
+            mapView.setCamera(mapCamera, animated: false)
+            
+        }
+        
+    }
+    
     
     
     func fetchAPI<T: Decodable>(url: URL) async throws -> T {
@@ -193,163 +242,59 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
         for dayOffset in 0...6 {
-            if let date1 = calendar.date(byAdding: .day, value: dayOffset, to: anchor) {
+            if let date1 = calendar.date(byAdding: .day, value: dayOffset, to: anchor)?.removeTimeStamp {
                 dateYMD.append(date1)
             }
         }
     }
     
-//    func getMe() {
-//        self.showActivity()
-//        let showcompanyCode = UserDefaults.standard.string(forKey: "companyCode") ?? ""
-//        let urlGetMe = "https://\(showcompanyCode).kiiapps.com/am/api/me"
-//        let token = UserDefaults.standard.string(forKey: "accessToken") ?? ""
-//
-//        AF.request(urlGetMe, method: .get, parameters: nil, encoding: JSONEncoding.default,headers: self.makeHeaders(token: token))
-//            .responseDecodable(of: GetMeInfo.self) { response1 in
-//                switch response1.result {
-//                case .success(let getMeInfo):
-//                    UserDefaults.standard.set(getMeInfo.tenants[0].id, forKey: "tenantId")
-//                    UserDefaults.standard.set(getMeInfo.id, forKey: "userId")
-////                    self.getLatestWorkerRouteLocationList()
-//                case .failure(let error):
-//                    if response1.response?.statusCode == 401 {
-//                        let src = self.storyboard?.instantiateViewController(withIdentifier: "LoginViewController") as! ViewController
-//                        self.navigationController?.pushViewController(src, animated: true)
-//                        break
-//                    } else {
-//
-//                        print("Error: \(response1.response?.statusCode ?? 000000)")
-//                        print("Error: \(error)")
-//                    }
-//                    self.hideActivity()
-//                }
-//            }
-//    }
-    
-    
-//    func getLatestWorkerRouteLocationList() {
-//        let token = UserDefaults.standard.string(forKey: "accessToken") ?? ""
-//        let formatter = DateFormatter()
-//        formatter.dateFormat = "yyyy-MM-dd"
-//        
-//        for iday in dateYMD {
-//            let dateString: String = formatter.string(from: iday)
-//            let url: String = "https://\(companyCode).kiiapps.com/am/exapi/vrp/tenants/\(tenantId)/latest_route/worker_users/\(userId)?workDate=\(dateString)"
-//            AF.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default ,headers: self.makeHeaders(token: token)).validate(statusCode: (200...299))
-//                .responseDecodable(of: GetLatestWorkerRouteLocationListInfo.self) { response in
-//                    self.t += 1
-//                    switch response.result {
-//                        
-//                    case .success(_):
-//                        let countObject = response.value?.locations?.count
-//                        let locations1: [LocationElement] = response.value?.locations ?? []
-//                        if countObject != 0 {
-//                            var arrLocationValue: [Location] = []
-//                            for ilocationValue in locations1 where ilocationValue.location?.assetID != nil {
-//                                self.numberAssetIDOf7Date += 1
-//                            }
-//                            for itemObject in locations1 {
-//                                arrLocationValue.append(Location.init(elem: itemObject, asset: nil))
-//                            }
-//                            for iLocationValue in arrLocationValue {
-//                                if let  assetID = iLocationValue.elem?.location?.assetID {
-//                                    self.getGetAsset(forAsset: assetID) { iasset in
-//                                        iLocationValue.asset = iasset
-//                                    }
-//                                } else { print("No assetID -> Supplier") }
-//                            }
-//                            self.dicData[iday] = arrLocationValue
-//                        } else {
-//                            print(response.response?.statusCode as Any)
-//                            print("\(url) =>> Array Empty, No Object ")
-//                        }
-//                        
-//                    case .failure(let error):
-//                        print("Error: \(response.response?.statusCode ?? 000000)")
-//                        print("Error: \(error)")
-//                    }
-//                }
-//        }
-//        if self.t == dateYMD.count {
-//            self.numberAssetIDOf7Date += numberAssetIDOf7Date
-//        }
-//        
-//        
-//    }
-    
-//    func getGetAsset(forAsset iassetID: String, completion: @escaping ((GetAsset?) -> Void)) {
-//        let token = UserDefaults.standard.string(forKey: "accessToken") ?? ""
-//        let urlGetAsset = "https://\(companyCode).kiiapps.com/am/api/assets/\(iassetID)"
-//        AF.request(urlGetAsset, method: .get, parameters: nil, headers: self.makeHeaders(token: token))
-//            .responseDecodable(of: GetAsset.self) { response1 in
-//                
-//                self.numberOfCallsToGetAsset += 1
-//                switch response1.result {
-//                case .success( let value):
-//                    completion(value)
-//                case .failure(let error):
-//                    print("\(error)")
-//                    completion(nil)
-//                }
-//                
-//                if self.numberAssetIDOf7Date == self.numberOfCallsToGetAsset {
-//                    print(self.numberAssetIDOf7Date)
-//                    print(self.numberOfCallsToGetAsset)
-//                    self.hideActivity()
-//                    self.reDrawMarkers()
-//                }
-//            }
-//    }
-    
-    
     
     //MARK: - call API after 4 hour
-//    func getWorkerVehicleList() {
-//        let token = UserDefaults.standard.string(forKey: "accessToken") ?? ""
-//        let url = "https://\(companyCode).kiiapps.com/am/exapi/vrp/tenants/\(tenantId)/worker-vehicles"
-//        AF.request(url, method: .get, encoding: JSONEncoding.default, headers: self.makeHeaders(token: token)) .validate(statusCode: (200...299))
-//            .responseDecodable(of: WorkerVehicleList.self) { response in
-//                switch response.result {
-//                case .success(let value):
-//                    if let areaID = value.workerVehicles?.first?.areaID {
-//                        UserDefaults.standard.set(areaID, forKey: "AreaID")
-//                    }
-//                    self.getRouteList()
-//                case .failure(let error):
-//                    print(error)
-//                }
-//            }
-//    }
-//
-//    func getRouteList() {
-//        let areaID = UserDefaults.standard.string(forKey: "AreaID") ?? ""
-//        let token = UserDefaults.standard.string(forKey: "accessToken") ?? ""
-//        let url = "https://\(companyCode).kiiapps.com/am/exapi/vrp/tenants/\(tenantId)/routes?zoneID=&areaCriteria=\(areaID)&pageSize=&pageToken="
-//        AF.request(url, method: .get, parameters: nil, headers: self.makeHeaders(token: token))
-//            .responseDecodable(of: GetRouteList.self) { response1 in
-//                switch response1.result {
-//                case .success(let value):
-//                    print(value)
-//                case .failure(let error):
-//                    print(error)
-//                }
-//            }
-//    }
+    //    func getWorkerVehicleList() {
+    //        let token = UserDefaults.standard.string(forKey: "accessToken") ?? ""
+    //        let url = "https://\(companyCode).kiiapps.com/am/exapi/vrp/tenants/\(tenantId)/worker-vehicles"
+    //        AF.request(url, method: .get, encoding: JSONEncoding.default, headers: self.makeHeaders(token: token)) .validate(statusCode: (200...299))
+    //            .responseDecodable(of: WorkerVehicleList.self) { response in
+    //                switch response.result {
+    //                case .success(let value):
+    //                    if let areaID = value.workerVehicles?.first?.areaID {
+    //                        UserDefaults.standard.set(areaID, forKey: "AreaID")
+    //                    }
+    //                    self.getRouteList()
+    //                case .failure(let error):
+    //                    print(error)
+    //                }
+    //            }
+    //    }
+    //
+    //    func getRouteList() {
+    //        let areaID = UserDefaults.standard.string(forKey: "AreaID") ?? ""
+    //        let token = UserDefaults.standard.string(forKey: "accessToken") ?? ""
+    //        let url = "https://\(companyCode).kiiapps.com/am/exapi/vrp/tenants/\(tenantId)/routes?zoneID=&areaCriteria=\(areaID)&pageSize=&pageToken="
+    //        AF.request(url, method: .get, parameters: nil, headers: self.makeHeaders(token: token))
+    //            .responseDecodable(of: GetRouteList.self) { response1 in
+    //                switch response1.result {
+    //                case .success(let value):
+    //                    print(value)
+    //                case .failure(let error):
+    //                    print(error)
+    //                }
+    //            }
+    //    }
     
-//    func getWorkerRouteLocationList() {
-//        let token = UserDefaults.standard.string(forKey: "accessToken") ?? ""
-//        let url = "https://\(companyCode).kiiapps.com/am/exapi/vrp/tenants/{{tenantID}}/routes/{{routeID}}/workers/{{workerRouteID}}"
-//        AF.request(url, method: .get, parameters: nil, headers: self.makeHeaders(token: token))
-//            .responseDecodable(of: GetWorkerRouteLocationList.self) { response2 in
-//                switch response2.result {
-//                case .success(let value):
-//                    print(value)
-//                case .failure(let error):
-//                    print(error)
-//                }
-//            }
-//    }
+    //    func getWorkerRouteLocationList() {
+    //        let token = UserDefaults.standard.string(forKey: "accessToken") ?? ""
+    //        let url = "https://\(companyCode).kiiapps.com/am/exapi/vrp/tenants/{{tenantID}}/routes/{{routeID}}/workers/{{workerRouteID}}"
+    //        AF.request(url, method: .get, parameters: nil, headers: self.makeHeaders(token: token))
+    //            .responseDecodable(of: GetWorkerRouteLocationList.self) { response2 in
+    //                switch response2.result {
+    //                case .success(let value):
+    //                    print(value)
+    //                case .failure(let error):
+    //                    print(error)
+    //                }
+    //            }
+    //    }
     
     
     //MARK: -
@@ -367,6 +312,7 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
             }
             return indxes.count
         } else if pickerView == pickerDate {
+            
             return dateYMD.count
         }
         return 0
@@ -400,7 +346,11 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         self.indxes = []
         var locationsByDriver: [Int: [Location]] = [:]
         var elemLocationADay = [Location]()
+        
         var dataOneDate: [Location] = dicData[date] ?? []
+        print(dicData)
+        print(dataOneDate)
+        
         
         if dataOneDate.count > 0 && dataOneDate[0].type == .supplier && dataOneDate[0].elem?.locationOrder == 1 {
             dataOneDate.remove(at: 0)
@@ -694,5 +644,14 @@ extension DeliveryListController: MKMapViewDelegate, ShowIndexPageDelegateProtoc
 extension DeliveryListController: PassScrollView {
     func passScrollView(scrollView: UIScrollView) {
         fpc.track(scrollView: scrollView)
+    }
+}
+
+extension Date {
+    public var removeTimeStamp : Date? {
+        guard let date = Calendar.current.date(from: Calendar.current.dateComponents([.year, .month, .day], from: self)) else {
+            return nil
+        }
+        return date
     }
 }

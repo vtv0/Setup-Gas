@@ -51,7 +51,7 @@ class CustomerLocationController: UIViewController, MKMapViewDelegate, PassInfoO
         addAnnotation()
     }
    
-    // MARK: Draw position in map
+    // MARK: -Draw position in map
     func passCoordinateOfCustomer(coordinateCustomer: [Double]) {
         UserDefaults.standard.removeObject(forKey: "coordinateCustomer")
         UserDefaults.standard.set(coordinateCustomer, forKey: "coordinateCustomer")
@@ -109,9 +109,9 @@ class CustomerLocationController: UIViewController, MKMapViewDelegate, PassInfoO
                 
                 print(response1.response?.statusCode ?? 0)
                 switch response1.result {
-                case .success( let value):
+                case .success( let _):
                     
-                    print("value: \(value)")
+                 
                     let FloatingPanel = self.storyboard?.instantiateViewController(withIdentifier: "EditViewController") as! EditViewController
                     self.navigationController?.setViewControllers([FloatingPanel], animated: true)
                     self.hideActivity()
