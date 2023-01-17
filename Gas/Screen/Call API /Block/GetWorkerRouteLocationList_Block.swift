@@ -79,11 +79,11 @@ class GetWorkerRouteLocationList_Block {
                             }
                             for iLocationValue in arrLocationValue {
                                 if let assetID = iLocationValue.elem?.location?.assetID {
-                                    DispatchGroup.enter()
-                                    
+                                    let group = DispatchGroup()
+                                    group.enter()
                                     GetAsset_Block().getGetAsset_Block(forAsset: assetID) { iasset in
                                         iLocationValue.asset = iasset
-                                        
+                                        group.leave()
                                     }
                                 } else { print("No assetID -> Supplier") }
                             }
