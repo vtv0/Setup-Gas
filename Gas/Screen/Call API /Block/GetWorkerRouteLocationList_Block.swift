@@ -16,7 +16,7 @@ class GetWorkerRouteLocationList_Block {
     var dicData: [Date: [Location]] = [:]
     let url: String? = nil
     let numberAssetIDOf7Date = 0
-
+  //  let group = DispatchGroup()
     
     func sevenDay() {
         let anchor = Date()
@@ -37,6 +37,7 @@ class GetWorkerRouteLocationList_Block {
         return HTTPHeaders(headers)
     }
     
+    
     func getWorkerRouteLocationList_Block(tenantId: Int, userId: Int, completion: @escaping ((Dictionary<Date, [Location]>?) -> Void)) {
         sevenDay()
         var t = 0
@@ -47,13 +48,6 @@ class GetWorkerRouteLocationList_Block {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
         
-     
-        
-        print(companyCode)
-        print(tenantId)
-        print(userId)
-        print(token)
-      //  print(dateYMD)
         
         for iday in dateYMD {
             let dateString: String = formatter.string(from: iday)
@@ -62,8 +56,6 @@ class GetWorkerRouteLocationList_Block {
             
                 .responseDecodable(of: GetLatestWorkerRouteLocationListInfo.self) { response in
                     t += 1
-                    
-                    print(url)
                     switch response.result {
                     case .success(let data):
                         
@@ -72,43 +64,41 @@ class GetWorkerRouteLocationList_Block {
                         if countObject != 0 {
                             var arrLocationValue: [Location] = []
                             for ilocationValue in locations1 where ilocationValue.location?.assetID != nil {
-                                //                                                                self.numberAssetIDOf7Date += 1
+                                // self.numberAssetIDOf7Date += 1
                             }
                             for itemObject in locations1 {
                                 arrLocationValue.append(Location.init(elem: itemObject, asset: nil))
                             }
+                            //    self.group.enter()
                             for iLocationValue in arrLocationValue {
                                 if let assetID = iLocationValue.elem?.location?.assetID {
-                                    let group = DispatchGroup()
-                                    group.enter()
+                                    
+                                
                                     GetAsset_Block().getGetAsset_Block(forAsset: assetID) { iasset in
                                         iLocationValue.asset = iasset
-                                        group.leave()
+                                        //    print("aaAA:")
+                                     
                                     }
                                 } else { print("No assetID -> Supplier") }
                             }
+                             // self.group.leave()
+                            
+                            
+                           // self.group.enter()
                             self.dicData[iday] = arrLocationValue
+                           //     print("iiii")
+                          //  self.group.leave()
                             
                         } else {
                             print(response.response?.statusCode as Any)
                             print("\(url) =>> Array Empty, No Object ")
                         }
                         
-                        
-                        
-                        if t == self.dateYMD.count {
-                            //  self.numberAssetIDOf7Date += numberAssetIDOf7Date
-                            for i in self.dicData {
-                                print("\(i.key) --> \(i.value) ")
-                                
-//                                for ivalue in i.value {
-//                                    if ivalue.asset?.properties?.values.customer_name != nil {
-//                                        print("ten: \(ivalue.asset?.properties?.values.customer_name)")
-//                                    }
-//                                }
-                            }
+                        //self.group.notify(queue: .main) {
                             completion(self.dicData)
-                        }
+                        //    print("Done")
+                       // }
+                        
                     case .failure(let error):
                         print("Error: \(response.response?.statusCode ?? 000000)")
                         print("Error: \(error)")

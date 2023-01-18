@@ -33,12 +33,11 @@ class PostGetToken_Block {
                     print(response.result)
                     let token = response.value?.access_token ?? ""
                     
-                    if let httpURLResponse = response.response {
+                    if let _ = response.response {
                         UserDefaults.standard.set(username, forKey: "userName")
                         UserDefaults.standard.set(pass, forKey: "pass")
                         UserDefaults.standard.set(companyCode, forKey: "companyCode")
                         //                        UserDefaults.standard.set(token, forKey: "accessToken")
-                        print(httpURLResponse)
                         completion(token, PostGetToken_Block.CaseError.ok)
                     }
                     

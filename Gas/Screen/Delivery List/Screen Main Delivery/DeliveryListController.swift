@@ -103,12 +103,27 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         self.sevenDay()
         //MARK: - Use Block
         showActivity()
-        callAPI_Block_Delivery()
         
+        let dispatchGroup = DispatchGroup()
+        dispatchGroup.enter()
+        callAPI_Block_Delivery()
+        dispatchGroup.leave()
         
         //MARK: - Use ASYNC AWAIT
         
         //        getWorkerVehicleList()
+        
+//        dispatchGroup.enter()
+
+        
+        
+        
+        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
+        let userCoordinate = CLLocationCoordinate2D(latitude: 35.73774428640241, longitude: 139.6194163709879)
+        let eyeCoordinate = CLLocationCoordinate2D(latitude: 35.73774428640241, longitude: 139.6194163709879)
+        let mapCamera = MKMapCamera(lookingAtCenter: userCoordinate, fromEyeCoordinate: eyeCoordinate, eyeAltitude: 1000000.0)
+        mapView.setCamera(mapCamera, animated: false)
+//        dispatchGroup.leave()
     }
     
     func callAPI_Async_Await_Delivery() {
@@ -153,22 +168,48 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         
     }
     
+    //    func runDispatchGroup() {
+    //        let dispatchGroup = DispatchGroup()
+    //        dispatchGroup.enter()
+    //                for item in 1...10 {
+    //                    print("Load Data \(item)")
+    //                }
+    //                dispatchGroup.leave()
+    //
+    //
+    //                dispatchGroup.enter()
+    //        for item in 1...55 {
+    //            print("lllllllll:: \(item)")
+    //        }
+    //                print("Execute Task 2")
+    //                dispatchGroup.leave()
+    //
+    //                dispatchGroup.notify(queue: .main) {
+    //                    print("Done")
+    //                }
+    //    }
+    
     
     func callAPI_Block_Delivery() {
+        //        let dispatchGroup = DispatchGroup()
+        
         GetMe_Block().getMe_Block(commpanyCode: "", acccessToken: "") { [self] dataID, detailError  in
             
             print(dataID)
             print(detailError)
-            
+            //            dispatchGroup.enter()
             if !dataID.isEmpty {
+                
                 GetWorkerRouteLocationList_Block().getWorkerRouteLocationList_Block(tenantId: 0, userId: 0) { [self] dic in
+                    
+                    
+                    
                     
                     GetAsset_Block().getGetAsset_Block(forAsset: "") { [self] info in
                         dicData = dic ?? [:]
                         
                         fpc = FloatingPanelController(delegate: self)
                         fpc.layout = MyFloatingPanelLayout()
-                        
                         mapView.delegate = self
                         
                         pickerStatus.dataSource = self
@@ -180,12 +221,15 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
                         pickerDate.dataSource = self
                         pickerDate.delegate = self
                         
-                        reDrawMarkers()
                         hideActivity()
+                        reDrawMarkers()
+                        
                     }
                     
                 }
             }
+            
+            
             
             let err = detailError
             switch err {
@@ -204,11 +248,7 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
                 hideActivity()
             }
             
-            navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
-            let userCoordinate = CLLocationCoordinate2D(latitude: 35.73774428640241, longitude: 139.6194163709879)
-            let eyeCoordinate = CLLocationCoordinate2D(latitude: 35.73774428640241, longitude: 139.6194163709879)
-            let mapCamera = MKMapCamera(lookingAtCenter: userCoordinate, fromEyeCoordinate: eyeCoordinate, eyeAltitude: 1000000.0)
-            mapView.setCamera(mapCamera, animated: false)
+            
             
         }
         
@@ -538,7 +578,6 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
 
 
 extension DeliveryListController: MKMapViewDelegate, ShowIndexPageDelegateProtocol {
-    
     func passIndexPVC(currentIndexPageVC: Int) {
         passIndexSelectedMarker = currentIndexPageVC
         // remove anotations
@@ -559,19 +598,12 @@ extension DeliveryListController: MKMapViewDelegate, ShowIndexPageDelegateProtoc
         }
     }
     
-    
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-        
         guard let annotation = annotation as? CustomPin else { return nil }
-        
-        print("LocationOrder: \(annotation.title)")
-        
         let identifier = "Annotation"
         var view: MyPinView
-        
         if let dequeuedView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier) as? MyPinView {
             dequeuedView.annotation = annotation
-            
             if  arrLocationOrder[passIndexSelectedMarker] == annotation.title {
                 dequeuedView.lblView.text = "\(annotation.title - 1)"
                 dequeuedView.image = UIImage(named: "marker_yellow")
@@ -584,15 +616,11 @@ extension DeliveryListController: MKMapViewDelegate, ShowIndexPageDelegateProtoc
             }
             dequeuedView.reloadInputViews()
             view = dequeuedView
-            
         } else {
-            
             view = MyPinView(annotation: annotation, reuseIdentifier: identifier)
             var arrTitle = [Int]()
             arrTitle.append(annotation.title)
-            
             if arrLocationOrder[0] == arrTitle.sorted().first {
-                
                 view.lblView.text = "\(annotation.title - 1)"
                 view.zPriority = MKAnnotationViewZPriority.max
                 view.image = UIImage(named: "marker_yellow")
@@ -609,7 +637,6 @@ extension DeliveryListController: MKMapViewDelegate, ShowIndexPageDelegateProtoc
     
     // selected marker on MKMapView
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
-        
         if let anno = view.annotation as? CustomPin {
             //lay index trong mang
             let clickIndexMarker = anno.title
@@ -621,12 +648,10 @@ extension DeliveryListController: MKMapViewDelegate, ShowIndexPageDelegateProtoc
             
             // delegate Protocol
             delegateGetIndex?.getIndexMarker(indexDidSelected: passIndexSelectedMarker)
-            
             // remove marker
             mapView.removeAnnotations(mapView.annotations)
             if dataDidFilter.count == 0 {
                 self.showAlert(message: "Không có đơn hàng nào!")
-                
             } else {
                 for picker in dataDidFilter {
                     if let lat = picker.elem?.latitude, let long = picker.elem?.longitude, let locationOrder = picker.elem?.locationOrder {
@@ -639,7 +664,6 @@ extension DeliveryListController: MKMapViewDelegate, ShowIndexPageDelegateProtoc
     }
     
 }
-
 
 extension DeliveryListController: PassScrollView {
     func passScrollView(scrollView: UIScrollView) {

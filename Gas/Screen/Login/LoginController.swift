@@ -117,7 +117,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
             txtcompanyCode.text = showcompanyCode
             
         } else {
-            btnLogin.setImage(UIImage(named: "checkmarkEmpty"), for: .normal)
+            btnSaveAccount.setImage(UIImage(named: "checkmarkEmpty"), for: .normal)
         }
         
         imgIcon.image = UIImage(named:"Icon-1024")
