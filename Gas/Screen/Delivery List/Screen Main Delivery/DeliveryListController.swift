@@ -104,26 +104,19 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         //MARK: - Use Block
         showActivity()
         
-        let dispatchGroup = DispatchGroup()
-        dispatchGroup.enter()
         callAPI_Block_Delivery()
-        dispatchGroup.leave()
+        
         
         //MARK: - Use ASYNC AWAIT
         
         //        getWorkerVehicleList()
         
-//        dispatchGroup.enter()
-
         
         
         
-        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
-        let userCoordinate = CLLocationCoordinate2D(latitude: 35.73774428640241, longitude: 139.6194163709879)
-        let eyeCoordinate = CLLocationCoordinate2D(latitude: 35.73774428640241, longitude: 139.6194163709879)
-        let mapCamera = MKMapCamera(lookingAtCenter: userCoordinate, fromEyeCoordinate: eyeCoordinate, eyeAltitude: 1000000.0)
-        mapView.setCamera(mapCamera, animated: false)
-//        dispatchGroup.leave()
+        
+        
+        
     }
     
     func callAPI_Async_Await_Delivery() {
@@ -168,45 +161,20 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         
     }
     
-    //    func runDispatchGroup() {
-    //        let dispatchGroup = DispatchGroup()
-    //        dispatchGroup.enter()
-    //                for item in 1...10 {
-    //                    print("Load Data \(item)")
-    //                }
-    //                dispatchGroup.leave()
-    //
-    //
-    //                dispatchGroup.enter()
-    //        for item in 1...55 {
-    //            print("lllllllll:: \(item)")
-    //        }
-    //                print("Execute Task 2")
-    //                dispatchGroup.leave()
-    //
-    //                dispatchGroup.notify(queue: .main) {
-    //                    print("Done")
-    //                }
-    //    }
-    
     
     func callAPI_Block_Delivery() {
-        //        let dispatchGroup = DispatchGroup()
+          let dispatchGroup = DispatchGroup()
         
         GetMe_Block().getMe_Block(commpanyCode: "", acccessToken: "") { [self] dataID, detailError  in
             
-            print(dataID)
-            print(detailError)
-            //            dispatchGroup.enter()
+            //     dispatchGroup.enter()
             if !dataID.isEmpty {
                 
                 GetWorkerRouteLocationList_Block().getWorkerRouteLocationList_Block(tenantId: 0, userId: 0) { [self] dic in
                     
-                    
-                    
-                    
                     GetAsset_Block().getGetAsset_Block(forAsset: "") { [self] info in
-                        dicData = dic ?? [:]
+                       
+                        dicData = dic ?? [:]                        
                         
                         fpc = FloatingPanelController(delegate: self)
                         fpc.layout = MyFloatingPanelLayout()
@@ -221,14 +189,17 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
                         pickerDate.dataSource = self
                         pickerDate.delegate = self
                         
-                        hideActivity()
-                        reDrawMarkers()
                         
+                        
+                        dispatchGroup.notify(queue: .main) {
+                            self.hideActivity()
+                            self.reDrawMarkers()
+                        }
                     }
                     
                 }
             }
-            
+            //     dispatchGroup.leave()
             
             
             let err = detailError
@@ -251,6 +222,13 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
             
             
         }
+        
+        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
+        let userCoordinate = CLLocationCoordinate2D(latitude: 35.73774428640241, longitude: 139.6194163709879)
+        let eyeCoordinate = CLLocationCoordinate2D(latitude: 35.73774428640241, longitude: 139.6194163709879)
+        let mapCamera = MKMapCamera(lookingAtCenter: userCoordinate, fromEyeCoordinate: eyeCoordinate, eyeAltitude: 1000000.0)
+        mapView.setCamera(mapCamera, animated: false)
+        
         
     }
     
@@ -388,9 +366,6 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         var elemLocationADay = [Location]()
         
         var dataOneDate: [Location] = dicData[date] ?? []
-        print(dicData)
-        print(dataOneDate)
-        
         
         if dataOneDate.count > 0 && dataOneDate[0].type == .supplier && dataOneDate[0].elem?.locationOrder == 1 {
             dataOneDate.remove(at: 0)
@@ -651,7 +626,7 @@ extension DeliveryListController: MKMapViewDelegate, ShowIndexPageDelegateProtoc
             // remove marker
             mapView.removeAnnotations(mapView.annotations)
             if dataDidFilter.count == 0 {
-                self.showAlert(message: "Không có đơn hàng nào!")
+//                self.showAlert(message: "Không có đơn hàng nào!")
             } else {
                 for picker in dataDidFilter {
                     if let lat = picker.elem?.latitude, let long = picker.elem?.longitude, let locationOrder = picker.elem?.locationOrder {

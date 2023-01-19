@@ -70,6 +70,8 @@ class ViewController: UIViewController, UITextFieldDelegate {
 //    }
     
     func callAPI_Block() {
+ //       let dispatchGroup = DispatchGroup()
+        
         PostGetToken_Block().postGetToken_Block(username: txtUserName.text!, pass: txtPass.text!, companyCode: txtcompanyCode.text!) { [self] token, error  in
             if token != nil {
                 UserDefaults.standard.set(token, forKey: "accessToken")

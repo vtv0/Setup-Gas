@@ -15,8 +15,11 @@ class GetWorkerRouteLocationList_Block {
     var dateYMD: [Date] = []
     var dicData: [Date: [Location]] = [:]
     let url: String? = nil
-    let numberAssetIDOf7Date = 0
-  //  let group = DispatchGroup()
+    
+    let group = DispatchGroup()
+    
+    
+    
     
     func sevenDay() {
         let anchor = Date()
@@ -40,7 +43,9 @@ class GetWorkerRouteLocationList_Block {
     
     func getWorkerRouteLocationList_Block(tenantId: Int, userId: Int, completion: @escaping ((Dictionary<Date, [Location]>?) -> Void)) {
         sevenDay()
-        var t = 0
+        var tDay: Int = 0
+        var numberCallGetAsset: Int = 0
+        var numberHasAssetID : Int = 0
         var companyCode = UserDefaults.standard.string(forKey: "companyCode") ?? ""
         let token = UserDefaults.standard.string(forKey: "accessToken") ?? ""
         let tenantId = UserDefaults.standard.string(forKey: "tenantId") ?? ""
@@ -55,57 +60,65 @@ class GetWorkerRouteLocationList_Block {
             AF.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default ,headers: self.makeHeaders(token: token)).validate(statusCode: (200...299))
             
                 .responseDecodable(of: GetLatestWorkerRouteLocationListInfo.self) { response in
-                    t += 1
+                    tDay += 1
                     switch response.result {
                     case .success(let data):
-                        
+                        let dispatchGroup = DispatchGroup()
                         let countObject = response.value?.locations?.count
                         let locations1: [LocationElement] = data.locations ?? []
                         if countObject != 0 {
+                            
                             var arrLocationValue: [Location] = []
                             for ilocationValue in locations1 where ilocationValue.location?.assetID != nil {
-                                // self.numberAssetIDOf7Date += 1
+                                numberHasAssetID += 1
                             }
+                            
                             for itemObject in locations1 {
                                 arrLocationValue.append(Location.init(elem: itemObject, asset: nil))
                             }
-                            //    self.group.enter()
+                            
                             for iLocationValue in arrLocationValue {
                                 if let assetID = iLocationValue.elem?.location?.assetID {
-                                    
-                                
+                                    numberCallGetAsset += 1
+                                    dispatchGroup.enter()
                                     GetAsset_Block().getGetAsset_Block(forAsset: assetID) { iasset in
+                                        
                                         iLocationValue.asset = iasset
-                                        //    print("aaAA:")
-                                     
+                                        dispatchGroup.leave()
                                     }
+                                    
                                 } else { print("No assetID -> Supplier") }
                             }
-                             // self.group.leave()
+                           
                             
-                            
-                           // self.group.enter()
                             self.dicData[iday] = arrLocationValue
-                           //     print("iiii")
-                          //  self.group.leave()
+                            
+                            if tDay == self.dateYMD.count {
+                                dispatchGroup.notify(queue: .main) {
+                                    completion(self.dicData)
+                                }
+                            }
                             
                         } else {
                             print(response.response?.statusCode as Any)
                             print("\(url) =>> Array Empty, No Object ")
                         }
                         
-                        //self.group.notify(queue: .main) {
-                            completion(self.dicData)
-                        //    print("Done")
-                       // }
+                        //                        dispatchGroup.wait()
+                        //                        completion(self.dicData)
+                        
+                        
                         
                     case .failure(let error):
                         print("Error: \(response.response?.statusCode ?? 000000)")
                         print("Error: \(error)")
                         completion(nil)
                     }
+                    
+                    
                 }
         }
+        
         
         
     }

@@ -41,10 +41,6 @@ class GetMe_Block {
                     
                     let tenantId = getMeInfo.tenants[0].id
                     let userId = getMeInfo.id
-                    print(tenantId)
-                    print(userId)
-                    
-                    
                     arrID.append(tenantId)
                     arrID.append(userId)
                   //  UserDefaults.standard.set(getMeInfo.tenants[0].id, forKey: "tenantId")
@@ -52,13 +48,10 @@ class GetMe_Block {
                     completion(arrID, GetMe_Block.CaseError.ok)
                     
                 case .failure(let detailError):
-                    
                     print("Failed with error: \(detailError)")
-                    // self.showAlert(message:"lỗi xảy ra")
                     completion([], GetMe_Block.CaseError.remain)
                 }
             }
-        // self.hideActivity()
         
     }
     
