@@ -104,103 +104,102 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         //MARK: - Use Block
         showActivity()
         
-        callAPI_Block_Delivery()
+        //        callAPI_Block_Delivery()
         
         
         //MARK: - Use ASYNC AWAIT
         
-        //        getWorkerVehicleList()
-        
-        
-        
-        
-        
-        
-        
+        callAPI_Async_Await_Delivery()
     }
     
     func callAPI_Async_Await_Delivery() {
-        //        GetMe_Async_Await.getMe_Async_Await() { infomation in
-        //            print(infomation)
-        //        }
         
-        //    func getMe_Async_Await() {
-        //        Task {
-        //            do {
-        //                let url1 = URL(string: "https://\(companyCode).kiiapps.com/am/api/me" ?? "")
-        //                let result = try await fetchAPI(url: url1 )
-        //            } catch {
-        //                printContent(error.localized)
-        //            }
-        //        }
-        //    }
-        
-        
-        
-        
-        //        fpc = FloatingPanelController(delegate: self)
-        //        fpc.layout = MyFloatingPanelLayout()
-        //
-        //        mapView.delegate = self
-        //
-        //        pickerStatus.dataSource = self
-        //        pickerStatus.delegate = self
-        //
-        //        pickerDriver.dataSource = self
-        //        pickerDriver.delegate = self
-        //
-        //        pickerDate.dataSource = self
-        //        pickerDate.delegate = self
-        //
-        //        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
-        //        let userCoordinate = CLLocationCoordinate2D(latitude: 35.73774428640241, longitude: 139.6194163709879)
-        //        let eyeCoordinate = CLLocationCoordinate2D(latitude: 35.73774428640241, longitude: 139.6194163709879)
-        //        let mapCamera = MKMapCamera(lookingAtCenter: userCoordinate, fromEyeCoordinate: eyeCoordinate, eyeAltitude: 1000000.0)
-        //
-        //        mapView.setCamera(mapCamera, animated: false)
-        
+        Task {
+            let arrId = try await GetMe_Async_Await().getMe_Async_Await()
+            if !arrId.isEmpty {
+                
+                let dicData1 = try await GetWorkerRouteLocationList_Async_Await().getWorkerRouteLocationList_Async_Await()
+                self.hideActivity()
+                print(dicData1)
+                dicData = dicData1
+                
+                fpc = FloatingPanelController(delegate: self)
+                fpc.layout = MyFloatingPanelLayout()
+                
+                mapView.delegate = self
+                
+                pickerStatus.dataSource = self
+                pickerStatus.delegate = self
+                
+                pickerDriver.dataSource = self
+                pickerDriver.delegate = self
+                
+                pickerDate.dataSource = self
+                pickerDate.delegate = self
+             //   self.reDrawMarkers()
+            }
+            
+            
+            navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
+            let userCoordinate = CLLocationCoordinate2D(latitude: 35.73774428640241, longitude: 139.6194163709879)
+            let eyeCoordinate = CLLocationCoordinate2D(latitude: 35.73774428640241, longitude: 139.6194163709879)
+            let mapCamera = MKMapCamera(lookingAtCenter: userCoordinate, fromEyeCoordinate: eyeCoordinate, eyeAltitude: 1000000.0)
+            
+            mapView.setCamera(mapCamera, animated: false)
+        }
     }
     
-    
     func callAPI_Block_Delivery() {
-          let dispatchGroup = DispatchGroup()
+        let dispatchGroup = DispatchGroup()
         
         GetMe_Block().getMe_Block(commpanyCode: "", acccessToken: "") { [self] dataID, detailError  in
-            
-            //     dispatchGroup.enter()
             if !dataID.isEmpty {
                 
-                GetWorkerRouteLocationList_Block().getWorkerRouteLocationList_Block(tenantId: 0, userId: 0) { [self] dic in
-                    
-                    GetAsset_Block().getGetAsset_Block(forAsset: "") { [self] info in
-                       
-                        dicData = dic ?? [:]                        
-                        
-                        fpc = FloatingPanelController(delegate: self)
-                        fpc.layout = MyFloatingPanelLayout()
-                        mapView.delegate = self
-                        
-                        pickerStatus.dataSource = self
-                        pickerStatus.delegate = self
-                        
-                        pickerDriver.dataSource = self
-                        pickerDriver.delegate = self
-                        
-                        pickerDate.dataSource = self
-                        pickerDate.delegate = self
-                        
-                        
-                        
-                        dispatchGroup.notify(queue: .main) {
-                            self.hideActivity()
-                            self.reDrawMarkers()
+                GetWorkerRouteLocationList_Block().getWorkerRouteLocationList_Block(tenantId: 0, userId: 0) { [self] dic, err1  in
+                    if !dic.isEmpty {
+                        GetAsset_Block().getGetAsset_Block(forAsset: "") { [self] info, err2  in
+                            
+                            dicData = dic
+                            fpc = FloatingPanelController(delegate: self)
+                            fpc.layout = MyFloatingPanelLayout()
+                            mapView.delegate = self
+                            
+                            pickerStatus.dataSource = self
+                            pickerStatus.delegate = self
+                            
+                            pickerDriver.dataSource = self
+                            pickerDriver.delegate = self
+                            
+                            pickerDate.dataSource = self
+                            pickerDate.delegate = self
+                            
+                            dispatchGroup.notify(queue: .main) {
+                                self.hideActivity()
+                                self.reDrawMarkers()
+                            }
+                        }
+                    } else {
+                        let err1 = err1
+                        switch err1 {
+                        case .ok: break
+                        case .tokenOutOfDate:
+                            if let scr = storyboard?.instantiateViewController(withIdentifier: "LoginViewController") as? ViewController {
+                                navigationController?.pushViewController(scr, animated: false)
+                                hideActivity()
+                            }
+                        case .some(.remain):
+                            showAlert(message: "Có lỗi xảy ra")
+                            hideActivity()
+                            
+                        case .some(.wrong):
+                            showAlert(message: "Có lỗi xảy ra")
+                            hideActivity()
+                        case .none:
+                            break
                         }
                     }
-                    
                 }
             }
-            //     dispatchGroup.leave()
-            
             
             let err = detailError
             switch err {
@@ -218,9 +217,6 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
                 showAlert(message: "Có lỗi xảy ra")
                 hideActivity()
             }
-            
-            
-            
         }
         
         navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
@@ -228,11 +224,7 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         let eyeCoordinate = CLLocationCoordinate2D(latitude: 35.73774428640241, longitude: 139.6194163709879)
         let mapCamera = MKMapCamera(lookingAtCenter: userCoordinate, fromEyeCoordinate: eyeCoordinate, eyeAltitude: 1000000.0)
         mapView.setCamera(mapCamera, animated: false)
-        
-        
     }
-    
-    
     
     func fetchAPI<T: Decodable>(url: URL) async throws -> T {
         let data = try await URLSession.shared.data(url: url)
@@ -626,7 +618,7 @@ extension DeliveryListController: MKMapViewDelegate, ShowIndexPageDelegateProtoc
             // remove marker
             mapView.removeAnnotations(mapView.annotations)
             if dataDidFilter.count == 0 {
-//                self.showAlert(message: "Không có đơn hàng nào!")
+                //                self.showAlert(message: "Không có đơn hàng nào!")
             } else {
                 for picker in dataDidFilter {
                     if let lat = picker.elem?.latitude, let long = picker.elem?.longitude, let locationOrder = picker.elem?.locationOrder {

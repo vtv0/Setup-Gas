@@ -41,7 +41,7 @@ class GetWorkerRouteLocationList_Block {
     }
     
     
-    func getWorkerRouteLocationList_Block(tenantId: Int, userId: Int, completion: @escaping ((Dictionary<Date, [Location]>?) -> Void)) {
+    func getWorkerRouteLocationList_Block(tenantId: Int, userId: Int, completion: @escaping ((Dictionary<Date, [Location]>, (CaseError?)) -> Void)) {
         sevenDay()
         var tDay: Int = 0
         var numberCallGetAsset: Int = 0
@@ -81,7 +81,7 @@ class GetWorkerRouteLocationList_Block {
                                 if let assetID = iLocationValue.elem?.location?.assetID {
                                     numberCallGetAsset += 1
                                     dispatchGroup.enter()
-                                    GetAsset_Block().getGetAsset_Block(forAsset: assetID) { iasset in
+                                    GetAsset_Block().getGetAsset_Block(forAsset: assetID) { iasset, err2  in
                                         
                                         iLocationValue.asset = iasset
                                         dispatchGroup.leave()
@@ -95,7 +95,7 @@ class GetWorkerRouteLocationList_Block {
                             
                             if tDay == self.dateYMD.count {
                                 dispatchGroup.notify(queue: .main) {
-                                    completion(self.dicData)
+                                    completion(self.dicData, GetWorkerRouteLocationList_Block.CaseError.ok)
                                 }
                             }
                             
@@ -103,16 +103,15 @@ class GetWorkerRouteLocationList_Block {
                             print(response.response?.statusCode as Any)
                             print("\(url) =>> Array Empty, No Object ")
                         }
-                        
-                        //                        dispatchGroup.wait()
-                        //                        completion(self.dicData)
-                        
-                        
-                        
-                    case .failure(let error):
+                    case .failure(_):
                         print("Error: \(response.response?.statusCode ?? 000000)")
-                        print("Error: \(error)")
-                        completion(nil)
+                        if response.response?.statusCode == 401 {
+                            completion([:], CaseError.tokenOutOfDate)
+                        } else if response.response?.statusCode == 204 {
+                            completion([:], CaseError.wrong)
+                        } else {
+                            completion([:], CaseError.remain)
+                        }
                     }
                     
                     
@@ -123,43 +122,11 @@ class GetWorkerRouteLocationList_Block {
         
     }
     
-    
-    
-    //    func fetchAPI<T: Decodable>(url: URL, completion: @escaping (Result<T, Error>) -> ()) {
-    //        URLSession.shared.dataTask(with: url) { data, response, error in
-    //            if let error = error {
-    //                completion(.failure(error))
-    //                return
-    //            }
-    //
-    //            guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200, let data = data else {
-    //                completion(.failure(APIError.error("Bad HTTP Response")))
-    //                return
-    //            }
-    //
-    //            do {
-    //                let decodedData = try JSONDecoder().decode(T.self, from: data)
-    //                completion(.success(decodedData))
-    //            } catch {
-    //                completion(.failure(error))
-    //            }
-    //        }
-    //        .resume()
-    //    }
-    //
-    //    enum APIError: Error {
-    //        case error(String)
-    //
-    //        var localizedDescription: String {
-    //            switch self {
-    //            case .error(let string):
-    //                return string
-    //
-    //            }
-    //        }
-    //    }
-    
-    
-    
+    enum CaseError: String {
+        case ok
+        case tokenOutOfDate
+        case wrong
+        case remain
+    }
 }
 

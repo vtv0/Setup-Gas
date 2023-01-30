@@ -7,9 +7,9 @@
 
 import UIKit
 import Alamofire
+import AlamofireImage
 
 class PostGetToken_Async_Await {
-   
     
     enum CaseError: String {
         case ok
@@ -18,8 +18,7 @@ class PostGetToken_Async_Await {
         case remain
     }
     
-    
-    func getToken_Async_Await(userName: String, pass: String, companyCode: String) async throws -> String {
+    func getToken_Async_Await(userName: String, pass: String, companyCode: String) async {
         var token: String? = ""
         let parameters: [String: Any] = ["username": userName, "password": pass, "expiresAt": Int64(Calendar.current.date(byAdding: .hour, value: 12, to: Date())!.timeIntervalSince1970 * 1000), "grant_type": "password" ]
         let url = "https://\(companyCode).kiiapps.com/am/api/oauth2/token"
@@ -27,16 +26,16 @@ class PostGetToken_Async_Await {
         AF.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default)
             .responseDecodable(of: AccountInfo.self) { response in
                 switch response.result {
+                    
                 case .success(_):
                      token = response.value?.access_token ?? ""
-
+                   // print(token)
                     if let _ = response.response {
                         UserDefaults.standard.set(userName, forKey: "userName")
                         UserDefaults.standard.set(pass, forKey: "pass")
                         UserDefaults.standard.set(companyCode, forKey: "companyCode")
                         UserDefaults.standard.set(token, forKey: "accessToken")
                     }
-
                 case .failure(let error):
                     if (response.response?.statusCode == 403) {
 //                        showAlert(message: "Sai mk (Error: 403)")
@@ -48,8 +47,8 @@ class PostGetToken_Async_Await {
                 }
             }
         
-        return token ?? ""
     }
+    
 }
 
 

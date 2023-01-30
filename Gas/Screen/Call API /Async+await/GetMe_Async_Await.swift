@@ -12,6 +12,13 @@ class GetMe_Async_Await {
     let companyCode = UserDefaults.standard.string(forKey: "companyCode") ?? ""
     
     
+    enum CaseError: Error {
+        case ok
+        case tokenOutOfDate
+        case wrongPassword
+        case remain
+    }
+    
     func makeHeaders(token: String) -> HTTPHeaders {
         var headers: [String: String] = [:]
         headers["Authorization"] = "Bearer " + token
@@ -19,25 +26,31 @@ class GetMe_Async_Await {
     }
     
     
-    func getMe_Async_Await() async throws {  // -> String
-        print(companyCode)
+    func getMe_Async_Await() async throws -> [Int] {  //
+        var arrId: [Int] = []
         let urlGetMe = "https://\(companyCode).kiiapps.com/am/api/me"
-         let token = UserDefaults.standard.string(forKey: "accessToken") ?? ""
+        let token = UserDefaults.standard.string(forKey: "accessToken") ?? ""
         
-        AF.request(urlGetMe, method: .get, parameters: nil, encoding: JSONEncoding.default,headers: self.makeHeaders(token: token))
-            .responseDecodable(of: GetMeInfo.self) { response1 in
-                switch response1.result {
-                case .success(let getMeInfo):
-                    let userID = getMeInfo.id
-                    
-                case .failure(let error):
-                    print("Failed with error: \(error)")
-                    //                    self.showAlert(message:"lỗi xảy ra")
-                    
-                }
-            }
-        //        self.hideActivity()
-//        return userId
+        try await withCheckedThrowingContinuation({ arrId1 in
+           AF.request(urlGetMe, method: .get, parameters: nil, encoding: JSONEncoding.default,headers: self.makeHeaders(token: token))
+               .responseDecodable(of: GetMeInfo.self) { response1 in
+                   switch response1.result {
+                   case .success(let getMeInfo):
+                       let tenantId = getMeInfo.tenants[0].id
+                       let userId = getMeInfo.id
+                       arrId.append(tenantId)
+                       arrId.append(userId)
+                       
+                       arrId1.resume(returning: arrId)
+                       
+                   case .failure(let error):
+                       print("Failed with error: \(error)")
+                       arrId1.resume(throwing: CaseError.remain)
+                       
+                   }
+               }
+        })
+        return arrId
     }
     
     func fetchAPI<T: Decodable>(url: URL) async throws -> T {
@@ -64,7 +77,6 @@ extension URLSession {
             }.resume()
         })
     }
-    
     enum APIError: Error {
         case error(String)
         
@@ -76,4 +88,5 @@ extension URLSession {
             }
         }
     }
+   
 }

@@ -51,27 +51,56 @@ class ViewController: UIViewController, UITextFieldDelegate {
             showActivity()
             
             //MARK: - Block
-           callAPI_Block()
+            //           callAPI_Block()
             
             //MARK: - Use ASYNC AWAIT
-//            Task {
-//                await callApi_Async_Await()
-//            }
+            Task {
+                await PostGetToken_Async_Await().getToken_Async_Await(userName: txtUserName.text!, pass: txtPass.text!, companyCode: txtcompanyCode.text!)
+                let arrId = try await GetMe_Async_Await().getMe_Async_Await()
+                print(arrId)
+                if !arrId.isEmpty {
+                    let mhDeliveryList = self.storyboard?.instantiateViewController(identifier:  "DeliveryListController") as! DeliveryListController
+                    self.navigationController?.pushViewController(mhDeliveryList, animated: true)
+                    self.hideActivity()
+                }
+//                else {
+//                    let err = arrId.isEmpty
+//                    switch err {
+//                    case .wrongPassword:
+//                        showAlert(message: "Sai thông tin tài khoản")
+//                        hideActivity()
+//
+//                    case .ok: break
+//
+//                    case .tokenOutOfDate:
+//                        let mhLogin = self.storyboard?.instantiateViewController(identifier:  "LoginViewController") as! ViewController
+//                        self.navigationController?.pushViewController(mhLogin, animated: true)
+//                        hideActivity()
+//
+//                    case .remain:
+//                        showAlert(message: "Có lỗi xảy ra")
+//                        hideActivity()
+//                    case .none:
+//                        break
+//                    }
+//
+//                }
+            }
         }
     }
     
 //    func callApi_Async_Await() async {
-//        let token = try? await PostGetToken_Async_Await().getToken_Async_Await(userName: txtUserName.text!, pass: txtPass.text!, companyCode: txtcompanyCode.text!)
-//        print(token)
-//        
-//        let arrID: [Int]? = try? await GetMe_Async_Await().getMe_Async_Await()
-////        let getMe = GetMe_Async_Await()
-////        //                await getMe.getMe_Async_Await(completion: () -> Void)
+//       // let callFunc = try?
+//        let arrId = await GetMe_Async_Await().getMe_Async_Await()
+//            print(arrId)
+//
+//        //        let arrID: [Int]? = try? await GetMe_Async_Await().getMe_Async_Await()
+//        //        let getMe = GetMe_Async_Await()
+//        //        //                await getMe.getMe_Async_Await(completion: () -> Void)
 //    }
     
     func callAPI_Block() {
- //       let dispatchGroup = DispatchGroup()
-        
+        //       let dispatchGroup = DispatchGroup()
         PostGetToken_Block().postGetToken_Block(username: txtUserName.text!, pass: txtPass.text!, companyCode: txtcompanyCode.text!) { [self] token, error  in
             if token != nil {
                 UserDefaults.standard.set(token, forKey: "accessToken")
@@ -90,16 +119,17 @@ class ViewController: UIViewController, UITextFieldDelegate {
                 case .wrongPassword:
                     showAlert(message: "Sai thông tin tài khoản")
                     hideActivity()
-                    
                 case .ok: break
-                case .tokenOutOfDate: break
+                case .tokenOutOfDate:
+                    let mhLogin = self.storyboard?.instantiateViewController(identifier:  "LoginViewController") as! ViewController
+                    self.navigationController?.pushViewController(mhLogin, animated: true)
+                    hideActivity()
                 case .remain:
                     showAlert(message: "Có lỗi xảy ra")
                     hideActivity()
                 case .none:
                     break
                 }
-                
             }
         }
     }

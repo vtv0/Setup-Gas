@@ -40,8 +40,6 @@ class PostGetToken_Block {
                         //                        UserDefaults.standard.set(token, forKey: "accessToken")
                         completion(token, PostGetToken_Block.CaseError.ok)
                     }
-                    
-                    
                 case .failure(let error):
                     if (response.response?.statusCode == 403) {
 
@@ -50,11 +48,9 @@ class PostGetToken_Block {
                     } else if let urlError = error.underlyingError as? URLError , urlError.code == .cannotFindHost {
                         
                     } else {
-                    //    PostGetToken_Block.CaseError.remain
                         completion(nil,CaseError.remain)
                     }
                     
-                    //completion(nil, PostGetToken_Block.CaseError.remain)
                 }
             }
     }

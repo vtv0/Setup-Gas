@@ -22,7 +22,7 @@ class GetAsset_Block {
         return HTTPHeaders(headers)
     }
     
-    func getGetAsset_Block(forAsset iassetID: String, completion: @escaping ((GetAsset?) -> Void)) {
+    func getGetAsset_Block(forAsset iassetID: String, completion: @escaping ((GetAsset?, (CaseError?)) -> Void)) {
         let token = UserDefaults.standard.string(forKey: "accessToken") ?? ""
         let companyCode =  UserDefaults.standard.string(forKey: "companyCode") ?? ""
         let urlGetAsset = "https://\(companyCode).kiiapps.com/am/api/assets/\(iassetID)"
@@ -31,19 +31,21 @@ class GetAsset_Block {
                 
                 switch response1.result {
                 case .success( let value):
-                    completion(value)
+                    completion(value, GetAsset_Block.CaseError.ok)
                     
                 case .failure(_):
-                    completion(nil)
+                    if response1.response?.statusCode == 401 {
+                        completion(nil, CaseError.tokenOutOfDate)
+                    } else {
+                        completion(nil, CaseError.remain)
+                    }
                 }
-                
-                //                if self.numberAssetIDOf7Date == self.numberCallGetAsset {
-                //                    print(self.numberAssetIDOf7Date)
-                //                    print(self.numberOfCallsToGetAsset)
-                //                    self.hideActivity()
-                //                    self.reDrawMarkers()
-                //                }
             }
     }
-    
+    enum CaseError: String {
+        case ok
+        case tokenOutOfDate
+
+        case remain
+    }
 }

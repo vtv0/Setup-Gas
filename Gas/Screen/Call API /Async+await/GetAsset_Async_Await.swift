@@ -36,8 +36,6 @@ class GetAsset_Async_Await {
                 case .success( let value):
                     print(value)
 //                    completion(value)
-                    
-                    
                 case .failure(let error):
                     print("\(error)")
 //                    completion(nil)
