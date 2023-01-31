@@ -49,7 +49,7 @@ class GetWorkerRouteLocationList_Async_Await {
         let tenantId = UserDefaults.standard.string(forKey: "tenantId") ?? ""
         let userId = UserDefaults.standard.string(forKey: "userId") ?? ""
         sevenDay()
-        var t = 0
+        
         let companyCode = UserDefaults.standard.string(forKey: "companyCode") ?? ""
         let token = UserDefaults.standard.string(forKey: "accessToken") ?? ""
         let formatter = DateFormatter()
@@ -61,16 +61,15 @@ class GetWorkerRouteLocationList_Async_Await {
             
                 AF.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default ,headers: self.makeHeaders(token: token)).validate(statusCode: (200...299))
                     .responseDecodable(of: GetLatestWorkerRouteLocationListInfo.self) { response in
-                        t += 1
                         switch response.result {
                         case .success(_):
                             let countObject = response.value?.locations?.count
                             let locations1: [LocationElement] = response.value?.locations ?? []
                             if countObject != 0 {
                                 var arrLocationValue: [Location] = []
-                                for ilocationValue in locations1 where ilocationValue.location?.assetID != nil {
-                                    //                                self.numberAssetIDOf7Date += 1
-                                }
+//                                for ilocationValue in locations1 where ilocationValue.location?.assetID != nil {
+//                                    //                                self.numberAssetIDOf7Date += 1
+//                                }
                                 
                                 for itemObject in locations1 {
                                     arrLocationValue.append(Location.init(elem: itemObject, asset: nil))

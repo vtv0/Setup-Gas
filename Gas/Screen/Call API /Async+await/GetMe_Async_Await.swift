@@ -31,7 +31,7 @@ class GetMe_Async_Await {
         let urlGetMe = "https://\(companyCode).kiiapps.com/am/api/me"
         let token = UserDefaults.standard.string(forKey: "accessToken") ?? ""
         
-        try await withCheckedThrowingContinuation({ arrId1 in
+      
            AF.request(urlGetMe, method: .get, parameters: nil, encoding: JSONEncoding.default,headers: self.makeHeaders(token: token))
                .responseDecodable(of: GetMeInfo.self) { response1 in
                    switch response1.result {
@@ -41,15 +41,11 @@ class GetMe_Async_Await {
                        arrId.append(tenantId)
                        arrId.append(userId)
                        
-                       arrId1.resume(returning: arrId)
-                       
                    case .failure(let error):
                        print("Failed with error: \(error)")
-                       arrId1.resume(throwing: CaseError.remain)
-                       
                    }
                }
-        })
+    
         return arrId
     }
     

@@ -53,51 +53,53 @@ class ViewController: UIViewController, UITextFieldDelegate {
             //MARK: - Block
             //           callAPI_Block()
             
+            
             //MARK: - Use ASYNC AWAIT
             Task {
-                await PostGetToken_Async_Await().getToken_Async_Await(userName: txtUserName.text!, pass: txtPass.text!, companyCode: txtcompanyCode.text!)
-                let arrId = try await GetMe_Async_Await().getMe_Async_Await()
-                print(arrId)
-                if !arrId.isEmpty {
-                    let mhDeliveryList = self.storyboard?.instantiateViewController(identifier:  "DeliveryListController") as! DeliveryListController
-                    self.navigationController?.pushViewController(mhDeliveryList, animated: true)
-                    self.hideActivity()
-                }
-//                else {
-//                    let err = arrId.isEmpty
-//                    switch err {
-//                    case .wrongPassword:
-//                        showAlert(message: "Sai thông tin tài khoản")
-//                        hideActivity()
-//
-//                    case .ok: break
-//
-//                    case .tokenOutOfDate:
-//                        let mhLogin = self.storyboard?.instantiateViewController(identifier:  "LoginViewController") as! ViewController
-//                        self.navigationController?.pushViewController(mhLogin, animated: true)
-//                        hideActivity()
-//
-//                    case .remain:
-//                        showAlert(message: "Có lỗi xảy ra")
-//                        hideActivity()
-//                    case .none:
-//                        break
-//                    }
-//
-//                }
+                await callAPI_Async_Await()
             }
         }
     }
     
-//    func callApi_Async_Await() async {
-//       // let callFunc = try?
-//        let arrId = await GetMe_Async_Await().getMe_Async_Await()
-//            print(arrId)
-//
-//        //        let arrID: [Int]? = try? await GetMe_Async_Await().getMe_Async_Await()
-//        //        let getMe = GetMe_Async_Await()
-//        //        //                await getMe.getMe_Async_Await(completion: () -> Void)
-//    }
+    func callAPI_Async_Await() async {
+        let parameters: [String: Any] = ["username": txtUserName.text ?? "", "password": txtPass.text ?? "", "expiresAt": Int64(Calendar.current.date(byAdding: .hour, value: 12, to: Date())!.timeIntervalSince1970 * 1000), "grant_type": "password"]
+        let url = "https://\(txtcompanyCode.text ?? "").kiiapps.com/am/api/oauth2/token"
+        let postGetToken = AF.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default).serializingDecodable(AccountInfo.self)
+       
+        let getTokenResponse = await postGetToken.response
+        let token = getTokenResponse.value?.access_token ?? ""
+        UserDefaults.standard.set(token, forKey: "accessToken")
+//        print(getTokenResponse.response?.statusCode)
+        switch getTokenResponse.result {
+        case .success(let value):
+            print(value)
+        case .failure(let error):
+            print(error)
+        }
+        
+        
+        
+        let urlGetMe = "https://\(txtcompanyCode.text ?? "").kiiapps.com/am/api/me"
+        let getMe = AF.request(urlGetMe, method: .get, parameters: nil, encoding: JSONEncoding.default,headers: self.makeHeaders(token: token)).serializingDecodable(GetMeInfo.self)
+        let getMeResponse = await getMe.response
+        
+        switch getMeResponse.result {
+        case .success(_):
+            let userId = getMeResponse.value?.id
+            let tenantId = getMeResponse.value?.tenants[0].id
+            
+            let mhDeliveryList = self.storyboard?.instantiateViewController(identifier:  "DeliveryListController") as! DeliveryListController
+            self.navigationController?.pushViewController(mhDeliveryList, animated: true)
+            
+        case .failure(let error):
+            print(error)
+        }
+        
+        enum CaseError: String {
+            case outOfDate
+        }
+        
+    }
     
     func callAPI_Block() {
         //       let dispatchGroup = DispatchGroup()

@@ -108,45 +108,106 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         
         
         //MARK: - Use ASYNC AWAIT
-        
-        callAPI_Async_Await_Delivery()
+        Task {
+            await callAPI_Async_Await_Delivery()
+        }
     }
     
-    func callAPI_Async_Await_Delivery() {
+    func callAPI_Async_Await_Delivery() async {
+        // Get Me
+        let token1 = UserDefaults.standard.string(forKey: "accessToken") ?? ""
+        let urlGetMe = "https://\(companyCode).kiiapps.com/am/api/me"
+        let getMe = AF.request(urlGetMe, method: .get, parameters: nil, encoding: JSONEncoding.default,headers: self.makeHeaders(token: token1)).serializingDecodable(GetMeInfo.self)
+        let response = await getMe.response
+        switch response.result {
+        case .success(let value):
+            print(value )
+        case .failure(let error):
+            print(error)
+        }
         
-        Task {
-            let arrId = try await GetMe_Async_Await().getMe_Async_Await()
-            if !arrId.isEmpty {
-                
-                let dicData1 = try await GetWorkerRouteLocationList_Async_Await().getWorkerRouteLocationList_Async_Await()
-                self.hideActivity()
-                print(dicData1)
-                dicData = dicData1
-                
-                fpc = FloatingPanelController(delegate: self)
-                fpc.layout = MyFloatingPanelLayout()
-                
-                mapView.delegate = self
-                
-                pickerStatus.dataSource = self
-                pickerStatus.delegate = self
-                
-                pickerDriver.dataSource = self
-                pickerDriver.delegate = self
-                
-                pickerDate.dataSource = self
-                pickerDate.delegate = self
-             //   self.reDrawMarkers()
+        
+        // GetLatestWorkerRouteLocationList
+        for iday in dateYMD {
+            let formatter = DateFormatter()
+            formatter.dateFormat = "yyyy-MM-dd"
+            let dateString: String = formatter.string(from: iday)
+            let url: String = "https://\(companyCode).kiiapps.com/am/exapi/vrp/tenants/\(tenantId)/latest_route/worker_users/\(userId)?workDate=\(dateString)"
+            
+            let getLatestWorkerRouteLocationList = AF.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default ,headers: self.makeHeaders(token: token1)).validate(statusCode: (200...299))
+                .serializingDecodable(GetLatestWorkerRouteLocationListInfo.self)
+            
+            let workerRouteLocationListResponse = await getLatestWorkerRouteLocationList.response
+            switch workerRouteLocationListResponse.result {
+            case .success(let value):
+                let countObject = workerRouteLocationListResponse.value?.locations?.count
+                let locations1: [LocationElement] = workerRouteLocationListResponse.value?.locations ?? []
+                if countObject != 0 {
+                    var arrLocationValue: [Location] = []
+                    for itemObject in locations1 {
+                        arrLocationValue.append(Location.init(elem: itemObject, asset: nil))
+                    }
+                    // Get Asset
+                    for iLocationValue in arrLocationValue {
+                        if let assetID = iLocationValue.elem?.location?.assetID {
+                            let urlGetAsset = "https://\(companyCode).kiiapps.com/am/api/assets/\(assetID)"
+                            
+//                            Task.init(operation: <#T##() async -> _#>)
+                            let iasset = Task {
+                                let asset = try await
+                            }
+                            
+                            
+                            
+                            let getAsset = AF.request(urlGetAsset, method: .get, parameters: nil, headers: self.makeHeaders(token: token1)).serializingDecodable(GetAsset.self)
+                            let assetResponse = await getAsset.response
+                            switch assetResponse.result {
+                            case .success(let iasset):
+                                print(iasset)
+                                iLocationValue.asset = iasset
+                            case .failure(let error):
+                                print(error)
+                            }
+                        } else { print("No assetID -> Supplier") }
+                    }
+                    self.dicData[iday] = arrLocationValue
+                } else {
+                    print(response.response?.statusCode as Any)
+                    print("\(url) =>> Array Empty, No Object ")
+                }
+            case .failure(let error):
+                print(error)
             }
             
-            
-            navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
-            let userCoordinate = CLLocationCoordinate2D(latitude: 35.73774428640241, longitude: 139.6194163709879)
-            let eyeCoordinate = CLLocationCoordinate2D(latitude: 35.73774428640241, longitude: 139.6194163709879)
-            let mapCamera = MKMapCamera(lookingAtCenter: userCoordinate, fromEyeCoordinate: eyeCoordinate, eyeAltitude: 1000000.0)
-            
-            mapView.setCamera(mapCamera, animated: false)
         }
+        
+        self.hideActivity()
+        self.reDrawMarkers()
+        
+        fpc = FloatingPanelController(delegate: self)
+        fpc.layout = MyFloatingPanelLayout()
+        
+        mapView.delegate = self
+        
+        pickerStatus.dataSource = self
+        pickerStatus.delegate = self
+        
+        pickerDriver.dataSource = self
+        pickerDriver.delegate = self
+        
+        pickerDate.dataSource = self
+        pickerDate.delegate = self
+        //   self.reDrawMarkers()
+        
+        
+        
+        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
+        let userCoordinate = CLLocationCoordinate2D(latitude: 35.73774428640241, longitude: 139.6194163709879)
+        let eyeCoordinate = CLLocationCoordinate2D(latitude: 35.73774428640241, longitude: 139.6194163709879)
+        let mapCamera = MKMapCamera(lookingAtCenter: userCoordinate, fromEyeCoordinate: eyeCoordinate, eyeAltitude: 1000000.0)
+        
+        mapView.setCamera(mapCamera, animated: false)
+        
     }
     
     func callAPI_Block_Delivery() {
