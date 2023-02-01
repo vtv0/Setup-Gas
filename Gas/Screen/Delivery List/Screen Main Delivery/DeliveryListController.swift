@@ -124,10 +124,15 @@ class DeliveryListController: UIViewController, UIPickerViewDelegate, UIPickerVi
         let token1 = UserDefaults.standard.string(forKey: "accessToken") ?? ""
         let urlGetMe = "https://\(companyCode).kiiapps.com/am/api/me"
         let getMe = AF.request(urlGetMe, method: .get, parameters: nil, encoding: JSONEncoding.default,headers: self.makeHeaders(token: token1)).serializingDecodable(GetMeInfo.self)
-        let response = await getMe.response
-        switch response.result {
+        let getMeResponse = await getMe.response
+        switch getMeResponse.result {
         case .success(let value):
             print(value )
+            let userId = getMeResponse.value?.id
+            let tenantId = getMeResponse.value?.tenants[0].id
+            UserDefaults.standard.set(tenantId, forKey: "tenantId")
+            UserDefaults.standard.set(userId, forKey: "userId")
+            
         case .failure(let error):
             print(error)
         }
@@ -139,7 +144,7 @@ class DeliveryListController: UIViewController, UIPickerViewDelegate, UIPickerVi
             formatter.dateFormat = "yyyy-MM-dd"
             let dateString: String = formatter.string(from: iday)
             let url: String = "https://\(companyCode).kiiapps.com/am/exapi/vrp/tenants/\(tenantId)/latest_route/worker_users/\(userId)?workDate=\(dateString)"
-            
+            print(url)
             let getLatestWorkerRouteLocationList = AF.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default ,headers: self.makeHeaders(token: token1)).validate(statusCode: (200...299))
                 .serializingDecodable(GetLatestWorkerRouteLocationListInfo.self)
             
@@ -178,7 +183,7 @@ class DeliveryListController: UIViewController, UIPickerViewDelegate, UIPickerVi
                     self.dicData[iday] = arrLocationValue
                     
                 } else {
-                    print(response.response?.statusCode as Any)
+                    print(getMeResponse.response?.statusCode as Any)
                     print("\(url) =>> Array Empty, No Object ")
                 }
             case .failure(let error):

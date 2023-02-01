@@ -73,6 +73,8 @@ class ViewController: UIViewController, UITextFieldDelegate {
         switch getTokenResponse.result {
         case .success(let value):
             print(value)
+            
+            
         case .failure(let error):
             print(error)
         }
@@ -85,8 +87,11 @@ class ViewController: UIViewController, UITextFieldDelegate {
         
         switch getMeResponse.result {
         case .success(_):
+            UserDefaults.standard.set(txtcompanyCode.text, forKey: "companyCode")
             let userId = getMeResponse.value?.id
             let tenantId = getMeResponse.value?.tenants[0].id
+            UserDefaults.standard.set(tenantId, forKey: "tenantId")
+            UserDefaults.standard.set(userId, forKey: "userId")
             
             let mhDeliveryList = self.storyboard?.instantiateViewController(identifier:  "DeliveryListController") as! DeliveryListController
             self.navigationController?.pushViewController(mhDeliveryList, animated: true)
