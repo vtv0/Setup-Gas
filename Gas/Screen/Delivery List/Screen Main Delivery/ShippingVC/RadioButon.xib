@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="gTV-IL-0wX" customClass="RadioButon" customModule="Gas" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="268" height="38"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="268" height="38"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XwP-xr-YBd">
+                        <rect key="frame" x="0.0" y="0.0" width="218" height="37"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rWh-rW-m6i">
+                        <rect key="frame" x="218" y="0.0" width="50" height="37"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="50" id="FdH-uo-nSG"/>
+                        </constraints>
+                        <state key="normal" title="Button"/>
+                        <buttonConfiguration key="configuration" style="plain" image="ic_radio_not_checked"/>
+                    </button>
+                </subviews>
+            </view>
+            <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="rWh-rW-m6i" secondAttribute="bottom" constant="1" id="94k-1S-gMe"/>
+                <constraint firstItem="XwP-xr-YBd" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="E0y-FG-oZM"/>
+                <constraint firstAttribute="trailing" secondItem="rWh-rW-m6i" secondAttribute="trailing" id="h1l-di-3mi"/>
+                <constraint firstItem="rWh-rW-m6i" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="iHM-Fw-3Px"/>
+                <constraint firstItem="rWh-rW-m6i" firstAttribute="leading" secondItem="XwP-xr-YBd" secondAttribute="trailing" id="n74-VK-eIi"/>
+                <constraint firstAttribute="bottom" secondItem="XwP-xr-YBd" secondAttribute="bottom" constant="1" id="sTn-TX-4aJ"/>
+                <constraint firstItem="XwP-xr-YBd" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="tBY-rg-F4s"/>
+            </constraints>
+            <size key="customSize" width="268" height="38"/>
+            <connections>
+                <outlet property="btnRadio" destination="rWh-rW-m6i" id="jhd-YF-ZHx"/>
+                <outlet property="lblInfo" destination="XwP-xr-YBd" id="Fpg-Zn-7ef"/>
+            </connections>
+            <point key="canvasLocation" x="82.608695652173921" y="-16.071428571428569"/>
+        </collectionViewCell>
+    </objects>
+    <resources>
+        <image name="ic_radio_not_checked" width="26" height="26"/>
+    </resources>
+</document>

@@ -106,7 +106,7 @@ class FloatingPanelDeliveryVC: UIViewController, UIPageViewControllerDelegate, U
     }
     
     
-    // so luong man hinh Floating
+    // so luong man hinh Floating & pass data one customer
     func showViewController(_ index: Int) -> UIViewController? {
         if (self.detailsTabsView.tabs.count == 0) || (index >= self.detailsTabsView.tabs.count) {
             return nil
@@ -118,6 +118,7 @@ class FloatingPanelDeliveryVC: UIViewController, UIPageViewControllerDelegate, U
         contentVC.dataInfoOneCustomer = dataDidFilter[index]
         contentVC.comment = comment[index]
         
+         let shippingVC = storyboard?.instantiateViewController(withIdentifier: "DeliveryListController") as? DeliveryListController
         
         return contentVC
     }
@@ -134,14 +135,9 @@ class FloatingPanelDeliveryVC: UIViewController, UIPageViewControllerDelegate, U
                 
                 index = getVCPageIndex(vc)
                 delegate1?.passIndexPVC(currentIndexPageVC: index)
-             
-//                switch vc {
-//                case is PageDetailVC:
-//                   let scrollView = vc as! PageDetailVC
-                    delegateScrollView?.passScrollView(scrollView: vc.viewContainerScrollview)
-//                default: break
-//                }
-
+                
+                delegateScrollView?.passScrollView(scrollView: vc.viewContainerScrollview)
+                
                 // Animate the tab in the detailsTabsView to be centered when you are scrolling using .scrollable
                 detailsTabsView.collectionView.scrollToItem(at: IndexPath(item: index, section: 0), at: .bottom, animated: true)
                 

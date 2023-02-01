@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		6742855CE6C5FD60CE69B62C /* Pods_Gas.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6CFAF3E506F92E6E776EC628 /* Pods_Gas.framework */; };
+		7500FAB4298A528D00DF3766 /* ViewRadioButon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7500FAB2298A528D00DF3766 /* ViewRadioButon.swift */; };
+		7500FAB7298A71DF00DF3766 /* ViewRadioButon.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7500FAB6298A71DF00DF3766 /* ViewRadioButon.xib */; };
 		7501250328EC0FBE003AC9EB /* FloatingPanelDeliveryVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7501250228EC0FBE003AC9EB /* FloatingPanelDeliveryVC.swift */; };
 		7501250828ED2272003AC9EB /* PageDetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7501250728ED2272003AC9EB /* PageDetailVC.swift */; };
 		750B39CD28E2F8D800210AB9 /* SettingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750B39CC28E2F8D800210AB9 /* SettingController.swift */; };
@@ -61,6 +63,8 @@
 /* Begin PBXFileReference section */
 		4E232B68B29631223EEA634E /* Pods-Gas.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Gas.release.xcconfig"; path = "Target Support Files/Pods-Gas/Pods-Gas.release.xcconfig"; sourceTree = "<group>"; };
 		6CFAF3E506F92E6E776EC628 /* Pods_Gas.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Gas.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7500FAB2298A528D00DF3766 /* ViewRadioButon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewRadioButon.swift; sourceTree = "<group>"; };
+		7500FAB6298A71DF00DF3766 /* ViewRadioButon.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ViewRadioButon.xib; sourceTree = "<group>"; };
 		7501250228EC0FBE003AC9EB /* FloatingPanelDeliveryVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingPanelDeliveryVC.swift; sourceTree = "<group>"; };
 		7501250728ED2272003AC9EB /* PageDetailVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageDetailVC.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		750B39CC28E2F8D800210AB9 /* SettingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingController.swift; sourceTree = "<group>"; };
@@ -211,6 +215,8 @@
 			isa = PBXGroup;
 			children = (
 				753BA38B296BB72500C7136F /* ShippingViewController.swift */,
+				7500FAB2298A528D00DF3766 /* ViewRadioButon.swift */,
+				7500FAB6298A71DF00DF3766 /* ViewRadioButon.xib */,
 			);
 			path = ShippingVC;
 			sourceTree = "<group>";
@@ -422,6 +428,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				75BF3A1328E161A900BC0F0C /* LaunchScreen.storyboard in Resources */,
+				7500FAB7298A71DF00DF3766 /* ViewRadioButon.xib in Resources */,
 				754B942028EAE8CB0059D4F2 /* Assets.xcassets in Resources */,
 				75BF3A0E28E161A800BC0F0C /* Main.storyboard in Resources */,
 				75D2CE8728F80F3400B51CED /* ImageLabelView.xib in Resources */,
@@ -497,6 +504,7 @@
 				75BF3A0B28E161A800BC0F0C /* LoginController.swift in Sources */,
 				7517A0F028F660FE00994CBD /* CustomAlertReplanVC.swift in Sources */,
 				7501250828ED2272003AC9EB /* PageDetailVC.swift in Sources */,
+				7500FAB4298A528D00DF3766 /* ViewRadioButon.swift in Sources */,
 				753BA38C296BB72500C7136F /* ShippingViewController.swift in Sources */,
 				75FDF73B28EAB6B300AADB99 /* CustomerLocationController.swift in Sources */,
 				75867FEE296FDA54005A0295 /* GetAsset_Block.swift in Sources */,

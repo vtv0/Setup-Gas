@@ -6,11 +6,13 @@
 //
 
 import UIKit
+import Alamofire
 
 class ShippingViewController: UIViewController {
     let arrStatus = ["Return failed to deliver", "Unable to deliver", "Complete"]
-    
+  
     var selectedRows = [IndexPath]()
+    var dataInfoOneCustomer: Location = Location(elem: LocationElement(locationOrder: 0), asset: GetAsset(assetModelID: 0))
     
     @IBAction func btnExit(_ sender: Any) {
         navigationController?.popViewController(animated: true)
@@ -26,6 +28,8 @@ class ShippingViewController: UIViewController {
     @IBOutlet weak var lblEstimateTime: UILabel!
     @IBOutlet weak var lblStatus: UILabel!
     
+    @IBOutlet weak var stackView: UIStackView!
+    @IBOutlet weak var viewRadio: UIView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,14 +40,19 @@ class ShippingViewController: UIViewController {
         lblStatus.layer.cornerRadius = 8
         lblStatus.layer.masksToBounds = true
         
-//        self.myTableView.rowHeight = myTableView.frame.height / 3
-//        myTableView.isScrollEnabled = false
-   
+        print(dataInfoOneCustomer.asset?.properties?.values.customer_name)
+        lblCustomerName.text = dataInfoOneCustomer.asset?.properties?.values.customer_name
+        lblDeliveryAddress.text = dataInfoOneCustomer.asset?.properties?.values.address
+        if let minutes = dataInfoOneCustomer.elem?.arrivalTime?.minutes,
+           let hours = dataInfoOneCustomer.elem?.arrivalTime?.hours {
+            if minutes < 10 {
+                lblEstimateTime?.text = "Estimate Time : \(hours):0\(minutes)"
+            } else {
+                lblEstimateTime?.text = "Estimate Time : \(hours):\(minutes)"
+            }
+        }
+        
     }
-    
-    
-   
-
    
 }
 

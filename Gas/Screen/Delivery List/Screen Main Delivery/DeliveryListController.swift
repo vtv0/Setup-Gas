@@ -34,7 +34,7 @@ protocol GetIndexMarkerDelegateProtocol: AnyObject {
     func getIndexMarker(indexDidSelected: Int)
 }
 
-class DeliveryListController: UIViewController , FloatingPanelControllerDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
+class DeliveryListController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource, FloatingPanelControllerDelegate {
     
     weak var delegateGetIndex: GetIndexMarkerDelegateProtocol?
     
@@ -58,6 +58,7 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
     var assetAday: [GetAsset] = []
     var locations: [Location] = []
     var arrFacilityData: [[Facility_data]] = []
+    static var dataInfoOneCustomer: Location = Location(elem: LocationElement(locationOrder: 0), asset: GetAsset(assetModelID: 0))
     
     @IBOutlet weak var lblType50kg: UILabel!
     @IBOutlet weak var lblType30kg: UILabel!
@@ -73,8 +74,13 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
     
     @IBOutlet weak var btnShipping: UIButton!
     @IBAction func btnShipping(_ sender: Any) {
-        let vc = storyboard?.instantiateViewController(withIdentifier: "ShippingViewController") as! ShippingViewController
-        self.navigationController?.pushViewController(vc, animated: true)
+        
+        print(DeliveryListController.dataInfoOneCustomer.asset?.properties?.values.customer_name)
+        let shipingVC = storyboard?.instantiateViewController(withIdentifier: "ShippingViewController") as! ShippingViewController
+        self.navigationController?.pushViewController(shipingVC, animated: true)
+       
+        shipingVC.dataInfoOneCustomer = DeliveryListController.dataInfoOneCustomer
+      //  shipingVC.lblCustomerName.text = txtName
         print("click Shipping tren MH chinh")
         
         //        let alert = UIAlertController(title: "Lỗi", message: "Có một địa chỉ giao hàng được chỉ định", preferredStyle: .alert)
@@ -139,7 +145,7 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
             
             let workerRouteLocationListResponse = await getLatestWorkerRouteLocationList.response
             switch workerRouteLocationListResponse.result {
-            case .success(let value):
+            case .success(_):
                 let countObject = workerRouteLocationListResponse.value?.locations?.count
                 let locations1: [LocationElement] = workerRouteLocationListResponse.value?.locations ?? []
                 if countObject != 0 {
@@ -150,27 +156,27 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
                     // Get Asset
                     for iLocationValue in arrLocationValue {
                         if let assetID = iLocationValue.elem?.location?.assetID {
+                            Task {
                             let urlGetAsset = "https://\(companyCode).kiiapps.com/am/api/assets/\(assetID)"
-                            
-//                            Task.init(operation: <#T##() async -> _#>)
-                            let iasset = Task {
-                                let asset = try await
+                                let getAsset = AF.request(urlGetAsset, method: .get, parameters: nil, headers: self.makeHeaders(token: token1)).serializingDecodable(GetAsset.self)
+                                let assetResponse = await getAsset.response
+                                switch assetResponse.result {
+                                case .success(let iasset):
+                                    print(iasset)
+                                    iLocationValue.asset = iasset
+
+                                case .failure(let error):
+                                    print(error)
+                               
+                                }
+                                
                             }
                             
                             
-                            
-                            let getAsset = AF.request(urlGetAsset, method: .get, parameters: nil, headers: self.makeHeaders(token: token1)).serializingDecodable(GetAsset.self)
-                            let assetResponse = await getAsset.response
-                            switch assetResponse.result {
-                            case .success(let iasset):
-                                print(iasset)
-                                iLocationValue.asset = iasset
-                            case .failure(let error):
-                                print(error)
-                            }
                         } else { print("No assetID -> Supplier") }
                     }
                     self.dicData[iday] = arrLocationValue
+                    
                 } else {
                     print(response.response?.statusCode as Any)
                     print("\(url) =>> Array Empty, No Object ")
@@ -181,8 +187,6 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
             
         }
         
-        self.hideActivity()
-        self.reDrawMarkers()
         
         fpc = FloatingPanelController(delegate: self)
         fpc.layout = MyFloatingPanelLayout()
@@ -197,9 +201,8 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
         
         pickerDate.dataSource = self
         pickerDate.delegate = self
-        //   self.reDrawMarkers()
-        
-        
+        self.hideActivity()
+        self.reDrawMarkers()
         
         navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
         let userCoordinate = CLLocationCoordinate2D(latitude: 35.73774428640241, longitude: 139.6194163709879)
@@ -608,12 +611,13 @@ class DeliveryListController: UIViewController , FloatingPanelControllerDelegate
 extension DeliveryListController: MKMapViewDelegate, ShowIndexPageDelegateProtocol {
     func passIndexPVC(currentIndexPageVC: Int) {
         passIndexSelectedMarker = currentIndexPageVC
+       // dataInfoOneCustomer = dataDidFilter[currentIndexPageVC]
         // remove anotations
         let allAnmotations = self.mapView.annotations
         self.mapView.removeAnnotations(allAnmotations)
         // draw marker
         if dataDidFilter.count == 0 {
-            print("_______________________________________________________________________________Không có đơn hàng nào!")
+            print("_____________________________________________________________Không có đơn hàng nào!")
         } else {
             for picker in dataDidFilter {
                 if let lat = picker.elem?.latitude,
@@ -705,5 +709,11 @@ extension Date {
             return nil
         }
         return date
+    }
+}
+
+extension DeliveryListController: PassInfoCustomer {
+    func passInfoCustomer(infoCustomer: Location) {
+        DeliveryListController.dataInfoOneCustomer = infoCustomer
     }
 }

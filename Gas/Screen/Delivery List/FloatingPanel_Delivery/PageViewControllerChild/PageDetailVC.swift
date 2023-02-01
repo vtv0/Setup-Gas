@@ -29,14 +29,16 @@ protocol PassImageDelegateProtocol: AnyObject {
     func passNotes(notes: String)
 }
 
-
+protocol PassInfoCustomer: AnyObject {
+    func passInfoCustomer(infoCustomer: Location)
+}
 
 class PageDetailVC: UIViewController, UIScrollViewDelegate, UICollectionViewDelegate {
     
     weak var delegatePassInfoOneCustomer: PassInfoOneCustomerDelegateProtocol?
     weak var delegatePassImage: PassImageDelegateProtocol?
     
-    
+    weak var delegatePassInfoCustomer: PassInfoCustomer?
     
     var pageIndex: Int!
     var comment: String = ""
@@ -52,7 +54,7 @@ class PageDetailVC: UIViewController, UIScrollViewDelegate, UICollectionViewDele
     var data: [String] = []
     var arrFacilityData = [[Facility_data]]()
     var arrImage = [String]()
-    var dataInfoOneCustomer: Location = Location(elem: LocationElement(arrivalTime: nil, breakTimeSEC: nil, createdAt: nil, latitude: 0, loadCapacity: 0, loadSupply: 0, location: nil, locationID: 0, locationOrder: 0, longitude: 0, metadata: nil, travelTimeSECToNext: 0, waitingTimeSEC: 0, workTimeSEC: 0), asset: GetAsset(assetModelID: 0, createdAt: "", enabled: true, geoloc: nil, id: "", metedata: "", name: "", properties: nil, tenantID: 0, updatedAt: "", version: 0, vendorThingID: ""))
+    var dataInfoOneCustomer: Location = Location(elem: LocationElement(locationOrder: 0), asset: GetAsset(assetModelID: 0))
     
     @IBOutlet weak var viewContainerScrollview: UIScrollView!
     
@@ -78,7 +80,6 @@ class PageDetailVC: UIViewController, UIScrollViewDelegate, UICollectionViewDele
     
     
     @IBAction func btnEdit(_ sender: Any) {
-        print("click Edit")
         let screenEdit = storyboard?.instantiateViewController(withIdentifier: "EditViewController") as! EditViewController
         self.navigationController?.pushViewController(screenEdit, animated: true)
     }
@@ -95,6 +96,8 @@ class PageDetailVC: UIViewController, UIScrollViewDelegate, UICollectionViewDele
         collectionView.dataSource = self
         
         pageControl.numberOfPages = arrImage.count
+    
+        
         
         guard let parkingVC = storyboard?.instantiateViewController(withIdentifier: "ParkingLocationController") as? ParkingLocationController else { return }
         delegatePassInfoOneCustomer = parkingVC
@@ -153,7 +156,6 @@ class PageDetailVC: UIViewController, UIScrollViewDelegate, UICollectionViewDele
             viewType.removeFromSuperview()
             
         } else {
-            
             lblCustomer_id?.text = dataInfoOneCustomer.elem?.location?.comment
             lblCustomerName?.text = dataInfoOneCustomer.asset?.properties?.values.customer_name
             lblAddress?.text = dataInfoOneCustomer.asset?.properties?.values.address
@@ -227,8 +229,12 @@ class PageDetailVC: UIViewController, UIScrollViewDelegate, UICollectionViewDele
             arrImage = arrDataUrlImage
         }
         
+        
+        guard let deliveryVC = storyboard?.instantiateViewController(withIdentifier: "DeliveryListController") as? DeliveryListController  else { return }
+        delegatePassInfoCustomer = deliveryVC
+        delegatePassInfoCustomer?.passInfoCustomer(infoCustomer: dataInfoOneCustomer )
+        
     }
-    
     
     func scrollViewDidEndDecelerating(scrollImage: UIScrollView) {
         pageControl.currentPage = Int(viewImageScroll.contentOffset.x / viewImageScroll.bounds.width)
@@ -267,10 +273,10 @@ extension PageDetailVC: UICollectionViewDataSource {
             let iurl = arrImage[indexPath.row]
             
             // Alamofire
-            AF.request( iurl, method: .get).response{ response in
+            AF.request(iurl, method: .get).response{ response in
                 switch response.result {
                 case .success(let responseData):
-                    cellImage.imgImage.image = UIImage(data: responseData!, scale:1)
+                    cellImage.imgImage.image = UIImage(data: responseData!, scale: 1)
                 case .failure(let error):
                     print("error--->",error)
                 }
