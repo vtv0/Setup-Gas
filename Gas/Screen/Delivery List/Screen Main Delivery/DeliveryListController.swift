@@ -38,6 +38,10 @@ class DeliveryListController: UIViewController, UIPickerViewDelegate, UIPickerVi
     
     weak var delegateGetIndex: GetIndexMarkerDelegateProtocol?
     
+    var getiAsset: GetAsset = GetAsset(assetModelID: 0)
+    let arrGetAsset: [GetAsset] = []
+    var arrAssetID: [String] = []
+    
     let companyCode = UserDefaults.standard.string(forKey: "companyCode") ?? ""
     let tenantId = UserDefaults.standard.string(forKey: "tenantId") ?? ""
     let userId = UserDefaults.standard.string(forKey: "userId") ?? ""
@@ -75,12 +79,11 @@ class DeliveryListController: UIViewController, UIPickerViewDelegate, UIPickerVi
     @IBOutlet weak var btnShipping: UIButton!
     @IBAction func btnShipping(_ sender: Any) {
         
-        print(DeliveryListController.dataInfoOneCustomer.asset?.properties?.values.customer_name)
         let shipingVC = storyboard?.instantiateViewController(withIdentifier: "ShippingViewController") as! ShippingViewController
         self.navigationController?.pushViewController(shipingVC, animated: true)
-       
+        
         shipingVC.dataInfoOneCustomer = DeliveryListController.dataInfoOneCustomer
-      //  shipingVC.lblCustomerName.text = txtName
+        //  shipingVC.lblCustomerName.text = txtName
         print("click Shipping tren MH chinh")
         
         //        let alert = UIAlertController(title: "Lỗi", message: "Có một địa chỉ giao hàng được chỉ định", preferredStyle: .alert)
@@ -110,7 +113,7 @@ class DeliveryListController: UIViewController, UIPickerViewDelegate, UIPickerVi
         //MARK: - Use Block
         showActivity()
         
-        //        callAPI_Block_Delivery()
+        //                callAPI_Block_Delivery()
         
         
         //MARK: - Use ASYNC AWAIT
@@ -121,19 +124,25 @@ class DeliveryListController: UIViewController, UIPickerViewDelegate, UIPickerVi
     
     func callAPI_Async_Await_Delivery() async {
         // Get Me
+        
         let token1 = UserDefaults.standard.string(forKey: "accessToken") ?? ""
         let urlGetMe = "https://\(companyCode).kiiapps.com/am/api/me"
         let getMe = AF.request(urlGetMe, method: .get, parameters: nil, encoding: JSONEncoding.default,headers: self.makeHeaders(token: token1)).serializingDecodable(GetMeInfo.self)
         let getMeResponse = await getMe.response
         switch getMeResponse.result {
         case .success(let value):
-            print(value )
+            print(value)
             let userId = getMeResponse.value?.id
             let tenantId = getMeResponse.value?.tenants[0].id
             UserDefaults.standard.set(tenantId, forKey: "tenantId")
             UserDefaults.standard.set(userId, forKey: "userId")
             
         case .failure(let error):
+            if getMeResponse.response?.statusCode == 401 {
+                let scr = storyboard?.instantiateViewController(withIdentifier: "LoginViewController") as! ViewController
+                navigationController?.pushViewController(scr, animated: false)
+                hideActivity()
+            }
             print(error)
         }
         
@@ -153,39 +162,28 @@ class DeliveryListController: UIViewController, UIPickerViewDelegate, UIPickerVi
             case .success(_):
                 let countObject = workerRouteLocationListResponse.value?.locations?.count
                 let locations1: [LocationElement] = workerRouteLocationListResponse.value?.locations ?? []
+                var arrLocationValue: [Location] = []
                 if countObject != 0 {
-                    var arrLocationValue: [Location] = []
+                    
                     for itemObject in locations1 {
                         arrLocationValue.append(Location.init(elem: itemObject, asset: nil))
                     }
+                    // getWorkerRouteLocationList
+                    await callApiParallel(arrLocationValue: arrLocationValue)
                     // Get Asset
                     for iLocationValue in arrLocationValue {
                         if let assetID = iLocationValue.elem?.location?.assetID {
-                            Task {
-                            let urlGetAsset = "https://\(companyCode).kiiapps.com/am/api/assets/\(assetID)"
-                                let getAsset = AF.request(urlGetAsset, method: .get, parameters: nil, headers: self.makeHeaders(token: token1)).serializingDecodable(GetAsset.self)
-                                let assetResponse = await getAsset.response
-                                switch assetResponse.result {
-                                case .success(let iasset):
-                                    print(iasset)
-                                    iLocationValue.asset = iasset
-
-                                case .failure(let error):
-                                    print(error)
-                               
-                                }
-                                
-                            }
-                            
-                            
+                            let iasset = await getAsset_Async_Await1(iassetID: assetID)
+                            iLocationValue.asset = iasset
                         } else { print("No assetID -> Supplier") }
+                        
                     }
                     self.dicData[iday] = arrLocationValue
-                    
                 } else {
                     print(getMeResponse.response?.statusCode as Any)
                     print("\(url) =>> Array Empty, No Object ")
                 }
+                
             case .failure(let error):
                 print(error)
             }
@@ -206,8 +204,6 @@ class DeliveryListController: UIViewController, UIPickerViewDelegate, UIPickerVi
         
         pickerDate.dataSource = self
         pickerDate.delegate = self
-        self.hideActivity()
-        self.reDrawMarkers()
         
         navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
         let userCoordinate = CLLocationCoordinate2D(latitude: 35.73774428640241, longitude: 139.6194163709879)
@@ -216,6 +212,85 @@ class DeliveryListController: UIViewController, UIPickerViewDelegate, UIPickerVi
         
         mapView.setCamera(mapCamera, animated: false)
         
+        self.hideActivity()
+        self.reDrawMarkers()
+        
+    }
+    
+    //    func getLatestWorkerRouteLocationList_Async_Await(arrAssetID: [String]) async -> [Date: [Location]] {
+    //        await withTaskGroup(of: (Date, [Location]).self,
+    //                            returning: [Date: [Location]].self ) { [self] group in
+    //
+    //            for iasset in arrAssetID {
+    //                group.addTask { await (iasset, getAsset_Async_Await1(iassetID: iasset )) }
+    //            }
+    //
+    //            var dicData: [Date: [Location]] = [:]
+    //            for await result in group {
+    //                dicData[result.0] = result.1
+    //            }
+    //
+    //            return dicData
+    //        }
+    //    }
+    
+    // func getAsset()
+    func getAsset_Async_Await1(iassetID: String) async -> GetAsset {
+        let token1 = UserDefaults.standard.string(forKey: "accessToken") ?? ""
+        let urlGetAsset = "https://\(companyCode).kiiapps.com/am/api/assets/\(iassetID)"
+        let getAsset = AF.request(urlGetAsset, method: .get, parameters: nil, headers: self.makeHeaders(token: token1)).serializingDecodable(GetAsset.self)
+        let assetResponse = await getAsset.response
+        
+        switch assetResponse.result {
+        case .success(let iasset):
+            print(iasset)
+            getiAsset = iasset
+            //  iLocationValue.asset = iasset
+            
+        case .failure(let error):
+            print(error)
+            if assetResponse.response?.statusCode == 401 {
+                let scr = storyboard?.instantiateViewController(withIdentifier: "LoginViewController") as! ViewController
+                navigationController?.pushViewController(scr, animated: false)
+                hideActivity()
+            } else if assetResponse.response?.statusCode == 500 {
+                showAlert(message: "Có lỗi xảy ra")
+            }
+        }
+        return getiAsset
+    }
+    
+    
+    func callApiParallel(arrLocationValue: [Location]) async -> Void {
+        await withTaskGroup(
+            of: (GetAsset).self,
+            returning: Void.self)  { [self] group in
+                
+            for iLocationValue in arrLocationValue {
+                if let assetID = iLocationValue.elem?.location?.assetID {
+                    group.addTask() {
+                        let token1 = UserDefaults.standard.string(forKey: "token") ?? ""
+                        let urlGetAsset = "https://\(self.companyCode).kiiapps.com/am/api/assets/\(assetID)"
+                        let getAsset = await AF.request(urlGetAsset, method: .get, parameters: nil, headers: self.makeHeaders(token: token1)).serializingDecodable(GetAsset.self)
+                        let assetResponse = await getAsset.response
+                        
+                        switch assetResponse.result {
+                        case .success(let iasset):
+                            print(iasset)
+                            iLocationValue.asset = iasset
+                            
+                        case .failure(let error):
+                            print(error)
+                        }
+                        
+                        return await self.getiAsset
+                    }
+                    
+                    
+                } else { print("No assetID -> Supplier") }
+            }
+            
+        }
     }
     
     func callAPI_Block_Delivery() {
@@ -256,9 +331,9 @@ class DeliveryListController: UIViewController, UIPickerViewDelegate, UIPickerVi
                                 navigationController?.pushViewController(scr, animated: false)
                                 hideActivity()
                             }
-                        case .some(.remain):
-                            showAlert(message: "Có lỗi xảy ra")
-                            hideActivity()
+                        case .some(.remain): break
+                            //                            showAlert(message: "Có lỗi xảy ra")
+                            //                            hideActivity()
                             
                         case .some(.wrong):
                             showAlert(message: "Có lỗi xảy ra")
@@ -295,11 +370,11 @@ class DeliveryListController: UIViewController, UIPickerViewDelegate, UIPickerVi
         mapView.setCamera(mapCamera, animated: false)
     }
     
-    func fetchAPI<T: Decodable>(url: URL) async throws -> T {
-        let data = try await URLSession.shared.data(url: url)
-        let decodeData = try JSONDecoder().decode(T.self, from: data)
-        return decodeData
-    }
+    //    func fetchAPI<T: Decodable>(url: URL) async throws -> T {
+    //        let data = try await URLSession.shared.data(url: url)
+    //        let decodeData = try JSONDecoder().decode(T.self, from: data)
+    //        return decodeData
+    //    }
     
     func showAlert(title: String? = "", message: String?, completion: (() -> Void)? = nil) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
@@ -616,7 +691,7 @@ class DeliveryListController: UIViewController, UIPickerViewDelegate, UIPickerVi
 extension DeliveryListController: MKMapViewDelegate, ShowIndexPageDelegateProtocol {
     func passIndexPVC(currentIndexPageVC: Int) {
         passIndexSelectedMarker = currentIndexPageVC
-       // dataInfoOneCustomer = dataDidFilter[currentIndexPageVC]
+        // dataInfoOneCustomer = dataDidFilter[currentIndexPageVC]
         // remove anotations
         let allAnmotations = self.mapView.annotations
         self.mapView.removeAnnotations(allAnmotations)
