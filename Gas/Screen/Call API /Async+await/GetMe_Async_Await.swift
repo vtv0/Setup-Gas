@@ -12,8 +12,19 @@ class GetMe_Async_Await {
     let companyCode = UserDefaults.standard.string(forKey: "companyCode") ?? ""
     
     
-    enum CaseError: Error {
-        case ok
+//    enum AFError: Error {
+//        case error(String)
+//        
+//        var localizedDescription: String {
+//            switch self {
+//            case .error(let ok):
+//                return ok
+//            }
+//            
+//        }
+//    }
+
+    enum AFError: Error {
         case tokenOutOfDate
         case wrongPassword
         case remain
@@ -31,21 +42,26 @@ class GetMe_Async_Await {
         let urlGetMe = "https://\(companyCode).kiiapps.com/am/api/me"
         let token = UserDefaults.standard.string(forKey: "accessToken") ?? ""
         
-      
-           AF.request(urlGetMe, method: .get, parameters: nil, encoding: JSONEncoding.default,headers: self.makeHeaders(token: token))
-               .responseDecodable(of: GetMeInfo.self) { response1 in
-                   switch response1.result {
-                   case .success(let getMeInfo):
-                       let tenantId = getMeInfo.tenants[0].id
-                       let userId = getMeInfo.id
-                       arrId.append(tenantId)
-                       arrId.append(userId)
-                       
-                   case .failure(let error):
-                       print("Failed with error: \(error)")
-                   }
-               }
-    
+        let getMe = AF.request(urlGetMe, method: .get, parameters: nil, encoding: JSONEncoding.default,headers: self.makeHeaders(token: token)).serializingDecodable(GetMeInfo.self)
+        let getMeResponse = await getMe.response
+        
+        switch getMeResponse.result {
+        case .success(_):
+            UserDefaults.standard.set(companyCode, forKey: "companyCode")
+            let userId = getMeResponse.value?.id ?? 0
+            let tenantId = getMeResponse.value?.tenants[0].id ?? 0
+            UserDefaults.standard.set(tenantId, forKey: "tenantId")
+            UserDefaults.standard.set(userId, forKey: "userId")
+            arrId.append(tenantId)
+            arrId.append(userId)
+            
+        case .failure(_):
+            if getMeResponse.response?.statusCode == 401 {
+                throw AFError.tokenOutOfDate
+            } else {
+                throw AFError.remain
+            }
+        }
         return arrId
     }
     

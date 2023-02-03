@@ -11,25 +11,41 @@ import AlamofireImage
 
 class PostGetToken_Async_Await {
     
-    enum CaseError: String {
-        case ok
+    enum AFError: Error {
+    
+        case wrongURL
         case tokenOutOfDate
         case wrongPassword
         case remain
     }
     
-    func getToken_Async_Await(userName: String, pass: String, companyCode: String) async {
-        
-
+    func getToken_Async_Await(userName: String, pass: String, companyCode: String) async throws -> String {
+        var token: String = ""
         let parameters: [String: Any] = ["username": userName, "password": pass, "expiresAt": Int64(Calendar.current.date(byAdding: .hour, value: 12, to: Date())!.timeIntervalSince1970 * 1000), "grant_type": "password" ]
         let url = "https://\(companyCode).kiiapps.com/am/api/oauth2/token"
-        async let dataTask = AF.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default).serializingDecodable(AccountInfo.self)
-
-
+        let postGetToken = AF.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default).serializingDecodable(AccountInfo.self)
+        let getTokenResponse = await postGetToken.response
+        switch getTokenResponse.result {
+        case .success(let value):
+            
+            token = getTokenResponse.value?.access_token ?? ""
+            UserDefaults.standard.set(token, forKey: "accessToken")
+            
+            print(value)
+            
+        case .failure(let error):
+            if getTokenResponse.response?.statusCode == 403 {
+                throw AFError.wrongPassword
+            } else if let urlError = error.underlyingError as? URLError , urlError.code == .cannotFindHost {  // statuscode la NIL do Sai url
+                throw AFError.wrongURL
+            } else {
+                throw AFError.remain
+            }
+        }
         
-//        AF.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default)
-//            .responseDecodable(of: AccountInfo.self) { response in
-//                switch response.result {
+        return token
+    }
+}
 //
 //                case .success(_):
 //                     token = response.value?.access_token ?? ""
@@ -50,10 +66,6 @@ class PostGetToken_Async_Await {
 //                    }
 //                }
 //            }
-        
-    }
-    
-}
 
 
 

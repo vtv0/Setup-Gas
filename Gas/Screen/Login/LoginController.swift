@@ -62,48 +62,43 @@ class ViewController: UIViewController, UITextFieldDelegate {
     }
     
     func callAPI_Async_Await() async {
-        let parameters: [String: Any] = ["username": txtUserName.text ?? "", "password": txtPass.text ?? "", "expiresAt": Int64(Calendar.current.date(byAdding: .hour, value: 12, to: Date())!.timeIntervalSince1970 * 1000), "grant_type": "password"]
-        let url = "https://\(txtcompanyCode.text ?? "").kiiapps.com/am/api/oauth2/token"
-        let postGetToken = AF.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default).serializingDecodable(AccountInfo.self)
-       
-        let getTokenResponse = await postGetToken.response
-        let token = getTokenResponse.value?.access_token ?? ""
-        UserDefaults.standard.set(token, forKey: "accessToken")
-//        print(getTokenResponse.response?.statusCode)
-        switch getTokenResponse.result {
-        case .success(let value):
-            print(value)
+        do {
+            let getTokenResponse = try await PostGetToken_Async_Await().getToken_Async_Await(userName: txtUserName.text!, pass: txtPass.text!, companyCode: txtcompanyCode.text!)
+            print(getTokenResponse)
             
-            
-        case .failure(let error):
-            print(error)
+            do {
+                let responseGetMe = try await GetMe_Async_Await().getMe_Async_Await()
+                print(responseGetMe)
+                let deliveryListVC = storyboard?.instantiateViewController(withIdentifier: "DeliveryListController") as! DeliveryListController
+                self.navigationController?.pushViewController(deliveryListVC, animated: true)
+            } catch {
+                if let err = error as? GetMe_Async_Await.AFError {
+                    if err == .tokenOutOfDate {
+                        showAlert(message: "Token đã hết hạn")
+                        let mhLogin = self.storyboard?.instantiateViewController(identifier:  "LoginViewController") as! ViewController
+                        self.navigationController?.pushViewController(mhLogin, animated: true)
+                        hideActivity()
+
+                    } else if err == .remain {
+                        showAlert(message: "Có lỗi xảy ra")
+                        hideActivity()
+                    }
+                }
+            }
+        } catch {
+            if let err = error as? PostGetToken_Async_Await.AFError {
+                if err == .wrongURL {
+                    showAlert(message: "Sai companyCode")
+                    hideActivity()
+                } else if err == .wrongPassword {
+                    showAlert(message: "Sai password")
+                    hideActivity()
+                } else if err == .remain {
+                    showAlert(message: "Có lỗi xảy ra")
+                    hideActivity()
+                }
+            }
         }
-        
-        
-        
-        let urlGetMe = "https://\(txtcompanyCode.text ?? "").kiiapps.com/am/api/me"
-        let getMe = AF.request(urlGetMe, method: .get, parameters: nil, encoding: JSONEncoding.default,headers: self.makeHeaders(token: token)).serializingDecodable(GetMeInfo.self)
-        let getMeResponse = await getMe.response
-        
-        switch getMeResponse.result {
-        case .success(_):
-            UserDefaults.standard.set(txtcompanyCode.text, forKey: "companyCode")
-            let userId = getMeResponse.value?.id
-            let tenantId = getMeResponse.value?.tenants[0].id
-            UserDefaults.standard.set(tenantId, forKey: "tenantId")
-            UserDefaults.standard.set(userId, forKey: "userId")
-            
-            let mhDeliveryList = self.storyboard?.instantiateViewController(identifier:  "DeliveryListController") as! DeliveryListController
-            self.navigationController?.pushViewController(mhDeliveryList, animated: true)
-            
-        case .failure(let error):
-            print(error)
-        }
-        
-        enum CaseError: String {
-            case outOfDate
-        }
-        
     }
     
     func callAPI_Block() {
@@ -136,6 +131,9 @@ class ViewController: UIViewController, UITextFieldDelegate {
                     hideActivity()
                 case .none:
                     break
+                case .some(.wrongURL):
+                    showAlert(message: "Sai thông tin tài khoản")
+                    hideActivity()
                 }
             }
         }
@@ -160,7 +158,12 @@ class ViewController: UIViewController, UITextFieldDelegate {
         }
         
         imgIcon.image = UIImage(named:"Icon-1024")
+        
+        //        Task {
+        //            await aaa()
+        //        }
     }
+    
     
     @objc func onInputUserName(_ sender: UITextField) {
         print("name", sender.text ?? "")
@@ -188,6 +191,14 @@ class ViewController: UIViewController, UITextFieldDelegate {
         }))
         present(alert, animated: true)
     }
+    
+    func fetchFavorites() async throws -> [Int] {
+        let url = URL(string: "https://hws.dev/user-favorites.json")!
+        let (data, _) = try await URLSession.shared.data(from: url)
+        return try JSONDecoder().decode([Int].self, from: data)
+    }
+    
+    
     
 }
 

@@ -324,8 +324,8 @@
 			isa = PBXGroup;
 			children = (
 				75D2CE8A28F80FDF00B51CED /* DeliveryLocationImageType.swift */,
-				75D2CE8828F80F7200B51CED /* ImageLabelView.swift */,
 				75D2CE8428F80F1C00B51CED /* FacilityImageView.swift */,
+				75D2CE8828F80F7200B51CED /* ImageLabelView.swift */,
 				75D2CE8628F80F3400B51CED /* ImageLabelView.xib */,
 				75D2CE7C28F8038D00B51CED /* UIApplacation+TopVC.swift */,
 			);

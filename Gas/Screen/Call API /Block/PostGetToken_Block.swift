@@ -41,12 +41,13 @@ class PostGetToken_Block {
                         completion(token, PostGetToken_Block.CaseError.ok)
                     }
                 case .failure(let error):
-                    if (response.response?.statusCode == 403) {
+                    if (response.response?.statusCode == 403) {  // sai mat khau
+                                                                  //  401: han han token
 
                        // CaseError.wrongPassword
                         completion(nil,CaseError.wrongPassword)
                     } else if let urlError = error.underlyingError as? URLError , urlError.code == .cannotFindHost {
-                        
+                        completion(nil,CaseError.wrongURL)
                     } else {
                         completion(nil,CaseError.remain)
                     }
@@ -57,6 +58,7 @@ class PostGetToken_Block {
     
     enum CaseError: String {
         case ok
+        case wrongURL
         case tokenOutOfDate
         case wrongPassword
         case remain

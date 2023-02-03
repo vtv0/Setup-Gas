@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="5L7-f5-pjp">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="h41-sy-BzJ">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <accessibilityOverrides boldText="YES" buttonShapes="YES" onOffLabels="YES" increaseContrast="YES" reduceTransparency="YES" dynamicTypePreference="1"/>
     <dependencies>
@@ -661,7 +661,7 @@
                                                     <constraint firstAttribute="bottom" secondItem="jj9-ej-S4k" secondAttribute="bottom" constant="2" id="xLv-oD-RPc"/>
                                                 </constraints>
                                             </view>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YJZ-ie-6aW" customClass="ViewRadioButon" customModule="Gas" customModuleProvider="target">
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="afC-LD-QKC" customClass="ViewRadioButon" customModule="Gas" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="150" width="414" height="50"/>
                                                 <color key="backgroundColor" systemColor="systemGray4Color"/>
                                             </view>
@@ -2490,11 +2490,15 @@ Cgo
                                                 <subviews>
                                                     <view multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fly-R1-gu5" customClass="ImageLabelView" customModule="Gas" customModuleProvider="target">
                                                         <rect key="frame" x="0.0" y="0.0" width="103.5" height="120"/>
+                                                        <accessibility key="accessibilityConfiguration">
+                                                            <accessibilityTraits key="traits" image="YES"/>
+                                                        </accessibility>
                                                         <userDefinedRuntimeAttributes>
                                                             <userDefinedRuntimeAttribute type="string" keyPath="label" value="Factory"/>
                                                             <userDefinedRuntimeAttribute type="number" keyPath="number">
                                                                 <integer key="value" value="1"/>
                                                             </userDefinedRuntimeAttribute>
+                                                            <userDefinedRuntimeAttribute type="image" keyPath="image"/>
                                                         </userDefinedRuntimeAttributes>
                                                     </view>
                                                     <view tag="1" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6bv-Cz-rgb" customClass="ImageLabelView" customModule="Gas" customModuleProvider="target">

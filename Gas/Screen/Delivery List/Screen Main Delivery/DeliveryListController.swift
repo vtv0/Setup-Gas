@@ -169,15 +169,18 @@ class DeliveryListController: UIViewController, UIPickerViewDelegate, UIPickerVi
                         arrLocationValue.append(Location.init(elem: itemObject, asset: nil))
                     }
                     // getWorkerRouteLocationList
-                    await callApiParallel(arrLocationValue: arrLocationValue)
+                    _ = await callApiParallel(arrLocationValue: arrLocationValue)
                     // Get Asset
-                    for iLocationValue in arrLocationValue {
-                        if let assetID = iLocationValue.elem?.location?.assetID {
-                            let iasset = await getAsset_Async_Await1(iassetID: assetID)
-                            iLocationValue.asset = iasset
-                        } else { print("No assetID -> Supplier") }
-                        
-                    }
+                    
+                        for iLocationValue in arrLocationValue {
+//                            Task {
+                                if let assetID = iLocationValue.elem?.location?.assetID {
+                                    async let iasset = await getAsset_Async_Await(iassetID: assetID)
+                                    iLocationValue.asset = await iasset
+                                } else { print("No assetID -> Supplier") }
+//                            }
+                        }
+                    
                     self.dicData[iday] = arrLocationValue
                 } else {
                     print(getMeResponse.response?.statusCode as Any)
@@ -189,7 +192,6 @@ class DeliveryListController: UIViewController, UIPickerViewDelegate, UIPickerVi
             }
             
         }
-        
         
         fpc = FloatingPanelController(delegate: self)
         fpc.layout = MyFloatingPanelLayout()
@@ -217,25 +219,7 @@ class DeliveryListController: UIViewController, UIPickerViewDelegate, UIPickerVi
         
     }
     
-    //    func getLatestWorkerRouteLocationList_Async_Await(arrAssetID: [String]) async -> [Date: [Location]] {
-    //        await withTaskGroup(of: (Date, [Location]).self,
-    //                            returning: [Date: [Location]].self ) { [self] group in
-    //
-    //            for iasset in arrAssetID {
-    //                group.addTask { await (iasset, getAsset_Async_Await1(iassetID: iasset )) }
-    //            }
-    //
-    //            var dicData: [Date: [Location]] = [:]
-    //            for await result in group {
-    //                dicData[result.0] = result.1
-    //            }
-    //
-    //            return dicData
-    //        }
-    //    }
-    
-    // func getAsset()
-    func getAsset_Async_Await1(iassetID: String) async -> GetAsset {
+    func getAsset_Async_Await(iassetID: String) async -> GetAsset {
         let token1 = UserDefaults.standard.string(forKey: "accessToken") ?? ""
         let urlGetAsset = "https://\(companyCode).kiiapps.com/am/api/assets/\(iassetID)"
         let getAsset = AF.request(urlGetAsset, method: .get, parameters: nil, headers: self.makeHeaders(token: token1)).serializingDecodable(GetAsset.self)
@@ -245,7 +229,6 @@ class DeliveryListController: UIViewController, UIPickerViewDelegate, UIPickerVi
         case .success(let iasset):
             print(iasset)
             getiAsset = iasset
-            //  iLocationValue.asset = iasset
             
         case .failure(let error):
             print(error)
@@ -260,37 +243,26 @@ class DeliveryListController: UIViewController, UIPickerViewDelegate, UIPickerVi
         return getiAsset
     }
     
-    
-    func callApiParallel(arrLocationValue: [Location]) async -> Void {
+    func callApiParallel(arrLocationValue: [Location]) async -> [GetAsset] {
         await withTaskGroup(
             of: (GetAsset).self,
-            returning: Void.self)  { [self] group in
+            returning: [GetAsset].self) { [self] group in
                 
-            for iLocationValue in arrLocationValue {
-                if let assetID = iLocationValue.elem?.location?.assetID {
-                    group.addTask() {
-                        let token1 = UserDefaults.standard.string(forKey: "token") ?? ""
-                        let urlGetAsset = "https://\(self.companyCode).kiiapps.com/am/api/assets/\(assetID)"
-                        let getAsset = await AF.request(urlGetAsset, method: .get, parameters: nil, headers: self.makeHeaders(token: token1)).serializingDecodable(GetAsset.self)
-                        let assetResponse = await getAsset.response
+                for iLocationValue in arrLocationValue {
+                    if let assetID = iLocationValue.elem?.location?.assetID {
+                        group.addTask { await ( self.getAsset_Async_Await(iassetID: assetID)) }
                         
-                        switch assetResponse.result {
-                        case .success(let iasset):
-                            print(iasset)
-                            iLocationValue.asset = iasset
-                            
-                        case .failure(let error):
-                            print(error)
+                        var arriasset: [GetAsset] = []
+//                        arriasset.append()
+                        for await result in group {
+                            arriasset.append(result)
                         }
-                        
-                        return await self.getiAsset
-                    }
-                    
-                    
-                } else { print("No assetID -> Supplier") }
+                            return arriasset // Biểu thức là 'async' nhưng không được đánh dấu bằng 'await'
+                     //   }
+                    } else { print("No assetID -> Supplier") }
+                }
+                return self.arrGetAsset
             }
-            
-        }
     }
     
     func callAPI_Block_Delivery() {
