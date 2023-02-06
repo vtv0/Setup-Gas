@@ -74,7 +74,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
             } catch {
                 if let err = error as? GetMe_Async_Await.AFError {
                     if err == .tokenOutOfDate {
-                        showAlert(message: "Token đã hết hạn")
+                        showAlert(message: "Token đã hết hạn 1111")
                         let mhLogin = self.storyboard?.instantiateViewController(identifier:  "LoginViewController") as! ViewController
                         self.navigationController?.pushViewController(mhLogin, animated: true)
                         hideActivity()

@@ -49,7 +49,7 @@ class ReuseViewRadioButton: UIView {
         
     }
     @objc func onTapView() {
-        print("Ssssssss")
+        print("Ssssssss:  \(statusDelegate)")
         statusDelegate?.onTap(self, number: 0)
     }
     

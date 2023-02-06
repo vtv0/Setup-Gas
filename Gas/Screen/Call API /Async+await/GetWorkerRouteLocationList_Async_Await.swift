@@ -14,11 +14,6 @@ class GetWorkerRouteLocationList_Async_Await {
     var dicData: [Date: [Location]] = [:]
     var url: String? = nil
     
-    
-    //    init(url: String?) {
-    //        self.url = url
-    //
-    //    }
     enum AFError: Error {
         case notDelivery
         case tokenOutOfDate
@@ -79,7 +74,7 @@ class GetWorkerRouteLocationList_Async_Await {
                             if let assetID = iLocationValue.elem?.location?.assetID {
                                 async let getAssetResponse = try? await GetAsset_Async_Await().getGetAsset_Async_Await(forAsset: assetID)
                                 iLocationValue.asset = await getAssetResponse
-                                
+                                await print(getAssetResponse!)
                             } else { print("No assetID -> Supplier") }
                         }
                     }

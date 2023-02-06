@@ -113,7 +113,7 @@ class DeliveryListController: UIViewController, UIPickerViewDelegate, UIPickerVi
         //MARK: - Use Block
         showActivity()
         
-        //                callAPI_Block_Delivery()
+//                        callAPI_Block_Delivery()
         
         
         //MARK: - Use ASYNC AWAIT
@@ -155,9 +155,9 @@ class DeliveryListController: UIViewController, UIPickerViewDelegate, UIPickerVi
         } catch {
             if let err = error as? GetMe_Async_Await.AFError {
                 if err == .tokenOutOfDate {
-                    showAlert(message: "Token đã hết hạn")
-                    let mhLogin = self.storyboard?.instantiateViewController(identifier:  "LoginViewController") as! ViewController
-                    self.navigationController?.pushViewController(mhLogin, animated: true)
+                    showAlert(message: "Token đã hết hạn88")
+                    let scr = storyboard?.instantiateViewController(withIdentifier: "LoginViewController") as! ViewController
+                    self.navigationController?.pushViewController(scr, animated: false)
                     hideActivity()
                     
                 } else if err == .remain {
@@ -271,13 +271,14 @@ class DeliveryListController: UIViewController, UIPickerViewDelegate, UIPickerVi
                         }
                     } else {
                         let err1 = err1
+                        print(err1)
                         switch err1 {
                         case .ok: break
                         case .tokenOutOfDate:
-                            if let scr = storyboard?.instantiateViewController(withIdentifier: "LoginViewController") as? ViewController {
-                                navigationController?.pushViewController(scr, animated: false)
+                            let scr = storyboard?.instantiateViewController(withIdentifier: "LoginViewController") as! ViewController
+                            self.navigationController?.pushViewController(scr, animated: false)
                                 hideActivity()
-                            }
+                            
                         case .some(.remain): break
                             //                            showAlert(message: "Có lỗi xảy ra")
                             //                            hideActivity()

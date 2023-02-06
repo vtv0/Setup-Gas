@@ -89,3 +89,10 @@ class ShippingViewController: UIViewController {
     
 }
 
+extension ShippingViewController: PassStatusDelivery {
+    func onTap(_ sender: ReuseViewRadioButton, number: Int) {
+        print(number)
+    }
+    
+    
+}
