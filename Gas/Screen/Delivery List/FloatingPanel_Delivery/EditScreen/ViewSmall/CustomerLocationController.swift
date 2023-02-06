@@ -109,9 +109,7 @@ class CustomerLocationController: UIViewController, MKMapViewDelegate, PassInfoO
                 
                 print(response1.response?.statusCode ?? 0)
                 switch response1.result {
-                case .success( let _):
-                    
-                 
+                case .success(_):
                     let FloatingPanel = self.storyboard?.instantiateViewController(withIdentifier: "EditViewController") as! EditViewController
                     self.navigationController?.setViewControllers([FloatingPanel], animated: true)
                     self.hideActivity()

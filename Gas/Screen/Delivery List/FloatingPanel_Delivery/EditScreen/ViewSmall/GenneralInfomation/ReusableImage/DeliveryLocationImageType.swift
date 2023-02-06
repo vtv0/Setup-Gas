@@ -22,4 +22,5 @@ enum DeliveryLocationImageType: Int {
             return "location"
         }
     }
+    
 }

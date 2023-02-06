@@ -8,8 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		6742855CE6C5FD60CE69B62C /* Pods_Gas.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6CFAF3E506F92E6E776EC628 /* Pods_Gas.framework */; };
-		7500FAB4298A528D00DF3766 /* ViewRadioButon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7500FAB2298A528D00DF3766 /* ViewRadioButon.swift */; };
-		7500FAB7298A71DF00DF3766 /* ViewRadioButon.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7500FAB6298A71DF00DF3766 /* ViewRadioButon.xib */; };
 		7501250328EC0FBE003AC9EB /* FloatingPanelDeliveryVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7501250228EC0FBE003AC9EB /* FloatingPanelDeliveryVC.swift */; };
 		7501250828ED2272003AC9EB /* PageDetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7501250728ED2272003AC9EB /* PageDetailVC.swift */; };
 		750B39CD28E2F8D800210AB9 /* SettingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750B39CC28E2F8D800210AB9 /* SettingController.swift */; };
@@ -36,6 +34,8 @@
 		7598E46128EFC4DC00EA9FA9 /* PageDetailCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7598E46028EFC4DC00EA9FA9 /* PageDetailCollectionViewCell.swift */; };
 		75A1E17C28EFE6F200EA17A2 /* ContentReplanTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75A1E17B28EFE6F200EA17A2 /* ContentReplanTableViewCell.swift */; };
 		75A1E17F28F3AB6300EA17A2 /* RerouteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75A1E17E28F3AB6300EA17A2 /* RerouteViewController.swift */; };
+		75ACE5EA2990D34100298D75 /* ReuseViewRadioButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75ACE5E92990D34100298D75 /* ReuseViewRadioButton.swift */; };
+		75ACE5EC2990D36400298D75 /* ViewRadioButton.xib in Resources */ = {isa = PBXBuildFile; fileRef = 75ACE5EB2990D36400298D75 /* ViewRadioButton.xib */; };
 		75BF3A0728E161A800BC0F0C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BF3A0628E161A800BC0F0C /* AppDelegate.swift */; };
 		75BF3A0928E161A800BC0F0C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BF3A0828E161A800BC0F0C /* SceneDelegate.swift */; };
 		75BF3A0B28E161A800BC0F0C /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BF3A0A28E161A800BC0F0C /* LoginController.swift */; };
@@ -45,11 +45,11 @@
 		75C0F47628F425A50091FB84 /* CustomAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75C0F47528F425A50091FB84 /* CustomAlertViewController.swift */; };
 		75CC4584296D1F7F00BE203B /* PostGetToken_Async_Await.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75CC4583296D1F7F00BE203B /* PostGetToken_Async_Await.swift */; };
 		75CC4589296E615E00BE203B /* PostGetToken_Block.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75CC4588296E615E00BE203B /* PostGetToken_Block.swift */; };
-		75D2CE7D28F8038D00B51CED /* UIApplacation+TopVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75D2CE7C28F8038D00B51CED /* UIApplacation+TopVC.swift */; };
 		75D2CE8528F80F1C00B51CED /* FacilityImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75D2CE8428F80F1C00B51CED /* FacilityImageView.swift */; };
 		75D2CE8728F80F3400B51CED /* ImageLabelView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 75D2CE8628F80F3400B51CED /* ImageLabelView.xib */; };
 		75D2CE8928F80F7200B51CED /* ImageLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75D2CE8828F80F7200B51CED /* ImageLabelView.swift */; };
 		75D2CE8B28F80FDF00B51CED /* DeliveryLocationImageType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75D2CE8A28F80FDF00B51CED /* DeliveryLocationImageType.swift */; };
+		75F745402990A58F00B17423 /* ExtensionTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F7453F2990A58F00B17423 /* ExtensionTool.swift */; };
 		75FDF73028EAB0F700AADB99 /* TabsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75FDF72F28EAB0F700AADB99 /* TabsView.swift */; };
 		75FDF73228EAB18400AADB99 /* TabsPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75FDF73128EAB18400AADB99 /* TabsPageViewController.swift */; };
 		75FDF73528EAB30200AADB99 /* TabCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75FDF73428EAB30200AADB99 /* TabCell.swift */; };
@@ -63,8 +63,6 @@
 /* Begin PBXFileReference section */
 		4E232B68B29631223EEA634E /* Pods-Gas.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Gas.release.xcconfig"; path = "Target Support Files/Pods-Gas/Pods-Gas.release.xcconfig"; sourceTree = "<group>"; };
 		6CFAF3E506F92E6E776EC628 /* Pods_Gas.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Gas.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		7500FAB2298A528D00DF3766 /* ViewRadioButon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewRadioButon.swift; sourceTree = "<group>"; };
-		7500FAB6298A71DF00DF3766 /* ViewRadioButon.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ViewRadioButon.xib; sourceTree = "<group>"; };
 		7501250228EC0FBE003AC9EB /* FloatingPanelDeliveryVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingPanelDeliveryVC.swift; sourceTree = "<group>"; };
 		7501250728ED2272003AC9EB /* PageDetailVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageDetailVC.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		750B39CC28E2F8D800210AB9 /* SettingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingController.swift; sourceTree = "<group>"; };
@@ -91,6 +89,8 @@
 		7598E46028EFC4DC00EA9FA9 /* PageDetailCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageDetailCollectionViewCell.swift; sourceTree = "<group>"; };
 		75A1E17B28EFE6F200EA17A2 /* ContentReplanTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentReplanTableViewCell.swift; sourceTree = "<group>"; };
 		75A1E17E28F3AB6300EA17A2 /* RerouteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RerouteViewController.swift; sourceTree = "<group>"; };
+		75ACE5E92990D34100298D75 /* ReuseViewRadioButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReuseViewRadioButton.swift; sourceTree = "<group>"; };
+		75ACE5EB2990D36400298D75 /* ViewRadioButton.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ViewRadioButton.xib; sourceTree = "<group>"; };
 		75BF3A0328E161A800BC0F0C /* Gas.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Gas.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		75BF3A0628E161A800BC0F0C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		75BF3A0828E161A800BC0F0C /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -102,11 +102,11 @@
 		75C0F47528F425A50091FB84 /* CustomAlertViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAlertViewController.swift; sourceTree = "<group>"; };
 		75CC4583296D1F7F00BE203B /* PostGetToken_Async_Await.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostGetToken_Async_Await.swift; sourceTree = "<group>"; };
 		75CC4588296E615E00BE203B /* PostGetToken_Block.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostGetToken_Block.swift; sourceTree = "<group>"; };
-		75D2CE7C28F8038D00B51CED /* UIApplacation+TopVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplacation+TopVC.swift"; sourceTree = "<group>"; };
 		75D2CE8428F80F1C00B51CED /* FacilityImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacilityImageView.swift; sourceTree = "<group>"; };
 		75D2CE8628F80F3400B51CED /* ImageLabelView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ImageLabelView.xib; sourceTree = "<group>"; };
 		75D2CE8828F80F7200B51CED /* ImageLabelView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageLabelView.swift; sourceTree = "<group>"; };
 		75D2CE8A28F80FDF00B51CED /* DeliveryLocationImageType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeliveryLocationImageType.swift; sourceTree = "<group>"; };
+		75F7453F2990A58F00B17423 /* ExtensionTool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionTool.swift; sourceTree = "<group>"; };
 		75FDF72F28EAB0F700AADB99 /* TabsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabsView.swift; sourceTree = "<group>"; };
 		75FDF73128EAB18400AADB99 /* TabsPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabsPageViewController.swift; sourceTree = "<group>"; };
 		75FDF73428EAB30200AADB99 /* TabCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabCell.swift; sourceTree = "<group>"; };
@@ -215,8 +215,8 @@
 			isa = PBXGroup;
 			children = (
 				753BA38B296BB72500C7136F /* ShippingViewController.swift */,
-				7500FAB2298A528D00DF3766 /* ViewRadioButon.swift */,
-				7500FAB6298A71DF00DF3766 /* ViewRadioButon.xib */,
+				75ACE5E92990D34100298D75 /* ReuseViewRadioButton.swift */,
+				75ACE5EB2990D36400298D75 /* ViewRadioButton.xib */,
 			);
 			path = ShippingVC;
 			sourceTree = "<group>";
@@ -266,7 +266,7 @@
 			isa = PBXGroup;
 			children = (
 				75123F6929027E3D00A08972 /* PassScreenViewController.swift */,
-				8A4064A828F86F710011DA9A /* ActivityIndicator */,
+				8A4064A828F86F710011DA9A /* Container Extension */,
 				75BF3A1F28E2AE7900BC0F0C /* Login */,
 				75BF3A2228E2AF2F00BC0F0C /* Delivery List */,
 				750B39CE28E3034200210AB9 /* Replan */,
@@ -327,7 +327,6 @@
 				75D2CE8428F80F1C00B51CED /* FacilityImageView.swift */,
 				75D2CE8828F80F7200B51CED /* ImageLabelView.swift */,
 				75D2CE8628F80F3400B51CED /* ImageLabelView.xib */,
-				75D2CE7C28F8038D00B51CED /* UIApplacation+TopVC.swift */,
 			);
 			path = ReusableImage;
 			sourceTree = "<group>";
@@ -342,12 +341,13 @@
 			path = ViewSmall;
 			sourceTree = "<group>";
 		};
-		8A4064A828F86F710011DA9A /* ActivityIndicator */ = {
+		8A4064A828F86F710011DA9A /* Container Extension */ = {
 			isa = PBXGroup;
 			children = (
 				8A21B86529058E35008D94DE /* Extension+ActivityIndicator.swift */,
+				75F7453F2990A58F00B17423 /* ExtensionTool.swift */,
 			);
-			path = ActivityIndicator;
+			path = "Container Extension";
 			sourceTree = "<group>";
 		};
 		93EFFF63360890F6D094E8E9 /* Pods */ = {
@@ -428,8 +428,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				75BF3A1328E161A900BC0F0C /* LaunchScreen.storyboard in Resources */,
-				7500FAB7298A71DF00DF3766 /* ViewRadioButon.xib in Resources */,
 				754B942028EAE8CB0059D4F2 /* Assets.xcassets in Resources */,
+				75ACE5EC2990D36400298D75 /* ViewRadioButton.xib in Resources */,
 				75BF3A0E28E161A800BC0F0C /* Main.storyboard in Resources */,
 				75D2CE8728F80F3400B51CED /* ImageLabelView.xib in Resources */,
 			);
@@ -496,7 +496,6 @@
 				750C7E6529078E52009A9E27 /* GetLatestWorkerRouteLocationList.swift in Sources */,
 				7501250328EC0FBE003AC9EB /* FloatingPanelDeliveryVC.swift in Sources */,
 				75FDF73228EAB18400AADB99 /* TabsPageViewController.swift in Sources */,
-				75D2CE7D28F8038D00B51CED /* UIApplacation+TopVC.swift in Sources */,
 				754C39B2291E409500793A14 /* Extension+API.swift in Sources */,
 				75CC4589296E615E00BE203B /* PostGetToken_Block.swift in Sources */,
 				750C7E6B2908ECA0009A9E27 /* Marker+ExtensionViewController.swift in Sources */,
@@ -504,17 +503,18 @@
 				75BF3A0B28E161A800BC0F0C /* LoginController.swift in Sources */,
 				7517A0F028F660FE00994CBD /* CustomAlertReplanVC.swift in Sources */,
 				7501250828ED2272003AC9EB /* PageDetailVC.swift in Sources */,
-				7500FAB4298A528D00DF3766 /* ViewRadioButon.swift in Sources */,
 				753BA38C296BB72500C7136F /* ShippingViewController.swift in Sources */,
 				75FDF73B28EAB6B300AADB99 /* CustomerLocationController.swift in Sources */,
 				75867FEE296FDA54005A0295 /* GetAsset_Block.swift in Sources */,
 				75867FF42971097A005A0295 /* DB_Get_Set.swift in Sources */,
 				75867FF22970FD88005A0295 /* GetMe_Async_Await.swift in Sources */,
 				75123F6A29027E3D00A08972 /* PassScreenViewController.swift in Sources */,
+				75F745402990A58F00B17423 /* ExtensionTool.swift in Sources */,
 				75FDF73D28EABABA00AADB99 /* EditViewController.swift in Sources */,
 				75FDF73928EAB69700AADB99 /* ParkingLocationController.swift in Sources */,
 				75D2CE8928F80F7200B51CED /* ImageLabelView.swift in Sources */,
 				8A21B86629058E35008D94DE /* Extension+ActivityIndicator.swift in Sources */,
+				75ACE5EA2990D34100298D75 /* ReuseViewRadioButton.swift in Sources */,
 				7598E46128EFC4DC00EA9FA9 /* PageDetailCollectionViewCell.swift in Sources */,
 				75867FF02970FD4C005A0295 /* GetWorkerRouteLocationList_Async_Await.swift in Sources */,
 				75BF3A1E28E2883100BC0F0C /* DeliveryListController.swift in Sources */,

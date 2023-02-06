@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="h41-sy-BzJ">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="5L7-f5-pjp">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <accessibilityOverrides boldText="YES" buttonShapes="YES" onOffLabels="YES" increaseContrast="YES" reduceTransparency="YES" dynamicTypePreference="1"/>
     <dependencies>
@@ -554,126 +554,10 @@
                                         </constraints>
                                     </view>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="FuP-bU-xck">
-                                        <rect key="frame" x="0.0" y="200.5" width="414" height="200"/>
-                                        <subviews>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mYo-dq-mux">
-                                                <rect key="frame" x="0.0" y="0.0" width="414" height="50"/>
-                                                <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mJs-2E-7J2">
-                                                        <rect key="frame" x="0.0" y="0.0" width="310.5" height="48"/>
-                                                        <color key="backgroundColor" systemColor="secondarySystemBackgroundColor"/>
-                                                        <attributedString key="attributedText">
-                                                            <fragment content="Return failed to delivery">
-                                                                <attributes>
-                                                                    <font key="NSFont" metaFont="system" size="17"/>
-                                                                    <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" firstLineHeadIndent="20" tighteningFactorForTruncation="0.0"/>
-                                                                </attributes>
-                                                            </fragment>
-                                                        </attributedString>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BOZ-Ga-2Bt">
-                                                        <rect key="frame" x="310.5" y="0.0" width="103.5" height="48"/>
-                                                        <color key="backgroundColor" systemColor="secondarySystemBackgroundColor"/>
-                                                        <state key="normal" title="Button"/>
-                                                        <buttonConfiguration key="configuration" style="plain" image="ic_radio_not_checked"/>
-                                                    </button>
-                                                </subviews>
-                                                <color key="backgroundColor" systemColor="systemGray4Color"/>
-                                                <constraints>
-                                                    <constraint firstItem="BOZ-Ga-2Bt" firstAttribute="width" secondItem="mYo-dq-mux" secondAttribute="width" multiplier="0.25" id="877-6r-SVe"/>
-                                                    <constraint firstAttribute="bottom" secondItem="BOZ-Ga-2Bt" secondAttribute="bottom" constant="2" id="8lc-ik-aZF"/>
-                                                    <constraint firstAttribute="bottom" secondItem="mJs-2E-7J2" secondAttribute="bottom" constant="2" id="Fhn-pi-64b"/>
-                                                    <constraint firstItem="BOZ-Ga-2Bt" firstAttribute="leading" secondItem="mJs-2E-7J2" secondAttribute="trailing" id="G4M-tE-3hf"/>
-                                                    <constraint firstItem="BOZ-Ga-2Bt" firstAttribute="top" secondItem="mYo-dq-mux" secondAttribute="top" id="PvV-r5-YfA"/>
-                                                    <constraint firstItem="mJs-2E-7J2" firstAttribute="top" secondItem="mYo-dq-mux" secondAttribute="top" id="gVL-SV-imJ"/>
-                                                    <constraint firstItem="mJs-2E-7J2" firstAttribute="leading" secondItem="mYo-dq-mux" secondAttribute="leading" id="nK1-tg-e0q"/>
-                                                    <constraint firstAttribute="trailing" secondItem="BOZ-Ga-2Bt" secondAttribute="trailing" id="thO-MR-Muq"/>
-                                                </constraints>
-                                            </view>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Cg6-I0-SyV">
-                                                <rect key="frame" x="0.0" y="50" width="414" height="50"/>
-                                                <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LZQ-eP-It1">
-                                                        <rect key="frame" x="0.0" y="0.0" width="310.5" height="48"/>
-                                                        <color key="backgroundColor" systemColor="secondarySystemBackgroundColor"/>
-                                                        <attributedString key="attributedText">
-                                                            <fragment content="Unable to delivery">
-                                                                <attributes>
-                                                                    <font key="NSFont" metaFont="system" size="17"/>
-                                                                    <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" firstLineHeadIndent="20" tighteningFactorForTruncation="0.0"/>
-                                                                </attributes>
-                                                            </fragment>
-                                                        </attributedString>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hwH-F2-Niw">
-                                                        <rect key="frame" x="310.5" y="0.0" width="103.5" height="48"/>
-                                                        <color key="backgroundColor" systemColor="secondarySystemBackgroundColor"/>
-                                                        <state key="normal" title="Button"/>
-                                                        <buttonConfiguration key="configuration" style="plain" image="ic_radio_not_checked"/>
-                                                    </button>
-                                                </subviews>
-                                                <color key="backgroundColor" systemColor="systemGray4Color"/>
-                                                <constraints>
-                                                    <constraint firstItem="hwH-F2-Niw" firstAttribute="top" secondItem="Cg6-I0-SyV" secondAttribute="top" id="VKP-jh-36V"/>
-                                                    <constraint firstAttribute="trailing" secondItem="hwH-F2-Niw" secondAttribute="trailing" id="YFP-YM-Zfw"/>
-                                                    <constraint firstItem="LZQ-eP-It1" firstAttribute="leading" secondItem="Cg6-I0-SyV" secondAttribute="leading" id="emc-zl-J0o"/>
-                                                    <constraint firstAttribute="bottom" secondItem="hwH-F2-Niw" secondAttribute="bottom" constant="2" id="g0g-C2-PUV"/>
-                                                    <constraint firstAttribute="bottom" secondItem="LZQ-eP-It1" secondAttribute="bottom" constant="2" id="kIS-Y1-cvp"/>
-                                                    <constraint firstItem="LZQ-eP-It1" firstAttribute="top" secondItem="Cg6-I0-SyV" secondAttribute="top" id="kJw-Am-WyU"/>
-                                                    <constraint firstItem="hwH-F2-Niw" firstAttribute="width" secondItem="Cg6-I0-SyV" secondAttribute="width" multiplier="0.25" id="mmp-bU-TbP"/>
-                                                    <constraint firstItem="hwH-F2-Niw" firstAttribute="leading" secondItem="LZQ-eP-It1" secondAttribute="trailing" id="zJo-B2-NXo"/>
-                                                </constraints>
-                                            </view>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lYg-mD-EYy">
-                                                <rect key="frame" x="0.0" y="100" width="414" height="50"/>
-                                                <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ocl-Mb-4lN">
-                                                        <rect key="frame" x="0.0" y="0.0" width="310.5" height="48"/>
-                                                        <color key="backgroundColor" systemColor="secondarySystemBackgroundColor"/>
-                                                        <attributedString key="attributedText">
-                                                            <fragment content="Complete">
-                                                                <attributes>
-                                                                    <font key="NSFont" metaFont="system" size="17"/>
-                                                                    <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" firstLineHeadIndent="20" tighteningFactorForTruncation="0.0"/>
-                                                                </attributes>
-                                                            </fragment>
-                                                        </attributedString>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jj9-ej-S4k">
-                                                        <rect key="frame" x="310.5" y="0.0" width="103.5" height="48"/>
-                                                        <color key="backgroundColor" systemColor="secondarySystemBackgroundColor"/>
-                                                        <state key="normal" title="Button"/>
-                                                        <buttonConfiguration key="configuration" style="plain" image="ic_radio_not_checked"/>
-                                                    </button>
-                                                </subviews>
-                                                <color key="backgroundColor" systemColor="systemGray4Color"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="trailing" secondItem="jj9-ej-S4k" secondAttribute="trailing" id="94T-ND-BKX"/>
-                                                    <constraint firstItem="jj9-ej-S4k" firstAttribute="top" secondItem="lYg-mD-EYy" secondAttribute="top" id="CiP-kk-58t"/>
-                                                    <constraint firstItem="Ocl-Mb-4lN" firstAttribute="top" secondItem="lYg-mD-EYy" secondAttribute="top" id="L5v-Pg-gLI"/>
-                                                    <constraint firstAttribute="bottom" secondItem="Ocl-Mb-4lN" secondAttribute="bottom" constant="2" id="Uzc-9A-Fml"/>
-                                                    <constraint firstItem="jj9-ej-S4k" firstAttribute="width" secondItem="lYg-mD-EYy" secondAttribute="width" multiplier="0.25" id="b3G-u4-Qni"/>
-                                                    <constraint firstItem="Ocl-Mb-4lN" firstAttribute="leading" secondItem="lYg-mD-EYy" secondAttribute="leading" id="dWB-1I-g3e"/>
-                                                    <constraint firstItem="jj9-ej-S4k" firstAttribute="leading" secondItem="Ocl-Mb-4lN" secondAttribute="trailing" id="fHP-sN-Eec"/>
-                                                    <constraint firstAttribute="bottom" secondItem="jj9-ej-S4k" secondAttribute="bottom" constant="2" id="xLv-oD-RPc"/>
-                                                </constraints>
-                                            </view>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="afC-LD-QKC" customClass="ViewRadioButon" customModule="Gas" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="150" width="414" height="50"/>
-                                                <color key="backgroundColor" systemColor="systemGray4Color"/>
-                                            </view>
-                                        </subviews>
-                                        <constraints>
-                                            <constraint firstItem="mYo-dq-mux" firstAttribute="leading" secondItem="FuP-bU-xck" secondAttribute="leading" id="OQN-qE-wtz"/>
-                                            <constraint firstAttribute="trailing" secondItem="mYo-dq-mux" secondAttribute="trailing" id="aFt-0T-Gb0"/>
-                                            <constraint firstItem="mYo-dq-mux" firstAttribute="top" secondItem="FuP-bU-xck" secondAttribute="top" id="sRY-Fr-dST"/>
-                                        </constraints>
+                                        <rect key="frame" x="0.0" y="200.5" width="414" height="128"/>
                                     </stackView>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2m5-96-lS0">
-                                        <rect key="frame" x="40" y="450.5" width="334" height="45"/>
+                                        <rect key="frame" x="40" y="378.5" width="334" height="45"/>
                                         <color key="backgroundColor" name="AccentColor"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="45" id="Dvm-gN-Kff"/>
@@ -688,17 +572,19 @@
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
-                                    <constraint firstAttribute="bottom" secondItem="2m5-96-lS0" secondAttribute="bottom" id="1Y1-v9-amx"/>
+                                    <constraint firstItem="2m5-96-lS0" firstAttribute="centerX" secondItem="5Rc-dB-X23" secondAttribute="centerX" id="3kI-tz-VhH"/>
                                     <constraint firstItem="KNT-gM-rjj" firstAttribute="top" secondItem="5Rc-dB-X23" secondAttribute="top" id="7gS-iv-171"/>
                                     <constraint firstItem="FuP-bU-xck" firstAttribute="leading" secondItem="5Rc-dB-X23" secondAttribute="leading" id="AaJ-TC-rj8"/>
                                     <constraint firstItem="KNT-gM-rjj" firstAttribute="top" secondItem="5Rc-dB-X23" secondAttribute="top" id="HBI-Oj-xzM"/>
                                     <constraint firstItem="2m5-96-lS0" firstAttribute="leading" relation="lessThanOrEqual" secondItem="5Rc-dB-X23" secondAttribute="leading" constant="40" id="IwF-xa-oV8"/>
                                     <constraint firstItem="Ke1-RJ-cc6" firstAttribute="height" secondItem="KNT-gM-rjj" secondAttribute="height" multiplier="0.2" id="MhS-yt-FWi"/>
                                     <constraint firstItem="KNT-gM-rjj" firstAttribute="leading" secondItem="5Rc-dB-X23" secondAttribute="leading" id="PKF-qN-yyn"/>
+                                    <constraint firstAttribute="bottom" secondItem="2m5-96-lS0" secondAttribute="bottom" constant="380.5" id="QDR-6I-w8C"/>
                                     <constraint firstItem="KNT-gM-rjj" firstAttribute="centerX" secondItem="5Rc-dB-X23" secondAttribute="centerX" id="RxR-ok-LjN"/>
+                                    <constraint firstItem="2m5-96-lS0" firstAttribute="top" secondItem="FuP-bU-xck" secondAttribute="bottom" constant="50" id="SPC-FX-Mfy"/>
                                     <constraint firstItem="KNT-gM-rjj" firstAttribute="trailing" secondItem="5Rc-dB-X23" secondAttribute="trailing" id="ako-q1-v1E"/>
                                     <constraint firstAttribute="trailing" relation="lessThanOrEqual" secondItem="2m5-96-lS0" secondAttribute="trailing" constant="40" id="eja-ws-ZMe"/>
-                                    <constraint firstItem="2m5-96-lS0" firstAttribute="top" secondItem="FuP-bU-xck" secondAttribute="bottom" constant="50" id="pVZ-Q4-mS9"/>
+                                    <constraint firstAttribute="bottom" secondItem="KNT-gM-rjj" secondAttribute="bottom" constant="604" id="gQh-jp-lOe"/>
                                     <constraint firstItem="FuP-bU-xck" firstAttribute="top" secondItem="KNT-gM-rjj" secondAttribute="bottom" constant="0.33000000000000002" id="uY1-Ox-UDk"/>
                                     <constraint firstItem="FuP-bU-xck" firstAttribute="trailing" secondItem="5Rc-dB-X23" secondAttribute="trailing" id="uuF-8G-Fh7"/>
                                 </constraints>
@@ -727,7 +613,6 @@
                         <outlet property="lblStatus" destination="3b1-0Z-jLq" id="QlQ-4d-7Ec"/>
                         <outlet property="stackView" destination="FuP-bU-xck" id="nU4-yW-rsM"/>
                         <outlet property="viewInfomation" destination="KNT-gM-rjj" id="zwH-fw-YRu"/>
-                        <outlet property="viewRadio" destination="mYo-dq-mux" id="xxg-gV-YBK"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1eA-Yh-52T" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -2683,7 +2568,7 @@ Cgo
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BCD-Yw-nr7" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3194" y="1264"/>
+            <point key="canvasLocation" x="57" y="1229"/>
         </scene>
         <!--Pass Screen View Controller-->
         <scene sceneID="Z0a-7j-C8f">
@@ -2883,7 +2768,6 @@ Cgo
         <image name="checkmarkEmpty" width="15" height="15"/>
         <image name="downAnimation" width="59" height="20"/>
         <image name="ic_check_off" width="18" height="18"/>
-        <image name="ic_radio_not_checked" width="26" height="26"/>
         <image name="line.3.horizontal" catalog="system" width="128" height="65"/>
         <image name="locationGPS" width="30" height="30"/>
         <image name="map" catalog="system" width="128" height="112"/>

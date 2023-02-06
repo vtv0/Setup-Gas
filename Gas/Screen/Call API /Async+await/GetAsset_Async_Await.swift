@@ -7,16 +7,12 @@
 
 import UIKit
 import Alamofire
- 
- 
-class GetAsset_Async_Await {
-    let url: String?
-    let companyCode = UserDefaults.standard.string(forKey: "companyCode") ?? ""
 
+
+class GetAsset_Async_Await {
     
-    init(url: String?) {
-        self.url = url
-    }
+    let url: String? = nil
+    let companyCode = UserDefaults.standard.string(forKey: "companyCode") ?? ""
     
     func makeHeaders(token: String) -> HTTPHeaders {
         var headers: [String: String] = [:]
@@ -25,32 +21,19 @@ class GetAsset_Async_Await {
     }
     
     func getGetAsset_Async_Await(forAsset iassetID: String) async throws -> GetAsset {
-        let getAsset = GetAsset()
+        var getAsset = GetAsset()
         let token = UserDefaults.standard.string(forKey: "accessToken") ?? ""
         let urlGetAsset = "https://\(companyCode).kiiapps.com/am/api/assets/\(iassetID)"
-        AF.request(urlGetAsset, method: .get, parameters: nil, headers: self.makeHeaders(token: token))
-            .responseDecodable(of: GetAsset.self) { response1 in
-                
-//                self.numberOfCallsToGetAsset += 1
-                switch response1.result {
-                case .success( let value):
-                    print(value)
-//                    completion(value)
-                case .failure(let error):
-                    print("\(error)")
-//                    completion(nil)
-                }
-                
-//                if self.numberAssetIDOf7Date == self.numberOfCallsToGetAsset {
-//                    print(self.numberAssetIDOf7Date)
-//                    print(self.numberOfCallsToGetAsset)
-//                    self.hideActivity()
-//                    self.reDrawMarkers()
-//                }
-            }
+        let getAsset1 = AF.request(urlGetAsset, method: .get, parameters: nil, headers: self.makeHeaders(token: token)).serializingDecodable(GetAsset.self)
+        let getAssetResponse = await getAsset1.response
+        
+        switch getAssetResponse.result {
+        case .success( let value):
+            getAsset = value
+        case .failure(let error):
+            print("\(error)")
+        }
         return getAsset
     }
-    func loadAPIGetAsset(){}
-    
     
 }

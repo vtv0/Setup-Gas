@@ -118,79 +118,53 @@ class DeliveryListController: UIViewController, UIPickerViewDelegate, UIPickerVi
         
         //MARK: - Use ASYNC AWAIT
         Task {
-            await callAPI_Async_Await_Delivery()
+            await callApi_Async_Await_Deli()
         }
     }
     
-    func callAPI_Async_Await_Delivery() async {
-        // Get Me
-        
-        let token1 = UserDefaults.standard.string(forKey: "accessToken") ?? ""
-        let urlGetMe = "https://\(companyCode).kiiapps.com/am/api/me"
-        let getMe = AF.request(urlGetMe, method: .get, parameters: nil, encoding: JSONEncoding.default,headers: self.makeHeaders(token: token1)).serializingDecodable(GetMeInfo.self)
-        let getMeResponse = await getMe.response
-        switch getMeResponse.result {
-        case .success(let value):
-            print(value)
-            let userId = getMeResponse.value?.id
-            let tenantId = getMeResponse.value?.tenants[0].id
-            UserDefaults.standard.set(tenantId, forKey: "tenantId")
-            UserDefaults.standard.set(userId, forKey: "userId")
+    func callApi_Async_Await_Deli() async {
+        do {
+            let responseGetMe = try await GetMe_Async_Await().getMe_Async_Await()
+            print(responseGetMe)
             
-        case .failure(let error):
-            if getMeResponse.response?.statusCode == 401 {
-                let scr = storyboard?.instantiateViewController(withIdentifier: "LoginViewController") as! ViewController
-                navigationController?.pushViewController(scr, animated: false)
-                hideActivity()
-            }
-            print(error)
-        }
-        
-        
-        // GetLatestWorkerRouteLocationList
-        for iday in dateYMD {
-            let formatter = DateFormatter()
-            formatter.dateFormat = "yyyy-MM-dd"
-            let dateString: String = formatter.string(from: iday)
-            let url: String = "https://\(companyCode).kiiapps.com/am/exapi/vrp/tenants/\(tenantId)/latest_route/worker_users/\(userId)?workDate=\(dateString)"
-            print(url)
-            let getLatestWorkerRouteLocationList = AF.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default ,headers: self.makeHeaders(token: token1)).validate(statusCode: (200...299))
-                .serializingDecodable(GetLatestWorkerRouteLocationListInfo.self)
             
-            let workerRouteLocationListResponse = await getLatestWorkerRouteLocationList.response
-            switch workerRouteLocationListResponse.result {
-            case .success(_):
-                let countObject = workerRouteLocationListResponse.value?.locations?.count
-                let locations1: [LocationElement] = workerRouteLocationListResponse.value?.locations ?? []
-                var arrLocationValue: [Location] = []
-                if countObject != 0 {
-                    
-                    for itemObject in locations1 {
-                        arrLocationValue.append(Location.init(elem: itemObject, asset: nil))
-                    }
-                    // getWorkerRouteLocationList
-                    _ = await callApiParallel(arrLocationValue: arrLocationValue)
-                    // Get Asset
-                    
-                        for iLocationValue in arrLocationValue {
-//                            Task {
-                                if let assetID = iLocationValue.elem?.location?.assetID {
-                                    async let iasset = await getAsset_Async_Await(iassetID: assetID)
-                                    iLocationValue.asset = await iasset
-                                } else { print("No assetID -> Supplier") }
-//                            }
-                        }
-                    
-                    self.dicData[iday] = arrLocationValue
-                } else {
-                    print(getMeResponse.response?.statusCode as Any)
-                    print("\(url) =>> Array Empty, No Object ")
-                }
+            do {
+                let dicDataResponse = try await GetWorkerRouteLocationList_Async_Await().getWorkerRouteLocationList_Async_Await()
+                dicData = dicDataResponse 
                 
-            case .failure(let error):
-                print(error)
+            } catch {
+                if let err = error as? GetWorkerRouteLocationList_Async_Await.AFError {
+                    if err == .remain {
+                        showAlert(message: "Có lỗi xảy ra")
+                        hideActivity()
+                    } else if err == .notDelivery {  // 204
+                        showAlert(message: "Không giao hàng hôm nay")
+                        hideActivity()
+                    } else if err == .tokenOutOfDate {  // 401
+                        let mhLogin = self.storyboard?.instantiateViewController(identifier:  "LoginViewController") as! ViewController
+                        self.navigationController?.pushViewController(mhLogin, animated: true)
+                        hideActivity()
+                    } else {  // 404
+                        hideActivity()
+                        showAlert(message: "Lỗi API sau 16h (404)")
+                        
+                    }
+                }
             }
             
+        } catch {
+            if let err = error as? GetMe_Async_Await.AFError {
+                if err == .tokenOutOfDate {
+                    showAlert(message: "Token đã hết hạn")
+                    let mhLogin = self.storyboard?.instantiateViewController(identifier:  "LoginViewController") as! ViewController
+                    self.navigationController?.pushViewController(mhLogin, animated: true)
+                    hideActivity()
+                    
+                } else if err == .remain {
+                    showAlert(message: "Có lỗi xảy ra")
+                    hideActivity()
+                }
+            }
         }
         
         fpc = FloatingPanelController(delegate: self)
@@ -218,6 +192,7 @@ class DeliveryListController: UIViewController, UIPickerViewDelegate, UIPickerVi
         self.reDrawMarkers()
         
     }
+    
     
     func getAsset_Async_Await(iassetID: String) async -> GetAsset {
         let token1 = UserDefaults.standard.string(forKey: "accessToken") ?? ""
@@ -253,12 +228,12 @@ class DeliveryListController: UIViewController, UIPickerViewDelegate, UIPickerVi
                         group.addTask { await ( self.getAsset_Async_Await(iassetID: assetID)) }
                         
                         var arriasset: [GetAsset] = []
-//                        arriasset.append()
+                        //                        arriasset.append()
                         for await result in group {
                             arriasset.append(result)
                         }
-                            return arriasset // Biểu thức là 'async' nhưng không được đánh dấu bằng 'await'
-                     //   }
+                        return arriasset // Biểu thức là 'async' nhưng không được đánh dấu bằng 'await'
+                        //   }
                     } else { print("No assetID -> Supplier") }
                 }
                 return self.arrGetAsset
@@ -755,14 +730,6 @@ extension DeliveryListController: PassScrollView {
     }
 }
 
-extension Date {
-    public var removeTimeStamp : Date? {
-        guard let date = Calendar.current.date(from: Calendar.current.dateComponents([.year, .month, .day], from: self)) else {
-            return nil
-        }
-        return date
-    }
-}
 
 extension DeliveryListController: PassInfoCustomer {
     func passInfoCustomer(infoCustomer: Location) {

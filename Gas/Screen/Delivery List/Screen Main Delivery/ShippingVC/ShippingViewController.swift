@@ -8,16 +8,33 @@
 import UIKit
 import Alamofire
 
+enum StatusDelivery: CaseIterable {
+    case returnFailedToDeliver
+    case unableToDeliver
+    case complete
+    
+    var title: String {
+        switch self {
+            
+        case .returnFailedToDeliver:
+            return "Return failed to deliver"
+        case .unableToDeliver:
+            return "Unable to deliver"
+        case .complete:
+            return "Complete"
+        }
+    }
+}
+
 class ShippingViewController: UIViewController {
-    let arrStatus = ["Return failed to deliver", "Unable to deliver", "Complete"]
-  
+    
     var selectedRows = [IndexPath]()
     var dataInfoOneCustomer: Location = Location(elem: LocationElement(locationOrder: 0), asset: GetAsset(assetModelID: 0))
     
     @IBAction func btnExit(_ sender: Any) {
         navigationController?.popViewController(animated: true)
-     }
-
+    }
+    
     @IBAction func btnSubmit(_ sender: Any) {
         print("CLICK SUBMIT")
     }
@@ -29,7 +46,12 @@ class ShippingViewController: UIViewController {
     @IBOutlet weak var lblStatus: UILabel!
     
     @IBOutlet weak var stackView: UIStackView!
-    @IBOutlet weak var viewRadio: UIView!
+    
+    
+
+    
+    let button = [UIButton]()
+    let arrStatus = ["Return failed to deliver", "Unable to deliver", "Complete"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,7 +62,6 @@ class ShippingViewController: UIViewController {
         lblStatus.layer.cornerRadius = 8
         lblStatus.layer.masksToBounds = true
         
-        print(dataInfoOneCustomer.asset?.properties?.values.customer_name)
         lblCustomerName.text = dataInfoOneCustomer.asset?.properties?.values.customer_name
         lblDeliveryAddress.text = dataInfoOneCustomer.asset?.properties?.values.address
         if let minutes = dataInfoOneCustomer.elem?.arrivalTime?.minutes,
@@ -52,7 +73,19 @@ class ShippingViewController: UIViewController {
             }
         }
         
+        setupRadioButton()
     }
-   
+    
+    func setupRadioButton() {
+        for iStatus in StatusDelivery.allCases {
+            let statusView = ReuseViewRadioButton(frame: .zero)  //CGRect.init(x: 0, y: 0, width: 0, height: 100))
+            statusView.status = iStatus
+            statusView.loadInfo()
+            stackView.addArrangedSubview(statusView)
+            
+        }
+        
+    }
+    
 }
 

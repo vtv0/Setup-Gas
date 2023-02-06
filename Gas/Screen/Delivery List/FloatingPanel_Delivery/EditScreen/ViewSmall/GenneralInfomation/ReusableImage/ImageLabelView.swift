@@ -14,6 +14,13 @@ protocol ImageLabelViewDelegate: AnyObject {
 
 class ImageLabelView: UIView, UINavigationControllerDelegate {
     
+    @IBOutlet private weak var mainView: UIView!
+    @IBOutlet weak var mainImageView: UIImageView!
+    @IBOutlet private weak var iconImageView: UIImageView!
+    @IBOutlet private weak var labelView: UILabel!
+    @IBOutlet private weak var numberView: UILabel!
+
+    
     enum ImageType: String {
         case gasLocation1
         case gasLocation2
@@ -77,11 +84,6 @@ class ImageLabelView: UIView, UINavigationControllerDelegate {
         }
     }
     
-    @IBOutlet private weak var mainView: UIView!
-    @IBOutlet weak var mainImageView: UIImageView!
-    @IBOutlet private weak var iconImageView: UIImageView!
-    @IBOutlet private weak var labelView: UILabel!
-    @IBOutlet private weak var numberView: UILabel!
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -166,8 +168,9 @@ class ImageLabelView: UIView, UINavigationControllerDelegate {
         mainImageView.layer.cornerRadius = mainImageView.frame.size.width * 0.1
         mainImageView.clipsToBounds = true
         numberView.layer.cornerRadius = mainImageView.frame.size.width * 0.1
-        mainView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onTapView)))
+        mainView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onTapView) ))
     }
+    
     @objc private func onTapView() {
     
         ImageLabelView.delegatePassSelectedImage?.onTap(self, number: number, type: deliveryLocationType)
