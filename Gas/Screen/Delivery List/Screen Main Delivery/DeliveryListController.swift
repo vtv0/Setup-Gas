@@ -113,7 +113,7 @@ class DeliveryListController: UIViewController, UIPickerViewDelegate, UIPickerVi
         //MARK: - Use Block
         showActivity()
         
-//                        callAPI_Block_Delivery()
+        //                        callAPI_Block_Delivery()
         
         
         //MARK: - Use ASYNC AWAIT
@@ -129,8 +129,8 @@ class DeliveryListController: UIViewController, UIPickerViewDelegate, UIPickerVi
             
             
             do {
-                let dicDataResponse = try await GetWorkerRouteLocationList_Async_Await().getWorkerRouteLocationList_Async_Await()
-                dicData = dicDataResponse 
+                let dicDataResponse = try await GetWorkerRouteLocationList_Async_Await().loadDic(dates: dateYMD)   //.getWorkerRouteLocationList_Async_Await()
+                dicData = dicDataResponse
                 
             } catch {
                 if let err = error as? GetWorkerRouteLocationList_Async_Await.AFError {
@@ -155,14 +155,13 @@ class DeliveryListController: UIViewController, UIPickerViewDelegate, UIPickerVi
         } catch {
             if let err = error as? GetMe_Async_Await.AFError {
                 if err == .tokenOutOfDate {
-                    showAlert(message: "Token đã hết hạn88")
+                    hideActivity()
                     let scr = storyboard?.instantiateViewController(withIdentifier: "LoginViewController") as! ViewController
-                    self.navigationController?.pushViewController(scr, animated: false)
-                    hideActivity()
-                    
+                    self.navigationController?.pushViewController(scr, animated: true)
+                    showAlert(message: "Token đã hết hạn -> Login lại")
                 } else if err == .remain {
-                    showAlert(message: "Có lỗi xảy ra")
                     hideActivity()
+                    showAlert(message: "Có lỗi xảy ra")
                 }
             }
         }
@@ -193,6 +192,10 @@ class DeliveryListController: UIViewController, UIPickerViewDelegate, UIPickerVi
         
     }
     
+    func passScreenLogin() {
+        let scr = storyboard?.instantiateViewController(withIdentifier: "LoginViewController") as! ViewController
+        self.navigationController?.pushViewController(scr, animated: true)
+    }
     
     func getAsset_Async_Await(iassetID: String) async -> GetAsset {
         let token1 = UserDefaults.standard.string(forKey: "accessToken") ?? ""
@@ -271,19 +274,18 @@ class DeliveryListController: UIViewController, UIPickerViewDelegate, UIPickerVi
                         }
                     } else {
                         let err1 = err1
-                        print(err1)
                         switch err1 {
                         case .ok: break
                         case .tokenOutOfDate:
                             let scr = storyboard?.instantiateViewController(withIdentifier: "LoginViewController") as! ViewController
                             self.navigationController?.pushViewController(scr, animated: false)
-                                hideActivity()
+                            hideActivity()
                             
-                        case .some(.remain): break
+                        case .some(.remain): break  // 500
                             //                            showAlert(message: "Có lỗi xảy ra")
                             //                            hideActivity()
                             
-                        case .some(.wrong):
+                        case .some(.wrong):  // 404
                             showAlert(message: "Có lỗi xảy ra")
                             hideActivity()
                         case .none:
@@ -412,7 +414,7 @@ class DeliveryListController: UIViewController, UIPickerViewDelegate, UIPickerVi
             if indxes.count == 0 {
                 return 1
             }
-            return indxes.count
+            return indxes.count+1
         } else if pickerView == pickerDate {
             
             return dateYMD.count
@@ -431,6 +433,7 @@ class DeliveryListController: UIViewController, UIPickerViewDelegate, UIPickerVi
                 for (ind, _) in indxes.enumerated() {
                     arrCar.append("Car\(ind + 1)")
                 }
+                arrCar.append("AllCars")
                 return arrCar[row]
             }
             return "Car1"
@@ -476,35 +479,68 @@ class DeliveryListController: UIViewController, UIPickerViewDelegate, UIPickerVi
         self.selectedIdxDriver = driver
         self.selectesIdxStatus = status
         self.pickerDriver.reloadAllComponents()
-        var dataStatus: [Location] = locationsByDriver[driver] ?? []
-        for statusShipping in dataStatus {
-            if statusShipping.elem?.location?.metadata?.display_data?.valueDeliveryHistory() == .waiting
-                && statusShipping.elem?.location?.metadata?.display_data?.valueDeliveryHistory() == .failed &&
-                statusShipping.elem?.location?.metadata?.display_data?.valueDeliveryHistory() == .inprogress {
-                
-                dataStatus.removeAll()
-                dataStatus.append(statusShipping)
-                dataDidFilter = dataStatus
-            } else {
-                dataDidFilter = dataStatus
-            }
-        }
-        self.pickerStatus.reloadAllComponents()
-        self.totalType()
-        
-        if dataDidFilter.count > 0 {
-            for infoCustomer in dataDidFilter {
-                self.comment.append(infoCustomer.elem?.location?.comment ?? "")
-            }
-        } else {
-            // btnShipping.removeFromSuperview()
-            fpc.removePanelFromParent(animated: true)
-            lblType50kg.text = "\(0)"
-            lblType30kg.text = "\(0)"
-            lblType25kg.text = "\(0)"
-            lblType20kg.text = "\(0)"
-            lblOtherType.text = "\(0)"
+        if driver+1 < indxes.count+1 {
+            var dataStatus: [Location] = locationsByDriver[driver] ?? []
             
+            for statusShipping in dataStatus {
+                if statusShipping.elem?.location?.metadata?.display_data?.valueDeliveryHistory() == .waiting
+                    && statusShipping.elem?.location?.metadata?.display_data?.valueDeliveryHistory() == .failed &&
+                    statusShipping.elem?.location?.metadata?.display_data?.valueDeliveryHistory() == .inprogress {
+                    
+                    dataStatus.removeAll()
+                    dataStatus.append(statusShipping)
+                    dataDidFilter = dataStatus
+                } else {
+                    dataDidFilter = dataStatus
+                }
+            }
+            self.pickerStatus.reloadAllComponents()
+            self.totalType()
+            
+            if dataDidFilter.count > 0 {
+                for infoCustomer in dataDidFilter {
+                    self.comment.append(infoCustomer.elem?.location?.comment ?? "")
+                }
+            } else {
+                // btnShipping.removeFromSuperview()
+                fpc.removePanelFromParent(animated: true)
+                lblType50kg.text = "\(0)"
+                lblType30kg.text = "\(0)"
+                lblType25kg.text = "\(0)"
+                lblType20kg.text = "\(0)"
+                lblOtherType.text = "\(0)"
+                
+            }
+        } else if driver+1 == indxes.count+1 {
+            var dataStatus: [Location] = dataOneDate
+            for statusShipping in dataOneDate {
+                if statusShipping.elem?.location?.metadata?.display_data?.valueDeliveryHistory() == .waiting
+                    && statusShipping.elem?.location?.metadata?.display_data?.valueDeliveryHistory() == .failed &&
+                    statusShipping.elem?.location?.metadata?.display_data?.valueDeliveryHistory() == .inprogress {
+                    
+                    dataStatus.removeAll()
+                    dataStatus.append(statusShipping)
+                    dataDidFilter = dataStatus
+                } else {
+                    dataDidFilter = dataStatus
+                }
+            }
+            self.pickerStatus.reloadAllComponents()
+            self.totalType()
+            
+            if dataDidFilter.count > 0 {
+                for infoCustomer in dataDidFilter {
+                    self.comment.append(infoCustomer.elem?.location?.comment ?? "")
+                }
+            } else {
+                // btnShipping.removeFromSuperview()
+                fpc.removePanelFromParent(animated: true)
+                lblType50kg.text = "\(0)"
+                lblType30kg.text = "\(0)"
+                lblType25kg.text = "\(0)"
+                lblType20kg.text = "\(0)"
+                lblOtherType.text = "\(0)"
+            }
         }
         customFloatingPanel()
         return dataDidFilter

@@ -8,19 +8,23 @@
 import UIKit
 
 protocol PassStatusDelivery: AnyObject {
-    func onTap(_ sender: ReuseViewRadioButton, number :Int)
+    func onTap(_ sender: ReuseViewRadioButton, status: StatusDelivery)
 }
 
 class ReuseViewRadioButton: UIView {
-    weak var statusDelegate: PassStatusDelivery?
-
-//    @IBOutlet weak var viewContainer: ReuseViewRadioButton!
+    weak var delegateStatus: PassStatusDelivery?
+    var status: StatusDelivery!
+    
     @IBOutlet var mainView: UIView!
     @IBOutlet weak var lblInfo: UILabel!
     
-    @IBOutlet weak var btnRadioButton: UIButton!
+    @IBOutlet weak var btnRadioButton: UIButton! {
+        didSet {
+            btnRadioButton.isEnabled = false
+            btnRadioButton.setImage(UIImage(named: "ic_radio_not_checked"), for: .normal)
+        }
+    }
     
-    var status: StatusDelivery!
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -30,7 +34,7 @@ class ReuseViewRadioButton: UIView {
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         commonInit()
-//        fatalError("init(coder:) has not been implemented")
+        //        fatalError("init(coder:) has not been implemented")
     }
     
     func loadInfo() {
@@ -43,15 +47,17 @@ class ReuseViewRadioButton: UIView {
         viewReuse.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         self.addSubview(viewReuse)
         
-//        view.translatesAutoresizingMaskIntoConstraints = false
-        mainView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onTapView)))
+        //        view.translatesAutoresizingMaskIntoConstraints = false
         
+        //        mainView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onTapView)))
+        viewReuse.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onTapView)))
         
     }
+    
     @objc func onTapView() {
-        print("Ssssssss:  \(statusDelegate)")
-        statusDelegate?.onTap(self, number: 0)
+        delegateStatus?.onTap(self, status: status)
     }
+    
     
     func loadViewFromNib() -> UIView? {
         let nib = UINib(nibName: "ViewRadioButton", bundle: nil)

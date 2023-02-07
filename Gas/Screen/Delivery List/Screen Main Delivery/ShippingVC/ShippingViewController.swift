@@ -12,6 +12,7 @@ enum StatusDelivery: CaseIterable {
     case returnFailedToDeliver
     case unableToDeliver
     case complete
+    case ok
     
     var title: String {
         switch self {
@@ -22,13 +23,14 @@ enum StatusDelivery: CaseIterable {
             return "Unable to deliver"
         case .complete:
             return "Complete"
+        case .ok:
+            return "OK"
         }
     }
 }
 
 class ShippingViewController: UIViewController {
     
-    var selectedRows = [IndexPath]()
     var dataInfoOneCustomer: Location = Location(elem: LocationElement(locationOrder: 0), asset: GetAsset(assetModelID: 0))
     
     @IBAction func btnExit(_ sender: Any) {
@@ -47,11 +49,6 @@ class ShippingViewController: UIViewController {
     
     @IBOutlet weak var stackView: UIStackView!
     
-    
-
-    
-    let button = [UIButton]()
-    let arrStatus = ["Return failed to deliver", "Unable to deliver", "Complete"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -74,25 +71,34 @@ class ShippingViewController: UIViewController {
         }
         
         setupRadioButton()
+        
     }
     
     func setupRadioButton() {
         for iStatus in StatusDelivery.allCases {
-            let statusView = ReuseViewRadioButton(frame: .zero)  //CGRect.init(x: 0, y: 0, width: 0, height: 100))
+            let statusView = ReuseViewRadioButton(frame: .zero )  //CGRect.init(x: 0, y: 0, width: 0, height: 100))
             statusView.status = iStatus
+            statusView.delegateStatus = self
             statusView.loadInfo()
+            statusView.btnRadioButton.setImage(UIImage(named: "ic_radio_not_checked"), for: .normal)
             stackView.addArrangedSubview(statusView)
-            
         }
-        
     }
-    
 }
 
 extension ShippingViewController: PassStatusDelivery {
-    func onTap(_ sender: ReuseViewRadioButton, number: Int) {
-        print(number)
-    }
     
+    func onTap(_ sender: ReuseViewRadioButton, status: StatusDelivery) {
+        print(stackView.arrangedSubviews)
+        stackView.arrangedSubviews.forEach() { view in
+            let view1 = view as! ReuseViewRadioButton
+            if sender == view {
+                view1.btnRadioButton.setImage(UIImage(named: "ic_radio_checked"), for: .normal)
+            } else {
+                view1.btnRadioButton.setImage(UIImage(named: "ic_radio_not_checked"), for: .normal)
+            }
+            
+        }
+    }
     
 }
