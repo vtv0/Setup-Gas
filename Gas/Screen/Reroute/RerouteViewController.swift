@@ -25,6 +25,7 @@ class RerouteViewController: UIViewController {
         
     }
     
+    @IBOutlet weak var txtView: UITextView!
     
     @IBAction func btnCancel(_ sender: Any) {
         let alert  = UIAlertController(title: "Thông báo", message: "Bạn có muốn thoát màn hình Reroute", preferredStyle: .alert)
@@ -41,9 +42,11 @@ class RerouteViewController: UIViewController {
         super.viewDidLoad()
         title = "Reroute"
         
+        txtView.isEditable = false
+        
 //        self.navigationController?.navigationBar.backgroundColor = .systemBlue
 //        self.navigationItem.rightBarButtonItem?.tintColor = .white
-//        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
+        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
         
     }
     

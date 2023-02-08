@@ -73,6 +73,8 @@ class FloatingPanelDeliveryVC: UIViewController, UIPageViewControllerDelegate, U
         
     }
     
+    
+    // thiet lap cac view
     func setupPageViewController() {
         // PageViewController
         self.pageController = storyboard?.instantiateViewController(withIdentifier: "TabsPageViewController") as! TabsPageViewController
@@ -86,7 +88,6 @@ class FloatingPanelDeliveryVC: UIViewController, UIPageViewControllerDelegate, U
         
         // Set the selected ViewController in the PageViewController when the app starts
         pageController.setViewControllers([showViewController(currentIndex)!], direction: .forward, animated: true, completion: nil)
-        
         // PageViewController Constraints
         self.pageController.view.translatesAutoresizingMaskIntoConstraints = true
         NSLayoutConstraint.activate([
@@ -95,14 +96,15 @@ class FloatingPanelDeliveryVC: UIViewController, UIPageViewControllerDelegate, U
             self.pageController.view.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
             self.pageController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
         ])
-        self.pageController.didMove(toParent: self)
         
+        self.pageController.didMove(toParent: self)
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         // Refresh CollectionView Layout when you rotate the device
         detailsTabsView.collectionView.collectionViewLayout.invalidateLayout()
+        
     }
     
     
@@ -118,7 +120,6 @@ class FloatingPanelDeliveryVC: UIViewController, UIPageViewControllerDelegate, U
         contentVC.dataInfoOneCustomer = dataDidFilter[index]
         contentVC.comment = comment[index]
         
-         let shippingVC = storyboard?.instantiateViewController(withIdentifier: "DeliveryListController") as? DeliveryListController
         
         return contentVC
     }
@@ -130,7 +131,7 @@ class FloatingPanelDeliveryVC: UIViewController, UIPageViewControllerDelegate, U
         if finished {
             if completed {
                 
-                guard let vc = pageViewController.viewControllers?.first as? PageDetailVC else { return }
+                guard let vc = pageViewController.viewControllers?[0] as? PageDetailVC else { return }
                 var index: Int
                 
                 index = getVCPageIndex(vc)

@@ -27,6 +27,8 @@ protocol PassImageDelegateProtocol: AnyObject {
     func passUrlParkingPlace7(urlImage7: String)
     func passUrlParkingPlace8(urlImage8: String)
     func passNotes(notes: String)
+    
+    func passUrlImage(urlImage: [String])
 }
 
 protocol PassInfoCustomer: AnyObject {
@@ -118,7 +120,7 @@ class PageDetailVC: UIViewController, UIScrollViewDelegate, UICollectionViewDele
         
         guard let generalInforVC = storyboard?.instantiateViewController(withIdentifier: "GeneralInfoController") as? GeneralInfoController else { return }
         delegatePassImage = generalInforVC
-        
+        var listUrlImage: [String] = []
         if let gasLocation1 = dataInfoOneCustomer.asset?.properties?.values.gas_location1,
            let gasLocation2 = dataInfoOneCustomer.asset?.properties?.values.gas_location2,
            let gasLocation3 = dataInfoOneCustomer.asset?.properties?.values.gas_location3,
@@ -140,7 +142,19 @@ class PageDetailVC: UIViewController, UIScrollViewDelegate, UICollectionViewDele
             delegatePassImage?.passUrlParkingPlace8(urlImage8: parkingPlace8)
             
             delegatePassImage?.passNotes(notes: notes)
+           
+            listUrlImage.append(gasLocation1)
+            listUrlImage.append(gasLocation2)
+            listUrlImage.append(gasLocation3)
+            listUrlImage.append(gasLocation4)
+            listUrlImage.append(parkingPlace5)
+            listUrlImage.append(parkingPlace6)
+            listUrlImage.append(parkingPlace7)
+            listUrlImage.append(parkingPlace8)
+            
         }
+        
+        delegatePassImage?.passUrlImage(urlImage: listUrlImage)
         
         
         if dataInfoOneCustomer.type == .supplier {

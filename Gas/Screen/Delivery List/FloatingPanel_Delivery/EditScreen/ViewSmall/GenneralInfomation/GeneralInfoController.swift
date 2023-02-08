@@ -117,6 +117,10 @@ extension GeneralInfoController: ImageLabelViewDelegate {
 }
 
 extension GeneralInfoController: PassImageDelegateProtocol {
+    func passUrlImage(urlImage: [String]) {
+        print(urlImage)
+    }
+    
     func passNotes(notes: String) {
         UserDefaults.standard.set(notes, forKey: "Notes")
     }

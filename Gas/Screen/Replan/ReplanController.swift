@@ -10,17 +10,21 @@ import FloatingPanel
 import Alamofire
 import MapKit
 
-class MyFloatingPanelLayout1: FloatingPanelLayout {
-    var position: FloatingPanel.FloatingPanelPosition = .bottom
-    var initialState: FloatingPanel.FloatingPanelState = .tip
-    let anchors: [FloatingPanelState: FloatingPanelLayoutAnchoring] = [
-        .tip: FloatingPanelLayoutAnchor(absoluteInset: 147.0, edge: .bottom, referenceGuide: .safeArea),
-        .full: FloatingPanelLayoutAnchor(absoluteInset: 1.0, edge: .top, referenceGuide: .safeArea),
-    ]
+//class MyFloatingPanelLayout1: FloatingPanelLayout {
+//    var position: FloatingPanel.FloatingPanelPosition = .bottom
+//    var initialState: FloatingPanel.FloatingPanelState = .tip
+//    let anchors: [FloatingPanelState: FloatingPanelLayoutAnchoring] = [
+//        .tip: FloatingPanelLayoutAnchor(absoluteInset: 147.0, edge: .bottom, referenceGuide: .safeArea),
+//        .full: FloatingPanelLayoutAnchor(absoluteInset: 1.0, edge: .top, referenceGuide: .safeArea),
+//    ]
+//}
+
+protocol UncheckBtnViewCellProtocol: AnyObject {
+    func uncheck(listUnCheck: [Int])
 }
 
 class ReplanController: UIViewController, FloatingPanelControllerDelegate {
-    
+    weak var delegateUncheck: UncheckBtnViewCellProtocol?
     
     var fpc = FloatingPanelController()
     var t: Int = 0
@@ -41,7 +45,7 @@ class ReplanController: UIViewController, FloatingPanelControllerDelegate {
     
     var backList_Replan: [Location] = []
     var listRemove = [Location]()
-   
+    
     var listLastIndDriver = [Int]()
     var lastIndDriver1 = 0
     var lastIndDriver2 = 0
@@ -76,10 +80,9 @@ class ReplanController: UIViewController, FloatingPanelControllerDelegate {
     
     @IBOutlet weak var btnClear: UIButton!
     @IBAction func btnClear(_ sender: Any) {
-        listIndex.removeAll()
         
-        let view = fpc.contentViewController as! ContentReplanController
-        view.myTableView.reloadData()
+        delegateUncheck?.uncheck(listUnCheck: listIndex)
+        listIndex.removeAll()
         
     }
     
@@ -132,9 +135,9 @@ class ReplanController: UIViewController, FloatingPanelControllerDelegate {
         
         self.view.bringSubviewToFront(stackViewLarge)
         self.view.bringSubviewToFront(viewPicker)
-     
+        
         fpc = FloatingPanelController(delegate: self)
-        fpc.layout = MyFloatingPanelLayout1()
+        fpc.layout = MyFloatingPanelLayout()
         
         pickerDriver.dataSource = self
         pickerDriver.delegate = self
@@ -156,7 +159,7 @@ class ReplanController: UIViewController, FloatingPanelControllerDelegate {
     func floatingPanel() {
         
         guard let contentVC = storyboard?.instantiateViewController(withIdentifier: "ContentReplanController") as? ContentReplanController else { return }
-        
+        delegateUncheck = contentVC as? any UncheckBtnViewCellProtocol
         contentVC.delegatePassData = self
         contentVC.dataDidFilter_Content = dataDidFilter_Replan  // da duoc loc
         
@@ -169,7 +172,7 @@ class ReplanController: UIViewController, FloatingPanelControllerDelegate {
         fpc.addPanel(toParent: self)
         
         fpc.track(scrollView: (contentVC.myTableView))
-                               
+        
         
         self.view.bringSubviewToFront(btnClear)
         self.view.bringSubviewToFront(btnReplace)
@@ -464,27 +467,27 @@ extension ReplanController: MKMapViewDelegate {
         var listLocationOrder = [Int]()
         
         // tao [10, 31, 56]
-//        for (ind, ivalue) in indxes.enumerated() {
-//            if ind == 0 {
-//                for (ind, picker) in dataDidFilter_Replan.enumerated() where picker.type == .customer {
-//                    listLocationOrder.append(ind + 1)
-//                    picker.elem?.locationOrder = ind + 1
-//                }
-//                listLastIndDriver.append(listLocationOrder.last ?? 0)
-//                print(listLastIndDriver)
-//            } else if selectedIdxDriver > 0 {
-//
-//            }
-//        }
-
+        //        for (ind, ivalue) in indxes.enumerated() {
+        //            if ind == 0 {
+        //                for (ind, picker) in dataDidFilter_Replan.enumerated() where picker.type == .customer {
+        //                    listLocationOrder.append(ind + 1)
+        //                    picker.elem?.locationOrder = ind + 1
+        //                }
+        //                listLastIndDriver.append(listLocationOrder.last ?? 0)
+        //                print(listLastIndDriver)
+        //            } else if selectedIdxDriver > 0 {
+        //
+        //            }
+        //        }
+        
         // thay doi so luong cua tung xe ->  thi duoc cap nhat lai
-//        for idic in dicData where idic.key == dateYMD[selectedIdxDate] {
-//            for (ind, ivalue) in idic.value.enumerated() where ivalue.type == .customer {   // 54 customer
-//                if ivalue.elem?.location?.metadata?.display_data?.moveToFirstDay != true  {
-//                    print(ind)
-//                }
-//            }
-//        }
+        //        for idic in dicData where idic.key == dateYMD[selectedIdxDate] {
+        //            for (ind, ivalue) in idic.value.enumerated() where ivalue.type == .customer {   // 54 customer
+        //                if ivalue.elem?.location?.metadata?.display_data?.moveToFirstDay != true  {
+        //                    print(ind)
+        //                }
+        //            }
+        //        }
         
         if selectedIdxDriver == 1 {
             print(dataDidFilter_Replan.count)   // 20 xe
@@ -505,25 +508,25 @@ extension ReplanController: MKMapViewDelegate {
         } else if selectedIdxDriver > 0 {
             if selectedIdxDriver == 1 {
                 for (ind, picker) in dataDidFilter_Replan.enumerated() where picker.type == .customer {
-                   picker.elem?.locationOrder = lastIndDriver1 + 2 + ind
-                   listLocationOrder.append(lastIndDriver1 + 2 + ind)
+                    picker.elem?.locationOrder = lastIndDriver1 + 2 + ind
+                    listLocationOrder.append(lastIndDriver1 + 2 + ind)
                 }
                 lastIndDriver2 = listLocationOrder.last ?? 0
             } else if selectedIdxDriver+1 == indxes.count {
                 for (ind, picker) in dataDidFilter_Replan.enumerated() where picker.type == .customer {
-                   picker.elem?.locationOrder = lastIndDriver2 + 2 + ind
-                   listLocationOrder.append(lastIndDriver2 + 2 + ind)
+                    picker.elem?.locationOrder = lastIndDriver2 + 2 + ind
+                    listLocationOrder.append(lastIndDriver2 + 2 + ind)
                 }
             }
         }
         
         
-//
-//        for idic in dicData where idic.key == dateYMD[selectedIdxDate] {
-//            for (ind, ivalue) in idic.value.enumerated() where ivalue.type == .customer {   // 54 customer
-//                print(ivalue.elem?.locationOrder)
-//            }
-//        }
+        //
+        //        for idic in dicData where idic.key == dateYMD[selectedIdxDate] {
+        //            for (ind, ivalue) in idic.value.enumerated() where ivalue.type == .customer {   // 54 customer
+        //                print(ivalue.elem?.locationOrder)
+        //            }
+        //        }
         
         
         // Marker in MKMap
@@ -574,7 +577,6 @@ extension ReplanController: MKMapViewDelegate {
                     mapView.addAnnotation(locationOfCustomer)
                 }
             }
-            
         }
         
         if dataDidFilter_Replan.count > 0 {

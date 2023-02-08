@@ -16,8 +16,9 @@ class EditViewController: UIViewController {
     @IBAction func btnExit(_ sender: Any) {
         let alert = UIAlertController(title: "Thông báo", message: "Bạn chắc chắn thoát Edit", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
-            let FloatingPanel = self.storyboard?.instantiateViewController(withIdentifier: "DeliveryListController") as! DeliveryListController
-            self.navigationController?.setViewControllers([FloatingPanel], animated: true)
+            self.dismiss(animated: true)
+//            let FloatingPanel = self.storyboard?.instantiateViewController(withIdentifier: "DeliveryListController") as! DeliveryListController
+//            self.navigationController?.setViewControllers([FloatingPanel], animated: true)
         }))
         alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: nil))
         self.present(alert, animated: true, completion: nil)

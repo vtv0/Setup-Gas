@@ -110,6 +110,8 @@ class DeliveryListController: UIViewController, UIPickerViewDelegate, UIPickerVi
     override func viewDidLoad() {
         super.viewDidLoad()
         self.sevenDay()
+        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
+
         //MARK: - Use Block
         showActivity()
         
@@ -122,16 +124,14 @@ class DeliveryListController: UIViewController, UIPickerViewDelegate, UIPickerVi
         }
     }
     
+    
     func callApi_Async_Await_Deli() async {
         do {
             let responseGetMe = try await GetMe_Async_Await().getMe_Async_Await()
             print(responseGetMe)
-            
-            
             do {
                 let dicDataResponse = try await GetWorkerRouteLocationList_Async_Await().loadDic(dates: dateYMD)   //.getWorkerRouteLocationList_Async_Await()
                 dicData = dicDataResponse
-                
             } catch {
                 if let err = error as? GetWorkerRouteLocationList_Async_Await.AFError {
                     if err == .remain {
@@ -425,7 +425,6 @@ class DeliveryListController: UIViewController, UIPickerViewDelegate, UIPickerVi
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         if pickerView == pickerStatus {
-            
             return statusDelivery[row]
         } else if pickerView == pickerDriver {
             var arrCar: [String] = []
@@ -563,6 +562,8 @@ class DeliveryListController: UIViewController, UIPickerViewDelegate, UIPickerVi
             arrFacilityData.removeAll()
             fpc.addPanel(toParent: self)
             fpc.set(contentViewController: contentDeliveryVC)
+            guard let scrollview = contentDeliveryVC.pageController.viewControllers?[0] as? PageDetailVC else { return }
+            fpc.track(scrollView: scrollview.viewContainerScrollview)
         }
         var value: [ValuesDetail] = []
         for iArrGetAssetOneDay in assetAday where iArrGetAssetOneDay.properties?.values != nil {
@@ -669,6 +670,7 @@ class DeliveryListController: UIViewController, UIPickerViewDelegate, UIPickerVi
         }
         passIndexSelectedMarker = 0
     }
+    
 }
 
 

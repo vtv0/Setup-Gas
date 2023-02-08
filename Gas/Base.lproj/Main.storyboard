@@ -1525,11 +1525,18 @@
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iP8-rM-ygU">
                                 <rect key="frame" x="0.0" y="142" width="414" height="754"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                <string key="text">Trong khi đó, người con trai thứ 18 của Hùng Vương, là Tiết Liêu (còn gọi là Lang Liêu) có tính tình hiền hậu, lối sống đạo đức, hiếu thảo với cha mẹ. Vì mẹ mất sớm, thiếu người chỉ vẽ, nên ông lo lắng không biết làm thế nào.
+                                <mutableString key="text">Đặt lại lộ trình giao hàng từ vị trí hiện tại của bạn.
 
-Một hôm, Tiết Liêu nằm mộng thấy có vị Thần đến bảo: “Này con, vật trong Trời Đất không có gì quý bằng gạo, vì gạo là thức ăn nuôi sống con người. Con hãy nên lấy gạo nếp làm bánh hình tròn và hình vuông, để tượng hình Trời và Đất. Hãy lấy lá bọc ngoài, đặt nhân trong ruột bánh, để tượng hình Cha Mẹ sinh thành.”
+Sắp xếp các điểm đến chưa được gửi theo thứ tự phù hợp nhất từ ​​vị trí hiện tại.
+(Nếu có một mặt hàng chưa được giao cho phương tiện đầu tiên, thì phần chưa được giao cho chỉ phương tiện đầu tiên sẽ được đặt lại.)
 
-Tiết Liêu tỉnh dậy, vô cùng mừng rỡ. Ông làm theo lời Thần dặn, chọn gạo nếp thật tốt làm bánh vuông để tượng hình Đất, bỏ vào chõ chưng chín gọi là Bánh Chưng. Và ông giã xôi làm bánh tròn, để tượng hình Trời, gọi là Bánh Dầỵ Còn lá xanh bọc ở ngoài và nhân ở trong ruột bánh là tượng hình cha mẹ yêu thương đùm bọc con cái.</string>
+* Trước khi thực hiện định tuyến lại, vui lòng hoàn tất việc đăng ký các điểm giao hàng đã đến và các điểm giao hàng không thể đến.
+
+* Phải mất thời gian để thiết lập lại.
+
+*Sau khi thực hiện định tuyến lại, thứ tự giao hàng ban đầu không thể khôi phục được.
+
+*Ngay cả khi bạn di chuyển từ vị trí hiện tại của mình, tuyến đường tối ưu từ vị trí được định tuyến lại sẽ được đặt.</mutableString>
                                 <color key="textColor" systemColor="labelColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -1576,6 +1583,9 @@ Tiết Liêu tỉnh dậy, vô cùng mừng rỡ. Ông làm theo lời Thần d�
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="txtView" destination="iP8-rM-ygU" id="f7Y-MK-GFT"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qxd-6T-4mc" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -1653,6 +1663,9 @@ Tiết Liêu tỉnh dậy, vô cùng mừng rỡ. Ông làm theo lời Thần d�
                             <constraint firstItem="qBs-a4-Xuz" firstAttribute="leading" secondItem="dfs-vU-ilx" secondAttribute="leading" constant="20" id="rtG-EI-MIe"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="viewAlert" destination="qBs-a4-Xuz" id="Gxd-yo-dmi"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hIA-iU-WhY" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>

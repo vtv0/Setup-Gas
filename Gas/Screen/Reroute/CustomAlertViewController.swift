@@ -17,9 +17,12 @@ class CustomAlertViewController: UIViewController {
         dismiss(animated: false)
         
     }
+    
+    @IBOutlet weak var viewAlert: UIView!
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        viewAlert.layer.cornerRadius = 12
+        viewAlert.layer.masksToBounds = true
        
     }
 }

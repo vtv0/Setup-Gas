@@ -12,7 +12,7 @@ enum StatusDelivery: CaseIterable {
     case returnFailedToDeliver
     case unableToDeliver
     case complete
-    case ok
+//    case ok
     
     var title: String {
         switch self {
@@ -23,8 +23,8 @@ enum StatusDelivery: CaseIterable {
             return "Unable to deliver"
         case .complete:
             return "Complete"
-        case .ok:
-            return "OK"
+//        case .ok:
+//            return "OK"
         }
     }
 }

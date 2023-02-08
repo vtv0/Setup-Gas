@@ -12,8 +12,8 @@ protocol PassDataDelegateProtocol: AnyObject {
     func uncheck(isCustomer: Location, indexDriver: Int, indexDate: Int, indexPath: Int)
 }
 
-class ContentReplanController: UIViewController, UITableViewDataSource, UITableViewDelegate {
-   
+class ContentReplanController: UIViewController, UITableViewDataSource, UITableViewDelegate, UncheckBtnViewCellProtocol {
+    
     weak var delegatePassData: PassDataDelegateProtocol?
     
     var dicData: [Date: [Location]] = [:]
@@ -37,16 +37,24 @@ class ContentReplanController: UIViewController, UITableViewDataSource, UITableV
     
     var backList = [Location]()
     
+    var listUncheckReplanContent: [Int] = []
+    
+    func uncheck(listUnCheck: [Int]) {
+        listUncheckReplanContent = listUnCheck
+        selectedRows.removeAll()
+        myTableView.reloadData()
+    }
+    
     @IBOutlet weak var myTableView: UITableView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         myTableView.reloadData()
+        myTableView.dataSource = self
+        myTableView.delegate = self
         for iCustomer in dataDidFilter_Content where iCustomer.type == .customer {
             arrIsCustomer.append(iCustomer)
         }
-        myTableView.dataSource = self
-        myTableView.delegate = self
     }
     
     // myTableView dataSource
@@ -77,7 +85,7 @@ class ContentReplanController: UIViewController, UITableViewDataSource, UITableV
         
         if  dataDidFilter_Content[indexPath.row].elem?.location?.metadata?.display_data?.moveToFirstDay == true && selectedIdxDate != 0 {
             
-           cell.btnCheckbox.setImage(UIImage(named: "ic_check_on"), for: .normal)
+            cell.btnCheckbox.setImage(UIImage(named: "ic_check_on"), for: .normal)
             cell.contentView.backgroundColor = .darkGray
         } else {
             cell.contentView.backgroundColor = .systemBackground
@@ -86,6 +94,11 @@ class ContentReplanController: UIViewController, UITableViewDataSource, UITableV
         
         if selectedRows.contains(indexPath) {
             cell.btnCheckbox.setImage(UIImage(named: "ic_check_on"), for: .normal)
+        }
+        
+        if !listUncheckReplanContent.isEmpty {
+            cell.btnCheckbox.setImage(UIImage(named: "ic_check_off"), for: .normal)
+            listUncheckReplanContent.remove(at: 0)
         }
         
         return cell
