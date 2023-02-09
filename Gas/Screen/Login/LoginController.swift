@@ -157,7 +157,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
             btnSaveAccount.setImage(UIImage(named: "checkmarkEmpty"), for: .normal)
         }
         
-        imgIcon.image = UIImage(named:"Icon-1024")
+        imgIcon.image = UIImage(named:"application_splash_logo")
         
         //        Task {
         //            await aaa()
