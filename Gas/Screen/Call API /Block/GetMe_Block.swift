@@ -22,6 +22,13 @@ class GetMe_Block {
     let url: String? = nil
     let companyCode = UserDefaults.standard.string(forKey: "companyCode") ?? ""
     
+    enum CaseError: Error {
+        case ok
+        case tokenOutOfDate
+        case wrongPassword
+        case remain
+    }
+    
     func makeHeaders(token: String) -> HTTPHeaders {
         var headers: [String: String] = [:]
         headers["Authorization"] = "Bearer " + token
@@ -30,7 +37,6 @@ class GetMe_Block {
     
     func getMe_Block(commpanyCode: String, acccessToken: String, completion: @escaping ([Int],(CaseError)) -> Void ) {
         let urlGetMe = "https://\(companyCode).kiiapps.com/am/api/me"
-    
         let token = UserDefaults.standard.string(forKey: "accessToken") ?? ""
       
         var arrID = [Int]()
@@ -55,12 +61,7 @@ class GetMe_Block {
         
     }
     
-    enum CaseError: String {
-        case ok
-        case tokenOutOfDate
-        case wrongPassword
-        case remain
-    }
+    
 
     
 }

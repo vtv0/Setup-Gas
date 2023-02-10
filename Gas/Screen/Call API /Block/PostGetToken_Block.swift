@@ -14,13 +14,16 @@ struct AccountInfo: Decodable {
     var token_type: String
 }
 
-enum FetcherError: Error {
-    case invalidURL
-    case missingData
-}
-
 class PostGetToken_Block {
     let url: String? = nil
+    
+    enum CaseError: Error {
+        case ok
+        case wrongURL
+        case tokenOutOfDate
+        case wrongPassword
+        case remain
+    }
     
     func postGetToken_Block(username: String, pass: String, companyCode: String, completion: @escaping ( ((String?), (CaseError?) ) -> Void)) {
         let parameters: [String: Any] = ["username": username, "password": pass, "expiresAt": Int64(Calendar.current.date(byAdding: .hour, value: 12, to: Date())!.timeIntervalSince1970 * 1000), "grant_type": "password" ]
@@ -56,13 +59,7 @@ class PostGetToken_Block {
             }
     }
     
-    enum CaseError: String {
-        case ok
-        case wrongURL
-        case tokenOutOfDate
-        case wrongPassword
-        case remain
-    }
+    
     
 }
 

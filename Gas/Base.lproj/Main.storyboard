@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="5L7-f5-pjp">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="h41-sy-BzJ">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <accessibilityOverrides boldText="YES" buttonShapes="YES" onOffLabels="YES" increaseContrast="YES" reduceTransparency="YES" dynamicTypePreference="1"/>
     <dependencies>
@@ -1525,11 +1525,11 @@
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iP8-rM-ygU">
                                 <rect key="frame" x="0.0" y="153" width="393" height="699"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                <mutableString key="text">Trong khi đó, người con trai thứ 18 của Hùng Vương, là Tiết Liêu (còn gọi là Lang Liêu) có tính tình hiền hậu, lối sống đạo đức, hiếu thảo với cha mẹ. Vì mẹ mất sớm, thiếu người chỉ vẽ, nên ông lo lắng không biết làm thế nào.
+                                <string key="text">Trong khi đó, người con trai thứ 18 của Hùng Vương, là Tiết Liêu (còn gọi là Lang Liêu) có tính tình hiền hậu, lối sống đạo đức, hiếu thảo với cha mẹ. Vì mẹ mất sớm, thiếu người chỉ vẽ, nên ông lo lắng không biết làm thế nào.
 
 Một hôm, Tiết Liêu nằm mộng thấy có vị Thần đến bảo: “Này con, vật trong Trời Đất không có gì quý bằng gạo, vì gạo là thức ăn nuôi sống con người. Con hãy nên lấy gạo nếp làm bánh hình tròn và hình vuông, để tượng hình Trời và Đất. Hãy lấy lá bọc ngoài, đặt nhân trong ruột bánh, để tượng hình Cha Mẹ sinh thành.”
 
-Tiết Liêu tỉnh dậy, vô cùng mừng rỡ. Ông làm theo lời Thần dặn, chọn gạo nếp thật tốt làm bánh vuông để tượng hình Đất, bỏ vào chõ chưng chín gọi là Bánh Chưng. Và ông giã xôi làm bánh tròn, để tượng hình Trời, gọi là Bánh Dầỵ Còn lá xanh bọc ở ngoài và nhân ở trong ruột bánh là tượng hình cha mẹ yêu thương đùm bọc con cái.</mutableString>
+Tiết Liêu tỉnh dậy, vô cùng mừng rỡ. Ông làm theo lời Thần dặn, chọn gạo nếp thật tốt làm bánh vuông để tượng hình Đất, bỏ vào chõ chưng chín gọi là Bánh Chưng. Và ông giã xôi làm bánh tròn, để tượng hình Trời, gọi là Bánh Dầỵ Còn lá xanh bọc ở ngoài và nhân ở trong ruột bánh là tượng hình cha mẹ yêu thương đùm bọc con cái.</string>
                                 <color key="textColor" systemColor="labelColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -1576,6 +1576,9 @@ Tiết Liêu tỉnh dậy, vô cùng mừng rỡ. Ông làm theo lời Thần d�
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="txtView" destination="iP8-rM-ygU" id="rwN-zB-3n3"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qxd-6T-4mc" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>

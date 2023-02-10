@@ -10,11 +10,12 @@ import Alamofire
 
 class GetAsset_Block {
     let url: String? = nil
-    //  var numberCallGetAsset: Int = 0
-    //
-    //    init(url: String?) {
-    //        self.url = url
-    //    }
+    
+    enum CaseError: Error {
+        case ok
+        case tokenOutOfDate
+        case remain
+    }
     
     func makeHeaders(token: String) -> HTTPHeaders {
         var headers: [String: String] = [:]
@@ -42,10 +43,5 @@ class GetAsset_Block {
                 }
             }
     }
-    enum CaseError: String {
-        case ok
-        case tokenOutOfDate
-
-        case remain
-    }
+    
 }

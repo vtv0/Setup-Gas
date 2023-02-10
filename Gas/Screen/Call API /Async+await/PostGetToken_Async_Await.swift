@@ -28,7 +28,7 @@ class PostGetToken_Async_Await {
         switch getTokenResponse.result {
         case .success(let value):
             
-            token =   getTokenResponse.value?.access_token ?? "" //  "IIGH59cpD6BiBppDEXh835uzxwIbAl6P"  
+            token = getTokenResponse.value?.access_token ?? "" //  "IIGH59cpD6BiBppDEXh835uzxwIbAl6P"
             UserDefaults.standard.set(token, forKey: "accessToken")
             
             print(value)

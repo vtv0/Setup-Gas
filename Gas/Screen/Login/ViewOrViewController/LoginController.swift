@@ -11,9 +11,18 @@ import Network
 import SystemConfiguration
 
 
-class ViewController: UIViewController, UITextFieldDelegate {
+class ViewController: UIViewController, UITextFieldDelegate, LoginVCDelegateProtocol {
+    func loginOK() {
+        let mhDeliveryList = self.storyboard?.instantiateViewController(identifier:  "DeliveryListController") as! DeliveryListController
+        self.navigationController?.pushViewController(mhDeliveryList, animated: true)
+        hideActivity()
+    }
     
+    func showAlert() {
+        //
+    }
     
+    let presenter = PresenterLogin()
     let expiredDate = Calendar.current.date(byAdding: .hour, value: 12, to: Date())!
     var dicData: [Date: [Location]] = [:]
     
@@ -41,23 +50,19 @@ class ViewController: UIViewController, UITextFieldDelegate {
     @IBAction func btnLogin(_ sender: UITextField) {
         
         self.btnSaveAccount.setImage(UIImage(named: "checkmark"), for: .normal)
-        let db = DB(UserName: "", Pass: "", CompanyCode: "")
-        db.companyCode = UserDefaults.standard.string(forKey: "companyCode") ?? ""
-        db.pass = UserDefaults.standard.string(forKey: "pass") ?? ""               // txtPass.text ?? ""
-        db.userName = UserDefaults.standard.string(forKey: "userName") ?? ""       // txtPass.text ?? ""
         if txtUserName.text!.isEmpty || txtPass.text!.isEmpty || txtcompanyCode.text!.isEmpty {
             self.showAlert(message: "Nhập đầy đủ thông tin tài khoản")
         } else {
             showActivity()
             
             //MARK: - Block
-            //           callAPI_Block()
+            presenter.callAPI_Block(name: txtUserName.text ?? "", pass: txtPass.text ?? "", companyCode: txtcompanyCode.text ?? "")
             
             
             //MARK: - Use ASYNC AWAIT
-            Task {
-                await callAPI_Async_Await()
-            }
+//            Task {
+//                await callAPI_Async_Await()
+//            }
         }
     }
     
@@ -78,7 +83,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
                         let mhLogin = self.storyboard?.instantiateViewController(identifier:  "LoginViewController") as! ViewController
                         self.navigationController?.pushViewController(mhLogin, animated: true)
                         hideActivity()
-
+                        
                     } else if err == .remain {
                         showAlert(message: "Có lỗi xảy ra")
                         hideActivity()
@@ -101,67 +106,27 @@ class ViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
-    func callAPI_Block() {
-        //       let dispatchGroup = DispatchGroup()
-        PostGetToken_Block().postGetToken_Block(username: txtUserName.text!, pass: txtPass.text!, companyCode: txtcompanyCode.text!) { [self] token, error  in
-            if token != nil {
-                UserDefaults.standard.set(token, forKey: "accessToken")
-                GetMe_Block().getMe_Block(commpanyCode: self.txtcompanyCode.text!, acccessToken: token ?? "") { (dataID, detailError) in
-                    if !dataID.isEmpty {
-                        UserDefaults.standard.set(dataID[0], forKey: "tenantId")
-                        UserDefaults.standard.set(dataID[1], forKey: "userId")
-                        let mhDeliveryList = self.storyboard?.instantiateViewController(identifier:  "DeliveryListController") as! DeliveryListController
-                        self.navigationController?.pushViewController(mhDeliveryList, animated: true)
-                        self.hideActivity()
-                    }
-                }
-            } else if token == nil {
-                let err = error
-                switch err {
-                case .wrongPassword:
-                    showAlert(message: "Sai thông tin tài khoản")
-                    hideActivity()
-                case .ok: break
-                case .tokenOutOfDate:
-                    let mhLogin = self.storyboard?.instantiateViewController(identifier:  "LoginViewController") as! ViewController
-                    self.navigationController?.pushViewController(mhLogin, animated: true)
-                    hideActivity()
-                case .remain:
-                    showAlert(message: "Có lỗi xảy ra")
-                    hideActivity()
-                case .none:
-                    break
-                case .some(.wrongURL):
-                    showAlert(message: "Sai thông tin tài khoản")
-                    hideActivity()
-                }
-            }
-        }
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.hidesBackButton = true
+        self.navigationItem.rightBarButtonItem?.isEnabled = false
         
         let showUserName = UserDefaults.standard.string(forKey: "userName") ?? ""           //"dev_driver1@dev2.test"
         let showPass = UserDefaults.standard.string(forKey: "pass") ?? ""                   // "dev123456"
         let showcompanyCode = UserDefaults.standard.string(forKey: "companyCode") ?? ""     // "am-stg-iw01j"
+        
+        presenter.loginDelegate = self
         
         if !showUserName.isEmpty {
             btnSaveAccount.setImage(UIImage(named: "checkmark"), for: .normal)
             txtUserName.text = showUserName
             txtPass.text = showPass
             txtcompanyCode.text = showcompanyCode
-            
         } else {
             btnSaveAccount.setImage(UIImage(named: "checkmarkEmpty"), for: .normal)
         }
-        
         imgIcon.image = UIImage(named:"application_splash_logo")
-        
-        //        Task {
-        //            await aaa()
-        //        }
     }
     
     
@@ -178,11 +143,6 @@ class ViewController: UIViewController, UITextFieldDelegate {
         txtcompanyCode.text = sender.text ?? ""
     }
     
-    func makeHeaders(token: String) -> HTTPHeaders {
-        var headers: [String: String] = [:]
-        headers["Authorization"] = "Bearer " + token
-        return HTTPHeaders(headers)
-    }
     
     func showAlert(title: String? = "", message: String?, completion: (() -> Void)? = nil) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
@@ -191,13 +151,6 @@ class ViewController: UIViewController, UITextFieldDelegate {
         }))
         present(alert, animated: true)
     }
-    
-    func fetchFavorites() async throws -> [Int] {
-        let url = URL(string: "https://hws.dev/user-favorites.json")!
-        let (data, _) = try await URLSession.shared.data(from: url)
-        return try JSONDecoder().decode([Int].self, from: data)
-    }
-    
     
     
 }
