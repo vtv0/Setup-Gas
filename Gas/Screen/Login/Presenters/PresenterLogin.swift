@@ -37,10 +37,6 @@ class PresenterLogin {
                         UserDefaults.standard.set(dataID[0], forKey: "tenantId")
                         UserDefaults.standard.set(dataID[1], forKey: "userId")
                         self.loginDelegate?.loginOK()
-                        
-//                        let mhDeliveryList = self.storyboard?.instantiateViewController(identifier:  "DeliveryListController") as! DeliveryListController
-//                        self.navigationController?.pushViewController(mhDeliveryList, animated: true)
-//                        hideActivity()
                     }
                 }
             } else if token == nil {
