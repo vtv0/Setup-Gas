@@ -51,6 +51,7 @@
 		75D2CE8B28F80FDF00B51CED /* DeliveryLocationImageType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75D2CE8A28F80FDF00B51CED /* DeliveryLocationImageType.swift */; };
 		75E2940429962E5E00153A72 /* PresenterLogin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E2940329962E5E00153A72 /* PresenterLogin.swift */; };
 		75E2940729962F6400153A72 /* ModelsLogin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E2940629962F6400153A72 /* ModelsLogin.swift */; };
+		75E2940A29965ADA00153A72 /* PatchStatusDelivery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E2940929965ADA00153A72 /* PatchStatusDelivery.swift */; };
 		75F745402990A58F00B17423 /* ExtensionTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F7453F2990A58F00B17423 /* ExtensionTool.swift */; };
 		75FDF73028EAB0F700AADB99 /* TabsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75FDF72F28EAB0F700AADB99 /* TabsView.swift */; };
 		75FDF73228EAB18400AADB99 /* TabsPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75FDF73128EAB18400AADB99 /* TabsPageViewController.swift */; };
@@ -110,6 +111,7 @@
 		75D2CE8A28F80FDF00B51CED /* DeliveryLocationImageType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeliveryLocationImageType.swift; sourceTree = "<group>"; };
 		75E2940329962E5E00153A72 /* PresenterLogin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresenterLogin.swift; sourceTree = "<group>"; };
 		75E2940629962F6400153A72 /* ModelsLogin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelsLogin.swift; sourceTree = "<group>"; };
+		75E2940929965ADA00153A72 /* PatchStatusDelivery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatchStatusDelivery.swift; sourceTree = "<group>"; };
 		75F7453F2990A58F00B17423 /* ExtensionTool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionTool.swift; sourceTree = "<group>"; };
 		75FDF72F28EAB0F700AADB99 /* TabsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabsView.swift; sourceTree = "<group>"; };
 		75FDF73128EAB18400AADB99 /* TabsPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabsPageViewController.swift; sourceTree = "<group>"; };
@@ -322,6 +324,7 @@
 				75867FF12970FD88005A0295 /* GetMe_Async_Await.swift */,
 				75867FEF2970FD4C005A0295 /* GetWorkerRouteLocationList_Async_Await.swift */,
 				753BA387296BB1D100C7136F /* GetAsset_Async_Await.swift */,
+				75E2940929965ADA00153A72 /* PatchStatusDelivery.swift */,
 			);
 			path = "Async+await";
 			sourceTree = "<group>";
@@ -558,6 +561,7 @@
 				7573ADC029530A0100E8C658 /* GetWorkerVehicleList.swift in Sources */,
 				75FDF73028EAB0F700AADB99 /* TabsView.swift in Sources */,
 				75E2940729962F6400153A72 /* ModelsLogin.swift in Sources */,
+				75E2940A29965ADA00153A72 /* PatchStatusDelivery.swift in Sources */,
 				75FDF73728EAB65800AADB99 /* GeneralInfoController.swift in Sources */,
 				75E2940429962E5E00153A72 /* PresenterLogin.swift in Sources */,
 				75BF3A0928E161A800BC0F0C /* SceneDelegate.swift in Sources */,
