@@ -39,6 +39,10 @@ class ShippingViewController: UIViewController {
     
     @IBAction func btnSubmit(_ sender: Any) {
         print("CLICK SUBMIT")
+        Task {
+           try await PatchStatusDelivery().patchStatusDelivery_Async_Await(iassetID: "th.7b3f20b00022-4abb-ce11-cebd-537eb217", status: ShippingViewController.statusDelivery)
+
+        }
     }
     
     @IBOutlet weak var viewInfomation: UIView!
@@ -48,7 +52,7 @@ class ShippingViewController: UIViewController {
     @IBOutlet weak var lblStatus: UILabel!
     
     @IBOutlet weak var stackView: UIStackView!
-    
+    static var statusDelivery: String = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -89,7 +93,7 @@ class ShippingViewController: UIViewController {
 extension ShippingViewController: PassStatusDelivery {
     
     func onTap(_ sender: ReuseViewRadioButton, status: StatusDelivery) {
-        print(stackView.arrangedSubviews)
+        ShippingViewController.statusDelivery = "\(status)"
         stackView.arrangedSubviews.forEach() { view in
             let view1 = view as! ReuseViewRadioButton
             if sender == view {
