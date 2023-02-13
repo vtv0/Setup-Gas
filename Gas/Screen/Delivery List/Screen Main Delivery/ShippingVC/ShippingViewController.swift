@@ -22,7 +22,7 @@ enum StatusDelivery: CaseIterable {
         case .unableToDeliver:
             return "Unable to deliver"
         case .complete:
-            return "Complete"
+            return "complete"
 //        case .ok:
 //            return "OK"
         }

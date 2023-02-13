@@ -211,5 +211,6 @@ extension FloatingPanelDeliveryVC: TabsDelegate, GetIndexMarkerDelegateProtocol 
             detailsTabsView.collectionView.scrollToItem(at: IndexPath(item: indexDidSelected, section: 0), at: .centeredHorizontally, animated: true)
         }
     }
+    
 }
 
