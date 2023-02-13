@@ -10,7 +10,7 @@ import Alamofire
 import CoreLocation
 import MapKit
 import FloatingPanel
-import Contacts
+//import Contacts
 import AlamofireImage
 
 protocol TabsDelegate: AnyObject {

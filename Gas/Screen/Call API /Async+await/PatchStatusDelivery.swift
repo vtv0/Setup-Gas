@@ -31,13 +31,32 @@ class PatchStatusDelivery {
         let token = UserDefaults.standard.string(forKey: "accessToken") ?? ""
         let time: Date = Date()
         print(time )
-        let delivery_history: [Date: String] = [time: status]
-        let parameter: [String: Any] = ["display_data" : delivery_history]
-//            "delivery_history": {
-//                "2022-06-24 14:19": "completed"
-//
+     //   let delivery_history: [Date: String] = [time: status]
+        let parameter: [String: Any] = [:]
+        
+        
+
+//        {
+//            "display_data": {
+//                "delivery_history": {
+//                    "2022-06-26 11:39": "waiting",
+//                    "2022-08-18 10:27": "completed",
+//                    "2022-08-18 13:12": "waiting",
+//                    "2022-08-18 13:18": "completed",
+//                    "2023-01-12 13:40": "inprogress",
+//                    "2023-01-12 13:57": "waiting",
+//                    "2023-01-12 14:28": "completed",
+//                    "2023-01-12 14:29": "waiting",
+//                    "2023-01-12 14:53": "inprogress",
+//                    "2023-01-12 14:54": "failed"
+//                }
 //            }
-//        } ]
+//        }
+        
+        
+        
+        
+        
         print(parameter)
         let patchStatusDelivery = AF.request(urlPatch, method: .patch, parameters: parameter, encoding: JSONEncoding.default, headers: makeHeaders(token: token)).serializingDecodable(GetAsset.self)
         let patchStatusResponse = await patchStatusDelivery.response

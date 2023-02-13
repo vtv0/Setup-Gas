@@ -20,8 +20,12 @@
 		7517A0F028F660FE00994CBD /* CustomAlertReplanVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7517A0EF28F660FE00994CBD /* CustomAlertReplanVC.swift */; };
 		753BA388296BB1D100C7136F /* GetAsset_Async_Await.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753BA387296BB1D100C7136F /* GetAsset_Async_Await.swift */; };
 		753BA38C296BB72500C7136F /* ShippingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753BA38B296BB72500C7136F /* ShippingViewController.swift */; };
+		7549898A2999E88E00D1958E /* PresenterSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754989892999E88E00D1958E /* PresenterSetting.swift */; };
+		7549898C2999E92D00D1958E /* GetVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7549898B2999E92D00D1958E /* GetVersion.swift */; };
+		7549898E299A10A100D1958E /* ModelSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7549898D299A10A100D1958E /* ModelSetting.swift */; };
+		75498993299A245A00D1958E /* Presenter_Replan.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75498992299A245A00D1958E /* Presenter_Replan.swift */; };
+		75498995299A409000D1958E /* Presenter_ContentReplan.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75498994299A409000D1958E /* Presenter_ContentReplan.swift */; };
 		754B942028EAE8CB0059D4F2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 754B941F28EAE8CB0059D4F2 /* Assets.xcassets */; };
-		754C39B2291E409500793A14 /* Extension+API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754C39B1291E409500793A14 /* Extension+API.swift */; };
 		7573ADC029530A0100E8C658 /* GetWorkerVehicleList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7573ADBF29530A0100E8C658 /* GetWorkerVehicleList.swift */; };
 		7573ADC229530D3600E8C658 /* GetRouteList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7573ADC129530D3600E8C658 /* GetRouteList.swift */; };
 		7573ADC4295310B400E8C658 /* GetWorkerRouteLocationList4.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7573ADC3295310B400E8C658 /* GetWorkerRouteLocationList4.swift */; };
@@ -78,8 +82,12 @@
 		7517A0EF28F660FE00994CBD /* CustomAlertReplanVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAlertReplanVC.swift; sourceTree = "<group>"; };
 		753BA387296BB1D100C7136F /* GetAsset_Async_Await.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetAsset_Async_Await.swift; sourceTree = "<group>"; };
 		753BA38B296BB72500C7136F /* ShippingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShippingViewController.swift; sourceTree = "<group>"; };
+		754989892999E88E00D1958E /* PresenterSetting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresenterSetting.swift; sourceTree = "<group>"; };
+		7549898B2999E92D00D1958E /* GetVersion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetVersion.swift; sourceTree = "<group>"; };
+		7549898D299A10A100D1958E /* ModelSetting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelSetting.swift; sourceTree = "<group>"; };
+		75498992299A245A00D1958E /* Presenter_Replan.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Presenter_Replan.swift; sourceTree = "<group>"; };
+		75498994299A409000D1958E /* Presenter_ContentReplan.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Presenter_ContentReplan.swift; sourceTree = "<group>"; };
 		754B941F28EAE8CB0059D4F2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		754C39B1291E409500793A14 /* Extension+API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+API.swift"; sourceTree = "<group>"; };
 		7573ADBF29530A0100E8C658 /* GetWorkerVehicleList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetWorkerVehicleList.swift; sourceTree = "<group>"; };
 		7573ADC129530D3600E8C658 /* GetRouteList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetRouteList.swift; sourceTree = "<group>"; };
 		7573ADC3295310B400E8C658 /* GetWorkerRouteLocationList4.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetWorkerRouteLocationList4.swift; sourceTree = "<group>"; };
@@ -148,7 +156,7 @@
 		750B39CB28E2F6C900210AB9 /* Setting */ = {
 			isa = PBXGroup;
 			children = (
-				750B39CC28E2F8D800210AB9 /* SettingController.swift */,
+				754989842999E09700D1958E /* MVP */,
 			);
 			path = Setting;
 			sourceTree = "<group>";
@@ -156,8 +164,9 @@
 		750B39CE28E3034200210AB9 /* Replan */ = {
 			isa = PBXGroup;
 			children = (
-				750B39CF28E3036300210AB9 /* ReplanController.swift */,
-				750B39D128E3E71900210AB9 /* ContentReplanController.swift */,
+				75498991299A135C00D1958E /* Model_Replan */,
+				75498990299A135A00D1958E /* View_Replan */,
+				7549898F299A135800D1958E /* Presenter_Replan */,
 				75A1E17B28EFE6F200EA17A2 /* ContentReplanTableViewCell.swift */,
 				7517A0EF28F660FE00994CBD /* CustomAlertReplanVC.swift */,
 			);
@@ -173,6 +182,77 @@
 			path = "Call API ";
 			sourceTree = "<group>";
 		};
+		754989842999E09700D1958E /* MVP */ = {
+			isa = PBXGroup;
+			children = (
+				754989852999E0B900D1958E /* Model */,
+				754989862999E0CC00D1958E /* View */,
+				754989872999E0D400D1958E /* Presenter */,
+			);
+			path = MVP;
+			sourceTree = "<group>";
+		};
+		754989852999E0B900D1958E /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				7549898D299A10A100D1958E /* ModelSetting.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		754989862999E0CC00D1958E /* View */ = {
+			isa = PBXGroup;
+			children = (
+				750B39CC28E2F8D800210AB9 /* SettingController.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		754989872999E0D400D1958E /* Presenter */ = {
+			isa = PBXGroup;
+			children = (
+				754989892999E88E00D1958E /* PresenterSetting.swift */,
+			);
+			path = Presenter;
+			sourceTree = "<group>";
+		};
+		754989882999E50600D1958E /* Convert Object  */ = {
+			isa = PBXGroup;
+			children = (
+				750C7E6C290FA4CE009A9E27 /* ParseJsonGetAssetToObject.swift */,
+				750C7E6429078E52009A9E27 /* GetLatestWorkerRouteLocationList.swift */,
+				7573ADBF29530A0100E8C658 /* GetWorkerVehicleList.swift */,
+				7573ADC129530D3600E8C658 /* GetRouteList.swift */,
+				7573ADC3295310B400E8C658 /* GetWorkerRouteLocationList4.swift */,
+			);
+			path = "Convert Object ";
+			sourceTree = "<group>";
+		};
+		7549898F299A135800D1958E /* Presenter_Replan */ = {
+			isa = PBXGroup;
+			children = (
+				75498992299A245A00D1958E /* Presenter_Replan.swift */,
+				75498994299A409000D1958E /* Presenter_ContentReplan.swift */,
+			);
+			path = Presenter_Replan;
+			sourceTree = "<group>";
+		};
+		75498990299A135A00D1958E /* View_Replan */ = {
+			isa = PBXGroup;
+			children = (
+				750B39CF28E3036300210AB9 /* ReplanController.swift */,
+				750B39D128E3E71900210AB9 /* ContentReplanController.swift */,
+			);
+			path = View_Replan;
+			sourceTree = "<group>";
+		};
+		75498991299A135C00D1958E /* Model_Replan */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model_Replan;
+			sourceTree = "<group>";
+		};
 		754B942128EBC6DC0059D4F2 /* GenneralInfomation */ = {
 			isa = PBXGroup;
 			children = (
@@ -185,10 +265,6 @@
 		754C39B0291E3FC600793A14 /* Screen Main Delivery */ = {
 			isa = PBXGroup;
 			children = (
-				750C7E6A2908ECA0009A9E27 /* Marker+ExtensionViewController.swift */,
-				750C7E6429078E52009A9E27 /* GetLatestWorkerRouteLocationList.swift */,
-				750C7E6C290FA4CE009A9E27 /* ParseJsonGetAssetToObject.swift */,
-				754C39B1291E409500793A14 /* Extension+API.swift */,
 				75BF3A1D28E2883100BC0F0C /* DeliveryListController.swift */,
 				759AF855296BC80D003138CF /* ShippingVC */,
 			);
@@ -279,9 +355,7 @@
 				75A1E17D28F3AAD100EA17A2 /* Reroute */,
 				750B39CB28E2F6C900210AB9 /* Setting */,
 				753BA386296BB19600C7136F /* Call API  */,
-				7573ADBF29530A0100E8C658 /* GetWorkerVehicleList.swift */,
-				7573ADC129530D3600E8C658 /* GetRouteList.swift */,
-				7573ADC3295310B400E8C658 /* GetWorkerRouteLocationList4.swift */,
+				754989882999E50600D1958E /* Convert Object  */,
 			);
 			path = Screen;
 			sourceTree = "<group>";
@@ -290,7 +364,7 @@
 			isa = PBXGroup;
 			children = (
 				75E2940829962F6A00153A72 /* Models */,
-				75E2940529962F3900153A72 /* ViewOrViewController */,
+				75E2940529962F3900153A72 /* View */,
 				75E2940229962DF800153A72 /* Presenters */,
 			);
 			path = Login;
@@ -325,6 +399,7 @@
 				75867FEF2970FD4C005A0295 /* GetWorkerRouteLocationList_Async_Await.swift */,
 				753BA387296BB1D100C7136F /* GetAsset_Async_Await.swift */,
 				75E2940929965ADA00153A72 /* PatchStatusDelivery.swift */,
+				7549898B2999E92D00D1958E /* GetVersion.swift */,
 			);
 			path = "Async+await";
 			sourceTree = "<group>";
@@ -348,12 +423,12 @@
 			path = Presenters;
 			sourceTree = "<group>";
 		};
-		75E2940529962F3900153A72 /* ViewOrViewController */ = {
+		75E2940529962F3900153A72 /* View */ = {
 			isa = PBXGroup;
 			children = (
 				75BF3A0A28E161A800BC0F0C /* LoginController.swift */,
 			);
-			path = ViewOrViewController;
+			path = View;
 			sourceTree = "<group>";
 		};
 		75E2940829962F6A00153A72 /* Models */ = {
@@ -379,6 +454,7 @@
 			children = (
 				8A21B86529058E35008D94DE /* Extension+ActivityIndicator.swift */,
 				75F7453F2990A58F00B17423 /* ExtensionTool.swift */,
+				750C7E6A2908ECA0009A9E27 /* Marker+ExtensionViewController.swift */,
 			);
 			path = "Container Extension";
 			sourceTree = "<group>";
@@ -523,13 +599,13 @@
 				75867FEA296FAF7E005A0295 /* GetMe_Block.swift in Sources */,
 				75D2CE8B28F80FDF00B51CED /* DeliveryLocationImageType.swift in Sources */,
 				75FDF73528EAB30200AADB99 /* TabCell.swift in Sources */,
+				7549898C2999E92D00D1958E /* GetVersion.swift in Sources */,
 				75C0F47628F425A50091FB84 /* CustomAlertViewController.swift in Sources */,
 				750B39D228E3E71900210AB9 /* ContentReplanController.swift in Sources */,
 				75A1E17C28EFE6F200EA17A2 /* ContentReplanTableViewCell.swift in Sources */,
 				750C7E6529078E52009A9E27 /* GetLatestWorkerRouteLocationList.swift in Sources */,
 				7501250328EC0FBE003AC9EB /* FloatingPanelDeliveryVC.swift in Sources */,
 				75FDF73228EAB18400AADB99 /* TabsPageViewController.swift in Sources */,
-				754C39B2291E409500793A14 /* Extension+API.swift in Sources */,
 				75CC4589296E615E00BE203B /* PostGetToken_Block.swift in Sources */,
 				750C7E6B2908ECA0009A9E27 /* Marker+ExtensionViewController.swift in Sources */,
 				7573ADC229530D3600E8C658 /* GetRouteList.swift in Sources */,
@@ -551,11 +627,15 @@
 				7598E46128EFC4DC00EA9FA9 /* PageDetailCollectionViewCell.swift in Sources */,
 				75867FF02970FD4C005A0295 /* GetWorkerRouteLocationList_Async_Await.swift in Sources */,
 				75BF3A1E28E2883100BC0F0C /* DeliveryListController.swift in Sources */,
+				75498995299A409000D1958E /* Presenter_ContentReplan.swift in Sources */,
 				750C7E6D290FA4CE009A9E27 /* ParseJsonGetAssetToObject.swift in Sources */,
 				75D2CE8528F80F1C00B51CED /* FacilityImageView.swift in Sources */,
+				7549898E299A10A100D1958E /* ModelSetting.swift in Sources */,
 				75BF3A0728E161A800BC0F0C /* AppDelegate.swift in Sources */,
+				75498993299A245A00D1958E /* Presenter_Replan.swift in Sources */,
 				7573ADC4295310B400E8C658 /* GetWorkerRouteLocationList4.swift in Sources */,
 				750B39D028E3036300210AB9 /* ReplanController.swift in Sources */,
+				7549898A2999E88E00D1958E /* PresenterSetting.swift in Sources */,
 				75A1E17F28F3AB6300EA17A2 /* RerouteViewController.swift in Sources */,
 				753BA388296BB1D100C7136F /* GetAsset_Async_Await.swift in Sources */,
 				7573ADC029530A0100E8C658 /* GetWorkerVehicleList.swift in Sources */,

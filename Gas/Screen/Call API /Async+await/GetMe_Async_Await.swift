@@ -9,20 +9,6 @@ import UIKit
 import Alamofire
 
 class GetMe_Async_Await {
-    let companyCode = UserDefaults.standard.string(forKey: "companyCode") ?? ""
-    
-    
-//    enum AFError: Error {
-//        case error(String)
-//        
-//        var localizedDescription: String {
-//            switch self {
-//            case .error(let ok):
-//                return ok
-//            }
-//            
-//        }
-//    }
 
     enum AFError: Error {
         case tokenOutOfDate
@@ -37,7 +23,7 @@ class GetMe_Async_Await {
     }
     
     
-    func getMe_Async_Await() async throws -> [Int] {  //
+    func getMe_Async_Await(companyCode: String) async throws -> [Int] {
         var arrId: [Int] = []
         let urlGetMe = "https://\(companyCode).kiiapps.com/am/api/me"
         let token = UserDefaults.standard.string(forKey: "accessToken") ?? ""

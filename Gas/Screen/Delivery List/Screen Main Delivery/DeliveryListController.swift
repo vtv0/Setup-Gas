@@ -115,19 +115,26 @@ class DeliveryListController: UIViewController, UIPickerViewDelegate, UIPickerVi
         //MARK: - Use Block
         showActivity()
         
-        //                        callAPI_Block_Delivery()
+        //  callAPI_Block_Delivery()
         
         
         //MARK: - Use ASYNC AWAIT
         Task {
             await callApi_Async_Await_Deli()
         }
+        
+        
+        let userCoordinate = CLLocationCoordinate2D(latitude: 35.73774428640241, longitude: 139.6194163709879)
+        let eyeCoordinate = CLLocationCoordinate2D(latitude: 35.73774428640241, longitude: 139.6194163709879)
+        let mapCamera = MKMapCamera(lookingAtCenter: userCoordinate, fromEyeCoordinate: eyeCoordinate, eyeAltitude: 1000000.0)
+        mapView.setCamera(mapCamera, animated: false)
+
     }
     
     
     func callApi_Async_Await_Deli() async {
         do {
-            let responseGetMe = try await GetMe_Async_Await().getMe_Async_Await()
+            let responseGetMe = try await GetMe_Async_Await().getMe_Async_Await(companyCode: companyCode)
             print(responseGetMe)
             do {
                 let dicDataResponse = try await GetWorkerRouteLocationList_Async_Await().loadDic(dates: dateYMD)   //.getWorkerRouteLocationList_Async_Await()

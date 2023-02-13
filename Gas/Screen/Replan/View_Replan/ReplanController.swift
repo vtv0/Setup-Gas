@@ -10,14 +10,6 @@ import FloatingPanel
 import Alamofire
 import MapKit
 
-//class MyFloatingPanelLayout1: FloatingPanelLayout {
-//    var position: FloatingPanel.FloatingPanelPosition = .bottom
-//    var initialState: FloatingPanel.FloatingPanelState = .tip
-//    let anchors: [FloatingPanelState: FloatingPanelLayoutAnchoring] = [
-//        .tip: FloatingPanelLayoutAnchor(absoluteInset: 147.0, edge: .bottom, referenceGuide: .safeArea),
-//        .full: FloatingPanelLayoutAnchor(absoluteInset: 1.0, edge: .top, referenceGuide: .safeArea),
-//    ]
-//}
 
 protocol UncheckBtnViewCellProtocol: AnyObject {
     func uncheck(listUnCheck: [Int])
@@ -49,6 +41,8 @@ class ReplanController: UIViewController, FloatingPanelControllerDelegate {
     var listLastIndDriver = [Int]()
     var lastIndDriver1 = 0
     var lastIndDriver2 = 0
+    
+    var presenterReplan = Persenter_Replan()
     
     @IBOutlet weak var stackViewLarge: UIStackView!
     @IBOutlet weak var clickBtnAnimation: UIButton!
@@ -130,6 +124,10 @@ class ReplanController: UIViewController, FloatingPanelControllerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Replan"
+        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
+
+        presenterReplan.delegateReplan = self
+        
         // btnReplace.isEnabled = false
         // btnReplace.isHidden = true
         
@@ -144,7 +142,6 @@ class ReplanController: UIViewController, FloatingPanelControllerDelegate {
         pickerDate.dataSource = self
         pickerDate.delegate = self
         
-        //     navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
         
         // getLatestWorkerRouteLocationList()
         mapView.delegate = self
@@ -159,7 +156,7 @@ class ReplanController: UIViewController, FloatingPanelControllerDelegate {
     func floatingPanel() {
         
         guard let contentVC = storyboard?.instantiateViewController(withIdentifier: "ContentReplanController") as? ContentReplanController else { return }
-        delegateUncheck = contentVC as? any UncheckBtnViewCellProtocol
+        delegateUncheck = contentVC
         contentVC.delegatePassData = self
         contentVC.dataDidFilter_Content = dataDidFilter_Replan  // da duoc loc
         
@@ -178,75 +175,75 @@ class ReplanController: UIViewController, FloatingPanelControllerDelegate {
         self.view.bringSubviewToFront(btnReplace)
     }
     
-    func getDataFiltered(date: Date, driver: Int) -> [Location] {
-        var locationsByDriver: [Int: [Location]] = [:]
-        var elemLocationADay = dicData[date] ?? []
-        // chia ra xe trong 1 ngay
-        
-        if elemLocationADay.count > 0 && elemLocationADay[0].type == .supplier && elemLocationADay[0].elem?.locationOrder == 1 {
-            elemLocationADay.remove(at: 0)
-        }
-        
-        indxes = []
-        elemLocationADay.enumerated().forEach { vehicleIdx, vehicle in
-            if (vehicle.type == .supplier) {
-                indxes.append(vehicleIdx)
-            }
-        }
-        indxes.enumerated().forEach { idx, item in
-            
-            if Array(elemLocationADay).count > 0 {
-                if idx == 0 && indxes[0] > 0 {
-                    locationsByDriver[idx] = Array(elemLocationADay[0...indxes[idx]])
-                } else if indxes[idx-1]+1 < indxes[idx] {
-                    locationsByDriver[idx] = Array(elemLocationADay[indxes[idx-1]+1...indxes[idx]])
-                }
-            }
-        }
-        
-        self.selectedIdxDriver = driver
-        self.pickerDriver.reloadAllComponents()
-        dataDidFilter_Replan = locationsByDriver[driver] ?? []
-        var listMoveToIsTrue: [Location] = []
-        if dataDidFilter_Replan.isEmpty {  // hom dau khong co data
-            // value 6 ngay con lai
-            for idic in dicData where idic.key != dateYMD[0] {
-                for ilocation in idic.value where ilocation.elem?.location?.metadata?.display_data?.moveToFirstDay == true {
-                    listMoveToIsTrue.append(ilocation)
-                }
-            }
-            if selectedIdxDate == 0 {
-                dataDidFilter_Replan = listMoveToIsTrue
-            }
-        }
-        
-        var checkListRemove = [Location]()  // check ngay 1 co ds Remove k
-        if selectedIdxDate == 0 {
-            for idic in dicData where idic.key == dateYMD[0] {
-                for ilocation in idic.value where ilocation.elem?.location?.metadata?.display_data?.excludeFirstDay == true {
-                    checkListRemove.append(ilocation)
-                }
-            }
-        }
-        
-        if dataDidFilter_Replan.isEmpty && selectedIdxDate == 0 && selectedIdxDriver + 1 == indxes.count + 1 {  // driver Remove Date 1
-            dataDidFilter_Replan = listRemove
-        }
-        
-        if dataDidFilter_Replan.count > 0 || checkListRemove.count > 0 {
-            btnReplace.isHidden = false
-            btnClear.isHidden = false
-            totalType(EachType: 0)
-            floatingPanel()
-            checkListRemove.removeAll()
-        } else {
-            fpc.removePanelFromParent(animated: true)
-            btnReplace.isHidden = true
-            btnClear.isHidden = true
-        }
-        self.pickerDriver.reloadAllComponents()
-        return dataDidFilter_Replan
-    }
+//    func getDataFiltered(date: Date, driver: Int) -> [Location] {
+//        var locationsByDriver: [Int: [Location]] = [:]
+//        var elemLocationADay = dicData[date] ?? []
+//        // chia ra xe trong 1 ngay
+//        
+//        if elemLocationADay.count > 0 && elemLocationADay[0].type == .supplier && elemLocationADay[0].elem?.locationOrder == 1 {
+//            elemLocationADay.remove(at: 0)
+//        }
+//        
+//        indxes = []
+//        elemLocationADay.enumerated().forEach { vehicleIdx, vehicle in
+//            if (vehicle.type == .supplier) {
+//                indxes.append(vehicleIdx)
+//            }
+//        }
+//        indxes.enumerated().forEach { idx, item in
+//            
+//            if Array(elemLocationADay).count > 0 {
+//                if idx == 0 && indxes[0] > 0 {
+//                    locationsByDriver[idx] = Array(elemLocationADay[0...indxes[idx]])
+//                } else if indxes[idx-1]+1 < indxes[idx] {
+//                    locationsByDriver[idx] = Array(elemLocationADay[indxes[idx-1]+1...indxes[idx]])
+//                }
+//            }
+//        }
+//        
+//        self.selectedIdxDriver = driver
+//        self.pickerDriver.reloadAllComponents()
+//        dataDidFilter_Replan = locationsByDriver[driver] ?? []
+//        var listMoveToIsTrue: [Location] = []
+//        if dataDidFilter_Replan.isEmpty {  // hom dau khong co data
+//            // value 6 ngay con lai
+//            for idic in dicData where idic.key != dateYMD[0] {
+//                for ilocation in idic.value where ilocation.elem?.location?.metadata?.display_data?.moveToFirstDay == true {
+//                    listMoveToIsTrue.append(ilocation)
+//                }
+//            }
+//            if selectedIdxDate == 0 {
+//                dataDidFilter_Replan = listMoveToIsTrue
+//            }
+//        }
+//        
+//        var checkListRemove = [Location]()  // check ngay 1 co ds Remove k
+//        if selectedIdxDate == 0 {
+//            for idic in dicData where idic.key == dateYMD[0] {
+//                for ilocation in idic.value where ilocation.elem?.location?.metadata?.display_data?.excludeFirstDay == true {
+//                    checkListRemove.append(ilocation)
+//                }
+//            }
+//        }
+//        
+//        if dataDidFilter_Replan.isEmpty && selectedIdxDate == 0 && selectedIdxDriver + 1 == indxes.count + 1 {  // driver Remove Date 1
+//            dataDidFilter_Replan = listRemove
+//        }
+//        
+//        if dataDidFilter_Replan.count > 0 || checkListRemove.count > 0 {
+//            btnReplace.isHidden = false
+//            btnClear.isHidden = false
+//            totalType(EachType: 0)
+//            floatingPanel()
+//            checkListRemove.removeAll()
+//        } else {
+//            fpc.removePanelFromParent(animated: true)
+//            btnReplace.isHidden = true
+//            btnClear.isHidden = true
+//        }
+//        self.pickerDriver.reloadAllComponents()
+//        return dataDidFilter_Replan
+//    }
     
     
     enum quantityOfEachType {
@@ -416,7 +413,7 @@ extension ReplanController: MKMapViewDelegate {
             mapView.removeAnnotations(mapView.annotations)
         }
         
-        dataDidFilter_Replan = getDataFiltered(date: dateYMD[selectedIdxDate], driver: selectedIdxDriver)
+        dataDidFilter_Replan = presenterReplan.getDataFiltered(date: dateYMD[selectedIdxDate], driver: selectedIdxDriver, dicData: dicData)
         
         // them du lieu vao Driver Remove
         var listRemoveOK : [Location] = []
@@ -431,7 +428,7 @@ extension ReplanController: MKMapViewDelegate {
             }
         }
         
-        // xoa data   ngay 1 xe 1
+        // xoa data  ngay 1 xe 1 || exclude == true
         var listRemove1 = [Location]()
         if listRemove.count > 0 {
             if selectedIdxDate == 0 && selectedIdxDriver + 1 < indxes.count + 1 {
@@ -530,6 +527,33 @@ extension ReplanController: MKMapViewDelegate {
         
         
         // Marker in MKMap
+        print(dataDidFilter_Replan.count)
+        
+        
+        displayMarker(arrMoveToIsTrue: arrMoveToIsTrue, dataDidFilter_Replan: dataDidFilter_Replan)
+
+        
+        if dataDidFilter_Replan.count > 0 {
+            btnReplace.isHidden = false
+            btnClear.isHidden = false
+            totalType(EachType: 0)
+            floatingPanel()
+        } else {
+            lblType50kg.text = "\(0)"
+            lblType30kg.text = "\(0)"
+            lblType25kg.text = "\(0)"
+            lblType20kg.text = "\(0)"
+            lblTypeOther.text = "\(0)"
+            self.showAlert(message: "không có khách hàng nào")
+            
+            fpc.removePanelFromParent(animated: true)
+            btnReplace.isHidden = true
+            btnClear.isHidden = true
+        }
+    }
+    
+    
+    func displayMarker(arrMoveToIsTrue: [Location], dataDidFilter_Replan: [Location] ) {
         for picker in dataDidFilter_Replan where picker.type == .customer {
             // EXCLUDE
             if selectedIdxDriver+1 < indxes.count+1 && picker.elem?.location?.metadata?.display_data?.excludeFirstDay != true {
@@ -577,25 +601,6 @@ extension ReplanController: MKMapViewDelegate {
                     mapView.addAnnotation(locationOfCustomer)
                 }
             }
-        }
-        
-        if dataDidFilter_Replan.count > 0 {
-            btnReplace.isHidden = false
-            btnClear.isHidden = false
-            totalType(EachType: 0)
-            floatingPanel()
-            //            dataDidFilter_Replan.removeAll()
-        } else {
-            lblType50kg.text = "\(0)"
-            lblType30kg.text = "\(0)"
-            lblType25kg.text = "\(0)"
-            lblType20kg.text = "\(0)"
-            lblTypeOther.text = "\(0)"
-            self.showAlert(message: "không có khách hàng nào")
-            
-            fpc.removePanelFromParent(animated: true)
-            btnReplace.isHidden = true
-            btnClear.isHidden = true
         }
     }
     
@@ -752,4 +757,16 @@ extension ReplanController: ClickOkDelegateProtocol {
             reDrawMarkers()
         }
     }
+}
+
+ //MARK: - MVP Architect Pattern
+extension ReplanController: ReplanDelegateProtocol {
+    func loadInfomationForMKMap(dataDidFilter_Replan: [Location], arrMoveToIsTrue: [Location]) {
+        print("sssssssssss")
+        displayMarker(arrMoveToIsTrue: arrMoveToIsTrue, dataDidFilter_Replan: dataDidFilter_Replan)
+    }
+    
+    
+    
+    
 }

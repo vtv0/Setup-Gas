@@ -123,9 +123,4 @@ class ContentReplanController: UIViewController, UITableViewDataSource, UITableV
             delegatePassData?.check(isCustomer: dataDidFilter_Content[indexPath.row], indexDriver: selectedIdxDriver, indexDate: selectedIdxDate, indexPath: indexPath.row)
         }
     }
-    
-    
-    
-    
-    
 }

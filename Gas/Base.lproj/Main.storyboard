@@ -1378,6 +1378,9 @@
                                                     <switch opaque="NO" contentMode="redraw" horizontalHuggingPriority="750" verticalHuggingPriority="750" showsMenuAsPrimaryAction="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XsW-Rb-jnf">
                                                         <rect key="frame" x="23" y="7" width="51" height="31"/>
                                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                                        <connections>
+                                                            <action selector="switchHighway:" destination="5dd-Lg-psj" eventType="valueChanged" id="o2C-jR-xXs"/>
+                                                        </connections>
                                                     </switch>
                                                 </subviews>
                                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -1493,6 +1496,10 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="lblVersion" destination="TrQ-Cx-vyV" id="7SB-Au-qZM"/>
+                        <outlet property="switchHighway" destination="XsW-Rb-jnf" id="4X5-k0-4Ne"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rzZ-PC-p30" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>

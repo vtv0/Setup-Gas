@@ -10,17 +10,7 @@ import Alamofire
 import Network
 import SystemConfiguration
 
-
-class ViewController: UIViewController, UITextFieldDelegate, LoginVCDelegateProtocol {
-    func loginOK() {
-        let mhDeliveryList = self.storyboard?.instantiateViewController(identifier:  "DeliveryListController") as! DeliveryListController
-        self.navigationController?.pushViewController(mhDeliveryList, animated: true)
-        hideActivity()
-    }
-    
-    func showAlert() {
-        ///
-    }
+class ViewController: UIViewController, UITextFieldDelegate {
     
     let presenter = PresenterLogin()
     let expiredDate = Calendar.current.date(byAdding: .hour, value: 12, to: Date())!
@@ -56,55 +46,16 @@ class ViewController: UIViewController, UITextFieldDelegate, LoginVCDelegateProt
             showActivity()
             
             //MARK: - Block
-            presenter.callAPI_Block(name: txtUserName.text ?? "", pass: txtPass.text ?? "", companyCode: txtcompanyCode.text ?? "")
+            //            presenter.callAPI_Block(name: txtUserName.text ?? "", pass: txtPass.text ?? "", companyCode: txtcompanyCode.text ?? "")
             
             
             //MARK: - Use ASYNC AWAIT
-//            Task {
-//                await callAPI_Async_Await()
-//            }
+            Task {
+                await presenter.callAPI_Async_Await(name: txtUserName.text ?? "", pass: txtPass.text ?? "" ,companyCode: txtcompanyCode.text ?? "")
+            }
         }
     }
     
-    func callAPI_Async_Await() async {
-        do {
-            let getTokenResponse = try await PostGetToken_Async_Await().getToken_Async_Await(userName: txtUserName.text!, pass: txtPass.text!, companyCode: txtcompanyCode.text!)
-            print(getTokenResponse)
-            
-            do {
-                let responseGetMe = try await GetMe_Async_Await().getMe_Async_Await()
-                print(responseGetMe)
-                let deliveryListVC = storyboard?.instantiateViewController(withIdentifier: "DeliveryListController") as! DeliveryListController
-                self.navigationController?.pushViewController(deliveryListVC, animated: true)
-            } catch {
-                if let err = error as? GetMe_Async_Await.AFError {
-                    if err == .tokenOutOfDate {
-                        showAlert(message: "Token đã hết hạn 1111")
-                        let mhLogin = self.storyboard?.instantiateViewController(identifier:  "LoginViewController") as! ViewController
-                        self.navigationController?.pushViewController(mhLogin, animated: true)
-                        hideActivity()
-                        
-                    } else if err == .remain {
-                        showAlert(message: "Có lỗi xảy ra")
-                        hideActivity()
-                    }
-                }
-            }
-        } catch {
-            if let err = error as? PostGetToken_Async_Await.AFError {
-                if err == .wrongURL {
-                    showAlert(message: "Sai companyCode")
-                    hideActivity()
-                } else if err == .wrongPassword {
-                    showAlert(message: "Sai password")
-                    hideActivity()
-                } else if err == .remain {
-                    showAlert(message: "Có lỗi xảy ra")
-                    hideActivity()
-                }
-            }
-        }
-    }
     
     
     override func viewDidLoad() {
@@ -127,6 +78,8 @@ class ViewController: UIViewController, UITextFieldDelegate, LoginVCDelegateProt
             btnSaveAccount.setImage(UIImage(named: "checkmarkEmpty"), for: .normal)
         }
         imgIcon.image = UIImage(named:"application_splash_logo")
+        
+        
     }
     
     
@@ -152,10 +105,23 @@ class ViewController: UIViewController, UITextFieldDelegate, LoginVCDelegateProt
         present(alert, animated: true)
     }
     
-    
 }
 
-
+extension ViewController: LoginVCDelegateProtocol {
+    func loginOutOfDate_Token() {
+        let mhLogin = self.storyboard?.instantiateViewController(identifier:  "LoginViewController") as! ViewController
+        self.navigationController?.pushViewController(mhLogin, animated: true)
+        showAlert(message: "Token đã hết hạn 1111")
+        hideActivity()
+    }
+    
+    func loginOK() {
+        let mhDeliveryList = storyboard?.instantiateViewController(withIdentifier: "DeliveryListController") as! DeliveryListController
+        self.navigationController?.pushViewController(mhDeliveryList, animated: true)
+        hideActivity()
+    }
+    
+}
 
 
 
