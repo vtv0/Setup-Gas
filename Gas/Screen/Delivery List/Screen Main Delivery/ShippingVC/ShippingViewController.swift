@@ -88,6 +88,7 @@ class ShippingViewController: UIViewController {
             stackView.addArrangedSubview(statusView)
         }
     }
+    
 }
 
 extension ShippingViewController: PassStatusDelivery {
