@@ -217,7 +217,7 @@ class DisplayData: NSObject, Codable {
                 arr.append(data)
             }
         })
-        arr.sort{ h1, h2 in
+        arr.sort { h1, h2 in
             let df = DateFormatter()
             df.dateFormat = "yyyy-MM-dd HH:mm"
             if let d1 = df.date(from: h1.date), let d2 = df.date(from: h2.date) {

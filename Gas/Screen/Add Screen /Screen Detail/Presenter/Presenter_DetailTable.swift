@@ -29,4 +29,21 @@ class Presenter_DetailTable {
 //        }
     }
     
+    // xet mau theo trang thai
+    func statusDelivery(locationsIsCustomer: [Location]) {
+        for iCustomer in locationsIsCustomer {
+            
+            print(iCustomer.elem?.location?.metadata?.display_data?.delivery_history)
+            print(iCustomer.elem?.location?.metadata?.display_data?.delivery_history?.first)
+//            if let arrStatus = iCustomer.elem?.location?.metadata?.display_data?.delivery_history {
+//
+//                for i in arrStatus {
+//                    print(i.key)
+//                    print(i.value)
+//                }
+//            }
+        }
+        
+    }
+    
 }

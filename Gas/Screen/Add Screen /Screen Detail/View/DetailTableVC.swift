@@ -22,7 +22,7 @@ class DetailTableVC: UIViewController {
         myTableViewDetail.rowHeight = 230
         
         detailTable_Presenter.getImage(locationsIsCustomer: locationsIsCustomer)
-        
+        detailTable_Presenter.statusDelivery(locationsIsCustomer: locationsIsCustomer)
     }
 }
 
@@ -35,8 +35,7 @@ extension DetailTableVC: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cellDetail = myTableViewDetail.dequeueReusableCell(withIdentifier: "DetailTableViewCell") as! DetailTableViewCell
-        
-        
+
         cellDetail.lblCustomerCode.text = "\(locationsIsCustomer[indexPath.row].elem?.location?.comment ?? "" )"
         cellDetail.lblReceivingAddress.text = "\(locationsIsCustomer[indexPath.row].asset?.properties?.values.customer_name ?? "" )"
         cellDetail.lblDeliveryAddress.text = "\(locationsIsCustomer[indexPath.row].asset?.properties?.values.address ?? "" )"
@@ -49,6 +48,10 @@ extension DetailTableVC: UITableViewDataSource {
             } else {
                 cellDetail.lblEstimateTime.text = "Estimate Time : \(hours):\(minutes)"
             }
+        }
+        
+        if ((locationsIsCustomer[indexPath.row].asset?.properties?.values.display_data) != nil) {
+            cellDetail.backgroundColor = .gray
         }
         
         // neu khong co duong dan -> anr collection Image di
