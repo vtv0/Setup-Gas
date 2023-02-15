@@ -25,16 +25,17 @@ class PatchStatusDelivery {
     }
     
     func patchStatusDelivery_Async_Await(iassetID: String, status: String) async throws {
+        let companyCode = UserDefaults.standard.string(forKey: "companyCode") ?? ""
         
-        
-        let urlPatch: String = "https://am-stg-iw01j.kiiapps.com/am/api/assets/\(iassetID)/properties"
+        let urlPatch: String = "https://\(companyCode).kiiapps.com/am/api/assets/\(iassetID)/properties"
+        print(urlPatch)
         let token = UserDefaults.standard.string(forKey: "accessToken") ?? ""
         let time: Date = Date()
         print(time )
      //   let delivery_history: [Date: String] = [time: status]
         let parameter: [String: Any] = [:]
         
-        
+//        let delivery_history: [Date: String] = [:]
 
 //        {
 //            "display_data": {

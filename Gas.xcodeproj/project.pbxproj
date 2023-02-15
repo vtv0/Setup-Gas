@@ -56,6 +56,10 @@
 		75D2CE8B28F80FDF00B51CED /* DeliveryLocationImageType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75D2CE8A28F80FDF00B51CED /* DeliveryLocationImageType.swift */; };
 		75E2940429962E5E00153A72 /* PresenterLogin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E2940329962E5E00153A72 /* PresenterLogin.swift */; };
 		75E2940A29965ADA00153A72 /* PatchStatusDelivery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E2940929965ADA00153A72 /* PatchStatusDelivery.swift */; };
+		75EDABD9299C8F950080E1C2 /* PatchDeliveryStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75EDABD8299C8F950080E1C2 /* PatchDeliveryStatus.swift */; };
+		75EDABE3299CDAF70080E1C2 /* Prisenter_CollectionViewImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75EDABE2299CDAF70080E1C2 /* Prisenter_CollectionViewImage.swift */; };
+		75EDABE5299CDB670080E1C2 /* CollectionImageVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75EDABE4299CDB670080E1C2 /* CollectionImageVC.swift */; };
+		75EDABE7299CDCDC0080E1C2 /* CollectionViewCell_Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75EDABE6299CDCDC0080E1C2 /* CollectionViewCell_Image.swift */; };
 		75F0ED6A299B3F7B00EF17B9 /* ScreenExpand_TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F0ED69299B3F7B00EF17B9 /* ScreenExpand_TableViewCell.swift */; };
 		75F0ED71299B87A700EF17B9 /* DetailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F0ED70299B87A700EF17B9 /* DetailTableViewCell.swift */; };
 		75F0ED73299B87CB00EF17B9 /* DetailTableVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F0ED72299B87CB00EF17B9 /* DetailTableVC.swift */; };
@@ -124,6 +128,10 @@
 		75D2CE8A28F80FDF00B51CED /* DeliveryLocationImageType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeliveryLocationImageType.swift; sourceTree = "<group>"; };
 		75E2940329962E5E00153A72 /* PresenterLogin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresenterLogin.swift; sourceTree = "<group>"; };
 		75E2940929965ADA00153A72 /* PatchStatusDelivery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatchStatusDelivery.swift; sourceTree = "<group>"; };
+		75EDABD8299C8F950080E1C2 /* PatchDeliveryStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatchDeliveryStatus.swift; sourceTree = "<group>"; };
+		75EDABE2299CDAF70080E1C2 /* Prisenter_CollectionViewImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Prisenter_CollectionViewImage.swift; sourceTree = "<group>"; };
+		75EDABE4299CDB670080E1C2 /* CollectionImageVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionImageVC.swift; sourceTree = "<group>"; };
+		75EDABE6299CDCDC0080E1C2 /* CollectionViewCell_Image.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewCell_Image.swift; sourceTree = "<group>"; };
 		75F0ED69299B3F7B00EF17B9 /* ScreenExpand_TableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenExpand_TableViewCell.swift; sourceTree = "<group>"; };
 		75F0ED70299B87A700EF17B9 /* DetailTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailTableViewCell.swift; sourceTree = "<group>"; };
 		75F0ED72299B87CB00EF17B9 /* DetailTableVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailTableVC.swift; sourceTree = "<group>"; };
@@ -231,6 +239,7 @@
 				7573ADBF29530A0100E8C658 /* GetWorkerVehicleList.swift */,
 				7573ADC129530D3600E8C658 /* GetRouteList.swift */,
 				7573ADC3295310B400E8C658 /* GetWorkerRouteLocationList4.swift */,
+				75EDABD8299C8F950080E1C2 /* PatchDeliveryStatus.swift */,
 			);
 			path = "Convert Object ";
 			sourceTree = "<group>";
@@ -380,8 +389,8 @@
 		75BF3A1C28E2877900BC0F0C /* Screen */ = {
 			isa = PBXGroup;
 			children = (
-				75498996299B394300D1958E /* Add Screen  */,
 				75123F6929027E3D00A08972 /* PassScreenViewController.swift */,
+				75498996299B394300D1958E /* Add Screen  */,
 				8A4064A828F86F710011DA9A /* Container Extension */,
 				75BF3A1F28E2AE7900BC0F0C /* Login */,
 				75BF3A2228E2AF2F00BC0F0C /* Delivery List */,
@@ -472,6 +481,32 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		75EDABDA299CD8BA0080E1C2 /* CollectionViewImage */ = {
+			isa = PBXGroup;
+			children = (
+				75EDABDC299CD9D40080E1C2 /* View */,
+				75EDABE1299CDAD20080E1C2 /* Presenter */,
+			);
+			path = CollectionViewImage;
+			sourceTree = "<group>";
+		};
+		75EDABDC299CD9D40080E1C2 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				75EDABE4299CDB670080E1C2 /* CollectionImageVC.swift */,
+				75EDABE6299CDCDC0080E1C2 /* CollectionViewCell_Image.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		75EDABE1299CDAD20080E1C2 /* Presenter */ = {
+			isa = PBXGroup;
+			children = (
+				75EDABE2299CDAF70080E1C2 /* Prisenter_CollectionViewImage.swift */,
+			);
+			path = Presenter;
+			sourceTree = "<group>";
+		};
 		75F0ED6D299B873C00EF17B9 /* ScreenInfo */ = {
 			isa = PBXGroup;
 			children = (
@@ -486,6 +521,7 @@
 			children = (
 				75F0ED6F299B877A00EF17B9 /* View */,
 				75F0ED75299B87E300EF17B9 /* Presenter */,
+				75EDABDA299CD8BA0080E1C2 /* CollectionViewImage */,
 			);
 			path = "Screen Detail";
 			sourceTree = "<group>";
@@ -671,6 +707,7 @@
 				75C0F47628F425A50091FB84 /* CustomAlertViewController.swift in Sources */,
 				750B39D228E3E71900210AB9 /* ContentReplanController.swift in Sources */,
 				75498998299B3A0900D1958E /* ScreenExpandVC.swift in Sources */,
+				75EDABD9299C8F950080E1C2 /* PatchDeliveryStatus.swift in Sources */,
 				75A1E17C28EFE6F200EA17A2 /* ContentReplanTableViewCell.swift in Sources */,
 				7549899C299B3AA000D1958E /* ScreenExpland_Presenter.swift in Sources */,
 				750C7E6529078E52009A9E27 /* GetLatestWorkerRouteLocationList.swift in Sources */,
@@ -686,6 +723,7 @@
 				75FDF73B28EAB6B300AADB99 /* CustomerLocationController.swift in Sources */,
 				75F0ED6A299B3F7B00EF17B9 /* ScreenExpand_TableViewCell.swift in Sources */,
 				75F0ED77299B9C8F00EF17B9 /* Presenter_DetailTable.swift in Sources */,
+				75EDABE7299CDCDC0080E1C2 /* CollectionViewCell_Image.swift in Sources */,
 				75867FEE296FDA54005A0295 /* GetAsset_Block.swift in Sources */,
 				75867FF42971097A005A0295 /* DB_Get_Set.swift in Sources */,
 				75867FF22970FD88005A0295 /* GetMe_Async_Await.swift in Sources */,
@@ -703,6 +741,7 @@
 				75498995299A409000D1958E /* Presenter_ContentReplan.swift in Sources */,
 				750C7E6D290FA4CE009A9E27 /* ParseJsonGetAssetToObject.swift in Sources */,
 				75D2CE8528F80F1C00B51CED /* FacilityImageView.swift in Sources */,
+				75EDABE3299CDAF70080E1C2 /* Prisenter_CollectionViewImage.swift in Sources */,
 				75BF3A0728E161A800BC0F0C /* AppDelegate.swift in Sources */,
 				75498993299A245A00D1958E /* Presenter_Replan.swift in Sources */,
 				75F0ED71299B87A700EF17B9 /* DetailTableViewCell.swift in Sources */,
@@ -710,6 +749,7 @@
 				750B39D028E3036300210AB9 /* ReplanController.swift in Sources */,
 				7549898A2999E88E00D1958E /* PresenterSetting.swift in Sources */,
 				75A1E17F28F3AB6300EA17A2 /* RerouteViewController.swift in Sources */,
+				75EDABE5299CDB670080E1C2 /* CollectionImageVC.swift in Sources */,
 				753BA388296BB1D100C7136F /* GetAsset_Async_Await.swift in Sources */,
 				7573ADC029530A0100E8C658 /* GetWorkerVehicleList.swift in Sources */,
 				75FDF73028EAB0F700AADB99 /* TabsView.swift in Sources */,

@@ -123,12 +123,10 @@ class DeliveryListController: UIViewController, UIPickerViewDelegate, UIPickerVi
             await callApi_Async_Await_Deli()
         }
         
-        
         let userCoordinate = CLLocationCoordinate2D(latitude: 35.73774428640241, longitude: 139.6194163709879)
         let eyeCoordinate = CLLocationCoordinate2D(latitude: 35.73774428640241, longitude: 139.6194163709879)
         let mapCamera = MKMapCamera(lookingAtCenter: userCoordinate, fromEyeCoordinate: eyeCoordinate, eyeAltitude: 1000000.0)
         mapView.setCamera(mapCamera, animated: false)
-
     }
     
     

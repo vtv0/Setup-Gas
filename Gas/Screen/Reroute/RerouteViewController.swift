@@ -41,7 +41,6 @@ class RerouteViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Reroute"
-        
         txtView.isEditable = false
         
 //        self.navigationController?.navigationBar.backgroundColor = .systemBlue

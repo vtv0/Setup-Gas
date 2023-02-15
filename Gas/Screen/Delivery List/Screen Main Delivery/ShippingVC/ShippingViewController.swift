@@ -40,7 +40,7 @@ class ShippingViewController: UIViewController {
     @IBAction func btnSubmit(_ sender: Any) {
         print("CLICK SUBMIT")
         Task {
-           try await PatchStatusDelivery().patchStatusDelivery_Async_Await(iassetID: "th.7b3f20b00022-4abb-ce11-cebd-537eb217", status: ShippingViewController.statusDelivery)
+           try await PatchStatusDelivery().patchStatusDelivery_Async_Await(iassetID: "\(dataInfoOneCustomer.asset?.id ?? "")", status: ShippingViewController.statusDelivery)
 
         }
     }
@@ -75,6 +75,7 @@ class ShippingViewController: UIViewController {
         }
         
         setupRadioButton()
+        
         
     }
     

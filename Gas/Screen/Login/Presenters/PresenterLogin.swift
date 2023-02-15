@@ -11,7 +11,11 @@ import Alamofire
 protocol LoginVCDelegateProtocol: AnyObject {
     func loginOK()
     func loginOutOfDate_Token()
+    
+    func loginError(err: Error)
 //    func login_Async_Await()
+    
+    func getMeError(err: Error)
 }
 
 class PresenterLogin {
@@ -92,6 +96,7 @@ class PresenterLogin {
 
                 
             } catch {
+                loginDelegate?.getMeError(err: error)
                 if let err = error as? GetMe_Async_Await.AFError {
                     if err == .tokenOutOfDate {
                         DispatchQueue.main.async {
@@ -105,20 +110,8 @@ class PresenterLogin {
                 }
             }
         } catch {
-            if let err = error as? PostGetToken_Async_Await.AFError {
-                if err == .wrongURL {
-//                    showAlert(message: "Sai companyCode")
-//                    hideActivity()
-                } else if err == .wrongPassword {
-//                    showAlert(message: "Sai password")
-//                    hideActivity()
-                } else if err == .remain {
-//                    showAlert(message: "Có lỗi xảy ra")
-//                    hideActivity()
-                }
-            }
+            loginDelegate?.loginError(err: error)
         }
     }
-
     
 }

@@ -10,30 +10,62 @@ import UIKit
 class DetailTableVC: UIViewController {
     
     @IBOutlet weak var myTableViewDetail: UITableView!
+    
+    var detailTable_Presenter = Presenter_DetailTable()
+    var locationsIsCustomer: [Location] = []  // chua duong dan Image
+    var urlImages: [String] = []
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         myTableViewDetail.dataSource = self
-        
         myTableViewDetail.dataSource = self
-        myTableViewDetail.rowHeight = 150
+        myTableViewDetail.rowHeight = 230
+        
+        detailTable_Presenter.getImage(locationsIsCustomer: locationsIsCustomer)
+        
     }
 }
 
 
 extension DetailTableVC: UITableViewDataSource {
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 19
+        return locationsIsCustomer.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cellDetail = myTableViewDetail.dequeueReusableCell(withIdentifier: "DetailTableViewCell") as! DetailTableViewCell
-        cellDetail.lblCustomerCode.text = "1"
+        
+        
+        cellDetail.lblCustomerCode.text = "\(locationsIsCustomer[indexPath.row].elem?.location?.comment ?? "" )"
+        cellDetail.lblReceivingAddress.text = "\(locationsIsCustomer[indexPath.row].asset?.properties?.values.customer_name ?? "" )"
+        cellDetail.lblDeliveryAddress.text = "\(locationsIsCustomer[indexPath.row].asset?.properties?.values.address ?? "" )"
+        
+        
+        if let minutes = locationsIsCustomer[indexPath.row].elem?.arrivalTime?.minutes,
+           let hours = locationsIsCustomer[indexPath.row].elem?.arrivalTime?.hours {
+            if minutes < 10 {
+                cellDetail.lblEstimateTime.text = "Estimate Time : \(hours):0\(minutes)"
+            } else {
+                cellDetail.lblEstimateTime.text = "Estimate Time : \(hours):\(minutes)"
+            }
+        }
+        
+        // neu khong co duong dan -> anr collection Image di
+        if urlImages.isEmpty {
+            cellDetail.colectionViewImage.isHidden = true  // dung
+            
+        } else {
+            // hien thi anh
+        }
+        
         
         return cellDetail
     }
 }
 
 
-extension DetailTableVC: UITableViewDelegate {
-    
-}
+
+//extension DetailTableVC: UITableViewDelegate {
+//
+//}

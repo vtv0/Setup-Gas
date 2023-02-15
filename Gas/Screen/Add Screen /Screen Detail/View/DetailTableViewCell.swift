@@ -9,6 +9,8 @@ import UIKit
 
 class DetailTableViewCell: UITableViewCell {
 
+    @IBOutlet weak var stackViewMain: UIStackView!
+    
     @IBOutlet weak var lblCustomerCode: UILabel!
     
     @IBOutlet weak var lblReceivingAddress: UILabel!
@@ -16,6 +18,9 @@ class DetailTableViewCell: UITableViewCell {
     @IBOutlet weak var lblDeliveryAddress: UILabel!
     
     @IBOutlet weak var lblEstimateTime: UILabel!
+    
+    
+    @IBOutlet weak var colectionViewImage: UICollectionView!
     
     override func awakeFromNib() {
         super.awakeFromNib()

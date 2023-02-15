@@ -11,9 +11,22 @@ protocol DetailTableViewDelegateProtocol: AnyObject {
     func dicData()
 }
 
-class detailTableView {
+class Presenter_DetailTable {
     weak var detailTableDelegate: DetailTableViewDelegateProtocol?
     
+    var dicData: [Date: [Location]] = [:]
     
+  
+    var urlsImage = [String]()
+    
+    
+    func getImage(locationsIsCustomer: [Location]) {  // chua duong dan Image
+            print(locationsIsCustomer)
+//        for iCustomer in locationsIsCustomer {
+//            if let location1 = iCustomer.asset?.properties?.values.gas_location1,
+//               let location2 = iCustomer.asset?.properties?.values.gas_location2,
+//               
+//        }
+    }
     
 }

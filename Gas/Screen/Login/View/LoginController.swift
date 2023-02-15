@@ -108,23 +108,55 @@ class ViewController: UIViewController, UITextFieldDelegate {
 }
 
 extension ViewController: LoginVCDelegateProtocol {
+    func getMeError(err: Error) {
+        DispatchQueue.main.async { [self] in
+            let err = err as? GetMe_Async_Await.AFError
+            if err == .tokenOutOfDate {
+                let mhDeliveryList = storyboard?.instantiateViewController(withIdentifier: "DeliveryListController") as! DeliveryListController
+                self.navigationController?.pushViewController(mhDeliveryList, animated: true)
+                showAlert(message: "Token đã hết hạn")
+                hideActivity()
+            } else if err == .wrongPassword {
+                showAlert(message: "Sai password")
+                hideActivity()
+            } else {
+                showAlert(message: "Có lỗi xảy ra")
+                hideActivity()
+            }
+        }
+    }
+    
+    func loginOK() {
+//                let mhDeliveryList = storyboard?.instantiateViewController(withIdentifier: "DeliveryListController") as! DeliveryListController
+//                self.navigationController?.pushViewController(mhDeliveryList, animated: true)
+//
+        let screenExpand = storyboard?.instantiateViewController(withIdentifier: "ScreenExpandVC") as! ScreenExpandVC
+        self.navigationController?.pushViewController(screenExpand, animated: true)
+        hideActivity()
+    }
+    
+    func loginError(err: Error) {
+        DispatchQueue.main.async { [self] in
+            let err = err as? PostGetToken_Async_Await.AFError
+            if err == .wrongURL {
+                showAlert(message: "Sai companyCode")
+                hideActivity()
+            } else if err == .wrongPassword {
+                showAlert(message: "Sai password")
+                hideActivity()
+            } else if err == .remain {
+                showAlert(message: "Có lỗi xảy ra")
+                hideActivity()
+            }
+        }
+    }
+    
     func loginOutOfDate_Token() {
         let mhLogin = self.storyboard?.instantiateViewController(identifier:  "LoginViewController") as! ViewController
         self.navigationController?.pushViewController(mhLogin, animated: true)
         showAlert(message: "Token đã hết hạn 1111")
         hideActivity()
     }
-    
-    func loginOK() {
-//        let mhDeliveryList = storyboard?.instantiateViewController(withIdentifier: "DeliveryListController") as! DeliveryListController
-//        self.navigationController?.pushViewController(mhDeliveryList, animated: true)
-        
-        let screenExpand = storyboard?.instantiateViewController(withIdentifier: "ScreenExpandVC") as! ScreenExpandVC
-        self.navigationController?.pushViewController(screenExpand, animated: true)
-
-        hideActivity()
-    }
-    
 }
 
 
