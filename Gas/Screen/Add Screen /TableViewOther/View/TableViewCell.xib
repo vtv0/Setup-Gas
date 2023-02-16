@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="tableViewCell" rowHeight="195" id="KGk-i7-Jjw" customClass="TableViewCell" customModule="Gas" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="335" height="195"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="335" height="195"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="Uhx-8e-lGL">
+                        <rect key="frame" x="0.0" y="0.0" width="335" height="195"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="hWp-p5-C6S" userLabel="Stack View Info">
+                                <rect key="frame" x="0.0" y="0.0" width="335" height="97.666666666666671"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vpI-y9-mgr" userLabel="CustomerID">
+                                        <rect key="frame" x="0.0" y="0.0" width="335" height="24.333333333333332"/>
+                                        <attributedString key="attributedText">
+                                            <fragment content="CustomerID">
+                                                <attributes>
+                                                    <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                                    <font key="NSFont" metaFont="system" size="17"/>
+                                                    <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" firstLineHeadIndent="20" tighteningFactorForTruncation="0.0"/>
+                                                </attributes>
+                                            </fragment>
+                                        </attributedString>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RHm-2U-YZS">
+                                        <rect key="frame" x="0.0" y="24.333333333333336" width="335" height="24.333333333333336"/>
+                                        <attributedString key="attributedText">
+                                            <fragment content="Label">
+                                                <attributes>
+                                                    <font key="NSFont" metaFont="system" size="17"/>
+                                                    <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" firstLineHeadIndent="20" tighteningFactorForTruncation="0.0"/>
+                                                </attributes>
+                                            </fragment>
+                                        </attributedString>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5mE-9V-URW">
+                                        <rect key="frame" x="0.0" y="48.666666666666664" width="335" height="24.333333333333336"/>
+                                        <attributedString key="attributedText">
+                                            <fragment content="Label">
+                                                <attributes>
+                                                    <font key="NSFont" metaFont="system" size="17"/>
+                                                    <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" firstLineHeadIndent="20" tighteningFactorForTruncation="0.0"/>
+                                                </attributes>
+                                            </fragment>
+                                        </attributedString>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rVj-PA-StQ">
+                                        <rect key="frame" x="0.0" y="73" width="335" height="24.666666666666671"/>
+                                        <attributedString key="attributedText">
+                                            <fragment content="Estimate Time">
+                                                <attributes>
+                                                    <font key="NSFont" metaFont="system" size="17"/>
+                                                    <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" firstLineHeadIndent="20" tighteningFactorForTruncation="0.0"/>
+                                                </attributes>
+                                            </fragment>
+                                        </attributedString>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                            </stackView>
+                            <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vHW-3I-SkO" userLabel="StackViewImage">
+                                <rect key="frame" x="0.0" y="97.666666666666686" width="335" height="97.333333333333314"/>
+                                <subviews>
+                                    <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pdl-tp-9zA">
+                                        <rect key="frame" x="0.0" y="0.0" width="335" height="97.333333333333329"/>
+                                        <viewLayoutGuide key="contentLayoutGuide" id="PGt-MA-17m"/>
+                                        <viewLayoutGuide key="frameLayoutGuide" id="Xgc-Y9-NYh"/>
+                                    </scrollView>
+                                </subviews>
+                            </stackView>
+                        </subviews>
+                    </stackView>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="bottom" secondItem="Uhx-8e-lGL" secondAttribute="bottom" id="CAG-XS-EPg"/>
+                    <constraint firstItem="Uhx-8e-lGL" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="PH3-g1-r7A"/>
+                    <constraint firstAttribute="trailing" secondItem="Uhx-8e-lGL" secondAttribute="trailing" id="QRH-eT-Chn"/>
+                    <constraint firstItem="Uhx-8e-lGL" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="qdF-JC-MIW"/>
+                </constraints>
+                <edgeInsets key="layoutMargins" top="8" left="8" bottom="8" right="8"/>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="lblCustomerID" destination="vpI-y9-mgr" id="Nar-A7-VHt"/>
+                <outlet property="lblDeliveryAddress" destination="5mE-9V-URW" id="GRT-Be-Zz3"/>
+                <outlet property="lblDeliveryDestination" destination="RHm-2U-YZS" id="W2B-wt-DSW"/>
+                <outlet property="lblEstimateTime" destination="rVj-PA-StQ" id="RcM-tg-Lks"/>
+                <outlet property="stachViewInfo" destination="hWp-p5-C6S" id="qhL-xg-T55"/>
+                <outlet property="stackViewImages" destination="vHW-3I-SkO" id="oUX-Js-koy"/>
+            </connections>
+            <point key="canvasLocation" x="89.312977099236633" y="-64.436619718309856"/>
+        </tableViewCell>
+    </objects>
+</document>

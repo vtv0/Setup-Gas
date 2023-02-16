@@ -50,11 +50,12 @@ extension DetailTableVC: UITableViewDataSource {
             }
         }
         
+        // color of cell
         if ((locationsIsCustomer[indexPath.row].asset?.properties?.values.display_data) != nil) {
-            cellDetail.backgroundColor = .gray
+            cellDetail.backgroundColor = UIColor(named: "blueMarker")
         }
         
-        // neu khong co duong dan -> anr collection Image di
+        // neu khong co duong dan -> an collection Image di
         if urlImages.isEmpty {
             cellDetail.colectionViewImage.isHidden = true  // dung
             
@@ -67,8 +68,3 @@ extension DetailTableVC: UITableViewDataSource {
     }
 }
 
-
-
-//extension DetailTableVC: UITableViewDelegate {
-//
-//}

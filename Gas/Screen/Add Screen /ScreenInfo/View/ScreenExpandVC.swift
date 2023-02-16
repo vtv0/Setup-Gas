@@ -20,7 +20,7 @@ class ScreenExpandVC: UIViewController {
         myTableView.dataSource = self
         myTableView.delegate = self
         
-//        self.navigationController?.isNavigationBarHidden = true
+        //        self.navigationController?.isNavigationBarHidden = true
         
         self.navigationItem.setHidesBackButton(true, animated: false)
         
@@ -28,25 +28,38 @@ class ScreenExpandVC: UIViewController {
         screenExpland.loadDataDelegate = self
         Task {
             showActivity()
-            dicData = await screenExpland.requestAPI()
+             await screenExpland.requestAPI()
         }
+        
         
     }
     
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let nav = segue.destination as? UINavigationController,
-           let edit = nav.viewControllers.first as? DetailTableVC {
+        //        if let nav = segue.destination as? UINavigationController,
+        //           let edit = nav.viewControllers.first as? TableView {
+        //            let selectedRow = myTableView.indexPathForSelectedRow!.row
+        //
+        //            if let locations = dicData[listDate[selectedRow]] {
+        //                let locationsIsCustomer = locations.filter( { $0.elem?.location?.locationType?.rawValue == "customer" })
+        //                edit.locationsIsCustomer = locationsIsCustomer
+        //
+        //            }
+        //        }
+        
+        
+        
+        if let vc = segue.destination as? TableView {
             let selectedRow = myTableView.indexPathForSelectedRow!.row
-            
             if let locations = dicData[listDate[selectedRow]] {
                 let locationsIsCustomer = locations.filter( { $0.elem?.location?.locationType?.rawValue == "customer" })
-                edit.locationsIsCustomer = locationsIsCustomer
+                vc.locationsIsCustomer = locationsIsCustomer
                 
             }
         }
-        
     }
+    
+    
     
     func showAlert(title: String? = "", message: String?, completion: (() -> Void)? = nil) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
@@ -118,10 +131,11 @@ extension ScreenExpandVC : PassDelegateProtocol {
         }
     }
     
-    func LoginOK() {
+    func LoginOK(dicData: [Date: [Location]]) {
         DispatchQueue.main.async {
             self.hideActivity()
             // chuyen man hinh dung keo tha
+            self.dicData = dicData
         }
     }
     

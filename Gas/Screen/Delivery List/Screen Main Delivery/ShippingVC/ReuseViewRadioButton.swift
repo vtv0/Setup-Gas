@@ -44,7 +44,7 @@ class ReuseViewRadioButton: UIView {
     func commonInit() {
         guard let viewReuse = loadViewFromNib() else { return }
         viewReuse.frame = self.bounds
-        viewReuse.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        viewReuse.autoresizingMask = [.flexibleWidth, .flexibleHeight] // tu dong co dan
         self.addSubview(viewReuse)
         
         //        view.translatesAutoresizingMaskIntoConstraints = false

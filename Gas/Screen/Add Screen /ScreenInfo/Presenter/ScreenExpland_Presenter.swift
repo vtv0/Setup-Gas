@@ -9,7 +9,7 @@ import Foundation
 
 protocol PassDelegateProtocol: AnyObject {
     func loadDataSource()
-    func LoginOK()
+    func LoginOK(dicData: [Date: [Location]])
     func errorGetMe(error: Error)
     func errorGetLastWorkerLocationList(error: Error)
 }
@@ -37,6 +37,7 @@ class ScreenExpland_Presenter {
     }
     
 //    func arrStringDate() -> [String] {
+    
 ////        sevenDay()
 //        let formatter = DateFormatter()
 //        formatter.dateFormat = "MM/dd"
@@ -58,10 +59,10 @@ class ScreenExpland_Presenter {
                dicData = try await GetWorkerRouteLocationList_Async_Await().loadDic(dates: listDate)
                 print(dicData)// nhan tu view sang
                 
-                DispatchQueue.main.async {
-                    self.loadDataDelegate?.LoginOK()
-                }
-                loadDataDelegate?.LoginOK()
+//                DispatchQueue.main.async {
+//                    self.loadDataDelegate?.LoginOK(dicData: self.dicData)
+//                }
+                loadDataDelegate?.LoginOK(dicData: dicData)
                 
             } catch {
                 loadDataDelegate?.errorGetLastWorkerLocationList(error: error)

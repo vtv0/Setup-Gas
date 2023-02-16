@@ -37,10 +37,17 @@
 		75867FF22970FD88005A0295 /* GetMe_Async_Await.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75867FF12970FD88005A0295 /* GetMe_Async_Await.swift */; };
 		75867FF42971097A005A0295 /* DB_Get_Set.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75867FF32971097A005A0295 /* DB_Get_Set.swift */; };
 		7598E46128EFC4DC00EA9FA9 /* PageDetailCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7598E46028EFC4DC00EA9FA9 /* PageDetailCollectionViewCell.swift */; };
+		75A02981299E3B140035D22B /* ViewImage.xib in Resources */ = {isa = PBXBuildFile; fileRef = 75A02980299E3B140035D22B /* ViewImage.xib */; };
+		75A02983299E3B910035D22B /* ViewImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75A02982299E3B910035D22B /* ViewImage.swift */; };
 		75A1E17C28EFE6F200EA17A2 /* ContentReplanTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75A1E17B28EFE6F200EA17A2 /* ContentReplanTableViewCell.swift */; };
 		75A1E17F28F3AB6300EA17A2 /* RerouteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75A1E17E28F3AB6300EA17A2 /* RerouteViewController.swift */; };
 		75ACE5EA2990D34100298D75 /* ReuseViewRadioButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75ACE5E92990D34100298D75 /* ReuseViewRadioButton.swift */; };
 		75ACE5EC2990D36400298D75 /* ViewRadioButton.xib in Resources */ = {isa = PBXBuildFile; fileRef = 75ACE5EB2990D36400298D75 /* ViewRadioButton.xib */; };
+		75BD0BC4299DC9A700D1B690 /* TableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BD0BC3299DC9A700D1B690 /* TableView.swift */; };
+		75BD0BC7299DCA1A00D1B690 /* TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BD0BC5299DCA1A00D1B690 /* TableViewCell.swift */; };
+		75BD0BC8299DCA1A00D1B690 /* TableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 75BD0BC6299DCA1A00D1B690 /* TableViewCell.xib */; };
+		75BD0BCF299DCD5900D1B690 /* TableViewCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BD0BCE299DCD5900D1B690 /* TableViewCellModel.swift */; };
+		75BD0BD1299DCDC800D1B690 /* CollectionViewCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BD0BD0299DCDC800D1B690 /* CollectionViewCellModel.swift */; };
 		75BF3A0728E161A800BC0F0C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BF3A0628E161A800BC0F0C /* AppDelegate.swift */; };
 		75BF3A0928E161A800BC0F0C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BF3A0828E161A800BC0F0C /* SceneDelegate.swift */; };
 		75BF3A0B28E161A800BC0F0C /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BF3A0A28E161A800BC0F0C /* LoginController.swift */; };
@@ -107,10 +114,17 @@
 		75867FF12970FD88005A0295 /* GetMe_Async_Await.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetMe_Async_Await.swift; sourceTree = "<group>"; };
 		75867FF32971097A005A0295 /* DB_Get_Set.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DB_Get_Set.swift; sourceTree = "<group>"; };
 		7598E46028EFC4DC00EA9FA9 /* PageDetailCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageDetailCollectionViewCell.swift; sourceTree = "<group>"; };
+		75A02980299E3B140035D22B /* ViewImage.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ViewImage.xib; sourceTree = "<group>"; };
+		75A02982299E3B910035D22B /* ViewImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewImage.swift; sourceTree = "<group>"; };
 		75A1E17B28EFE6F200EA17A2 /* ContentReplanTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentReplanTableViewCell.swift; sourceTree = "<group>"; };
 		75A1E17E28F3AB6300EA17A2 /* RerouteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RerouteViewController.swift; sourceTree = "<group>"; };
 		75ACE5E92990D34100298D75 /* ReuseViewRadioButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReuseViewRadioButton.swift; sourceTree = "<group>"; };
 		75ACE5EB2990D36400298D75 /* ViewRadioButton.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ViewRadioButton.xib; sourceTree = "<group>"; };
+		75BD0BC3299DC9A700D1B690 /* TableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableView.swift; sourceTree = "<group>"; };
+		75BD0BC5299DCA1A00D1B690 /* TableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewCell.swift; sourceTree = "<group>"; };
+		75BD0BC6299DCA1A00D1B690 /* TableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TableViewCell.xib; sourceTree = "<group>"; };
+		75BD0BCE299DCD5900D1B690 /* TableViewCellModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewCellModel.swift; sourceTree = "<group>"; };
+		75BD0BD0299DCDC800D1B690 /* CollectionViewCellModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewCellModel.swift; sourceTree = "<group>"; };
 		75BF3A0328E161A800BC0F0C /* Gas.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Gas.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		75BF3A0628E161A800BC0F0C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		75BF3A0828E161A800BC0F0C /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -272,6 +286,7 @@
 		75498996299B394300D1958E /* Add Screen  */ = {
 			isa = PBXGroup;
 			children = (
+				75BD0BC1299DC94600D1B690 /* TableViewOther */,
 				75F0ED6D299B873C00EF17B9 /* ScreenInfo */,
 				75F0ED6E299B875E00EF17B9 /* Screen Detail */,
 			);
@@ -298,6 +313,8 @@
 		754B942128EBC6DC0059D4F2 /* GenneralInfomation */ = {
 			isa = PBXGroup;
 			children = (
+				75FDF73828EAB69700AADB99 /* ParkingLocationController.swift */,
+				75FDF73A28EAB6B300AADB99 /* CustomerLocationController.swift */,
 				75D2CE7728F7ACDC00B51CED /* ReusableImage */,
 				75FDF73628EAB65800AADB99 /* GeneralInfoController.swift */,
 			);
@@ -352,6 +369,36 @@
 				75C0F47528F425A50091FB84 /* CustomAlertViewController.swift */,
 			);
 			path = Reroute;
+			sourceTree = "<group>";
+		};
+		75BD0BC1299DC94600D1B690 /* TableViewOther */ = {
+			isa = PBXGroup;
+			children = (
+				75BD0BCD299DCCE300D1B690 /* Model */,
+				75BD0BC2299DC95600D1B690 /* View */,
+			);
+			path = TableViewOther;
+			sourceTree = "<group>";
+		};
+		75BD0BC2299DC95600D1B690 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				75BD0BC3299DC9A700D1B690 /* TableView.swift */,
+				75BD0BC5299DCA1A00D1B690 /* TableViewCell.swift */,
+				75BD0BC6299DCA1A00D1B690 /* TableViewCell.xib */,
+				75A02982299E3B910035D22B /* ViewImage.swift */,
+				75A02980299E3B140035D22B /* ViewImage.xib */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		75BD0BCD299DCCE300D1B690 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				75BD0BCE299DCD5900D1B690 /* TableViewCellModel.swift */,
+				75BD0BD0299DCDC800D1B690 /* CollectionViewCellModel.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 		75BF39FA28E161A800BC0F0C = {
@@ -547,8 +594,6 @@
 			isa = PBXGroup;
 			children = (
 				754B942128EBC6DC0059D4F2 /* GenneralInfomation */,
-				75FDF73828EAB69700AADB99 /* ParkingLocationController.swift */,
-				75FDF73A28EAB6B300AADB99 /* CustomerLocationController.swift */,
 			);
 			path = ViewSmall;
 			sourceTree = "<group>";
@@ -641,6 +686,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				75BF3A1328E161A900BC0F0C /* LaunchScreen.storyboard in Resources */,
+				75A02981299E3B140035D22B /* ViewImage.xib in Resources */,
+				75BD0BC8299DCA1A00D1B690 /* TableViewCell.xib in Resources */,
 				754B942028EAE8CB0059D4F2 /* Assets.xcassets in Resources */,
 				75ACE5EC2990D36400298D75 /* ViewRadioButton.xib in Resources */,
 				75BF3A0E28E161A800BC0F0C /* Main.storyboard in Resources */,
@@ -704,6 +751,7 @@
 				75D2CE8B28F80FDF00B51CED /* DeliveryLocationImageType.swift in Sources */,
 				75FDF73528EAB30200AADB99 /* TabCell.swift in Sources */,
 				7549898C2999E92D00D1958E /* GetVersion.swift in Sources */,
+				75A02983299E3B910035D22B /* ViewImage.swift in Sources */,
 				75C0F47628F425A50091FB84 /* CustomAlertViewController.swift in Sources */,
 				750B39D228E3E71900210AB9 /* ContentReplanController.swift in Sources */,
 				75498998299B3A0900D1958E /* ScreenExpandVC.swift in Sources */,
@@ -729,13 +777,16 @@
 				75867FF22970FD88005A0295 /* GetMe_Async_Await.swift in Sources */,
 				75123F6A29027E3D00A08972 /* PassScreenViewController.swift in Sources */,
 				75F745402990A58F00B17423 /* ExtensionTool.swift in Sources */,
+				75BD0BC4299DC9A700D1B690 /* TableView.swift in Sources */,
 				75FDF73D28EABABA00AADB99 /* EditViewController.swift in Sources */,
 				75FDF73928EAB69700AADB99 /* ParkingLocationController.swift in Sources */,
 				75D2CE8928F80F7200B51CED /* ImageLabelView.swift in Sources */,
 				8A21B86629058E35008D94DE /* Extension+ActivityIndicator.swift in Sources */,
 				75F0ED73299B87CB00EF17B9 /* DetailTableVC.swift in Sources */,
+				75BD0BCF299DCD5900D1B690 /* TableViewCellModel.swift in Sources */,
 				75ACE5EA2990D34100298D75 /* ReuseViewRadioButton.swift in Sources */,
 				7598E46128EFC4DC00EA9FA9 /* PageDetailCollectionViewCell.swift in Sources */,
+				75BD0BD1299DCDC800D1B690 /* CollectionViewCellModel.swift in Sources */,
 				75867FF02970FD4C005A0295 /* GetWorkerRouteLocationList_Async_Await.swift in Sources */,
 				75BF3A1E28E2883100BC0F0C /* DeliveryListController.swift in Sources */,
 				75498995299A409000D1958E /* Presenter_ContentReplan.swift in Sources */,
@@ -749,6 +800,7 @@
 				750B39D028E3036300210AB9 /* ReplanController.swift in Sources */,
 				7549898A2999E88E00D1958E /* PresenterSetting.swift in Sources */,
 				75A1E17F28F3AB6300EA17A2 /* RerouteViewController.swift in Sources */,
+				75BD0BC7299DCA1A00D1B690 /* TableViewCell.swift in Sources */,
 				75EDABE5299CDB670080E1C2 /* CollectionImageVC.swift in Sources */,
 				753BA388296BB1D100C7136F /* GetAsset_Async_Await.swift in Sources */,
 				7573ADC029530A0100E8C658 /* GetWorkerVehicleList.swift in Sources */,
