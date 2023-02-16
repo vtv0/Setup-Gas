@@ -18,42 +18,31 @@ class TableViewCell: UITableViewCell {
     @IBOutlet weak var lblDeliveryAddress: UILabel!
     @IBOutlet weak var lblEstimateTime: UILabel!
     
+    @IBOutlet weak var stackViewContainer: UIStackView!
+   
+    
     @IBOutlet weak var stackViewImages: UIStackView!
+    var urls: [String] = []
     
-    var urls: [String] = [] {
-        didSet {
-           
-        }
-    }
-    
-    
+     
     override func awakeFromNib() {
         super.awakeFromNib()
-        
-        for iurl in urls {
-            let reuseView = ViewImage(frame: .zero)
-            reuseView.imgImage.image = 
-            
-            
-            stackViewImages.addArrangedSubview(reuseView)
-        }
     }
     
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
     }
     
-    func getImage(iurl: String) {
-        AF.request(iurl, method: .get).response { response in
-            switch response.result {
-            case .success(let responseData):
-                responseData.
-                cellImage.imgImage.image = UIImage(data: responseData!, scale: 1)
-            case .failure(let error):
-                print("error--->",error)
-            }
+    func getImage(urls: [String]) {
+        for iurl in urls {
+            let reuseImageView = ViewImage(frame: .zero)
+//            reuseView.imgImage.image =
+            print(iurl)
+            reuseImageView.getImage(iurl: iurl)
+            stackViewImages.addArrangedSubview(reuseImageView)
         }
     }
+    
 }
 
 

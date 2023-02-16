@@ -47,9 +47,8 @@ class ReuseViewRadioButton: UIView {
         viewReuse.autoresizingMask = [.flexibleWidth, .flexibleHeight] // tu dong co dan
         self.addSubview(viewReuse)
         
-        //        view.translatesAutoresizingMaskIntoConstraints = false
+        //        view.translatesAutoresizingMaskIntoConstraints = false // an thanh scroll
         
-        //        mainView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onTapView)))
         viewReuse.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onTapView)))
         
     }

@@ -12,6 +12,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ViewImage" customModule="Gas" customModuleProvider="target">
             <connections>
                 <outlet property="imgImage" destination="Qg6-Y0-gIj" id="bzb-xk-73O"/>
+                <outlet property="mainViewImage" destination="iN0-l3-epB" id="asg-DC-Vwf"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>

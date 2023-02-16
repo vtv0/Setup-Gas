@@ -69,13 +69,7 @@ class ScreenExpland_Presenter {
                 
             }
         } catch {
-            
             loadDataDelegate?.errorGetMe(error: error)
-//            if let err = error as? GetMe_Async_Await.AFError {
-//                
-//                
-//            }
-            
         }
         return dicData
     }

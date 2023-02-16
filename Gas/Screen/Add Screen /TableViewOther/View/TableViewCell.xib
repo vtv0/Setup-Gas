@@ -74,15 +74,34 @@
                                     </label>
                                 </subviews>
                             </stackView>
-                            <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vHW-3I-SkO" userLabel="StackViewImage">
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="vHW-3I-SkO" userLabel="StackViewImage">
                                 <rect key="frame" x="0.0" y="97.666666666666686" width="335" height="97.333333333333314"/>
                                 <subviews>
-                                    <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pdl-tp-9zA">
+                                    <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pdl-tp-9zA">
                                         <rect key="frame" x="0.0" y="0.0" width="335" height="97.333333333333329"/>
+                                        <subviews>
+                                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="KIy-OZ-Cik">
+                                                <rect key="frame" x="0.0" y="0.0" width="335" height="97.333333333333329"/>
+                                            </stackView>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstItem="Xgc-Y9-NYh" firstAttribute="bottom" secondItem="KIy-OZ-Cik" secondAttribute="bottom" id="7SV-tm-7UF"/>
+                                            <constraint firstAttribute="trailing" secondItem="KIy-OZ-Cik" secondAttribute="trailing" id="Ica-PM-c9Y"/>
+                                            <constraint firstAttribute="bottom" secondItem="KIy-OZ-Cik" secondAttribute="bottom" constant="5.3333333333333286" id="KJm-h1-njU"/>
+                                            <constraint firstItem="Xgc-Y9-NYh" firstAttribute="trailing" secondItem="KIy-OZ-Cik" secondAttribute="trailing" id="UkY-hx-dE3"/>
+                                            <constraint firstItem="KIy-OZ-Cik" firstAttribute="leading" secondItem="Xgc-Y9-NYh" secondAttribute="leading" id="gSp-rr-PxC"/>
+                                            <constraint firstItem="KIy-OZ-Cik" firstAttribute="top" secondItem="pdl-tp-9zA" secondAttribute="top" id="spY-Xb-J0y"/>
+                                        </constraints>
                                         <viewLayoutGuide key="contentLayoutGuide" id="PGt-MA-17m"/>
                                         <viewLayoutGuide key="frameLayoutGuide" id="Xgc-Y9-NYh"/>
                                     </scrollView>
                                 </subviews>
+                                <constraints>
+                                    <constraint firstItem="pdl-tp-9zA" firstAttribute="leading" secondItem="vHW-3I-SkO" secondAttribute="leading" id="92N-rv-Ptn"/>
+                                    <constraint firstItem="pdl-tp-9zA" firstAttribute="top" secondItem="vHW-3I-SkO" secondAttribute="top" id="LR9-ZK-dqW"/>
+                                    <constraint firstAttribute="trailing" secondItem="pdl-tp-9zA" secondAttribute="trailing" id="pfH-Xc-p7X"/>
+                                    <constraint firstAttribute="bottom" secondItem="pdl-tp-9zA" secondAttribute="bottom" id="r71-2U-0kt"/>
+                                </constraints>
                             </stackView>
                         </subviews>
                     </stackView>
@@ -102,7 +121,8 @@
                 <outlet property="lblDeliveryDestination" destination="RHm-2U-YZS" id="W2B-wt-DSW"/>
                 <outlet property="lblEstimateTime" destination="rVj-PA-StQ" id="RcM-tg-Lks"/>
                 <outlet property="stachViewInfo" destination="hWp-p5-C6S" id="qhL-xg-T55"/>
-                <outlet property="stackViewImages" destination="vHW-3I-SkO" id="oUX-Js-koy"/>
+                <outlet property="stackViewContainer" destination="vHW-3I-SkO" id="P1b-Co-Mgq"/>
+                <outlet property="stackViewImages" destination="KIy-OZ-Cik" id="Mjo-sJ-g1x"/>
             </connections>
             <point key="canvasLocation" x="89.312977099236633" y="-64.436619718309856"/>
         </tableViewCell>
