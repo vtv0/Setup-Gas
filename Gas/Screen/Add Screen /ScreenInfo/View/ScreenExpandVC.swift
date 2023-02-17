@@ -28,10 +28,8 @@ class ScreenExpandVC: UIViewController {
         screenExpland.loadDataDelegate = self
         Task {
             showActivity()
-             await screenExpland.requestAPI()
+            await screenExpland.requestAPI()
         }
-        
-        
     }
     
     

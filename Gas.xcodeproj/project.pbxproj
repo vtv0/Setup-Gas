@@ -30,6 +30,7 @@
 		7573ADC029530A0100E8C658 /* GetWorkerVehicleList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7573ADBF29530A0100E8C658 /* GetWorkerVehicleList.swift */; };
 		7573ADC229530D3600E8C658 /* GetRouteList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7573ADC129530D3600E8C658 /* GetRouteList.swift */; };
 		7573ADC4295310B400E8C658 /* GetWorkerRouteLocationList4.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7573ADC3295310B400E8C658 /* GetWorkerRouteLocationList4.swift */; };
+		7579268D299F0E6D00E7A28D /* ScreenExpland_TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7579268C299F0E6D00E7A28D /* ScreenExpland_TableViewCell.swift */; };
 		75867FEA296FAF7E005A0295 /* GetMe_Block.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75867FE9296FAF7E005A0295 /* GetMe_Block.swift */; };
 		75867FEC296FCB9E005A0295 /* GetWorkerRouteLocationList_Block.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75867FEB296FCB9E005A0295 /* GetWorkerRouteLocationList_Block.swift */; };
 		75867FEE296FDA54005A0295 /* GetAsset_Block.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75867FED296FDA54005A0295 /* GetAsset_Block.swift */; };
@@ -62,7 +63,6 @@
 		75E2940429962E5E00153A72 /* PresenterLogin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E2940329962E5E00153A72 /* PresenterLogin.swift */; };
 		75E2940A29965ADA00153A72 /* PatchStatusDelivery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E2940929965ADA00153A72 /* PatchStatusDelivery.swift */; };
 		75EDABD9299C8F950080E1C2 /* PatchDeliveryStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75EDABD8299C8F950080E1C2 /* PatchDeliveryStatus.swift */; };
-		75F0ED6A299B3F7B00EF17B9 /* ScreenExpand_TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F0ED69299B3F7B00EF17B9 /* ScreenExpand_TableViewCell.swift */; };
 		75F745402990A58F00B17423 /* ExtensionTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F7453F2990A58F00B17423 /* ExtensionTool.swift */; };
 		75FDF73028EAB0F700AADB99 /* TabsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75FDF72F28EAB0F700AADB99 /* TabsView.swift */; };
 		75FDF73228EAB18400AADB99 /* TabsPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75FDF73128EAB18400AADB99 /* TabsPageViewController.swift */; };
@@ -100,6 +100,7 @@
 		7573ADBF29530A0100E8C658 /* GetWorkerVehicleList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetWorkerVehicleList.swift; sourceTree = "<group>"; };
 		7573ADC129530D3600E8C658 /* GetRouteList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetRouteList.swift; sourceTree = "<group>"; };
 		7573ADC3295310B400E8C658 /* GetWorkerRouteLocationList4.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetWorkerRouteLocationList4.swift; sourceTree = "<group>"; };
+		7579268C299F0E6D00E7A28D /* ScreenExpland_TableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenExpland_TableViewCell.swift; sourceTree = "<group>"; };
 		75867FE9296FAF7E005A0295 /* GetMe_Block.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetMe_Block.swift; sourceTree = "<group>"; };
 		75867FEB296FCB9E005A0295 /* GetWorkerRouteLocationList_Block.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetWorkerRouteLocationList_Block.swift; sourceTree = "<group>"; };
 		75867FED296FDA54005A0295 /* GetAsset_Block.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetAsset_Block.swift; sourceTree = "<group>"; };
@@ -134,7 +135,6 @@
 		75E2940329962E5E00153A72 /* PresenterLogin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresenterLogin.swift; sourceTree = "<group>"; };
 		75E2940929965ADA00153A72 /* PatchStatusDelivery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatchStatusDelivery.swift; sourceTree = "<group>"; };
 		75EDABD8299C8F950080E1C2 /* PatchDeliveryStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatchDeliveryStatus.swift; sourceTree = "<group>"; };
-		75F0ED69299B3F7B00EF17B9 /* ScreenExpand_TableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenExpand_TableViewCell.swift; sourceTree = "<group>"; };
 		75F7453F2990A58F00B17423 /* ExtensionTool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionTool.swift; sourceTree = "<group>"; };
 		75FDF72F28EAB0F700AADB99 /* TabsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabsView.swift; sourceTree = "<group>"; };
 		75FDF73128EAB18400AADB99 /* TabsPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabsPageViewController.swift; sourceTree = "<group>"; };
@@ -180,7 +180,6 @@
 		750B39CE28E3034200210AB9 /* Replan */ = {
 			isa = PBXGroup;
 			children = (
-				75498991299A135C00D1958E /* Model_Replan */,
 				75498990299A135A00D1958E /* View_Replan */,
 				7549898F299A135800D1958E /* Presenter_Replan */,
 				75A1E17B28EFE6F200EA17A2 /* ContentReplanTableViewCell.swift */,
@@ -262,13 +261,6 @@
 			path = View_Replan;
 			sourceTree = "<group>";
 		};
-		75498991299A135C00D1958E /* Model_Replan */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Model_Replan;
-			sourceTree = "<group>";
-		};
 		75498996299B394300D1958E /* Add Screen  */ = {
 			isa = PBXGroup;
 			children = (
@@ -290,7 +282,7 @@
 			isa = PBXGroup;
 			children = (
 				75498997299B3A0900D1958E /* ScreenExpandVC.swift */,
-				75F0ED69299B3F7B00EF17B9 /* ScreenExpand_TableViewCell.swift */,
+				7579268C299F0E6D00E7A28D /* ScreenExpland_TableViewCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -700,7 +692,6 @@
 				7501250828ED2272003AC9EB /* PageDetailVC.swift in Sources */,
 				753BA38C296BB72500C7136F /* ShippingViewController.swift in Sources */,
 				75FDF73B28EAB6B300AADB99 /* CustomerLocationController.swift in Sources */,
-				75F0ED6A299B3F7B00EF17B9 /* ScreenExpand_TableViewCell.swift in Sources */,
 				75867FEE296FDA54005A0295 /* GetAsset_Block.swift in Sources */,
 				75867FF42971097A005A0295 /* DB_Get_Set.swift in Sources */,
 				75867FF22970FD88005A0295 /* GetMe_Async_Await.swift in Sources */,
@@ -726,6 +717,7 @@
 				7549898A2999E88E00D1958E /* PresenterSetting.swift in Sources */,
 				75A1E17F28F3AB6300EA17A2 /* RerouteViewController.swift in Sources */,
 				75BD0BC7299DCA1A00D1B690 /* TableViewCell.swift in Sources */,
+				7579268D299F0E6D00E7A28D /* ScreenExpland_TableViewCell.swift in Sources */,
 				753BA388296BB1D100C7136F /* GetAsset_Async_Await.swift in Sources */,
 				7573ADC029530A0100E8C658 /* GetWorkerVehicleList.swift in Sources */,
 				75FDF73028EAB0F700AADB99 /* TabsView.swift in Sources */,

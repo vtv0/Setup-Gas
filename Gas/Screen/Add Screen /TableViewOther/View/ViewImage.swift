@@ -9,7 +9,7 @@ import UIKit
 import Alamofire
 
 class ViewImage: UIView {
-
+    
     @IBOutlet var mainViewImage: UIView!
     @IBOutlet weak var imgImage: UIImageView!
     
@@ -21,7 +21,6 @@ class ViewImage: UIView {
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         commonInit()
-//        fatalError("init(coder:) has not been implemented")
     }
     
     func loadViewFromNib() -> UIView? {
@@ -35,10 +34,7 @@ class ViewImage: UIView {
         viewReuse.autoresizingMask = [.flexibleWidth, .flexibleHeight] // tu dong co dan
         self.addSubview(viewReuse)
         
-        //        view.translatesAutoresizingMaskIntoConstraints = false
-        
-        //        mainView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onTapView)))
-//        viewReuse.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onTapView)))
+        viewReuse.translatesAutoresizingMaskIntoConstraints = true
         
     }
     

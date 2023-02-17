@@ -19,12 +19,10 @@ class TableViewCell: UITableViewCell {
     @IBOutlet weak var lblEstimateTime: UILabel!
     
     @IBOutlet weak var stackViewContainer: UIStackView!
-   
-    
     @IBOutlet weak var stackViewImages: UIStackView!
+
     var urls: [String] = []
     
-     
     override func awakeFromNib() {
         super.awakeFromNib()
     }
@@ -33,14 +31,13 @@ class TableViewCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
     }
     
-    func getImage(urls: [String]) {
+    func loadImage(urls: [String]) {
         for iurl in urls {
             let reuseImageView = ViewImage(frame: .zero)
-//            reuseView.imgImage.image =
-            print(iurl)
             reuseImageView.getImage(iurl: iurl)
             stackViewImages.addArrangedSubview(reuseImageView)
         }
+        
     }
     
 }
