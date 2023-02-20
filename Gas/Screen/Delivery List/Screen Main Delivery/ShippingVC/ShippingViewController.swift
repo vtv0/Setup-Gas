@@ -20,9 +20,9 @@ enum StatusDelivery: CaseIterable {
         case .returnFailedToDeliver:
             return "Return failed to deliver"
         case .unableToDeliver:
-            return "Unable to deliver fff"
+            return "Unable to deliver"
         case .complete:
-            return "complete"
+            return "Complete"
 //        case .ok:
 //            return "OK"
         }
@@ -40,8 +40,7 @@ class ShippingViewController: UIViewController {
     @IBAction func btnSubmit(_ sender: Any) {
         print("CLICK SUBMIT")
         Task {
-           try await PatchStatusDelivery().patchStatusDelivery_Async_Await(iassetID: "\(dataInfoOneCustomer.asset?.id ?? "")", status: ShippingViewController.statusDelivery)
-
+            try await PatchStatusDelivery().patchStatusDelivery_Async_Await(iassetID: "\(dataInfoOneCustomer.asset?.id ?? "")", status: ShippingViewController.statusDelivery, dataInfoOneCustomer: dataInfoOneCustomer)
         }
     }
     
@@ -56,7 +55,7 @@ class ShippingViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.black]
+        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.systemBlue]
         title = "Determine delivery content"
         self.navigationItem.setHidesBackButton(true, animated: false)
         
@@ -76,6 +75,8 @@ class ShippingViewController: UIViewController {
         
         setupRadioButton()
         
+        
+   
         
     }
     

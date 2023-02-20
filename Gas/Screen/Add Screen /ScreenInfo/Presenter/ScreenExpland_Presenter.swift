@@ -18,12 +18,13 @@ class ScreenExpland_Presenter {
     
     weak var loadDataDelegate: PassDelegateProtocol?
     
-    var listDate: [Date] = []
+    
     var listStringTypeDate: [String] = []
     var companyCode = UserDefaults.standard.string(forKey: "companyCode") ?? ""
     
     
     func sevenDay() -> [Date] {
+        var listDate: [Date] = []
         let anchor = Date()
         let calendar = Calendar.current
         let formatter = DateFormatter()
@@ -52,10 +53,14 @@ class ScreenExpland_Presenter {
     
     func requestAPI() async -> [Date: [Location]] {
         var dicData: [Date: [Location]] = [:]
+        let listDate = sevenDay()
+        // call getMe
         do {
+            
             let asset: [Int] = try await GetMe_Async_Await().getMe_Async_Await(companyCode: "\(companyCode)")
             print(asset)
             do {
+                // call GetWorkerRouteLocationList_Async_Await
                dicData = try await GetWorkerRouteLocationList_Async_Await().loadDic(dates: listDate)
                 print(dicData)// nhan tu view sang
                 

@@ -53,8 +53,8 @@ class GetWorkerRouteLocationList_Async_Await {
         
         let dateString: String = formatter.string(from: iday)
         let url: String = "https://\(companyCode).kiiapps.com/am/exapi/vrp/tenants/\(tenantId)/latest_route/worker_users/\(userId)?workDate=\(dateString)"
-        print(url)
-        let getWorkerRouteLocationList = AF.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default ,headers: self.makeHeaders(token: token)).validate(statusCode: (200...299))
+        
+        let getWorkerRouteLocationList = AF.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: self.makeHeaders(token: token)).validate(statusCode: (200...299))
             .serializingDecodable(GetLatestWorkerRouteLocationListInfo.self)
         let getWorkerRouteLocationListResponse =  await getWorkerRouteLocationList.response
         
@@ -70,7 +70,7 @@ class GetWorkerRouteLocationList_Async_Await {
                 
                 arrLocationElem = locations1
                 
-                for  iLocationValue in arrLocationValue {
+                for iLocationValue in arrLocationValue {
                     if let assetID = iLocationValue.elem?.location?.assetID {
                         async let getAssetResponse = try? await GetAsset_Async_Await().getGetAsset_Async_Await(forAsset: assetID)
                         iLocationValue.asset = await getAssetResponse
@@ -87,6 +87,7 @@ class GetWorkerRouteLocationList_Async_Await {
             
             
         case .failure(let error):
+            print(url)
             print("Error: \(error)")
             print("Error: \(getWorkerRouteLocationListResponse.response?.statusCode ?? 000000)")
             if getWorkerRouteLocationListResponse.response?.statusCode == 204 {
@@ -94,9 +95,9 @@ class GetWorkerRouteLocationList_Async_Await {
             } else if getWorkerRouteLocationListResponse.response?.statusCode == 401 {
                 throw AFError.tokenOutOfDate
             } else if getWorkerRouteLocationListResponse.response?.statusCode == 404 {
-                //                    throw AFError.wrong
+                // throw AFError.wrong
             } else {
-                throw AFError.remain
+                //                 throw AFError.remain
             }
         }
         
@@ -114,12 +115,10 @@ class GetWorkerRouteLocationList_Async_Await {
                 for iday in dates {
                     group.addTask { await (iday, try! self.getLocationElem_Async_Await(iday: iday)) }
                 }
-                
                 // dic: location
                 for await result in group {
                     dicData[result.0] = result.1
                 }
-                
                 return dicData
             }
     }

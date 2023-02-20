@@ -27,10 +27,10 @@ class TableView: UIViewController {
         
         tableView.allowsSelection = false
         
-//        for location in locationsIsCustomer {
-//            let urls = location.urls()
-//            arrUrls.append(urls)
-//        }
+        //        for location in locationsIsCustomer {
+        //            let urls = location.urls()
+        //            arrUrls.append(urls)
+        //        }
     }
     
     
@@ -59,9 +59,20 @@ extension TableView: UITableViewDataSource {
             cellTable.urls = locationsIsCustomer[indexPath.row].urls()
             if locationsIsCustomer[indexPath.row].urls().isEmpty {
                 cellTable.stackViewContainer.isHidden = true
+            } else {
+                cellTable.stackViewContainer.isHidden = false
             }
             
-            cellTable.loadImage(urls: locationsIsCustomer[indexPath.row].urls())
+            
+            // tao ra [ [String] ]:
+//            let urlsImage = locationsIsCustomer[indexPath.row].urls()
+//            if !urlsImage.isEmpty {  // co URL image
+//                cellTable.urls = locationsIsCustomer[indexPath.row].urls()
+//                cellTable.loadImage(urls: locationsIsCustomer[indexPath.row].urls())
+//            } else {
+//                //  cellTable.loadImage(urls: [])
+//                cellTable.urls = []
+//            }
             
             if locationsIsCustomer[indexPath.row].elem?.location?.metadata?.display_data?.valueDeliveryHistory() == .waiting {
                 cellTable.backgroundColor = UIColor(named: "blueMarker")
@@ -69,6 +80,8 @@ extension TableView: UITableViewDataSource {
                 cellTable.backgroundColor = UIColor(named: "yellowMarker")
             } else if locationsIsCustomer[indexPath.row].elem?.location?.metadata?.display_data?.valueDeliveryHistory() == .failed || locationsIsCustomer[indexPath.row].elem?.location?.metadata?.display_data?.valueDeliveryHistory() == .completed {
                 cellTable.backgroundColor = UIColor(named: "grayMarker")
+            } else {
+                cellTable.backgroundColor = .white
             }
             
             return cellTable

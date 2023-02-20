@@ -88,9 +88,9 @@ extension ScreenExpandVC: UITableViewDelegate {
     }
 }
 
-extension ScreenExpandVC : PassDelegateProtocol {
+extension ScreenExpandVC: PassDelegateProtocol {
     func errorGetLastWorkerLocationList(error: Error) {
-        let errGetLast = error as? GetWorkerRouteLocationList_Async_Await.AFError
+        let errGetLast = error as? GetWorkerRouteLocationList_Async_Await.AFError 
         if errGetLast == .tokenOutOfDate {
             let scrLogin = storyboard?.instantiateViewController(withIdentifier: "LoginViewController" ) as! ViewController
             self.navigationController?.pushViewController(scrLogin, animated: false)

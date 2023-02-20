@@ -6,7 +6,7 @@
 
 import UIKit
 
-class Location: NSObject, NSCopying {
+class Location: NSObject, Decodable {
     var type: LocationType {
         if elem?.location?.assetID == nil {
             return .supplier
@@ -64,11 +64,7 @@ class Location: NSObject, NSCopying {
 }
 
 // MARK: - GetLatestWorkerRouteLocationListInfo
-class GetLatestWorkerRouteLocationListInfo: NSObject, Decodable, NSCopying {
-    func copy(with zone: NSZone? = nil) -> Any {
-        let copy = GetLatestWorkerRouteLocationListInfo()
-        return copy
-    }
+class GetLatestWorkerRouteLocationListInfo: NSObject, Decodable {
     
     var locations: [LocationElement]?
     var workerRoute: WorkerRoute?
@@ -180,7 +176,7 @@ class LocationLocation: NSObject, Decodable {
 
 
 // MARK: - PurpleMetadata
-class PurpleMetadata: NSObject, Codable {
+class PurpleMetadata: NSObject, Decodable {
     var kyokyusetsubiCode: String?
     var display_data: DisplayData?
     var operators: [String?]?
@@ -199,7 +195,7 @@ class PurpleMetadata: NSObject, Codable {
 }
 
 // MARK: - DisplayData
-class DisplayData: NSObject, Codable {
+class DisplayData: NSObject, Decodable {
     var delivery_history: [String: String]?
     var origin_route_id: Int?
     var excludeFirstDay: Bool? = false
@@ -212,7 +208,7 @@ class DisplayData: NSObject, Codable {
         self.moveToFirstDay = moveToFirstDay
     }
     
-    enum DeliveryHistory: String, Codable {
+    enum DeliveryHistory: String, Decodable {
         case completed = "completed"
         case failed = "failed"
         case halfway = "halfway"
@@ -284,7 +280,7 @@ class FluffyMetadata: NSObject, Decodable {
 }
 
 // MARK: - FacilityDatum
-class Facility_data: NSObject, Codable {
+class Facility_data: NSObject, Decodable {
     var count, type: Int?
     
     enum Count: Int {
@@ -302,7 +298,7 @@ class Facility_data: NSObject, Codable {
 }
 
 // MARK: - WorkerRoute
-class WorkerRoute: NSObject, Codable {
+class WorkerRoute: NSObject, Decodable {
     var createdAt: String?
     var id, loadRemain, routeID, totalTimeSEC: Int?
     var workDate: String?

@@ -112,7 +112,7 @@ extension ViewController: LoginVCDelegateProtocol {
         DispatchQueue.main.async { [self] in
             let err = err as? GetMe_Async_Await.AFError
             if err == .tokenOutOfDate {
-                let mhDeliveryList = storyboard?.instantiateViewController(withIdentifier: "DeliveryListController") as! DeliveryListController
+                let mhDeliveryList = storyboard?.instantiateViewController(withIdentifier: "LoginViewController") as! ViewController
                 self.navigationController?.pushViewController(mhDeliveryList, animated: true)
                 showAlert(message: "Token đã hết hạn")
                 hideActivity()
@@ -151,12 +151,6 @@ extension ViewController: LoginVCDelegateProtocol {
         }
     }
     
-    func loginOutOfDate_Token() {
-        let mhLogin = self.storyboard?.instantiateViewController(identifier:  "LoginViewController") as! ViewController
-        self.navigationController?.pushViewController(mhLogin, animated: true)
-        showAlert(message: "Token đã hết hạn 1111")
-        hideActivity()
-    }
 }
 
 

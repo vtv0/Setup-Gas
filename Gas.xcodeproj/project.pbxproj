@@ -15,7 +15,7 @@
 		750B39D228E3E71900210AB9 /* ContentReplanController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750B39D128E3E71900210AB9 /* ContentReplanController.swift */; };
 		750C7E6529078E52009A9E27 /* GetLatestWorkerRouteLocationList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750C7E6429078E52009A9E27 /* GetLatestWorkerRouteLocationList.swift */; };
 		750C7E6B2908ECA0009A9E27 /* Marker+ExtensionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750C7E6A2908ECA0009A9E27 /* Marker+ExtensionViewController.swift */; };
-		750C7E6D290FA4CE009A9E27 /* ParseJsonGetAssetToObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750C7E6C290FA4CE009A9E27 /* ParseJsonGetAssetToObject.swift */; };
+		750C7E6D290FA4CE009A9E27 /* ParseJsonGetAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750C7E6C290FA4CE009A9E27 /* ParseJsonGetAsset.swift */; };
 		75123F6A29027E3D00A08972 /* PassScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75123F6929027E3D00A08972 /* PassScreenViewController.swift */; };
 		7517A0F028F660FE00994CBD /* CustomAlertReplanVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7517A0EF28F660FE00994CBD /* CustomAlertReplanVC.swift */; };
 		753BA388296BB1D100C7136F /* GetAsset_Async_Await.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753BA387296BB1D100C7136F /* GetAsset_Async_Await.swift */; };
@@ -85,7 +85,7 @@
 		750B39D128E3E71900210AB9 /* ContentReplanController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentReplanController.swift; sourceTree = "<group>"; };
 		750C7E6429078E52009A9E27 /* GetLatestWorkerRouteLocationList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetLatestWorkerRouteLocationList.swift; sourceTree = "<group>"; };
 		750C7E6A2908ECA0009A9E27 /* Marker+ExtensionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Marker+ExtensionViewController.swift"; sourceTree = "<group>"; };
-		750C7E6C290FA4CE009A9E27 /* ParseJsonGetAssetToObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParseJsonGetAssetToObject.swift; sourceTree = "<group>"; };
+		750C7E6C290FA4CE009A9E27 /* ParseJsonGetAsset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParseJsonGetAsset.swift; sourceTree = "<group>"; };
 		75123F6929027E3D00A08972 /* PassScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassScreenViewController.swift; sourceTree = "<group>"; };
 		7517A0EF28F660FE00994CBD /* CustomAlertReplanVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAlertReplanVC.swift; sourceTree = "<group>"; };
 		753BA387296BB1D100C7136F /* GetAsset_Async_Await.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetAsset_Async_Await.swift; sourceTree = "<group>"; };
@@ -233,7 +233,7 @@
 		754989882999E50600D1958E /* Convert Object  */ = {
 			isa = PBXGroup;
 			children = (
-				750C7E6C290FA4CE009A9E27 /* ParseJsonGetAssetToObject.swift */,
+				750C7E6C290FA4CE009A9E27 /* ParseJsonGetAsset.swift */,
 				750C7E6429078E52009A9E27 /* GetLatestWorkerRouteLocationList.swift */,
 				7573ADBF29530A0100E8C658 /* GetWorkerVehicleList.swift */,
 				7573ADC129530D3600E8C658 /* GetRouteList.swift */,
@@ -361,10 +361,10 @@
 			isa = PBXGroup;
 			children = (
 				75BD0BC3299DC9A700D1B690 /* TableView.swift */,
-				75BD0BC5299DCA1A00D1B690 /* TableViewCell.swift */,
 				75BD0BC6299DCA1A00D1B690 /* TableViewCell.xib */,
-				75A02982299E3B910035D22B /* ViewImage.swift */,
+				75BD0BC5299DCA1A00D1B690 /* TableViewCell.swift */,
 				75A02980299E3B140035D22B /* ViewImage.xib */,
+				75A02982299E3B910035D22B /* ViewImage.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -406,7 +406,6 @@
 			children = (
 				75123F6929027E3D00A08972 /* PassScreenViewController.swift */,
 				75498996299B394300D1958E /* Add Screen  */,
-				8A4064A828F86F710011DA9A /* Container Extension */,
 				75BF3A1F28E2AE7900BC0F0C /* Login */,
 				75BF3A2228E2AF2F00BC0F0C /* Delivery List */,
 				750B39CE28E3034200210AB9 /* Replan */,
@@ -414,6 +413,7 @@
 				750B39CB28E2F6C900210AB9 /* Setting */,
 				753BA386296BB19600C7136F /* Call API  */,
 				754989882999E50600D1958E /* Convert Object  */,
+				8A4064A828F86F710011DA9A /* Container Extension */,
 			);
 			path = Screen;
 			sourceTree = "<group>";
@@ -708,7 +708,7 @@
 				75BF3A1E28E2883100BC0F0C /* DeliveryListController.swift in Sources */,
 				8AE3EE5A299E7B05003CC955 /* TableView_Presenter.swift in Sources */,
 				75498995299A409000D1958E /* Presenter_ContentReplan.swift in Sources */,
-				750C7E6D290FA4CE009A9E27 /* ParseJsonGetAssetToObject.swift in Sources */,
+				750C7E6D290FA4CE009A9E27 /* ParseJsonGetAsset.swift in Sources */,
 				75D2CE8528F80F1C00B51CED /* FacilityImageView.swift in Sources */,
 				75BF3A0728E161A800BC0F0C /* AppDelegate.swift in Sources */,
 				75498993299A245A00D1958E /* Presenter_Replan.swift in Sources */,

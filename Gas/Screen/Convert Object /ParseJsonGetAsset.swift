@@ -102,7 +102,7 @@ class LocationDetail: Decodable {
 }
 class Display_dataDetail: Decodable {
     var delivery_history: Dictionary<String,String>?
-    var exclude_firstday: Bool?
+    var exclude_firstday: Bool? 
     var move_to_firstday: Bool? = false
     var origin_route_id: Int?
     

@@ -10,11 +10,7 @@ import Alamofire
 
 protocol LoginVCDelegateProtocol: AnyObject {
     func loginOK()
-    func loginOutOfDate_Token()
-    
     func loginError(err: Error)
-//    func login_Async_Await()
-    
     func getMeError(err: Error)
 }
 
@@ -31,12 +27,12 @@ class PresenterLogin {
         headers["Authorization"] = "Bearer " + token
         return HTTPHeaders(headers)
     }
-
+    
     func callAPI_Block(name: String, pass: String, companyCode: String) {
-        PostGetToken_Block().postGetToken_Block(username: name /*txtUserName.text!*/, pass: pass /*txtPass.text!*/, companyCode: companyCode /*txtcompanyCode.text!*/) { [self] token, error  in
+        PostGetToken_Block().postGetToken_Block(username: name, pass: pass, companyCode: companyCode) { [self] token, error  in
             if token != nil {
                 UserDefaults.standard.set(token, forKey: "accessToken")
-                GetMe_Block().getMe_Block(commpanyCode: companyCode  /*txtcompanyCode.text!*/, acccessToken: token ?? "") { (dataID, detailError) in
+                GetMe_Block().getMe_Block(commpanyCode: companyCode, acccessToken: token ?? "") { (dataID, detailError) in
                     if !dataID.isEmpty {
                         UserDefaults.standard.set(dataID[0], forKey: "tenantId")
                         UserDefaults.standard.set(dataID[1], forKey: "userId")
@@ -53,24 +49,24 @@ class PresenterLogin {
                 switch err {
                 case .wrongPassword:
                     print(401)
-//                    showAlert(message: "Sai thông tin tài khoản")
-//                    hideActivity()
+                    //                    showAlert(message: "Sai thông tin tài khoản")
+                    //                    hideActivity()
                 case .ok: break
                 case .tokenOutOfDate:
-//                    let mhLogin = self.storyboard?.instantiateViewController(identifier:  "LoginViewController") as! ViewController
-//                    self.navigationController?.pushViewController(mhLogin, animated: true)
+                    //                    let mhLogin = self.storyboard?.instantiateViewController(identifier:  "LoginViewController") as! ViewController
+                    //                    self.navigationController?.pushViewController(mhLogin, animated: true)
                     print(403)
-//                    hideActivity()
+                    //                    hideActivity()
                 case .remain:
                     break
-//                    showAlert(message: "Có lỗi xảy ra")
-//                    hideActivity()
+                    //                    showAlert(message: "Có lỗi xảy ra")
+                    //                    hideActivity()
                 case .none:
                     break
                 case .some(.wrongURL):
                     break
-//                    showAlert(message: "Sai thông tin tài khoản")
-//                    hideActivity()
+                    //                    showAlert(message: "Sai thông tin tài khoản")
+                    //                    hideActivity()
                 }
             }
         }
@@ -88,26 +84,12 @@ class PresenterLogin {
                 DispatchQueue.main.async {
                     self.loginDelegate?.loginOK()
                 }
-                
                 // luu thong tin tai khoan khi da login thanh cong
                 UserDefaults.standard.set(name, forKey: "userName")
                 UserDefaults.standard.set(pass, forKey: "pass")
                 UserDefaults.standard.set(companyCode, forKey: "companyCode")
-
-                
             } catch {
                 loginDelegate?.getMeError(err: error)
-                if let err = error as? GetMe_Async_Await.AFError {
-                    if err == .tokenOutOfDate {
-                        DispatchQueue.main.async {
-                            self.loginDelegate?.loginOutOfDate_Token()
-                        }
-                        
-                    } else if err == .remain {
-//                        showAlert(message: "Có lỗi xảy ra")
-//                        hideActivity()
-                    }
-                }
             }
         } catch {
             loginDelegate?.loginError(err: error)

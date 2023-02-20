@@ -19,10 +19,12 @@ class TableViewCell: UITableViewCell {
     @IBOutlet weak var lblEstimateTime: UILabel!
     
     @IBOutlet weak var stackViewContainer: UIStackView!
+    
+    @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var stackViewImages: UIStackView!
 
     var urls: [String] = []
-    
+    var listUrls: [[String]] = []
     override func awakeFromNib() {
         super.awakeFromNib()
     }
@@ -32,11 +34,19 @@ class TableViewCell: UITableViewCell {
     }
     
     func loadImage(urls: [String]) {
-        for iurl in urls {
-            let reuseImageView = ViewImage(frame: .zero)
-            reuseImageView.getImage(iurl: iurl)
-            stackViewImages.addArrangedSubview(reuseImageView)
+        self.stackViewImages.arrangedSubviews.forEach { viewImage in
+            viewImage.removeFromSuperview()
         }
+        
+//        for iurl in urls where !iurl.isEmpty {
+//            let reuseImageView = ViewImage(frame: self.bounds)
+////            reuseImageView.getImage(iurl: iurl)
+////            reuseImageView.frame = CGRect(x: 0, y: 0, width: 80, height: self.stackViewImages.frame.height)
+////            reuseImageView.imgImage.frame = CGRect(x: 0, y: 0, width: 80, height: self.stackViewImages.frame.height)
+////            stackViewImages.bounds = CGRect(x: 0, y: 0, width: 80, height: self.stackViewImages.frame.height)
+//             
+//            stackViewImages.addArrangedSubview(reuseImageView)
+//        }
         
     }
     
