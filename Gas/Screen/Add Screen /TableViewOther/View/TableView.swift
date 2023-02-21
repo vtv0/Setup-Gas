@@ -12,6 +12,7 @@ class TableView: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     
     var locationsIsCustomer: [Location] = []
+    var arrImages = [UIImage]()
     
     var arrUrls: [[String]] = []
     override func viewDidLoad() {
@@ -63,16 +64,16 @@ extension TableView: UITableViewDataSource {
                 cellTable.stackViewContainer.isHidden = false
             }
             
-            
             // tao ra [ [String] ]:
-//            let urlsImage = locationsIsCustomer[indexPath.row].urls()
-//            if !urlsImage.isEmpty {  // co URL image
-//                cellTable.urls = locationsIsCustomer[indexPath.row].urls()
-//                cellTable.loadImage(urls: locationsIsCustomer[indexPath.row].urls())
-//            } else {
-//                //  cellTable.loadImage(urls: [])
-//                cellTable.urls = []
-//            }
+            let urlsImage = locationsIsCustomer[indexPath.row].urls()
+            if !urlsImage.isEmpty {  // co URL image
+                cellTable.urls = locationsIsCustomer[indexPath.row].urls()
+                cellTable.loadImage(urls: locationsIsCustomer[indexPath.row].urls())
+                cellTable.stackViewImages.frame = CGRect(x: 0, y: 0, width: 80, height: cellTable.stackViewImages.frame.height)
+            } else {
+                //  cellTable.loadImage(urls: [])
+                cellTable.urls = []
+            }
             
             if locationsIsCustomer[indexPath.row].elem?.location?.metadata?.display_data?.valueDeliveryHistory() == .waiting {
                 cellTable.backgroundColor = UIColor(named: "blueMarker")

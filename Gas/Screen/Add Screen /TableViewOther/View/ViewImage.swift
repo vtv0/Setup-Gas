@@ -31,23 +31,21 @@ class ViewImage: UIView {
     func commonInit() {
         guard let viewReuse = loadViewFromNib() else { return }
         viewReuse.frame = self.bounds
-        viewReuse.autoresizingMask = [.flexibleWidth, .flexibleHeight] // tu dong co dan
+        viewReuse.autoresizingMask = [.flexibleWidth, .flexibleHeight]  // tu dong co dan
         self.addSubview(viewReuse)
         
-//        viewReuse.translatesAutoresizingMaskIntoConstraints = true
     }
     
     
-//    func getImage(iurl: String) {
-//        AF.request(iurl, method: .get).response { response in
-//            switch response.result {
-//            case .success(let responseData):
-//                self.imgImage.image = UIImage(data: responseData!, scale: 1.0)
-//                self.imgImage.frame = CGRect(x: 0, y: 0, width: 100, height: self.imgImage.frame.height)
-//            case .failure(let error):
-//                print("error--->",error)
-//            }
-//        }
-//    }
+    func getImage(iurl: String) {
+        AF.request(iurl, method: .get).response { response in
+            switch response.result {
+            case .success(let responseData):
+                self.imgImage.image = UIImage(data: responseData!, scale: 1.0)
+            case .failure(let error):
+                print("error--->",error)
+            }
+        }
+    }
     
 }

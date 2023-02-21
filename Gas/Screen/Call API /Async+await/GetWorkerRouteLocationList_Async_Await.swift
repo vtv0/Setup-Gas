@@ -88,8 +88,8 @@ class GetWorkerRouteLocationList_Async_Await {
             
         case .failure(let error):
             print(url)
-            print("Error: \(error)")
             print("Error: \(getWorkerRouteLocationListResponse.response?.statusCode ?? 000000)")
+            print("Error: \(error)")
             if getWorkerRouteLocationListResponse.response?.statusCode == 204 {
                 throw AFError.notDelivery
             } else if getWorkerRouteLocationListResponse.response?.statusCode == 401 {
@@ -97,14 +97,14 @@ class GetWorkerRouteLocationList_Async_Await {
             } else if getWorkerRouteLocationListResponse.response?.statusCode == 404 {
                 // throw AFError.wrong
             } else {
-                //                 throw AFError.remain
+//                                 throw AFError.remain
             }
         }
         
         return arrLocation
     }
     
-    func loadDic(dates: [Date]) async throws -> [Date: [Location]] {
+    func loadDic(dates: [Date]) async -> [Date: [Location]] {
         await withTaskGroup(
             of: (Date, [Location]).self,
             returning: [Date: [Location]].self) { [self] group in

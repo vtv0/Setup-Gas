@@ -38,8 +38,8 @@ class PatchStatusDelivery {
         timeFormater.dateFormat = "yyyy-MM-dd HH:mm"
         let timeString: String = timeFormater.string(from: time)
         
-        let values: [String: String] = [timeString: status]
-        var delivery_history: [String: Any] = ["delivery_history": values]
+//        let values: [String: String] = [timeString: status]
+        var delivery_history: [String: [String: String]] = ["delivery_history": [timeString: status]]
         let parameter: [String: Any] = ["display_data": delivery_history_record]
         print(delivery_history_record.count)
         print(delivery_history_record)
@@ -57,6 +57,13 @@ class PatchStatusDelivery {
         } else {  // >= 10 ban ghi
             print(delivery_history)
             // xoa ban ghi cu nhat
+            
+            dataInfoOneCustomer.elem?.location?.metadata?.display_data?.deliveryHistoryASC(data: dataInfoOneCustomer)
+            
+            // xawp xep lai cac ban ghi tang dan theo thoi gian
+            
+            
+            
             
             // them cai moi
         }

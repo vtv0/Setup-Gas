@@ -60,7 +60,7 @@ class Location: NSObject, Decodable {
         }
         return urls
     }
-   
+    
 }
 
 // MARK: - GetLatestWorkerRouteLocationListInfo
@@ -77,9 +77,9 @@ class GetLatestWorkerRouteLocationListInfo: NSObject, Decodable {
 
 // MARK: - LocationElement
 class LocationElement: NSObject, Decodable {
-//    var description: String {
-//        return "locationOrder: \(locationOrder)"
-//    }
+    //    var description: String {
+    //        return "locationOrder: \(locationOrder)"
+    //    }
     
     var arrivalTime: ArrivalTime?
     var breakTimeSEC: Int?
@@ -92,7 +92,7 @@ class LocationElement: NSObject, Decodable {
     var longitude: Double?
     var metadata: FluffyMetadata?
     var travelTimeSECToNext, waitingTimeSEC, workTimeSEC: Int?
-   
+    
     
     init(arrivalTime: ArrivalTime? = nil, breakTimeSEC: Int? = nil, createdAt: String? = nil, latitude: Double? = nil, loadCapacity: Int? = nil, loadSupply: Int? = nil, location: LocationLocation? = nil, locationID: Int? = nil, locationOrder: Int, longitude: Double? = nil, metadata: FluffyMetadata? = nil, travelTimeSECToNext: Int? = nil, waitingTimeSEC: Int? = nil, workTimeSEC: Int? = nil) {
         self.arrivalTime = arrivalTime
@@ -179,18 +179,18 @@ class LocationLocation: NSObject, Decodable {
 class PurpleMetadata: NSObject, Decodable {
     var kyokyusetsubiCode: String?
     var display_data: DisplayData?
-    var operators: [String?]?
+    //    var operators: [String?]?
     
     enum CodingKeys: String, CodingKey {
         case kyokyusetsubiCode = "KYOKYUSETSUBI_CODE"
         case display_data = "display_data"
-        case operators
+        //        case operators
     }
     
-    init(kyokyusetsubiCode: String? = nil, display_data: DisplayData, operators: [String?]? = nil) {
+    init(kyokyusetsubiCode: String? = nil, display_data: DisplayData) {
         self.kyokyusetsubiCode = kyokyusetsubiCode
         self.display_data = display_data
-        self.operators = operators
+        //        self.operators = operators
     }
 }
 
@@ -206,6 +206,12 @@ class DisplayData: NSObject, Decodable {
         self.origin_route_id = origin_route_id
         self.excludeFirstDay = excludeFirstDay
         self.moveToFirstDay = moveToFirstDay
+    }
+    
+    enum CodingKeys: String, CodingKey {
+        //        case delivery_history = "delivery_history"
+        case origin_route_id = "origin_route_id"
+        //        case operators
     }
     
     enum DeliveryHistory: String, Decodable {
@@ -225,6 +231,7 @@ class DisplayData: NSObject, Decodable {
                 arrStringDate.append(i)
             }
         }
+        
         class DataHistory {
             var date: String
             var status: String
@@ -233,6 +240,7 @@ class DisplayData: NSObject, Decodable {
                 self.status = status
             }
         }
+        
         var arr: [DataHistory] = []
         
         delivery_history?.keys.forEach({ key in
@@ -254,6 +262,51 @@ class DisplayData: NSObject, Decodable {
         }
         
         return .waiting
+    }
+    
+    // xắp sếp các bản ghi tăng đần theo thời gian
+    func deliveryHistoryASC(data: Location) { // -> [String: String]
+        print(data.asset?.properties?.values.display_data.delivery_history)
+        var arrStringDate: [String] = []
+        if let arrKey = delivery_history?.keys {
+            for i: String in arrKey {
+                arrStringDate.append(i)
+            }
+        }
+        
+        class DataHistory {
+            var date: String
+            var status: String
+            init(date: String, status: String) {
+                self.date = date
+                self.status = status
+            }
+        }
+        
+        var arr: [DataHistory] = []
+        
+        delivery_history?.keys.forEach({ key in
+            if let status = delivery_history?[key] {
+                let data = DataHistory.init(date: key, status: status)
+                arr.append(data)
+            }
+        })
+        arr.sort { h1, h2 in
+            let df = DateFormatter()
+            df.dateFormat = "yyyy-MM-dd HH:mm"
+            if let d1 = df.date(from: h1.date), let d2 = df.date(from: h2.date) {
+                return d1 < d2
+            }
+            return true
+        }
+        //        if let status = arr.last?.status {
+        //            return DeliveryHistory.init(rawValue: status) ?? .waiting
+        //        }
+        
+        var deliveryRecordASC: [String: String] = [:]
+        
+        print(arr)
+        
     }
     
 }

@@ -4,6 +4,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -17,29 +18,32 @@
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="iN0-l3-epB">
-            <rect key="frame" x="0.0" y="0.0" width="148" height="197"/>
+            <rect key="frame" x="0.0" y="0.0" width="121" height="200"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qg6-Y0-gIj">
-                    <rect key="frame" x="0.0" y="0.0" width="148" height="197"/>
-                    <edgeInsets key="layoutMargins" top="8" left="8" bottom="8" right="8"/>
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qg6-Y0-gIj">
+                    <rect key="frame" x="1" y="1" width="119" height="198"/>
+                    <color key="backgroundColor" name="yellowMarker"/>
                 </imageView>
             </subviews>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
-            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+            <color key="backgroundColor" systemColor="systemRedColor"/>
             <constraints>
-                <constraint firstItem="Qg6-Y0-gIj" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="BqW-5P-qAg"/>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="Qg6-Y0-gIj" secondAttribute="bottom" id="Dou-eq-HeW"/>
-                <constraint firstItem="Qg6-Y0-gIj" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="Rat-5K-1ke"/>
-                <constraint firstAttribute="trailing" secondItem="Qg6-Y0-gIj" secondAttribute="trailing" id="zmt-fg-Azr"/>
+                <constraint firstItem="Qg6-Y0-gIj" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="1" id="BqW-5P-qAg"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="Qg6-Y0-gIj" secondAttribute="bottom" constant="1" id="Dou-eq-HeW"/>
+                <constraint firstItem="Qg6-Y0-gIj" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="1" id="Rat-5K-1ke"/>
+                <constraint firstAttribute="trailing" secondItem="Qg6-Y0-gIj" secondAttribute="trailing" constant="1" id="zmt-fg-Azr"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="-322.13740458015263" y="-174.29577464788733"/>
         </view>
     </objects>
     <resources>
-        <systemColor name="systemBackgroundColor">
-            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        <namedColor name="yellowMarker">
+            <color red="1" green="0.69800001382827759" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <systemColor name="systemRedColor">
+            <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

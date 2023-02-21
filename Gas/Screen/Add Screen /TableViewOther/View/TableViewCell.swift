@@ -12,14 +12,12 @@ import AlamofireImage
 class TableViewCell: UITableViewCell {
     
     @IBOutlet weak var stachViewInfo: UIStackView!
-    
     @IBOutlet weak var lblCustomerID: UILabel!
     @IBOutlet weak var lblDeliveryDestination: UILabel!
     @IBOutlet weak var lblDeliveryAddress: UILabel!
     @IBOutlet weak var lblEstimateTime: UILabel!
     
     @IBOutlet weak var stackViewContainer: UIStackView!
-    
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var stackViewImages: UIStackView!
 
@@ -38,15 +36,22 @@ class TableViewCell: UITableViewCell {
             viewImage.removeFromSuperview()
         }
         
-//        for iurl in urls where !iurl.isEmpty {
-//            let reuseImageView = ViewImage(frame: self.bounds)
-////            reuseImageView.getImage(iurl: iurl)
-////            reuseImageView.frame = CGRect(x: 0, y: 0, width: 80, height: self.stackViewImages.frame.height)
-////            reuseImageView.imgImage.frame = CGRect(x: 0, y: 0, width: 80, height: self.stackViewImages.frame.height)
-////            stackViewImages.bounds = CGRect(x: 0, y: 0, width: 80, height: self.stackViewImages.frame.height)
-//             
-//            stackViewImages.addArrangedSubview(reuseImageView)
-//        }
+        for iurl in urls where !iurl.isEmpty {
+            let reuseImageView = ViewImage(frame: self.bounds)
+            stackViewContainer.setCustomSpacing( 10, after: reuseImageView.imgImage) // khoảng cách các khung màu xanh dương -> S max
+            
+            reuseImageView.backgroundColor = .blue
+            // Mục đích: làm cho chiều rộng màu xanh dương nhỏ lại
+//            reuseImageView.frame = CGRect(x: 0, y: 0, width: self.stackViewImages.frame.width / 4, height: self.stackViewImages.frame.height)
+            
+            
+            reuseImageView.getImage(iurl: iurl)
+            reuseImageView.mainViewImage.backgroundColor = .red
+            reuseImageView.mainViewImage.frame = CGRect(x: 10, y: 0, width: 65, height: self.stackViewImages.frame.height)  // kích thước khung màu đỏ
+            stackViewImages.addArrangedSubview(reuseImageView)
+            
+            
+        }
         
     }
     
