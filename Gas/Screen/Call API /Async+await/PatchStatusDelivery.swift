@@ -56,16 +56,18 @@ class PatchStatusDelivery {
             print(delivery_history_record)
         } else {  // >= 10 ban ghi
             print(delivery_history)
-            // xoa ban ghi cu nhat
-            
-            dataInfoOneCustomer.elem?.location?.metadata?.display_data?.deliveryHistoryASC(data: dataInfoOneCustomer)
-            
-            // xawp xep lai cac ban ghi tang dan theo thoi gian
+            let listDic = deliveryHistoryASC(dicDataDeliveryHistory: delivery_history_record)
             
             
+            // tao ra ham sap xep dic theo thời gian (key)
             
             
-            // them cai moi
+            // nếu có 10 bản ghi thì xoá cái cũ nhất
+            
+            
+            // thêm mới vào
+            
+
         }
         
         
@@ -102,5 +104,59 @@ class PatchStatusDelivery {
         //        case .failure(let error):
         //            print("\(error)")
         //        }
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    func deliveryHistoryASC(dicDataDeliveryHistory: [String: String]) -> [String: String] {
+        
+        var arrStringDate: [String] = []
+        
+        for idic in dicDataDeliveryHistory {
+            print("\(idic.key) --> \(idic.value)")
+            arrStringDate.append(idic.key)
+        }
+        print(arrStringDate)
+       
+   var arrKeyDate = [Date]()
+        // chuyen string to date
+        arrStringDate.forEach({ stringDate in
+            print(stringDate)
+            
+            let df = DateFormatter()
+//            if let keydate = stringDate {
+////                arrKeyDate = df.date(from: stringDate)
+//            }
+        })
+        
+        var deliveryRecordASC: [String: String] = [:]
+//        arrStringDate.sorted( { h1, h2 in
+//
+//
+//        })
+//
+//        arr.sort { h1, h2 in
+//            let df = DateFormatter()
+//            df.dateFormat = "yyyy-MM-dd HH:mm"
+//            if let d1 = df.date(from: h1.date), let d2 = df.date(from: h2.date) {
+//                return d1 < d2
+//            }
+//            return true
+//        }
+//        for idic in dicDataDeliveryHistory {
+//            if let status = arr.last?.status {
+//                return DeliveryHistory1.init(rawValue: status) ?? .waiting
+//            }
+//        }
+        
+        
+        
+     
+        return dicDataDeliveryHistory
     }
 }

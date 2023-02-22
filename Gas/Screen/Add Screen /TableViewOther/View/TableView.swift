@@ -20,21 +20,12 @@ class TableView: UIViewController {
         
         tableView.dataSource = self
         tableView.delegate = self
-        tableView.rowHeight = 280
-        
+        tableView.rowHeight = 400
         
         let tableViewCell = UINib(nibName: "TableViewCell", bundle: nil)
         self.tableView.register(tableViewCell, forCellReuseIdentifier: "tableViewCell")
-        
         tableView.allowsSelection = false
-        
-        //        for location in locationsIsCustomer {
-        //            let urls = location.urls()
-        //            arrUrls.append(urls)
-        //        }
     }
-    
-    
 }
 
 extension TableView: UITableViewDataSource {
@@ -69,9 +60,8 @@ extension TableView: UITableViewDataSource {
             if !urlsImage.isEmpty {  // co URL image
                 cellTable.urls = locationsIsCustomer[indexPath.row].urls()
                 cellTable.loadImage(urls: locationsIsCustomer[indexPath.row].urls())
-                cellTable.stackViewImages.frame = CGRect(x: 0, y: 0, width: 80, height: cellTable.stackViewImages.frame.height)
+                
             } else {
-                //  cellTable.loadImage(urls: [])
                 cellTable.urls = []
             }
             

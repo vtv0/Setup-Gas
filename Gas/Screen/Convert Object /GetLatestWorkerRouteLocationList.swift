@@ -265,49 +265,7 @@ class DisplayData: NSObject, Decodable {
     }
     
     // xắp sếp các bản ghi tăng đần theo thời gian
-    func deliveryHistoryASC(data: Location) { // -> [String: String]
-        print(data.asset?.properties?.values.display_data.delivery_history)
-        var arrStringDate: [String] = []
-        if let arrKey = delivery_history?.keys {
-            for i: String in arrKey {
-                arrStringDate.append(i)
-            }
-        }
-        
-        class DataHistory {
-            var date: String
-            var status: String
-            init(date: String, status: String) {
-                self.date = date
-                self.status = status
-            }
-        }
-        
-        var arr: [DataHistory] = []
-        
-        delivery_history?.keys.forEach({ key in
-            if let status = delivery_history?[key] {
-                let data = DataHistory.init(date: key, status: status)
-                arr.append(data)
-            }
-        })
-        arr.sort { h1, h2 in
-            let df = DateFormatter()
-            df.dateFormat = "yyyy-MM-dd HH:mm"
-            if let d1 = df.date(from: h1.date), let d2 = df.date(from: h2.date) {
-                return d1 < d2
-            }
-            return true
-        }
-        //        if let status = arr.last?.status {
-        //            return DeliveryHistory.init(rawValue: status) ?? .waiting
-        //        }
-        
-        var deliveryRecordASC: [String: String] = [:]
-        
-        print(arr)
-        
-    }
+    
     
 }
 

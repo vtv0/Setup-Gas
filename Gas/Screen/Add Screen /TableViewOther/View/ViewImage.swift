@@ -42,6 +42,34 @@ class ViewImage: UIView {
             switch response.result {
             case .success(let responseData):
                 self.imgImage.image = UIImage(data: responseData!, scale: 1.0)
+                
+             let height = self.imgImage.image?.size.height ?? 0
+               let width = self.imgImage.image?.size.width ?? 0
+                
+                let ratio = (height / width)
+                
+                if ratio > 1 {
+                    print(ratio )
+                    self.mainViewImage.frame = CGRect(x: 0,
+                                                 y: 0,
+                                                 width: (self.mainViewImage.frame.height / ratio),
+                                                 height: self.mainViewImage.frame.height)
+                } else if ratio < 1 {
+                    print("Ratio < 1: \(ratio)")
+                    self.imgImage.frame = CGRect(x: 0,
+                                                 y: 0,
+                                                 width: (self.imgImage.frame.height / ratio),
+                                                 height: self.mainViewImage.frame.height)
+                }
+                // co 2 truong hop  ti le width/height > 1
+                
+                
+//                self.imgImage.scalesLargeContentImage = (2 != 0)
+                
+//                let targetSize = CGSize(width: 100, height: 100)
+//                let scaledImage = self.imgImage.image?.scalePreservingAspectRatio(
+//                    targetSize: targetSize
+//                )
             case .failure(let error):
                 print("error--->",error)
             }

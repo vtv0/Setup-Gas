@@ -99,6 +99,7 @@ extension ShippingViewController: PassStatusDelivery {
         ShippingViewController.statusDelivery = "\(status)"
         stackView.arrangedSubviews.forEach() { view in
             let view1 = view as! ReuseViewRadioButton
+            view1.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 50)
             if sender == view {
                 view1.btnRadioButton.setImage(UIImage(named: "ic_radio_checked"), for: .normal)
             } else {

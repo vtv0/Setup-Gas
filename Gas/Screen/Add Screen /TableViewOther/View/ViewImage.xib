@@ -21,21 +21,22 @@
             <rect key="frame" x="0.0" y="0.0" width="121" height="200"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qg6-Y0-gIj">
-                    <rect key="frame" x="1" y="1" width="119" height="198"/>
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" insetsLayoutMarginsFromSafeArea="NO" id="Qg6-Y0-gIj">
+                    <rect key="frame" x="2" y="2" width="117" height="195"/>
+                    <autoresizingMask key="autoresizingMask"/>
                     <color key="backgroundColor" name="yellowMarker"/>
                 </imageView>
             </subviews>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <color key="backgroundColor" systemColor="systemRedColor"/>
             <constraints>
-                <constraint firstItem="Qg6-Y0-gIj" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="1" id="BqW-5P-qAg"/>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="Qg6-Y0-gIj" secondAttribute="bottom" constant="1" id="Dou-eq-HeW"/>
-                <constraint firstItem="Qg6-Y0-gIj" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="1" id="Rat-5K-1ke"/>
-                <constraint firstAttribute="trailing" secondItem="Qg6-Y0-gIj" secondAttribute="trailing" constant="1" id="zmt-fg-Azr"/>
+                <constraint firstItem="Qg6-Y0-gIj" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="2" id="BqW-5P-qAg"/>
+                <constraint firstAttribute="bottom" secondItem="Qg6-Y0-gIj" secondAttribute="bottom" constant="3" id="Dou-eq-HeW"/>
+                <constraint firstItem="Qg6-Y0-gIj" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="2" id="Rat-5K-1ke"/>
+                <constraint firstAttribute="trailing" secondItem="Qg6-Y0-gIj" secondAttribute="trailing" constant="2" id="zmt-fg-Azr"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="-322.13740458015263" y="-174.29577464788733"/>
+            <point key="canvasLocation" x="-636" y="-187"/>
         </view>
     </objects>
     <resources>

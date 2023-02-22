@@ -45,8 +45,6 @@ extension UIViewController {
                 return
             }
         }
-        
-        //
         self.view.addSubview(activityIndicator)
         self.view.bringSubviewToFront(activityIndicator)
     }
