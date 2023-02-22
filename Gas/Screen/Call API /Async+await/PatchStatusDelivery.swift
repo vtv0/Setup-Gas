@@ -38,22 +38,22 @@ class PatchStatusDelivery {
         timeFormater.dateFormat = "yyyy-MM-dd HH:mm"
         let timeString: String = timeFormater.string(from: time)
         
-//        let values: [String: String] = [timeString: status]
-        var delivery_history: [String: [String: String]] = ["delivery_history": [timeString: status]]
-        let parameter: [String: Any] = ["display_data": delivery_history_record]
+        //        let values: [String: String] = [timeString: status]
+        var delivery_history: [String: Any] = ["delivery_history": [timeString: status] ]
+        let parameter: [String: Any] = ["display_data": delivery_history]
         print(delivery_history_record.count)
-        print(delivery_history_record)
+        print(parameter)
         
         
         if delivery_history_record.count < 10 { // co < 10 ban ghi
             
             print(timeString)
-            print(status)
+            print(parameter)
             
             
             delivery_history_record.updateValue(status, forKey: timeString)
             print(delivery_history_record.count)
-            print(delivery_history_record)
+            print(parameter)
         } else {  // >= 10 ban ghi
             print(delivery_history)
             let listDic = deliveryHistoryASC(dicDataDeliveryHistory: delivery_history_record)
@@ -67,7 +67,7 @@ class PatchStatusDelivery {
             
             // thêm mới vào
             
-
+            
         }
         
         
@@ -112,7 +112,7 @@ class PatchStatusDelivery {
     
     
     
-    
+    // xắp sếp các bản ghi theo thứ tự tăng dần
     func deliveryHistoryASC(dicDataDeliveryHistory: [String: String]) -> [String: String] {
         
         var arrStringDate: [String] = []
@@ -121,42 +121,41 @@ class PatchStatusDelivery {
             print("\(idic.key) --> \(idic.value)")
             arrStringDate.append(idic.key)
         }
-        print(arrStringDate)
-       
-   var arrKeyDate = [Date]()
+        var arrKeyDate = [Date]()
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm"
         // chuyen string to date
         arrStringDate.forEach({ stringDate in
-            print(stringDate)
-            
-            let df = DateFormatter()
-//            if let keydate = stringDate {
-////                arrKeyDate = df.date(from: stringDate)
-//            }
+            if let dateKey = dateFormatter.date(from: stringDate) {
+                arrKeyDate.append(dateKey)
+            }
         })
         
+        print(arrKeyDate)
+        
         var deliveryRecordASC: [String: String] = [:]
-//        arrStringDate.sorted( { h1, h2 in
-//
-//
-//        })
-//
-//        arr.sort { h1, h2 in
-//            let df = DateFormatter()
-//            df.dateFormat = "yyyy-MM-dd HH:mm"
-//            if let d1 = df.date(from: h1.date), let d2 = df.date(from: h2.date) {
-//                return d1 < d2
-//            }
-//            return true
-//        }
-//        for idic in dicDataDeliveryHistory {
-//            if let status = arr.last?.status {
-//                return DeliveryHistory1.init(rawValue: status) ?? .waiting
-//            }
-//        }
+        //        arrStringDate.sorted( { h1, h2 in
+        //
+        //
+        //        })
+        //
+        //        arr.sort { h1, h2 in
+        //            let df = DateFormatter()
+        //            df.dateFormat = "yyyy-MM-dd HH:mm"
+        //            if let d1 = df.date(from: h1.date), let d2 = df.date(from: h2.date) {
+        //                return d1 < d2
+        //            }
+        //            return true
+        //        }
+        //        for idic in dicDataDeliveryHistory {
+        //            if let status = arr.last?.status {
+        //                return DeliveryHistory1.init(rawValue: status) ?? .waiting
+        //            }
+        //        }
         
         
         
-     
+        
         return dicDataDeliveryHistory
     }
 }
