@@ -7,12 +7,14 @@
 
 import UIKit
 
+
 class TableView: UIViewController {
     
     @IBOutlet weak var tableView: UITableView!
     
     var locationsIsCustomer: [Location] = []
     var arrImages = [UIImage]()
+    var md5data : [String] = []
     
     var arrUrls: [[String]] = []
     override func viewDidLoad() {
@@ -26,6 +28,11 @@ class TableView: UIViewController {
         self.tableView.register(tableViewCell, forCellReuseIdentifier: "tableViewCell")
         tableView.allowsSelection = false
     }
+    
+   
+    
+    
+    
 }
 
 extension TableView: UITableViewDataSource {
@@ -80,10 +87,14 @@ extension TableView: UITableViewDataSource {
         return UITableViewCell()
     }
     
+    
+    
+    
 }
 
 extension TableView: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     }
 }
+
 

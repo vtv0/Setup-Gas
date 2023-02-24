@@ -7,11 +7,19 @@
 
 import UIKit
 import Alamofire
+import CryptoKit
+
+class FileImage {
+    var url: String = ""
+    var imageStorage = UIImage()
+}
 
 class ViewImage: UIView {
     
     @IBOutlet var mainViewImage: UIView!
     @IBOutlet weak var imgImage: UIImageView!
+    
+    
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -33,47 +41,101 @@ class ViewImage: UIView {
         viewReuse.frame = self.bounds
         viewReuse.autoresizingMask = [.flexibleWidth, .flexibleHeight]  // tu dong co dan
         self.addSubview(viewReuse)
-        
+        self.backgroundColor = .blue
     }
     
     
     func getImage(iurl: String) {
-        AF.request(iurl, method: .get).response { response in
-            switch response.result {
-            case .success(let responseData):
-                self.imgImage.image = UIImage(data: responseData!, scale: 1.0)
-                
-             let height = self.imgImage.image?.size.height ?? 0
-               let width = self.imgImage.image?.size.width ?? 0
-                
-                let ratio = (height / width)
-                
-                if ratio > 1 {
-                    print(ratio )
-                    self.imgImage.frame = CGRect(x: 0,
-                                                 y: 0,
-                                                 width: (self.imgImage.frame.height * ratio),
-                                                 height: self.imgImage   .frame.height)
-                } else if ratio < 1 {
-                    print("Ratio < 1: \(ratio)")
-                    self.imgImage.frame = CGRect(x: 0,
-                                                 y: 0,
-                                                 width: (self.imgImage.frame.height / ratio),
-                                                 height: self.mainViewImage.frame.height)
+        
+        // Neu da co thi lay anh trong LocalStorage
+        let path = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String
+        let url = NSURL(fileURLWithPath: path)
+        if let pathComponent = url.appendingPathComponent(iurl.md5()+".png") {
+            let filePath = pathComponent.path
+            let fileManager = FileManager.default
+            if fileManager.fileExists(atPath: filePath) {
+                print("FILE AVAILABLE")
+                self.getImageFromName(fileName: iurl)
+            } else {
+                print("FILE NOT AVAILABLE")
+                AF.request(iurl, method: .get).response { response in
+                    switch response.result {
+                    case .success(let responseData):
+                        var ratio: Float = 0.0
+                        self.imgImage.image = UIImage(data: responseData!)
+                        
+                        if let height = self.imgImage.image?.size.height,
+                           
+                            let width = self.imgImage.image?.size.width {
+                            ratio = Float((width / height))
+                        }
+                        
+                        print("height==>\(self.frame.height)")
+                        
+                        print("width::==>\(self.frame.height) * \(CGFloat(ratio))")
+                        
+                        self.widthAnchor.constraint(equalToConstant: self.frame.height * CGFloat(ratio)).isActive = true
+                        
+                        self.saveImageLocally(image: UIImage(data: responseData!) ?? UIImage(), fileName: iurl)
+                        
+                        
+                    case .failure(let error):
+                        print("error--->",error)
+                    }
                 }
-                // co 2 truong hop  ti le width/height > 1
-                
-                
-//                self.imgImage.scalesLargeContentImage = (2 != 0)
-                
-//                let targetSize = CGSize(width: 100, height: 100)
-//                let scaledImage = self.imgImage.image?.scalePreservingAspectRatio(
-//                    targetSize: targetSize
-//                )
-            case .failure(let error):
-                print("error--->",error)
+            }
+        } else {
+            print("FILE PATH NOT AVAILABLE")
+        }
+        
+    }
+    
+    func saveImageLocally(image: UIImage, fileName: String) {
+        
+        // Obtaining the Location of the Documents Directory
+        let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+        
+        // Creating a URL to the name of your file
+        let url = documentsDirectory.appendingPathComponent(fileName.md5()+".png")
+        if let data = image.pngData() {
+            do {
+                try data.write(to: url) // Writing an Image in the Documents Directory
+            } catch {
+                print("Unable to Write \(fileName) Image Data to Disk")
             }
         }
     }
     
+    func getImageFromName(fileName: String) {
+        let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+        let url = documentsDirectory.appendingPathComponent(fileName.md5()+".png")
+        print(url)
+        self.imgImage.image = UIImage.init(contentsOfFile: url.path)  // HERE IS YOUR IMAGE! Do what you want with it!
+        var ratio: Float = 0.0
+        if let height = UIImage.init(contentsOfFile: url.path)?.size.height,
+           let width = UIImage.init(contentsOfFile: url.path)?.size.width {
+            ratio = Float((width / height))
+        }
+
+            self.widthAnchor.constraint(equalToConstant: (self.frame.height) * CGFloat(ratio)).isActive = true
+        
+        
+        
+            print("height::\(UIImage.init(contentsOfFile: url.path)?.size.height)")
+            
+           // print("width:::::::\(self.frame.height) * CGFloat(ratio)")
+//            } else {
+//                self.widthAnchor.constraint(equalToConstant: (self.frame.height) * CGFloat(ratio)).isActive = true
+//            }
+        
+        print(ratio)
+//        self.mainViewImage.frame = CGRect(x: 0, y: 0, width: 333, height: 333)
+        
+    }
+}
+
+extension String {
+    func md5() -> String {
+        return Insecure.MD5.hash(data: self.data(using: .utf8)!).map { String(format: "%02hhx", $0) }.joined()
+    }
 }

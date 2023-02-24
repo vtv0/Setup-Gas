@@ -9,6 +9,8 @@ import UIKit
 import Alamofire
 import AlamofireImage
 
+
+
 class TableViewCell: UITableViewCell {
     
     @IBOutlet weak var stachViewInfo: UIStackView!
@@ -23,6 +25,7 @@ class TableViewCell: UITableViewCell {
     
     var urls: [String] = []
     var listUrls: [[String]] = []
+ 
     override func awakeFromNib() {
         super.awakeFromNib()
     }
@@ -34,7 +37,9 @@ class TableViewCell: UITableViewCell {
     func loadImage(urls: [String]) {
         self.stackViewImages.arrangedSubviews.forEach { viewImage in
             viewImage.removeFromSuperview()
+            stackViewImages.removeArrangedSubview(viewImage)
         }
+        
         for iurl in urls where !iurl.isEmpty {
             let reuseImageView = ViewImage(frame: self.bounds)
             reuseImageView.getImage(iurl: iurl)
@@ -43,6 +48,7 @@ class TableViewCell: UITableViewCell {
     }
     
 }
+
 
 
 
