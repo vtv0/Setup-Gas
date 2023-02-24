@@ -50,10 +50,10 @@ class ViewImage: UIView {
                 
                 if ratio > 1 {
                     print(ratio )
-                    self.mainViewImage.frame = CGRect(x: 0,
+                    self.imgImage.frame = CGRect(x: 0,
                                                  y: 0,
-                                                 width: (self.mainViewImage.frame.height / ratio),
-                                                 height: self.mainViewImage.frame.height)
+                                                 width: (self.imgImage.frame.height * ratio),
+                                                 height: self.imgImage   .frame.height)
                 } else if ratio < 1 {
                     print("Ratio < 1: \(ratio)")
                     self.imgImage.frame = CGRect(x: 0,
