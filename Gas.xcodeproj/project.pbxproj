@@ -30,6 +30,7 @@
 		7573ADC029530A0100E8C658 /* GetWorkerVehicleList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7573ADBF29530A0100E8C658 /* GetWorkerVehicleList.swift */; };
 		7573ADC229530D3600E8C658 /* GetRouteList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7573ADC129530D3600E8C658 /* GetRouteList.swift */; };
 		7573ADC4295310B400E8C658 /* GetWorkerRouteLocationList4.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7573ADC3295310B400E8C658 /* GetWorkerRouteLocationList4.swift */; };
+		7578B3BD29ACC1D7007367C3 /* FullScreenImageVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7578B3BB29ACC1D7007367C3 /* FullScreenImageVC.swift */; };
 		7579268D299F0E6D00E7A28D /* ScreenExpland_TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7579268C299F0E6D00E7A28D /* ScreenExpland_TableViewCell.swift */; };
 		75867FEA296FAF7E005A0295 /* GetMe_Block.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75867FE9296FAF7E005A0295 /* GetMe_Block.swift */; };
 		75867FEC296FCB9E005A0295 /* GetWorkerRouteLocationList_Block.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75867FEB296FCB9E005A0295 /* GetWorkerRouteLocationList_Block.swift */; };
@@ -100,6 +101,7 @@
 		7573ADBF29530A0100E8C658 /* GetWorkerVehicleList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetWorkerVehicleList.swift; sourceTree = "<group>"; };
 		7573ADC129530D3600E8C658 /* GetRouteList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetRouteList.swift; sourceTree = "<group>"; };
 		7573ADC3295310B400E8C658 /* GetWorkerRouteLocationList4.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetWorkerRouteLocationList4.swift; sourceTree = "<group>"; };
+		7578B3BB29ACC1D7007367C3 /* FullScreenImageVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenImageVC.swift; sourceTree = "<group>"; };
 		7579268C299F0E6D00E7A28D /* ScreenExpland_TableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenExpland_TableViewCell.swift; sourceTree = "<group>"; };
 		75867FE9296FAF7E005A0295 /* GetMe_Block.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetMe_Block.swift; sourceTree = "<group>"; };
 		75867FEB296FCB9E005A0295 /* GetWorkerRouteLocationList_Block.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetWorkerRouteLocationList_Block.swift; sourceTree = "<group>"; };
@@ -307,6 +309,14 @@
 			path = "Screen Main Delivery";
 			sourceTree = "<group>";
 		};
+		7578B3BA29ACC1C4007367C3 /* New Group */ = {
+			isa = PBXGroup;
+			children = (
+				7578B3BB29ACC1D7007367C3 /* FullScreenImageVC.swift */,
+			);
+			path = "New Group";
+			sourceTree = "<group>";
+		};
 		757F496B28E3FD23008B8C05 /* FloatingPanel_Delivery */ = {
 			isa = PBXGroup;
 			children = (
@@ -360,6 +370,7 @@
 		75BD0BC2299DC95600D1B690 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				7578B3BA29ACC1C4007367C3 /* New Group */,
 				75BD0BC3299DC9A700D1B690 /* TableView.swift */,
 				75BD0BC6299DCA1A00D1B690 /* TableViewCell.xib */,
 				75BD0BC5299DCA1A00D1B690 /* TableViewCell.swift */,
@@ -692,6 +703,7 @@
 				7501250828ED2272003AC9EB /* PageDetailVC.swift in Sources */,
 				753BA38C296BB72500C7136F /* ShippingViewController.swift in Sources */,
 				75FDF73B28EAB6B300AADB99 /* CustomerLocationController.swift in Sources */,
+				7578B3BD29ACC1D7007367C3 /* FullScreenImageVC.swift in Sources */,
 				75867FEE296FDA54005A0295 /* GetAsset_Block.swift in Sources */,
 				75867FF42971097A005A0295 /* DB_Get_Set.swift in Sources */,
 				75867FF22970FD88005A0295 /* GetMe_Async_Await.swift in Sources */,

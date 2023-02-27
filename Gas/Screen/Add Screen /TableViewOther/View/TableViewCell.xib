@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <device id="retina6_72" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
@@ -29,7 +29,7 @@
                                         <attributedString key="attributedText">
                                             <fragment content="CustomerID">
                                                 <attributes>
-                                                    <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                                    <color key="NSColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <font key="NSFont" metaFont="system" size="17"/>
                                                     <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" firstLineHeadIndent="20" tighteningFactorForTruncation="0.0"/>
                                                 </attributes>
@@ -66,6 +66,7 @@
                                         <attributedString key="attributedText">
                                             <fragment content="Estimate Time">
                                                 <attributes>
+                                                    <color key="NSColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <font key="NSFont" metaFont="system" size="17"/>
                                                     <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" firstLineHeadIndent="20" tighteningFactorForTruncation="0.0"/>
                                                 </attributes>
@@ -75,14 +76,15 @@
                                     </label>
                                 </subviews>
                             </stackView>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" id="vHW-3I-SkO" userLabel="StackViewContainer">
+                            <stackView opaque="NO" contentMode="scaleAspectFill" axis="vertical" id="vHW-3I-SkO" userLabel="StackViewContainer">
                                 <rect key="frame" x="0.0" y="116" width="387" height="116"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <subviews>
-                                    <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pdl-tp-9zA">
+                                    <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsVerticalScrollIndicator="NO" id="pdl-tp-9zA">
                                         <rect key="frame" x="0.0" y="0.0" width="387" height="116"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <subviews>
-                                            <stackView opaque="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="KIy-OZ-Cik">
+                                            <stackView opaque="NO" contentMode="scaleAspectFill" insetsLayoutMarginsFromSafeArea="NO" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="KIy-OZ-Cik">
                                                 <rect key="frame" x="10" y="0.0" width="150" height="116"/>
                                                 <subviews>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2LA-pt-wkQ">
@@ -93,23 +95,31 @@
                                                         </constraints>
                                                     </view>
                                                 </subviews>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="116" id="kse-7c-lS0"/>
+                                                    <constraint firstItem="2LA-pt-wkQ" firstAttribute="height" secondItem="KIy-OZ-Cik" secondAttribute="height" id="yjS-vo-03d"/>
+                                                </constraints>
                                             </stackView>
                                         </subviews>
                                         <constraints>
                                             <constraint firstItem="KIy-OZ-Cik" firstAttribute="top" secondItem="pdl-tp-9zA" secondAttribute="top" id="62M-Lk-ZSO"/>
-                                            <constraint firstAttribute="trailing" secondItem="KIy-OZ-Cik" secondAttribute="trailing" constant="20" id="GDh-eY-vcu"/>
+                                            <constraint firstAttribute="trailing" secondItem="KIy-OZ-Cik" secondAttribute="trailing" constant="10" id="GDh-eY-vcu"/>
                                             <constraint firstAttribute="bottom" secondItem="KIy-OZ-Cik" secondAttribute="bottom" id="TIM-3z-7ve"/>
                                             <constraint firstItem="KIy-OZ-Cik" firstAttribute="leading" secondItem="pdl-tp-9zA" secondAttribute="leading" constant="10" id="oqB-YU-LxA"/>
                                             <constraint firstItem="KIy-OZ-Cik" firstAttribute="centerY" secondItem="pdl-tp-9zA" secondAttribute="centerY" id="qrU-qP-eZP"/>
+                                            <constraint firstItem="KIy-OZ-Cik" firstAttribute="height" secondItem="pdl-tp-9zA" secondAttribute="height" id="uWv-Iu-QbR"/>
                                         </constraints>
                                     </scrollView>
                                 </subviews>
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="pdl-tp-9zA" secondAttribute="trailing" id="DZZ-dc-qFQ"/>
+                                    <constraint firstAttribute="height" constant="116" id="TIf-Zb-pKq"/>
                                     <constraint firstItem="pdl-tp-9zA" firstAttribute="top" secondItem="vHW-3I-SkO" secondAttribute="top" id="TWo-yX-Bod"/>
+                                    <constraint firstAttribute="width" secondItem="vHW-3I-SkO" secondAttribute="height" multiplier="387:116" id="VJt-BH-fL8"/>
                                     <constraint firstItem="pdl-tp-9zA" firstAttribute="leading" secondItem="vHW-3I-SkO" secondAttribute="leading" id="p9j-Qu-RxO"/>
                                     <constraint firstAttribute="bottom" secondItem="pdl-tp-9zA" secondAttribute="bottom" id="vJX-nW-Sev"/>
                                 </constraints>
+                                <edgeInsets key="layoutMargins" top="8" left="8" bottom="8" right="8"/>
                             </stackView>
                         </subviews>
                     </stackView>

@@ -22,14 +22,15 @@ class TableView: UIViewController {
         
         tableView.dataSource = self
         tableView.delegate = self
-        tableView.rowHeight = 400
         
         let tableViewCell = UINib(nibName: "TableViewCell", bundle: nil)
         self.tableView.register(tableViewCell, forCellReuseIdentifier: "tableViewCell")
         tableView.allowsSelection = false
     }
     
-   
+    override func viewDidLayoutSubviews() {
+        
+    }
     
     
     
