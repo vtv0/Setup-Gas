@@ -31,6 +31,9 @@
 		7573ADC229530D3600E8C658 /* GetRouteList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7573ADC129530D3600E8C658 /* GetRouteList.swift */; };
 		7573ADC4295310B400E8C658 /* GetWorkerRouteLocationList4.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7573ADC3295310B400E8C658 /* GetWorkerRouteLocationList4.swift */; };
 		7578B3BD29ACC1D7007367C3 /* FullScreenImageVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7578B3BB29ACC1D7007367C3 /* FullScreenImageVC.swift */; };
+		7578B3C029AD9D3A007367C3 /* FullScreenImage.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7578B3BF29AD9D3A007367C3 /* FullScreenImage.storyboard */; };
+		7578B3C329ADF87D007367C3 /* PageViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7578B3C229ADF87D007367C3 /* PageViewController.storyboard */; };
+		7578B3C529ADF8E7007367C3 /* PageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7578B3C429ADF8E7007367C3 /* PageViewController.swift */; };
 		7579268D299F0E6D00E7A28D /* ScreenExpland_TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7579268C299F0E6D00E7A28D /* ScreenExpland_TableViewCell.swift */; };
 		75867FEA296FAF7E005A0295 /* GetMe_Block.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75867FE9296FAF7E005A0295 /* GetMe_Block.swift */; };
 		75867FEC296FCB9E005A0295 /* GetWorkerRouteLocationList_Block.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75867FEB296FCB9E005A0295 /* GetWorkerRouteLocationList_Block.swift */; };
@@ -102,6 +105,9 @@
 		7573ADC129530D3600E8C658 /* GetRouteList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetRouteList.swift; sourceTree = "<group>"; };
 		7573ADC3295310B400E8C658 /* GetWorkerRouteLocationList4.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetWorkerRouteLocationList4.swift; sourceTree = "<group>"; };
 		7578B3BB29ACC1D7007367C3 /* FullScreenImageVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenImageVC.swift; sourceTree = "<group>"; };
+		7578B3BF29AD9D3A007367C3 /* FullScreenImage.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = FullScreenImage.storyboard; sourceTree = "<group>"; };
+		7578B3C229ADF87D007367C3 /* PageViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = PageViewController.storyboard; sourceTree = "<group>"; };
+		7578B3C429ADF8E7007367C3 /* PageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageViewController.swift; sourceTree = "<group>"; };
 		7579268C299F0E6D00E7A28D /* ScreenExpland_TableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenExpland_TableViewCell.swift; sourceTree = "<group>"; };
 		75867FE9296FAF7E005A0295 /* GetMe_Block.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetMe_Block.swift; sourceTree = "<group>"; };
 		75867FEB296FCB9E005A0295 /* GetWorkerRouteLocationList_Block.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetWorkerRouteLocationList_Block.swift; sourceTree = "<group>"; };
@@ -312,15 +318,28 @@
 		7578B3BA29ACC1C4007367C3 /* New Group */ = {
 			isa = PBXGroup;
 			children = (
+				7578B3BF29AD9D3A007367C3 /* FullScreenImage.storyboard */,
 				7578B3BB29ACC1D7007367C3 /* FullScreenImageVC.swift */,
 			);
 			path = "New Group";
+			sourceTree = "<group>";
+		};
+		7578B3C129ADF765007367C3 /* Page ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				7578B3C229ADF87D007367C3 /* PageViewController.storyboard */,
+				7578B3C429ADF8E7007367C3 /* PageViewController.swift */,
+			);
+			path = "Page ViewController";
 			sourceTree = "<group>";
 		};
 		757F496B28E3FD23008B8C05 /* FloatingPanel_Delivery */ = {
 			isa = PBXGroup;
 			children = (
 				7501250228EC0FBE003AC9EB /* FloatingPanelDeliveryVC.swift */,
+				75FDF73128EAB18400AADB99 /* TabsPageViewController.swift */,
+				75FDF72F28EAB0F700AADB99 /* TabsView.swift */,
+				75FDF73428EAB30200AADB99 /* TabCell.swift */,
 				7501250628ED21F5003AC9EB /* PageViewControllerChild */,
 				757F496C28E41EFB008B8C05 /* EditScreen */,
 			);
@@ -332,9 +351,6 @@
 			children = (
 				75FDF73C28EABABA00AADB99 /* EditViewController.swift */,
 				75FDF72E28EAA31300AADB99 /* ViewSmall */,
-				75FDF73128EAB18400AADB99 /* TabsPageViewController.swift */,
-				75FDF72F28EAB0F700AADB99 /* TabsView.swift */,
-				75FDF73428EAB30200AADB99 /* TabCell.swift */,
 			);
 			path = EditScreen;
 			sourceTree = "<group>";
@@ -370,6 +386,7 @@
 		75BD0BC2299DC95600D1B690 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				7578B3C129ADF765007367C3 /* Page ViewController */,
 				7578B3BA29ACC1C4007367C3 /* New Group */,
 				75BD0BC3299DC9A700D1B690 /* TableView.swift */,
 				75BD0BC6299DCA1A00D1B690 /* TableViewCell.xib */,
@@ -620,12 +637,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				75BF3A1328E161A900BC0F0C /* LaunchScreen.storyboard in Resources */,
+				7578B3C329ADF87D007367C3 /* PageViewController.storyboard in Resources */,
 				75A02981299E3B140035D22B /* ViewImage.xib in Resources */,
 				75BD0BC8299DCA1A00D1B690 /* TableViewCell.xib in Resources */,
 				754B942028EAE8CB0059D4F2 /* Assets.xcassets in Resources */,
 				75ACE5EC2990D36400298D75 /* ViewRadioButton.xib in Resources */,
 				75BF3A0E28E161A800BC0F0C /* Main.storyboard in Resources */,
 				75D2CE8728F80F3400B51CED /* ImageLabelView.xib in Resources */,
+				7578B3C029AD9D3A007367C3 /* FullScreenImage.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -729,6 +748,7 @@
 				7549898A2999E88E00D1958E /* PresenterSetting.swift in Sources */,
 				75A1E17F28F3AB6300EA17A2 /* RerouteViewController.swift in Sources */,
 				75BD0BC7299DCA1A00D1B690 /* TableViewCell.swift in Sources */,
+				7578B3C529ADF8E7007367C3 /* PageViewController.swift in Sources */,
 				7579268D299F0E6D00E7A28D /* ScreenExpland_TableViewCell.swift in Sources */,
 				753BA388296BB1D100C7136F /* GetAsset_Async_Await.swift in Sources */,
 				7573ADC029530A0100E8C658 /* GetWorkerVehicleList.swift in Sources */,

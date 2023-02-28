@@ -654,7 +654,7 @@
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="lblDate" destination="yNx-3Z-kf0" id="itt-uf-d3C"/>
-                                            <segue destination="20c-pp-6xM" kind="presentation" id="4kR-m9-gGy"/>
+                                            <segue destination="20c-pp-6xM" kind="push" id="h3h-By-X95"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -683,11 +683,11 @@
             <objects>
                 <viewController storyboardIdentifier="tableView" useStoryboardIdentifierAsRestorationIdentifier="YES" id="20c-pp-6xM" customClass="TableView" customModule="Gas" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="4uK-0Y-X83">
-                        <rect key="frame" x="0.0" y="0.0" width="430" height="863"/>
+                        <rect key="frame" x="0.0" y="0.0" width="430" height="932"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" estimatedSectionHeaderHeight="-1" sectionFooterHeight="28" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="UU3-J9-PGY">
-                                <rect key="frame" x="0.0" y="59" width="430" height="804"/>
+                                <rect key="frame" x="0.0" y="103" width="430" height="795"/>
                             </tableView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Udr-1y-kQS"/>
@@ -708,35 +708,6 @@
             </objects>
             <point key="canvasLocation" x="2594" y="-581"/>
         </scene>
-        <!--Full Screen ImageVC-->
-        <scene sceneID="cOt-Gl-JBE">
-            <objects>
-                <viewController storyboardIdentifier="FullScreenImageVC" id="kY4-zM-RVL" customClass="FullScreenImageVC" customModule="Gas" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="Z5f-NU-r8s">
-                        <rect key="frame" x="0.0" y="0.0" width="430" height="932"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="pKG-EO-con">
-                                <rect key="frame" x="0.0" y="59" width="430" height="839"/>
-                            </imageView>
-                        </subviews>
-                        <viewLayoutGuide key="safeArea" id="w1E-wJ-44W"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                        <constraints>
-                            <constraint firstItem="w1E-wJ-44W" firstAttribute="bottom" secondItem="pKG-EO-con" secondAttribute="bottom" id="5zA-y1-mE5"/>
-                            <constraint firstItem="pKG-EO-con" firstAttribute="leading" secondItem="w1E-wJ-44W" secondAttribute="leading" id="TJI-Xi-ym9"/>
-                            <constraint firstItem="pKG-EO-con" firstAttribute="top" secondItem="w1E-wJ-44W" secondAttribute="top" id="W3H-bV-u8U"/>
-                            <constraint firstItem="w1E-wJ-44W" firstAttribute="trailing" secondItem="pKG-EO-con" secondAttribute="trailing" id="XDQ-4n-55M"/>
-                        </constraints>
-                    </view>
-                    <connections>
-                        <outlet property="imgFullScreenImage" destination="pKG-EO-con" id="7fa-IX-Exa"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="I5S-Kc-qfU" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="3598" y="-571"/>
-        </scene>
         <!--Floating Panel DeliveryVC-->
         <scene sceneID="P02-lF-INh">
             <objects>
@@ -746,16 +717,14 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vUm-Yc-eCZ" customClass="TabsView" customModule="Gas" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="103" width="430" height="0.0"/>
+                                <rect key="frame" x="0.0" y="103" width="430" height="795"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" id="lMe-NF-xfz"/>
-                                </constraints>
                             </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="fge-HJ-GQA"/>
                         <color key="backgroundColor" systemColor="tertiarySystemGroupedBackgroundColor"/>
                         <constraints>
+                            <constraint firstItem="fge-HJ-GQA" firstAttribute="bottom" secondItem="vUm-Yc-eCZ" secondAttribute="bottom" id="NF0-SZ-iCZ"/>
                             <constraint firstItem="vUm-Yc-eCZ" firstAttribute="leading" secondItem="fge-HJ-GQA" secondAttribute="leading" id="ibX-b8-9o7"/>
                             <constraint firstItem="vUm-Yc-eCZ" firstAttribute="top" secondItem="fge-HJ-GQA" secondAttribute="top" id="qgv-yU-RMc"/>
                             <constraint firstItem="vUm-Yc-eCZ" firstAttribute="trailing" secondItem="fge-HJ-GQA" secondAttribute="trailing" id="vLJ-H5-c8m"/>
@@ -871,21 +840,21 @@
                                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                                 <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="bn5-f2-UAt">
-                                                                    <size key="itemSize" width="357" height="298"/>
+                                                                    <size key="itemSize" width="391" height="285"/>
                                                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                                                 </collectionViewFlowLayout>
                                                                 <cells>
                                                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="Cell" id="hdz-Sx-Fux" customClass="PageDetailCollectionViewCell" customModule="Gas" customModuleProvider="target">
-                                                                        <rect key="frame" x="0.0" y="9.6666666666666661" width="357" height="298"/>
+                                                                        <rect key="frame" x="0.0" y="16" width="391" height="285"/>
                                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                                         <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="HkB-hC-Y9E">
-                                                                            <rect key="frame" x="0.0" y="0.0" width="357" height="298"/>
+                                                                            <rect key="frame" x="0.0" y="0.0" width="391" height="285"/>
                                                                             <autoresizingMask key="autoresizingMask"/>
                                                                             <subviews>
                                                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="tvP-BF-K18">
-                                                                                    <rect key="frame" x="8" y="0.0" width="361" height="298"/>
+                                                                                    <rect key="frame" x="8" y="0.0" width="395" height="285"/>
                                                                                 </imageView>
                                                                             </subviews>
                                                                             <constraints>
@@ -897,7 +866,7 @@
                                                                                 <constraint firstItem="tvP-BF-K18" firstAttribute="leading" secondItem="HkB-hC-Y9E" secondAttribute="leading" constant="8" id="vWN-qv-UKR"/>
                                                                             </constraints>
                                                                         </collectionViewCellContentView>
-                                                                        <size key="customSize" width="357" height="298"/>
+                                                                        <size key="customSize" width="391" height="285"/>
                                                                         <connections>
                                                                             <outlet property="imgImage" destination="tvP-BF-K18" id="7eG-2A-rbx"/>
                                                                         </connections>
@@ -1241,7 +1210,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7PZ-hZ-eT0" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2562.6168224299063" y="189.20086393088553"/>
+            <point key="canvasLocation" x="2561.8604651162791" y="188.6266094420601"/>
         </scene>
         <!--Edit View Controller-->
         <scene sceneID="bnJ-QU-pl3">

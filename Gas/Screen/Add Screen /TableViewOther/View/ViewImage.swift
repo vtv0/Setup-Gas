@@ -9,6 +9,11 @@ import UIKit
 import Alamofire
 import CryptoKit
 
+
+protocol PassScreen: AnyObject {
+    func passScreen(image: UIImage?)
+}
+
 class FileImage {
     var url: String = ""
     var imageStorage = UIImage()
@@ -19,6 +24,7 @@ class ViewImage: UIView {
     @IBOutlet var mainViewImage: UIView!
     @IBOutlet weak var imgImage: UIImageView!
     
+    weak var delegatePassScreen: PassScreen?
     var widthContraint: NSLayoutConstraint?
     
     var ratioConstraint: NSLayoutConstraint?
@@ -55,8 +61,8 @@ class ViewImage: UIView {
     }
     
     @objc func clickImage() {
-        print("clickkkkk")
-        self.inputViewController?.presentationController(FullScreenImageVC())
+        print("click")
+        delegatePassScreen?.passScreen(image: self.imgImage.image)
     }
     
     func getImage(iurl: String) {

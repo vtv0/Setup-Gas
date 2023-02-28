@@ -9,9 +9,13 @@ import UIKit
 import Alamofire
 import AlamofireImage
 
-
-
-class TableViewCell: UITableViewCell {
+class TableViewCell: UITableViewCell, PassScreen {
+    func passScreen(image: UIImage?) {
+        delegate?.passScreen(image: image)
+    }
+    
+    
+    
     
     @IBOutlet weak var stachViewInfo: UIStackView!
     @IBOutlet weak var lblCustomerID: UILabel!
@@ -26,8 +30,12 @@ class TableViewCell: UITableViewCell {
     var urls: [String] = []
     var listUrls: [[String]] = []
  
+    weak var delegate: PassScreen?
+    
     override func awakeFromNib() {
         super.awakeFromNib()
+        
+        
     }
     
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -38,11 +46,13 @@ class TableViewCell: UITableViewCell {
         self.stackViewImages.arrangedSubviews.forEach { viewImage in
             viewImage.removeFromSuperview()
             stackViewImages.removeArrangedSubview(viewImage)
+            
         }
         
         for iurl in urls where !iurl.isEmpty {
             let reuseImageView = ViewImage(frame: self.bounds)
             reuseImageView.getImage(iurl: iurl)
+            reuseImageView.delegatePassScreen = self
             stackViewImages.addArrangedSubview(reuseImageView)
         }
     }

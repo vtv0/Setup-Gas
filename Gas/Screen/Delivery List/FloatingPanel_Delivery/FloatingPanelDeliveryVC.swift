@@ -120,12 +120,11 @@ class FloatingPanelDeliveryVC: UIViewController, UIPageViewControllerDelegate, U
         contentVC.dataInfoOneCustomer = dataDidFilter[index]
         contentVC.comment = comment[index]
         
-        
         return contentVC
     }
     
     
-    // MARK: Delegate
+    // MARK - Delegate
     //delegate
     func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
         if finished {

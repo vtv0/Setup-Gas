@@ -17,6 +17,8 @@ class TableView: UIViewController {
     var md5data : [String] = []
     
     var arrUrls: [[String]] = []
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -25,7 +27,11 @@ class TableView: UIViewController {
         
         let tableViewCell = UINib(nibName: "TableViewCell", bundle: nil)
         self.tableView.register(tableViewCell, forCellReuseIdentifier: "tableViewCell")
+        
         tableView.allowsSelection = false
+        
+        
+        
     }
     
     override func viewDidLayoutSubviews() {
@@ -43,7 +49,7 @@ extension TableView: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let cellTable = tableView.dequeueReusableCell(withIdentifier: "tableViewCell") as? TableViewCell {
-            
+            cellTable.delegate = self
             cellTable.lblCustomerID.text = locationsIsCustomer[indexPath.row].elem?.location?.comment ?? ""
             cellTable.lblDeliveryDestination.text = locationsIsCustomer[indexPath.row].asset?.properties?.values.customer_name
             cellTable.lblDeliveryAddress.text = locationsIsCustomer[indexPath.row].asset?.properties?.values.address
@@ -94,8 +100,21 @@ extension TableView: UITableViewDataSource {
 }
 
 extension TableView: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    }
+//    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+//        let cell = tableView.cellForRow(at: indexPath) as! TableViewCell
+//        cell.delegate = self
+//        
+//    }
 }
 
+extension TableView: PassScreen {
+    func passScreen(image: UIImage?) {
+        print("aaaaaaaa")
+        let storyboard = UIStoryboard(name: "FullScreenImage", bundle: nil)
+        guard let passScreen = storyboard.instantiateViewController(withIdentifier: "FullScreenImageVC") as? FullScreenImageVC else { return }
+        passScreen.image = image
+        self.navigationController?.pushViewController(passScreen, animated: true)
+    }
+    
+}
 

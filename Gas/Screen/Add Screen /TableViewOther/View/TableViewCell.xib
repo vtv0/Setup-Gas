@@ -95,10 +95,6 @@
                                                         </constraints>
                                                     </view>
                                                 </subviews>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="116" id="kse-7c-lS0"/>
-                                                    <constraint firstItem="2LA-pt-wkQ" firstAttribute="height" secondItem="KIy-OZ-Cik" secondAttribute="height" id="yjS-vo-03d"/>
-                                                </constraints>
                                             </stackView>
                                         </subviews>
                                         <constraints>
@@ -107,16 +103,14 @@
                                             <constraint firstAttribute="bottom" secondItem="KIy-OZ-Cik" secondAttribute="bottom" id="TIM-3z-7ve"/>
                                             <constraint firstItem="KIy-OZ-Cik" firstAttribute="leading" secondItem="pdl-tp-9zA" secondAttribute="leading" constant="10" id="oqB-YU-LxA"/>
                                             <constraint firstItem="KIy-OZ-Cik" firstAttribute="centerY" secondItem="pdl-tp-9zA" secondAttribute="centerY" id="qrU-qP-eZP"/>
-                                            <constraint firstItem="KIy-OZ-Cik" firstAttribute="height" secondItem="pdl-tp-9zA" secondAttribute="height" id="uWv-Iu-QbR"/>
                                         </constraints>
                                     </scrollView>
                                 </subviews>
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="pdl-tp-9zA" secondAttribute="trailing" id="DZZ-dc-qFQ"/>
-                                    <constraint firstAttribute="height" constant="116" id="TIf-Zb-pKq"/>
                                     <constraint firstItem="pdl-tp-9zA" firstAttribute="top" secondItem="vHW-3I-SkO" secondAttribute="top" id="TWo-yX-Bod"/>
-                                    <constraint firstAttribute="width" secondItem="vHW-3I-SkO" secondAttribute="height" multiplier="387:116" id="VJt-BH-fL8"/>
                                     <constraint firstItem="pdl-tp-9zA" firstAttribute="leading" secondItem="vHW-3I-SkO" secondAttribute="leading" id="p9j-Qu-RxO"/>
+                                    <constraint firstAttribute="height" constant="116" id="pJg-aG-g7d"/>
                                     <constraint firstAttribute="bottom" secondItem="pdl-tp-9zA" secondAttribute="bottom" id="vJX-nW-Sev"/>
                                 </constraints>
                                 <edgeInsets key="layoutMargins" top="8" left="8" bottom="8" right="8"/>
