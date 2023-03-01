@@ -6,26 +6,25 @@
 //
 
 import UIKit
-import CoreGraphics
-import CoreImage
-import ImageIO
+
 
 class FullScreenImageVC: UIViewController, UIScrollViewDelegate {
     @IBOutlet weak var scrollViewImage: UIScrollView!
     @IBOutlet weak var imgFullscreenImage: UIImageView!
     var image: UIImage?
+    var index = Int()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         imgFullscreenImage.image = image
         scrollViewImage.delegate = self
         
-        scrollViewImage.maximumZoomScale = 2.0
+        scrollViewImage.maximumZoomScale = 4.0
         
-//        scrollViewImage.minimumZoomScale = 0.5
-//                scrollViewImage.zoomScale = 1.0
+        //        scrollViewImage.minimumZoomScale = 0.5
+        //                scrollViewImage.zoomScale = 1.0
         
-//        scrollViewImage.contentMode = .aspectFill
+        //        scrollViewImage.contentMode = .aspectFill
         
         
         let doubleTap = UITapGestureRecognizer(target: self, action: #selector(tapDetected))
@@ -43,8 +42,7 @@ class FullScreenImageVC: UIViewController, UIScrollViewDelegate {
         if scrollViewImage.zoomScale <= 1 {
             let sizeRect = zoomRectForScale(scale: scrollViewImage.maximumZoomScale, center: location)
             scrollViewImage.zoom(to: sizeRect, animated: true)
-            
-        } else if scrollViewImage.zoomScale > 1 {
+        } else {
             scrollViewImage.zoom(to: zoomRectForScale(scale: 1.0, center: location), animated: true)
         }
     }
@@ -52,7 +50,6 @@ class FullScreenImageVC: UIViewController, UIScrollViewDelegate {
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         return imgFullscreenImage
     }
-    
     
     func zoomRectForScale(scale: CGFloat, center: CGPoint) -> CGRect {
         var zoomRect = CGRect.zero
@@ -65,6 +62,7 @@ class FullScreenImageVC: UIViewController, UIScrollViewDelegate {
         }
         return zoomRect;
     }
+    
 }
 
 extension CGPoint {

@@ -9,13 +9,18 @@ import UIKit
 import Alamofire
 import AlamofireImage
 
+
+
+
 class TableViewCell: UITableViewCell, PassScreen {
+    func passListImages(urls: [String], indexUrl: Int) {
+        delegate?.passListImages(urls: urls, indexUrl: indexUrl)
+    }
+    
     func passScreen(image: UIImage?) {
         delegate?.passScreen(image: image)
     }
-    
-    
-    
+    weak var delegate: PassScreen?
     
     @IBOutlet weak var stachViewInfo: UIStackView!
     @IBOutlet weak var lblCustomerID: UILabel!
@@ -29,12 +34,13 @@ class TableViewCell: UITableViewCell, PassScreen {
     
     var urls: [String] = []
     var listUrls: [[String]] = []
- 
-    weak var delegate: PassScreen?
+    
+    var images: [UIImage]?
+  
+  
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        
         
     }
     
@@ -43,19 +49,42 @@ class TableViewCell: UITableViewCell, PassScreen {
     }
     
     func loadImage(urls: [String]) {
+        var urlsNotEmpty: [String] = []
+        
         self.stackViewImages.arrangedSubviews.forEach { viewImage in
             viewImage.removeFromSuperview()
             stackViewImages.removeArrangedSubview(viewImage)
-            
         }
         
         for iurl in urls where !iurl.isEmpty {
-            let reuseImageView = ViewImage(frame: self.bounds)
-            reuseImageView.getImage(iurl: iurl)
-            reuseImageView.delegatePassScreen = self
-            stackViewImages.addArrangedSubview(reuseImageView)
+            urlsNotEmpty.append(iurl)
+            
         }
+        
+//        for i in 0..<urlsNotEmpty.count {
+//            print(i)
+//        }
+        
+        
+        urlsNotEmpty.enumerated().forEach { ind, iurlNew in
+//            print("\(iurlNew) -> \(ind)")
+
+            let reuseImageView = ViewImage(frame: self.bounds)
+            
+            reuseImageView.getImage(iurl: iurlNew, indexImage: ind, urls: urlsNotEmpty)
+            reuseImageView.delegatePassScreen = self
+            
+            stackViewImages.addArrangedSubview(reuseImageView)
+
+
+        }
+
+       
+        
+        
     }
+    
+    
     
 }
 

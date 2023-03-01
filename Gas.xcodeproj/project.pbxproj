@@ -315,13 +315,13 @@
 			path = "Screen Main Delivery";
 			sourceTree = "<group>";
 		};
-		7578B3BA29ACC1C4007367C3 /* New Group */ = {
+		7578B3BA29ACC1C4007367C3 /* Full Screen */ = {
 			isa = PBXGroup;
 			children = (
 				7578B3BF29AD9D3A007367C3 /* FullScreenImage.storyboard */,
 				7578B3BB29ACC1D7007367C3 /* FullScreenImageVC.swift */,
 			);
-			path = "New Group";
+			path = "Full Screen";
 			sourceTree = "<group>";
 		};
 		7578B3C129ADF765007367C3 /* Page ViewController */ = {
@@ -387,7 +387,7 @@
 			isa = PBXGroup;
 			children = (
 				7578B3C129ADF765007367C3 /* Page ViewController */,
-				7578B3BA29ACC1C4007367C3 /* New Group */,
+				7578B3BA29ACC1C4007367C3 /* Full Screen */,
 				75BD0BC3299DC9A700D1B690 /* TableView.swift */,
 				75BD0BC6299DCA1A00D1B690 /* TableViewCell.xib */,
 				75BD0BC5299DCA1A00D1B690 /* TableViewCell.swift */,

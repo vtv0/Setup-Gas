@@ -12,12 +12,14 @@ import CryptoKit
 
 protocol PassScreen: AnyObject {
     func passScreen(image: UIImage?)
+    
+    func passListImages(urls: [String], indexUrl: Int)
 }
 
-class FileImage {
-    var url: String = ""
-    var imageStorage = UIImage()
-}
+//class FileImage {
+//    var url: String = ""
+//    var imageStorage = UIImage()
+//}
 
 class ViewImage: UIView {
     
@@ -29,6 +31,9 @@ class ViewImage: UIView {
     
     var ratioConstraint: NSLayoutConstraint?
     
+    static var listImages: [UIImage]?
+    var indexImage1: Int = 0
+    var urls1: [String] = []
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -51,11 +56,11 @@ class ViewImage: UIView {
         viewReuse.autoresizingMask = [.flexibleWidth, .flexibleHeight]  // tu dong co dan
         self.addSubview(viewReuse)
         self.backgroundColor = .blue
-//        widthContraint = self.widthAnchor.constraint(equalToConstant: 0)
-//        widthContraint?.isActive = true
+        //        widthContraint = self.widthAnchor.constraint(equalToConstant: 0)
+        //        widthContraint?.isActive = true
         
-//        ratioConstraint = self.aspectRatio(0)
-//        ratioConstraint?.isActive = true
+        //        ratioConstraint = self.aspectRatio(0)
+        //        ratioConstraint?.isActive = true
         
         viewReuse.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(clickImage)))
     }
@@ -63,49 +68,71 @@ class ViewImage: UIView {
     @objc func clickImage() {
         print("click")
         delegatePassScreen?.passScreen(image: self.imgImage.image)
+        
+        delegatePassScreen?.passListImages(urls: urls1, indexUrl: indexImage1)
     }
     
-    func getImage(iurl: String) {
-        
-        // Neu da co thi lay anh trong LocalStorage
-        let path = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String
-        let url = NSURL(fileURLWithPath: path)
-        if let pathComponent = url.appendingPathComponent(iurl.md5()+".png") {
-            let filePath = pathComponent.path
-            let fileManager = FileManager.default
-            if fileManager.fileExists(atPath: filePath) {
-                print("FILE AVAILABLE")
-                self.getImageFromName(fileName: iurl)
-            } else {
-                print("FILE NOT AVAILABLE")
-                AF.request(iurl, method: .get).response { response in
-                    switch response.result {
-                    case .success(let responseData):
-                        var ratio: CGFloat = 0.0
-                        self.imgImage.image = UIImage(data: responseData!)
-                        
-                        if let height = self.imgImage.image?.size.height,
-                           
-                            let width = self.imgImage.image?.size.width {
-                            ratio = width / height
-                        }
-//                        self.widthContraint?.constant = self.frame.height * CGFloat(ratio)
-                        
-//                        self.widthContraint?.constant = (self.ratio?.constant ?? 1) * self.frame.height
-                        self.widthAnchor.constraint(equalTo: self.heightAnchor, multiplier: ratio).isActive = true
-                        
-                        self.saveImageLocally(image: UIImage(data: responseData!) ?? UIImage(), fileName: iurl)
-                        
-                        
-                    case .failure(let error):
-                        print("error--->",error)
-                    }
-                }
+    func getImage(iurl: String, indexImage: Int, urls: [String]) {
+        urls1 = urls
+        indexImage1 = indexImage
+        imgImage.loadImage(iurl: iurl) {
+            var ratio: CGFloat = 0.0
+            //            self.imgImage.image = UIImage(data: responseData!)
+            
+            // them anh vao ListImage
+            //            if let imgAPI = UIImage(data: responseData!) {
+            //                ViewImage.listImages?.append(imgAPI)
+            //            }
+            
+            if let height = self.imgImage.image?.size.height,
+               let width = self.imgImage.image?.size.width {
+                ratio = width / height
             }
-        } else {
-            print("FILE PATH NOT AVAILABLE")
+            
+            // self.widthContraint?.constant = self.frame.height * CGFloat(ratio)
+            
+            // self.widthContraint?.constant = (self.ratio?.constant ?? 1) * self.frame.height
+            self.widthAnchor.constraint(equalTo: self.heightAnchor, multiplier: ratio).isActive = true
         }
-        
+        //        print(urls)
+        //       print("\(iurl) - > \(indexImage)")
+        //        urls1 = urls
+        //        indexImage1 = indexImage
+        //        // Neu da co thi lay anh trong LocalStorage
+        //
+        //        let path = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String
+        //        let url = NSURL(fileURLWithPath: path)
+        //        if let pathComponent = url.appendingPathComponent(iurl.md5()+".png") {
+        //            let filePath = pathComponent.path
+        //            let fileManager = FileManager.default
+        //            if fileManager.fileExists(atPath: filePath) {
+        //                print("FILE AVAILABLE")
+        //
+        //                if let imgLiblary = self.getImageFromName(fileName: iurl) {
+        //                    ViewImage.listImages?.append(imgLiblary)
+        //                }
+        //                // them anh vao ListImage
+        //            } else {
+        //                print("FILE NOT AVAILABLE")
+        //                AF.request(iurl, method: .get).response { response in
+        //                    switch response.result {
+        //                    case .success(let responseData):
+        //                        var ratio: CGFloat = 0.0
+        //
+        //
+        //
+        //                        self.saveImageLocally(image: UIImage(data: responseData!) ?? UIImage(), fileName: iurl)
+        //
+        //
+        //                    case .failure(let error):
+        //                        print("error--->",error)
+        //                    }
+        //                }
+        //            }
+        //        } else {
+        //            print("FILE PATH NOT AVAILABLE")
+        //        }
+        //
     }
     
     func saveImageLocally(image: UIImage, fileName: String) {
@@ -126,40 +153,21 @@ class ViewImage: UIView {
     
     
     
-    func getImageFromName(fileName: String) {
-        var ratio1: CGFloat = 0.0
-        let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
-        let url = documentsDirectory.appendingPathComponent(fileName.md5()+".png")
-        print(url)
-        self.imgImage.image = UIImage.init(contentsOfFile: url.path)  // HERE IS YOUR IMAGE! Do what you want with it!
-        
-        
-        if let height = self.imgImage.image?.size.height,
-            let width = self.imgImage.image?.size.width {
-            ratio1 = (width / height)
-            self.widthAnchor.constraint(equalTo: self.heightAnchor, multiplier: ratio1).isActive = true
-        }
-        
-//        if let widthContraintDidRemove = widthContraint {  // xoa trong truong hop khoi tao nhieu lan width
-//            self.removeConstraint(widthContraintDidRemove)
-//        }
-        
-    }
     
     
-//    override func layoutSubviews() {
-//        var ratio2: Float = 0.0
-//        if let height = self.imgImage.image?.size.height,
-//           let width = self.imgImage.image?.size.width {
-//            ratio2 = Float((width / height))
-//
-////            widthContraint?.constant = self.frame.height * CGFloat(ratio2)
-//
-//
-//            self.ratioConstraint?.constant = CGFloat(ratio2)
-//
-//        }
-//    }
+    //    override func layoutSubviews() {
+    //        var ratio2: Float = 0.0
+    //        if let height = self.imgImage.image?.size.height,
+    //           let width = self.imgImage.image?.size.width {
+    //            ratio2 = Float((width / height))
+    //
+    ////            widthContraint?.constant = self.frame.height * CGFloat(ratio2)
+    //
+    //
+    //            self.ratioConstraint?.constant = CGFloat(ratio2)
+    //
+    //        }
+    //    }
     
 }
 
@@ -174,4 +182,70 @@ extension UIView {
     func aspectRatio(_ ratio: CGFloat) -> NSLayoutConstraint {
         return NSLayoutConstraint(item: self, attribute: .width, relatedBy: .equal, toItem: self, attribute: .height, multiplier: ratio, constant: 0)
     }
+}
+
+extension UIImageView {
+    func loadImage(iurl: String, completion: @escaping () -> () ) { //
+        
+        let path = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String
+        let url = NSURL(fileURLWithPath: path)
+        if let pathComponent = url.appendingPathComponent(iurl.md5()+".png") {
+            let filePath = pathComponent.path
+            let fileManager = FileManager.default
+            if fileManager.fileExists(atPath: filePath) {
+                print("FILE AVAILABLE")
+                
+                if let imgLiblary = self.getImageFromName(fileName: iurl) {
+                    self.image = imgLiblary
+                }
+                completion()
+                // them anh vao ListImage
+            } else {
+                print("FILE NOT AVAILABLE")
+                AF.request(iurl, method: .get).response { response in
+                    switch response.result {
+                    case .success(let responseData):
+                        
+                        self.image = UIImage(data: responseData!)
+                        
+                        self.saveImageLocally(image: UIImage(data: responseData!) ?? UIImage(), fileName: iurl)
+                        
+                        
+                    case .failure(let error):
+                        print("error--->",error)
+                    }
+                    completion()
+                }
+            }
+        } else {
+            print("FILE PATH NOT AVAILABLE")
+        }
+        
+        
+    }
+    
+    
+    func getImageFromName(fileName: String) -> UIImage? {
+        let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+        let url = documentsDirectory.appendingPathComponent(fileName.md5()+".png")
+        print(url) // HERE IS YOUR IMAGE! Do what you want with it!
+        return UIImage.init(contentsOfFile: url.path)
+    }
+    
+    func saveImageLocally(image: UIImage, fileName: String) {
+        
+        // Obtaining the Location of the Documents Directory
+        let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+        
+        // Creating a URL to the name of your file
+        let url = documentsDirectory.appendingPathComponent(fileName.md5()+".png")
+        if let data = image.pngData() {
+            do {
+                try data.write(to: url) // Writing an Image in the Documents Directory
+            } catch {
+                print("Unable to Write \(fileName) Image Data to Disk")
+            }
+        }
+    }
+    
 }

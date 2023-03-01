@@ -30,15 +30,11 @@ class TableView: UIViewController {
         
         tableView.allowsSelection = false
         
-        
-        
     }
     
     override func viewDidLayoutSubviews() {
         
     }
-    
-    
     
 }
 
@@ -50,6 +46,9 @@ extension TableView: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let cellTable = tableView.dequeueReusableCell(withIdentifier: "tableViewCell") as? TableViewCell {
             cellTable.delegate = self
+            
+            
+            
             cellTable.lblCustomerID.text = locationsIsCustomer[indexPath.row].elem?.location?.comment ?? ""
             cellTable.lblDeliveryDestination.text = locationsIsCustomer[indexPath.row].asset?.properties?.values.customer_name
             cellTable.lblDeliveryAddress.text = locationsIsCustomer[indexPath.row].asset?.properties?.values.address
@@ -100,21 +99,37 @@ extension TableView: UITableViewDataSource {
 }
 
 extension TableView: UITableViewDelegate {
-//    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        let cell = tableView.cellForRow(at: indexPath) as! TableViewCell
-//        cell.delegate = self
-//        
-//    }
+    //    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    //        let cell = tableView.cellForRow(at: indexPath) as! TableViewCell
+    //        cell.delegate = self
+    //
+    //    }
 }
 
 extension TableView: PassScreen {
-    func passScreen(image: UIImage?) {
-        print("aaaaaaaa")
-        let storyboard = UIStoryboard(name: "FullScreenImage", bundle: nil)
-        guard let passScreen = storyboard.instantiateViewController(withIdentifier: "FullScreenImageVC") as? FullScreenImageVC else { return }
-        passScreen.image = image
-        self.navigationController?.pushViewController(passScreen, animated: true)
+    func passListImages(urls: [String], indexUrl: Int) {
+        print(urls)
+        print(indexUrl)  // lay duoc ind cua anh trong mang
+        let storyboard = UIStoryboard(name: "PageViewController", bundle: nil)
+        guard let passScreenPageView = storyboard.instantiateViewController(withIdentifier: "PageViewController") as? PageViewController else { return }
+        passScreenPageView.urlsImage = urls
+        passScreenPageView.indexImage = indexUrl
+        self.navigationController?.pushViewController(passScreenPageView, animated: true)
+        
     }
     
+    func passScreen(image: UIImage?) {
+        //        let storyboard = UIStoryboard(name: "FullScreenImage", bundle: nil)
+        //        guard let passScreen = storyboard.instantiateViewController(withIdentifier: "FullScreenImageVC") as? FullScreenImageVC else { return }
+        //        passScreen.image = image
+        //        self.navigationController?.pushViewController(passScreen, animated: true)
+        
+        
+        
+    }
+    
+    
+    
 }
+
 

@@ -17,20 +17,20 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFill" delaysContentTouches="NO" canCancelContentTouches="NO" maximumZoomScale="2" translatesAutoresizingMaskIntoConstraints="NO" id="rh2-MJ-mhN">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" maximumZoomScale="10" translatesAutoresizingMaskIntoConstraints="NO" id="rh2-MJ-mhN">
                                 <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                                 <subviews>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="IrR-Uj-hBE">
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="IrR-Uj-hBE">
                                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                                         <color key="backgroundColor" systemColor="systemGray2Color"/>
                                     </imageView>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstItem="IrR-Uj-hBE" firstAttribute="trailing" secondItem="rm0-z0-spZ" secondAttribute="trailing" constant="393" id="8Nv-F0-SiK"/>
+                                    <constraint firstItem="IrR-Uj-hBE" firstAttribute="trailing" secondItem="rm0-z0-spZ" secondAttribute="trailing" id="8Nv-F0-SiK"/>
                                     <constraint firstItem="IrR-Uj-hBE" firstAttribute="leading" secondItem="rm0-z0-spZ" secondAttribute="leading" id="Inh-wJ-Oeb"/>
                                     <constraint firstItem="IrR-Uj-hBE" firstAttribute="top" secondItem="rm0-z0-spZ" secondAttribute="top" id="JcM-GW-fy1"/>
                                     <constraint firstItem="IrR-Uj-hBE" firstAttribute="width" secondItem="Tpv-CI-mAd" secondAttribute="width" id="ffi-g1-LLP"/>
-                                    <constraint firstItem="IrR-Uj-hBE" firstAttribute="bottom" secondItem="rm0-z0-spZ" secondAttribute="bottom" constant="852" id="ocg-Zb-EB5"/>
+                                    <constraint firstItem="IrR-Uj-hBE" firstAttribute="bottom" secondItem="rm0-z0-spZ" secondAttribute="bottom" id="ocg-Zb-EB5"/>
                                     <constraint firstItem="IrR-Uj-hBE" firstAttribute="height" secondItem="Tpv-CI-mAd" secondAttribute="height" id="sD6-75-EB3"/>
                                 </constraints>
                                 <viewLayoutGuide key="contentLayoutGuide" id="rm0-z0-spZ"/>

@@ -79,6 +79,4 @@ class ScreenExpland_Presenter {
         return dicData
     }
     
-    
-    
 }
