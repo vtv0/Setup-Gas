@@ -10,7 +10,6 @@ import Alamofire
 import CoreLocation
 import MapKit
 import FloatingPanel
-//import Contacts
 import AlamofireImage
 
 protocol TabsDelegate: AnyObject {
@@ -155,6 +154,14 @@ class FloatingPanelDeliveryVC: UIViewController, UIPageViewControllerDelegate, U
         default:
             return currentIndex
         }
+        
+//        var int: Int = 0
+//        if let vc = viewController as? PageDetailVC {
+//           int = vc.pageIndex
+//        }
+//         return int
+        
+        
     }
     
     // dataSource
@@ -188,6 +195,7 @@ class FloatingPanelDeliveryVC: UIViewController, UIPageViewControllerDelegate, U
 
 
 extension FloatingPanelDeliveryVC: TabsDelegate, GetIndexMarkerDelegateProtocol {
+    
     func tabsViewDidSelectItemAt(position: Int) {
         // Check if the selected tab cell position is the same with the current position in pageController, if not, then go forward or backward
         if position != currentIndex {

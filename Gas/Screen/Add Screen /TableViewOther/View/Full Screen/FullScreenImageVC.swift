@@ -6,20 +6,24 @@
 //
 
 import UIKit
-
+import Alamofire
 
 class FullScreenImageVC: UIViewController, UIScrollViewDelegate {
     @IBOutlet weak var scrollViewImage: UIScrollView!
     @IBOutlet weak var imgFullscreenImage: UIImageView!
     var image: UIImage?
-    var index = Int()
+    var pageIndex: Int!
+    
+    var iurlImage: String = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        imgFullscreenImage.image = image
+//        imgFullscreenImage.image = UIImage(named: "application_splash_logo")
         scrollViewImage.delegate = self
         
         scrollViewImage.maximumZoomScale = 4.0
+        
+        self.imgFullscreenImage.loadImage(iurl: iurlImage)
         
         //        scrollViewImage.minimumZoomScale = 0.5
         //                scrollViewImage.zoomScale = 1.0
@@ -65,8 +69,3 @@ class FullScreenImageVC: UIViewController, UIScrollViewDelegate {
     
 }
 
-extension CGPoint {
-    func scaledBy(scale: CGFloat) -> CGPoint {
-        return CGPoint(x: x * scale, y: y * scale)
-    }
-}

@@ -13,13 +13,17 @@ import AlamofireImage
 
 
 class TableViewCell: UITableViewCell, PassScreen {
-    func passListImages(urls: [String], indexUrl: Int) {
-        delegate?.passListImages(urls: urls, indexUrl: indexUrl)
+    func passListImages(urls: [String], indexUrl: Int, iurlImage: String) {
+        delegate?.passListImages(urls: urls, indexUrl: indexUrl, iurlImage: iurlImage)
     }
     
-    func passScreen(image: UIImage?) {
-        delegate?.passScreen(image: image)
-    }
+//    func passScreen(image: UIImage?, iurlImage: String) {
+//        delegate?.passScreen(image: image, iurlImage: iurlImage)
+//    }
+    
+  
+    
+    
     weak var delegate: PassScreen?
     
     @IBOutlet weak var stachViewInfo: UIStackView!

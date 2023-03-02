@@ -76,15 +76,14 @@
                                     </label>
                                 </subviews>
                             </stackView>
-                            <stackView opaque="NO" contentMode="scaleAspectFill" axis="vertical" id="vHW-3I-SkO" userLabel="StackViewContainer">
+                            <stackView opaque="NO" contentMode="scaleAspectFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="vHW-3I-SkO" userLabel="StackViewContainer">
                                 <rect key="frame" x="0.0" y="116" width="387" height="116"/>
-                                <autoresizingMask key="autoresizingMask"/>
                                 <subviews>
                                     <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" showsVerticalScrollIndicator="NO" id="pdl-tp-9zA">
                                         <rect key="frame" x="0.0" y="0.0" width="387" height="116"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <subviews>
-                                            <stackView opaque="NO" contentMode="scaleAspectFill" insetsLayoutMarginsFromSafeArea="NO" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="KIy-OZ-Cik">
+                                            <stackView opaque="NO" contentMode="scaleAspectFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="KIy-OZ-Cik">
                                                 <rect key="frame" x="10" y="0.0" width="150" height="116"/>
                                                 <subviews>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2LA-pt-wkQ">
@@ -95,8 +94,10 @@
                                                         </constraints>
                                                     </view>
                                                 </subviews>
+                                                <viewLayoutGuide key="safeArea" id="q3S-gd-6sD"/>
                                             </stackView>
                                         </subviews>
+                                        <viewLayoutGuide key="safeArea" id="MN8-dW-8HP"/>
                                         <constraints>
                                             <constraint firstItem="KIy-OZ-Cik" firstAttribute="top" secondItem="pdl-tp-9zA" secondAttribute="top" id="62M-Lk-ZSO"/>
                                             <constraint firstAttribute="trailing" secondItem="KIy-OZ-Cik" secondAttribute="trailing" constant="10" id="GDh-eY-vcu"/>
@@ -104,16 +105,18 @@
                                             <constraint firstItem="KIy-OZ-Cik" firstAttribute="leading" secondItem="pdl-tp-9zA" secondAttribute="leading" constant="10" id="oqB-YU-LxA"/>
                                             <constraint firstItem="KIy-OZ-Cik" firstAttribute="centerY" secondItem="pdl-tp-9zA" secondAttribute="centerY" id="qrU-qP-eZP"/>
                                         </constraints>
+                                        <viewLayoutGuide key="contentLayoutGuide" id="VtV-IV-T77"/>
+                                        <viewLayoutGuide key="frameLayoutGuide" id="bew-nj-oIv"/>
                                     </scrollView>
                                 </subviews>
+                                <viewLayoutGuide key="safeArea" id="fNH-SC-k1G"/>
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="pdl-tp-9zA" secondAttribute="trailing" id="DZZ-dc-qFQ"/>
                                     <constraint firstItem="pdl-tp-9zA" firstAttribute="top" secondItem="vHW-3I-SkO" secondAttribute="top" id="TWo-yX-Bod"/>
+                                    <constraint firstAttribute="height" constant="116" id="ohl-BY-AQK"/>
                                     <constraint firstItem="pdl-tp-9zA" firstAttribute="leading" secondItem="vHW-3I-SkO" secondAttribute="leading" id="p9j-Qu-RxO"/>
-                                    <constraint firstAttribute="height" constant="116" id="pJg-aG-g7d"/>
                                     <constraint firstAttribute="bottom" secondItem="pdl-tp-9zA" secondAttribute="bottom" id="vJX-nW-Sev"/>
                                 </constraints>
-                                <edgeInsets key="layoutMargins" top="8" left="8" bottom="8" right="8"/>
                             </stackView>
                         </subviews>
                     </stackView>

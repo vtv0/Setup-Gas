@@ -64,6 +64,8 @@
 		75D2CE8728F80F3400B51CED /* ImageLabelView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 75D2CE8628F80F3400B51CED /* ImageLabelView.xib */; };
 		75D2CE8928F80F7200B51CED /* ImageLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75D2CE8828F80F7200B51CED /* ImageLabelView.swift */; };
 		75D2CE8B28F80FDF00B51CED /* DeliveryLocationImageType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75D2CE8A28F80FDF00B51CED /* DeliveryLocationImageType.swift */; };
+		75E244D029B04C0600CC8526 /* ContainerPageVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E244CF29B04C0600CC8526 /* ContainerPageVC.swift */; };
+		75E244D229B04F8800CC8526 /* ContainerPageVC.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 75E244D129B04F8800CC8526 /* ContainerPageVC.storyboard */; };
 		75E2940429962E5E00153A72 /* PresenterLogin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E2940329962E5E00153A72 /* PresenterLogin.swift */; };
 		75E2940A29965ADA00153A72 /* PatchStatusDelivery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E2940929965ADA00153A72 /* PatchStatusDelivery.swift */; };
 		75EDABD9299C8F950080E1C2 /* PatchDeliveryStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75EDABD8299C8F950080E1C2 /* PatchDeliveryStatus.swift */; };
@@ -140,6 +142,8 @@
 		75D2CE8628F80F3400B51CED /* ImageLabelView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ImageLabelView.xib; sourceTree = "<group>"; };
 		75D2CE8828F80F7200B51CED /* ImageLabelView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageLabelView.swift; sourceTree = "<group>"; };
 		75D2CE8A28F80FDF00B51CED /* DeliveryLocationImageType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeliveryLocationImageType.swift; sourceTree = "<group>"; };
+		75E244CF29B04C0600CC8526 /* ContainerPageVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerPageVC.swift; sourceTree = "<group>"; };
+		75E244D129B04F8800CC8526 /* ContainerPageVC.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = ContainerPageVC.storyboard; sourceTree = "<group>"; };
 		75E2940329962E5E00153A72 /* PresenterLogin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresenterLogin.swift; sourceTree = "<group>"; };
 		75E2940929965ADA00153A72 /* PatchStatusDelivery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatchStatusDelivery.swift; sourceTree = "<group>"; };
 		75EDABD8299C8F950080E1C2 /* PatchDeliveryStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatchDeliveryStatus.swift; sourceTree = "<group>"; };
@@ -327,6 +331,8 @@
 		7578B3C129ADF765007367C3 /* Page ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				75E244D129B04F8800CC8526 /* ContainerPageVC.storyboard */,
+				75E244CF29B04C0600CC8526 /* ContainerPageVC.swift */,
 				7578B3C229ADF87D007367C3 /* PageViewController.storyboard */,
 				7578B3C429ADF8E7007367C3 /* PageViewController.swift */,
 			);
@@ -644,6 +650,7 @@
 				75ACE5EC2990D36400298D75 /* ViewRadioButton.xib in Resources */,
 				75BF3A0E28E161A800BC0F0C /* Main.storyboard in Resources */,
 				75D2CE8728F80F3400B51CED /* ImageLabelView.xib in Resources */,
+				75E244D229B04F8800CC8526 /* ContainerPageVC.storyboard in Resources */,
 				7578B3C029AD9D3A007367C3 /* FullScreenImage.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -735,6 +742,7 @@
 				8A21B86629058E35008D94DE /* Extension+ActivityIndicator.swift in Sources */,
 				75ACE5EA2990D34100298D75 /* ReuseViewRadioButton.swift in Sources */,
 				7598E46128EFC4DC00EA9FA9 /* PageDetailCollectionViewCell.swift in Sources */,
+				75E244D029B04C0600CC8526 /* ContainerPageVC.swift in Sources */,
 				75867FF02970FD4C005A0295 /* GetWorkerRouteLocationList_Async_Await.swift in Sources */,
 				75BF3A1E28E2883100BC0F0C /* DeliveryListController.swift in Sources */,
 				8AE3EE5A299E7B05003CC955 /* TableView_Presenter.swift in Sources */,

@@ -11,9 +11,9 @@ import CryptoKit
 
 
 protocol PassScreen: AnyObject {
-    func passScreen(image: UIImage?)
+//    func passScreen(image: UIImage?, iurlImage: String)
     
-    func passListImages(urls: [String], indexUrl: Int)
+    func passListImages(urls: [String], indexUrl: Int, iurlImage: String)
 }
 
 //class FileImage {
@@ -34,7 +34,7 @@ class ViewImage: UIView {
     static var listImages: [UIImage]?
     var indexImage1: Int = 0
     var urls1: [String] = []
-    
+    var iurlImage: String = ""
     override init(frame: CGRect) {
         super.init(frame: frame)
         commonInit()
@@ -67,12 +67,13 @@ class ViewImage: UIView {
     
     @objc func clickImage() {
         print("click")
-        delegatePassScreen?.passScreen(image: self.imgImage.image)
+//        delegatePassScreen?.passScreen(image: self.imgImage.image, iurlImage: iurlImage)
         
-        delegatePassScreen?.passListImages(urls: urls1, indexUrl: indexImage1)
+        delegatePassScreen?.passListImages(urls: urls1, indexUrl: indexImage1, iurlImage: iurlImage)
     }
     
     func getImage(iurl: String, indexImage: Int, urls: [String]) {
+        iurlImage = iurl
         urls1 = urls
         indexImage1 = indexImage
         imgImage.loadImage(iurl: iurl) {
@@ -94,6 +95,9 @@ class ViewImage: UIView {
             // self.widthContraint?.constant = (self.ratio?.constant ?? 1) * self.frame.height
             self.widthAnchor.constraint(equalTo: self.heightAnchor, multiplier: ratio).isActive = true
         }
+        
+        
+        
         //        print(urls)
         //       print("\(iurl) - > \(indexImage)")
         //        urls1 = urls
@@ -185,7 +189,7 @@ extension UIView {
 }
 
 extension UIImageView {
-    func loadImage(iurl: String, completion: @escaping () -> () ) { //
+    func loadImage(iurl: String, completion:  (() -> Void)? = nil ) { //
         
         let path = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String
         let url = NSURL(fileURLWithPath: path)
@@ -198,7 +202,7 @@ extension UIImageView {
                 if let imgLiblary = self.getImageFromName(fileName: iurl) {
                     self.image = imgLiblary
                 }
-                completion()
+                completion?()
                 // them anh vao ListImage
             } else {
                 print("FILE NOT AVAILABLE")
@@ -214,7 +218,7 @@ extension UIImageView {
                     case .failure(let error):
                         print("error--->",error)
                     }
-                    completion()
+                    completion?()
                 }
             }
         } else {
