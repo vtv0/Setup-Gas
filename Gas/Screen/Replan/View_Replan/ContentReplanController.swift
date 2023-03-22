@@ -21,7 +21,7 @@ class ContentReplanController: UIViewController, UITableViewDataSource, UITableV
     var selectedIdxDate = 0
     var selectedIdxDriver = 0
     var selectedRows = [IndexPath]()
-    var isCustomer: Location = Location(elem: LocationElement(locationOrder: 0), asset: GetAsset())
+    var isCustomer: Location = Location(elem: LocationElement(locationOrder: 0), asset: GetAsset(), createdAt: "")
     
     var dicExclude: [Int: [Location]] = [:]
     var dicMoveTo: [Int: [Location]] = [:]

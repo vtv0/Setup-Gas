@@ -29,11 +29,16 @@ class PresenterLogin {
     }
     
     func callAPI_Block(name: String, pass: String, companyCode: String) {
-        PostGetToken_Block().postGetToken_Block(username: name, pass: pass, companyCode: companyCode) { [self] token, error  in
-            if token != nil {
+        PostGetToken_Block().postGetToken_Block(username: name, pass: pass, companyCode: companyCode) { [self] token, errorGetToken  in
+            if let errToken = errorGetToken {
+                loginDelegate?.loginError(err: errToken)
+            } else {
+                
                 UserDefaults.standard.set(token, forKey: "accessToken")
-                GetMe_Block().getMe_Block(commpanyCode: companyCode, acccessToken: token ?? "") { (dataID, detailError) in
-                    if !dataID.isEmpty {
+                GetMe_Block().getMe_Block(commpanyCode: companyCode, acccessToken: token ?? "") { [self] dataID, detailError in
+                    if let err = detailError {
+                        loginDelegate?.getMeError(err: err)
+                    } else {
                         UserDefaults.standard.set(dataID[0], forKey: "tenantId")
                         UserDefaults.standard.set(dataID[1], forKey: "userId")
                         self.loginDelegate?.loginOK()
@@ -43,30 +48,6 @@ class PresenterLogin {
                         UserDefaults.standard.set(pass, forKey: "pass")
                         UserDefaults.standard.set(companyCode, forKey: "companyCode")
                     }
-                }
-            } else if token == nil {
-                let err = error
-                switch err {
-                case .wrongPassword:
-                    print(401)
-                    //                    showAlert(message: "Sai thông tin tài khoản")
-                    //                    hideActivity()
-                case .ok: break
-                case .tokenOutOfDate:
-                    //                    let mhLogin = self.storyboard?.instantiateViewController(identifier:  "LoginViewController") as! ViewController
-                    //                    self.navigationController?.pushViewController(mhLogin, animated: true)
-                    print(403)
-                    //                    hideActivity()
-                case .remain:
-                    break
-                    //                    showAlert(message: "Có lỗi xảy ra")
-                    //                    hideActivity()
-                case .none:
-                    break
-                case .some(.wrongURL):
-                    break
-                    //                    showAlert(message: "Sai thông tin tài khoản")
-                    //                    hideActivity()
                 }
             }
         }

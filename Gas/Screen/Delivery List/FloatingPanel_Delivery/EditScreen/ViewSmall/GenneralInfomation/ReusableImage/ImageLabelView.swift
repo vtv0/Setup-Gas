@@ -68,7 +68,6 @@ class ImageLabelView: UIView, UINavigationControllerDelegate {
     }
     @IBInspectable var locationType: Int {
         get {
-            print(locationType)
             return deliveryLocationType.rawValue
         }
         set(newValue) {

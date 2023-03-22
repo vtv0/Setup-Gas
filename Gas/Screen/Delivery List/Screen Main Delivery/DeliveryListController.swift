@@ -37,7 +37,7 @@ protocol GetIndexMarkerDelegateProtocol: AnyObject {
 class DeliveryListController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource, FloatingPanelControllerDelegate {
     
     weak var delegateGetIndex: GetIndexMarkerDelegateProtocol?
-    
+  //  weak var delegatePassInfoCustomer: PassInfoCustomer?
     var getiAsset: GetAsset = GetAsset(assetModelID: 0)
     let arrGetAsset: [GetAsset] = []
     var arrAssetID: [String] = []
@@ -62,7 +62,8 @@ class DeliveryListController: UIViewController, UIPickerViewDelegate, UIPickerVi
     var assetAday: [GetAsset] = []
     var locations: [Location] = []
     var arrFacilityData: [[Facility_data]] = []
-    static var dataInfoOneCustomer: Location = Location(elem: LocationElement(locationOrder: 0), asset: GetAsset(assetModelID: 0))
+    
+    var dataInfoOneCustomer: Location = Location(elem: LocationElement(arrivalTime: ArrivalTime(),location: LocationLocation(), locationOrder: 0 ), asset: GetAsset(assetModelID: 0, properties: PropertiesDetail(updatedAt: "", values: ValuesDetail(customer_location: [], kyokyusetsubi_code: ""))), createdAt: "")
     
     @IBOutlet weak var lblType50kg: UILabel!
     @IBOutlet weak var lblType30kg: UILabel!
@@ -78,22 +79,15 @@ class DeliveryListController: UIViewController, UIPickerViewDelegate, UIPickerVi
     
     @IBOutlet weak var btnShipping: UIButton!
     @IBAction func btnShipping(_ sender: Any) {
-        
         let shipingVC = storyboard?.instantiateViewController(withIdentifier: "ShippingViewController") as! ShippingViewController
         self.navigationController?.pushViewController(shipingVC, animated: true)
         
-        shipingVC.dataInfoOneCustomer = DeliveryListController.dataInfoOneCustomer
-        //  shipingVC.lblCustomerName.text = txtName
-        print("click Shipping tren MH chinh")
+        shipingVC.dataInfoOneCustomer = dataInfoOneCustomer
         
-        //        let alert = UIAlertController(title: "Lỗi", message: "Có một địa chỉ giao hàng được chỉ định", preferredStyle: .alert)
-        //        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-        //        self.present(alert, animated: true, completion: nil)
     }
     
     @IBAction func btnSetting(_ sender: Any) {
         let screenSetting = storyboard?.instantiateViewController(withIdentifier: "SettingController") as! SettingController
-        //present(screenSetting, animated: true, completion: nil)
         self.navigationController?.pushViewController(screenSetting, animated: true)
     }
     @IBAction func btnReplan(_ sender: Any) {
@@ -111,13 +105,9 @@ class DeliveryListController: UIViewController, UIPickerViewDelegate, UIPickerVi
         super.viewDidLoad()
         self.sevenDay()
         navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
-
-        //MARK: - Use Block
+      
         showActivity()
-        
         //  callAPI_Block_Delivery()
-        
-        //MARK: - Use ASYNC AWAIT
         Task {
             await callApi_Async_Await_Deli()
         }
@@ -134,27 +124,28 @@ class DeliveryListController: UIViewController, UIPickerViewDelegate, UIPickerVi
             let responseGetMe = try await GetMe_Async_Await().getMe_Async_Await(companyCode: companyCode)
             print(responseGetMe)
             do {
-                let dicDataResponse = try await GetWorkerRouteLocationList_Async_Await().loadDic(dates: dateYMD)   //.getWorkerRouteLocationList_Async_Await()
+                let dicDataResponse = await GetWorkerRouteLocationList_Async_Await().loadDic(dates: dateYMD)   //.getWorkerRouteLocationList_Async_Await()
                 dicData = dicDataResponse
-            } catch {
-                if let err = error as? GetWorkerRouteLocationList_Async_Await.AFError {
-                    if err == .remain {
-                        showAlert(message: "Có lỗi xảy ra")
-                        hideActivity()
-                    } else if err == .notDelivery {  // 204
-                        showAlert(message: "Không giao hàng hôm nay")
-                        hideActivity()
-                    } else if err == .tokenOutOfDate {  // 401
-                        let mhLogin = self.storyboard?.instantiateViewController(identifier:  "LoginViewController") as! ViewController
-                        self.navigationController?.pushViewController(mhLogin, animated: true)
-                        hideActivity()
-                    } else {  // 404
-                        hideActivity()
-                        showAlert(message: "Lỗi API sau 16h (404)")
-                        
-                    }
-                }
             }
+//            catch {
+//                if let err = error as? GetWorkerRouteLocationList_Async_Await.AFError {
+//                    if err == .remain {
+//                        showAlert(message: "Có lỗi xảy ra")
+//                        hideActivity()
+//                    } else if err == .notDelivery {  // 204
+//                        showAlert(message: "Không giao hàng hôm nay")
+//                        hideActivity()
+//                    } else if err == .tokenOutOfDate {  // 401
+//                        let mhLogin = self.storyboard?.instantiateViewController(identifier:  "LoginViewController") as! ViewController
+//                        self.navigationController?.pushViewController(mhLogin, animated: true)
+//                        hideActivity()
+//                    } else {  // 404
+//                        hideActivity()
+//                        showAlert(message: "Lỗi API sau 16h (404)")
+//
+//                    }
+//                }
+//            }
             
         } catch {
             if let err = error as? GetMe_Async_Await.AFError {
@@ -209,11 +200,9 @@ class DeliveryListController: UIViewController, UIPickerViewDelegate, UIPickerVi
         
         switch assetResponse.result {
         case .success(let iasset):
-            print(iasset)
             getiAsset = iasset
             
-        case .failure(let error):
-            print(error)
+        case .failure(_):
             if assetResponse.response?.statusCode == 401 {
                 let scr = storyboard?.instantiateViewController(withIdentifier: "LoginViewController") as! ViewController
                 navigationController?.pushViewController(scr, animated: false)
@@ -233,14 +222,11 @@ class DeliveryListController: UIViewController, UIPickerViewDelegate, UIPickerVi
                 for iLocationValue in arrLocationValue {
                     if let assetID = iLocationValue.elem?.location?.assetID {
                         group.addTask { await ( self.getAsset_Async_Await(iassetID: assetID)) }
-                        
                         var arriasset: [GetAsset] = []
-                        //                        arriasset.append()
                         for await result in group {
                             arriasset.append(result)
                         }
-                        return arriasset // Biểu thức là 'async' nhưng không được đánh dấu bằng 'await'
-                        //   }
+                        return arriasset
                     } else { print("No assetID -> Supplier") }
                 }
                 return self.arrGetAsset
@@ -249,14 +235,11 @@ class DeliveryListController: UIViewController, UIPickerViewDelegate, UIPickerVi
     
     func callAPI_Block_Delivery() {
         let dispatchGroup = DispatchGroup()
-        
         GetMe_Block().getMe_Block(commpanyCode: "", acccessToken: "") { [self] dataID, detailError  in
             if !dataID.isEmpty {
-                
-                GetWorkerRouteLocationList_Block().getWorkerRouteLocationList_Block(tenantId: 0, userId: 0) { [self] dic, err1  in
+                GetWorkerRouteLocationList_Block().getWorkerRouteLocationList_Block(tenantId: 0, userId: 0) { [self] dic, err1, _  in
                     if !dic.isEmpty {
-                        GetAsset_Block().getGetAsset_Block(forAsset: "") { [self] info, err2  in
-                            
+                        GetAsset_Block().getGetAsset_Block(iassetID: "") { [self] info, err2  in
                             dicData = dic
                             fpc = FloatingPanelController(delegate: self)
                             fpc.layout = MyFloatingPanelLayout()
@@ -279,15 +262,14 @@ class DeliveryListController: UIViewController, UIPickerViewDelegate, UIPickerVi
                     } else {
                         let err1 = err1
                         switch err1 {
-                        case .ok: break
+                            
                         case .tokenOutOfDate:
                             let scr = storyboard?.instantiateViewController(withIdentifier: "LoginViewController") as! ViewController
                             self.navigationController?.pushViewController(scr, animated: false)
                             hideActivity()
                             
-                        case .some(.remain): break  // 500
-                            //                            showAlert(message: "Có lỗi xảy ra")
-                            //                            hideActivity()
+                        case .some(.remaining):  // 500
+                            hideActivity()
                             
                         case .some(.wrong):  // 404
                             showAlert(message: "Có lỗi xảy ra")
@@ -301,19 +283,19 @@ class DeliveryListController: UIViewController, UIPickerViewDelegate, UIPickerVi
             
             let err = detailError
             switch err {
-            case .ok:
-                break
             case .tokenOutOfDate:
-                // Login
                 if let scr = storyboard?.instantiateViewController(withIdentifier: "LoginViewController") as? ViewController {
                     navigationController?.pushViewController(scr, animated: false)
                     hideActivity()
                 }
             case .wrongPassword:
-                break
-            case .remain:
+                showAlert(message: "Sai mật khẩu")
+                hideActivity()
+            case .remaining:
                 showAlert(message: "Có lỗi xảy ra")
                 hideActivity()
+            case .none:
+                break
             }
         }
         
@@ -323,13 +305,7 @@ class DeliveryListController: UIViewController, UIPickerViewDelegate, UIPickerVi
         let mapCamera = MKMapCamera(lookingAtCenter: userCoordinate, fromEyeCoordinate: eyeCoordinate, eyeAltitude: 1000000.0)
         mapView.setCamera(mapCamera, animated: false)
     }
-    
-    //    func fetchAPI<T: Decodable>(url: URL) async throws -> T {
-    //        let data = try await URLSession.shared.data(url: url)
-    //        let decodeData = try JSONDecoder().decode(T.self, from: data)
-    //        return decodeData
-    //    }
-    
+
     func showAlert(title: String? = "", message: String?, completion: (() -> Void)? = nil) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alert.addAction( UIAlertAction(title: "OK", style: .default, handler: { _ in
@@ -672,6 +648,9 @@ class DeliveryListController: UIViewController, UIPickerViewDelegate, UIPickerVi
             }
             
         }
+        if dataDidFilter.count > 0 {
+            dataInfoOneCustomer = dataDidFilter[0]
+        }
         passIndexSelectedMarker = 0
     }
     
@@ -681,7 +660,7 @@ class DeliveryListController: UIViewController, UIPickerViewDelegate, UIPickerVi
 extension DeliveryListController: MKMapViewDelegate, ShowIndexPageDelegateProtocol {
     func passIndexPVC(currentIndexPageVC: Int) {
         passIndexSelectedMarker = currentIndexPageVC
-        // dataInfoOneCustomer = dataDidFilter[currentIndexPageVC]
+         dataInfoOneCustomer = dataDidFilter[passIndexSelectedMarker]
         // remove anotations
         let allAnmotations = self.mapView.annotations
         self.mapView.removeAnnotations(allAnmotations)
@@ -775,8 +754,3 @@ extension DeliveryListController: PassScrollView {
 }
 
 
-extension DeliveryListController: PassInfoCustomer {
-    func passInfoCustomer(infoCustomer: Location) {
-        DeliveryListController.dataInfoOneCustomer = infoCustomer
-    }
-}

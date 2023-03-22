@@ -31,16 +31,16 @@ protocol PassImageDelegateProtocol: AnyObject {
     func passUrlImage(urlImage: [String])
 }
 
-protocol PassInfoCustomer: AnyObject {
-    func passInfoCustomer(infoCustomer: Location)
-}
+//protocol PassInfoCustomer: AnyObject {
+//    func passInfoCustomerShipping(infoCustomer: Location)
+//}
 
 class PageDetailVC: UIViewController, UIScrollViewDelegate, UICollectionViewDelegate {
     
     weak var delegatePassInfoOneCustomer: PassInfoOneCustomerDelegateProtocol?
     weak var delegatePassImage: PassImageDelegateProtocol?
     
-    weak var delegatePassInfoCustomer: PassInfoCustomer?
+//    weak var delegatePassInfoCustomer: PassInfoCustomer?
     
     var pageIndex: Int!
     var comment: String = ""
@@ -56,7 +56,8 @@ class PageDetailVC: UIViewController, UIScrollViewDelegate, UICollectionViewDele
     var data: [String] = []
     var arrFacilityData = [[Facility_data]]()
     var arrImage = [String]()
-    var dataInfoOneCustomer: Location = Location(elem: LocationElement(locationOrder: 0), asset: GetAsset(assetModelID: 0))
+    
+    var dataInfoOneCustomer: Location = Location(elem: LocationElement(arrivalTime: ArrivalTime(),location: LocationLocation(), locationOrder: 0 ), asset: GetAsset(assetModelID: 0, properties: PropertiesDetail(updatedAt: "", values: ValuesDetail(customer_location: [], kyokyusetsubi_code: ""))), createdAt: "")
     
     @IBOutlet weak var viewContainerScrollview: UIScrollView!
     
@@ -93,13 +94,10 @@ class PageDetailVC: UIViewController, UIScrollViewDelegate, UICollectionViewDele
     override func viewDidLoad() {
         super.viewDidLoad()
         lblTextNotes.isEditable = false
-        
         collectionView.delegate = self
         collectionView.dataSource = self
         
         pageControl.numberOfPages = arrImage.count
-    
-        
         
         guard let parkingVC = storyboard?.instantiateViewController(withIdentifier: "ParkingLocationController") as? ParkingLocationController else { return }
         delegatePassInfoOneCustomer = parkingVC
@@ -244,9 +242,14 @@ class PageDetailVC: UIViewController, UIScrollViewDelegate, UICollectionViewDele
         }
         
         
-        guard let deliveryVC = storyboard?.instantiateViewController(withIdentifier: "DeliveryListController") as? DeliveryListController  else { return }
-        delegatePassInfoCustomer = deliveryVC
-        delegatePassInfoCustomer?.passInfoCustomer(infoCustomer: dataInfoOneCustomer )
+//        guard let deliveryVC = storyboard?.instantiateViewController(withIdentifier: "DeliveryListController") as? DeliveryListController  else { return }
+//        delegatePassInfoCustomer = deliveryVC
+//
+//        print(dataInfoOneCustomer.asset?.id)
+//
+//        print(dataInfoOneCustomer.asset?.name)
+//        print(dataInfoOneCustomer.asset?.properties?.values.customer_name)
+//        delegatePassInfoCustomer?.passInfoCustomerShipping(infoCustomer: dataInfoOneCustomer )
         
     }
     

@@ -9,20 +9,20 @@ import UIKit
 import Alamofire
 
 enum StatusDelivery: CaseIterable {
-    case returnFailedToDeliver
-    case unableToDeliver
-    case complete
+    case inprogress
+    case failed
+    case completed
 //    case ok
     
     var title: String {
         switch self {
             
-        case .returnFailedToDeliver:
-            return "Return failed to deliver"
-        case .unableToDeliver:
-            return "Unable to deliver"
-        case .complete:
-            return "Complete"
+        case .inprogress:
+            return "Inprogress"
+        case .failed:
+            return "Failed"
+        case .completed:
+            return "Completed"
 //        case .ok:
 //            return "OK"
         }
@@ -31,7 +31,9 @@ enum StatusDelivery: CaseIterable {
 
 class ShippingViewController: UIViewController {
     
-    var dataInfoOneCustomer: Location = Location(elem: LocationElement(locationOrder: 0), asset: GetAsset(assetModelID: 0))
+     var dataInfoOneCustomer: Location = Location(elem: LocationElement(locationOrder: 0), asset: GetAsset(assetModelID: 0), createdAt: "")
+    static var infoCustomerShipping: Location = Location(elem: LocationElement(locationOrder: 0), asset: GetAsset(assetModelID: 0), createdAt: "")
+    
     
     @IBAction func btnExit(_ sender: Any) {
         navigationController?.popViewController(animated: true)
@@ -74,10 +76,6 @@ class ShippingViewController: UIViewController {
         }
         
         setupRadioButton()
-        
-        
-   
-        
     }
     
     func setupRadioButton() {
@@ -105,8 +103,8 @@ extension ShippingViewController: PassStatusDelivery {
             } else {
                 view1.btnRadioButton.setImage(UIImage(named: "ic_radio_not_checked"), for: .normal)
             }
-            
         }
     }
     
 }
+

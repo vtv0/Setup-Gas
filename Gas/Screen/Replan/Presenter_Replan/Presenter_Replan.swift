@@ -122,7 +122,7 @@ class Persenter_Replan {
                         }
                     }
                 }
-                dataDidFilter_Replan = dataDidFilter_Replan.filter( { !listRemove1.contains($0) } )
+//                dataDidFilter_Replan = dataDidFilter_Replan.filter( { !listRemove1.contains($0) } )   // dung logic nhung bi loi
             }
         }
         

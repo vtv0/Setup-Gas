@@ -90,6 +90,8 @@ class ViewController: UIViewController, UITextFieldDelegate {
     @objc func onInputPass(_ sender: UITextField) {
         print("Pass", sender.text ?? "")
         txtPass.text = sender.text ?? ""
+       
+
     }
     @objc func onInputId(_ sender: UITextField) {
         print("companyCode", sender.text ?? "")
@@ -129,9 +131,10 @@ extension ViewController: LoginVCDelegateProtocol {
     func loginOK() {
 //        let mhDeliveryList = storyboard?.instantiateViewController(withIdentifier: "DeliveryListController") as! DeliveryListController
 //        self.navigationController?.pushViewController(mhDeliveryList, animated: true)
-        
+//
                 let screenExpand = storyboard?.instantiateViewController(withIdentifier: "ScreenExpandVC") as! ScreenExpandVC
                 self.navigationController?.pushViewController(screenExpand, animated: true)
+        
         hideActivity()
     }
     

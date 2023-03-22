@@ -10,6 +10,6 @@ target 'Gas' do
   pod 'SwiftyJSON'
   pod 'AlamofireImage'
   pod 'Toast-Swift'
- 
-  
+  pod 'SQLite.swift'
+  pod 'FMDB'
 end
