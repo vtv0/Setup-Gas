@@ -18,8 +18,12 @@ class GetWorkerRouteLocationList_Block {
     
     let group = DispatchGroup()
     
-    
-    
+    enum CaseError: Error {
+        case ok
+        case tokenOutOfDate
+        case wrong
+        case remain
+    }
     
     func sevenDay() {
         let anchor = Date()
@@ -27,7 +31,6 @@ class GetWorkerRouteLocationList_Block {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
         for dayOffset in 0...6 {
-            
             if let date1 = calendar.date(byAdding: .day, value: dayOffset, to: anchor)?.removeTimeStamp {
                 dateYMD.append(date1)
             }
@@ -39,7 +42,6 @@ class GetWorkerRouteLocationList_Block {
         headers["Authorization"] = "Bearer " + token
         return HTTPHeaders(headers)
     }
-    
     
     func getWorkerRouteLocationList_Block(tenantId: Int, userId: Int, completion: @escaping ((Dictionary<Date, [Location]>, (CaseError?)) -> Void)) {
         sevenDay()
@@ -89,7 +91,7 @@ class GetWorkerRouteLocationList_Block {
                                     
                                 } else { print("No assetID -> Supplier") }
                             }
-                           
+                            
                             
                             self.dicData[iday] = arrLocationValue
                             
@@ -118,15 +120,7 @@ class GetWorkerRouteLocationList_Block {
                 }
         }
         
-        
-        
     }
     
-    enum CaseError: String {
-        case ok
-        case tokenOutOfDate
-        case wrong
-        case remain
-    }
 }
 

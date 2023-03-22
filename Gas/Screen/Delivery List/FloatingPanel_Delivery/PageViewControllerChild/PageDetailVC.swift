@@ -287,7 +287,7 @@ extension PageDetailVC: UICollectionViewDataSource {
             let iurl = arrImage[indexPath.row]
             
             // Alamofire
-            AF.request(iurl, method: .get).response{ response in
+            AF.request(iurl, method: .get).response { response in
                 switch response.result {
                 case .success(let responseData):
                     cellImage.imgImage.image = UIImage(data: responseData!, scale: 1)

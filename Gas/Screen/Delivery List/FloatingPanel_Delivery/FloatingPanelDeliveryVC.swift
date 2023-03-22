@@ -10,7 +10,6 @@ import Alamofire
 import CoreLocation
 import MapKit
 import FloatingPanel
-import Contacts
 import AlamofireImage
 
 protocol TabsDelegate: AnyObject {
@@ -120,12 +119,11 @@ class FloatingPanelDeliveryVC: UIViewController, UIPageViewControllerDelegate, U
         contentVC.dataInfoOneCustomer = dataDidFilter[index]
         contentVC.comment = comment[index]
         
-        
         return contentVC
     }
     
     
-    // MARK: Delegate
+    // MARK - Delegate
     //delegate
     func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
         if finished {
@@ -156,6 +154,14 @@ class FloatingPanelDeliveryVC: UIViewController, UIPageViewControllerDelegate, U
         default:
             return currentIndex
         }
+        
+//        var int: Int = 0
+//        if let vc = viewController as? PageDetailVC {
+//           int = vc.pageIndex
+//        }
+//         return int
+        
+        
     }
     
     // dataSource
@@ -189,6 +195,7 @@ class FloatingPanelDeliveryVC: UIViewController, UIPageViewControllerDelegate, U
 
 
 extension FloatingPanelDeliveryVC: TabsDelegate, GetIndexMarkerDelegateProtocol {
+    
     func tabsViewDidSelectItemAt(position: Int) {
         // Check if the selected tab cell position is the same with the current position in pageController, if not, then go forward or backward
         if position != currentIndex {
@@ -211,5 +218,6 @@ extension FloatingPanelDeliveryVC: TabsDelegate, GetIndexMarkerDelegateProtocol 
             detailsTabsView.collectionView.scrollToItem(at: IndexPath(item: indexDidSelected, section: 0), at: .centeredHorizontally, animated: true)
         }
     }
+    
 }
 

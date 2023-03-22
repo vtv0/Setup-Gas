@@ -127,7 +127,6 @@ class ParkingLocationController: UIViewController, MKMapViewDelegate, CLLocation
                 switch response1.result {
                 case .success( let value):
                     
-                    print("value: \(value)")
                     let FloatingPanel = self.storyboard?.instantiateViewController(withIdentifier: "EditViewController") as! EditViewController
                     self.navigationController?.setViewControllers([FloatingPanel], animated: true)
                     self.hideActivity()

@@ -44,12 +44,11 @@ class ReuseViewRadioButton: UIView {
     func commonInit() {
         guard let viewReuse = loadViewFromNib() else { return }
         viewReuse.frame = self.bounds
-        viewReuse.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        viewReuse.autoresizingMask = [.flexibleWidth, .flexibleHeight] // tu dong co dan
         self.addSubview(viewReuse)
         
-        //        view.translatesAutoresizingMaskIntoConstraints = false
+        //        view.translatesAutoresizingMaskIntoConstraints = false // an thanh scroll
         
-        //        mainView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onTapView)))
         viewReuse.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onTapView)))
         
     }
@@ -63,4 +62,5 @@ class ReuseViewRadioButton: UIView {
         let nib = UINib(nibName: "ViewRadioButton", bundle: nil)
         return nib.instantiate(withOwner: self, options: nil).first as? UIView
     }
+    
 }

@@ -59,8 +59,6 @@ class LocationLocation4: NSObject, Decodable {
         case customer = "customer"
         case supplier = "supplier"
     }
-
-
 }
 
 

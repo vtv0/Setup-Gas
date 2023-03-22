@@ -39,6 +39,9 @@ class ShippingViewController: UIViewController {
     
     @IBAction func btnSubmit(_ sender: Any) {
         print("CLICK SUBMIT")
+        Task {
+            try await PatchStatusDelivery().patchStatusDelivery_Async_Await(iassetID: "\(dataInfoOneCustomer.asset?.id ?? "")", status: ShippingViewController.statusDelivery, dataInfoOneCustomer: dataInfoOneCustomer)
+        }
     }
     
     @IBOutlet weak var viewInfomation: UIView!
@@ -48,11 +51,11 @@ class ShippingViewController: UIViewController {
     @IBOutlet weak var lblStatus: UILabel!
     
     @IBOutlet weak var stackView: UIStackView!
-    
+    static var statusDelivery: String = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.black]
+        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.systemBlue]
         title = "Determine delivery content"
         self.navigationItem.setHidesBackButton(true, animated: false)
         
@@ -72,6 +75,9 @@ class ShippingViewController: UIViewController {
         
         setupRadioButton()
         
+        
+   
+        
     }
     
     func setupRadioButton() {
@@ -84,14 +90,16 @@ class ShippingViewController: UIViewController {
             stackView.addArrangedSubview(statusView)
         }
     }
+    
 }
 
 extension ShippingViewController: PassStatusDelivery {
     
     func onTap(_ sender: ReuseViewRadioButton, status: StatusDelivery) {
-        print(stackView.arrangedSubviews)
+        ShippingViewController.statusDelivery = "\(status)"
         stackView.arrangedSubviews.forEach() { view in
             let view1 = view as! ReuseViewRadioButton
+            view1.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 50)
             if sender == view {
                 view1.btnRadioButton.setImage(UIImage(named: "ic_radio_checked"), for: .normal)
             } else {

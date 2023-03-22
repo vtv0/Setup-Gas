@@ -54,11 +54,9 @@ class CustomAlertReplanVC: UIViewController {
     }
     
     func calculateTheNumberOfGas() {
-        
         print(dataDidFilter_Alert.count)
         for (ind, idata) in dataDidFilter_Alert.enumerated() {
             print("\(ind)-> \(idata)")
-            
         }
         
         if listIndex.count > 0 && dataDidFilter_Alert.count > 0 {
@@ -66,7 +64,6 @@ class CustomAlertReplanVC: UIViewController {
                 print("Index:\(iIndex)")
                 arrFacility.append(dataDidFilter_Alert[iIndex].elem?.metadata?.facility_data ?? [])
             }
-            
         }
         
         for ifacility in arrFacility {

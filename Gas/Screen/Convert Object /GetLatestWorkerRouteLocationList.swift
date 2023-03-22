@@ -6,7 +6,7 @@
 
 import UIKit
 
-class Location: NSObject, NSCopying {
+class Location: NSObject, Decodable {
     var type: LocationType {
         if elem?.location?.assetID == nil {
             return .supplier
@@ -33,14 +33,38 @@ class Location: NSObject, NSCopying {
         return copy
     }
     
+    // tao 1 ham  vao la location ra la image
+    func urls() -> [String] {
+        var urls: [String] = []
+        
+        if let gas_location1 = asset?.properties?.values.gas_location1,
+           let gas_location2 = asset?.properties?.values.gas_location2,
+           let gas_location3 = asset?.properties?.values.gas_location3,
+           let gas_location4 = asset?.properties?.values.gas_location4,
+           let parking_place1 = asset?.properties?.values.parking_place1,
+           let parking_place2 = asset?.properties?.values.parking_place2,
+           let parking_place3 = asset?.properties?.values.parking_place3,
+           let parking_place4 = asset?.properties?.values.parking_place4 {
+            
+            if !gas_location1.isEmpty || !gas_location2.isEmpty || !gas_location3.isEmpty || !gas_location4.isEmpty || !parking_place1.isEmpty || !parking_place2.isEmpty || !parking_place3.isEmpty || !parking_place4.isEmpty {
+                
+                urls.append(gas_location1)
+                urls.append(gas_location2)
+                urls.append(gas_location3)
+                urls.append(gas_location4)
+                urls.append(parking_place1)
+                urls.append(parking_place2)
+                urls.append(parking_place3)
+                urls.append(parking_place4)
+            }
+        }
+        return urls
+    }
+    
 }
 
 // MARK: - GetLatestWorkerRouteLocationListInfo
-class GetLatestWorkerRouteLocationListInfo: NSObject, Decodable, NSCopying {
-    func copy(with zone: NSZone? = nil) -> Any {
-        let copy = GetLatestWorkerRouteLocationListInfo()
-        return copy
-    }
+class GetLatestWorkerRouteLocationListInfo: NSObject, Decodable {
     
     var locations: [LocationElement]?
     var workerRoute: WorkerRoute?
@@ -53,9 +77,9 @@ class GetLatestWorkerRouteLocationListInfo: NSObject, Decodable, NSCopying {
 
 // MARK: - LocationElement
 class LocationElement: NSObject, Decodable {
-//    var description: String {
-//        return "locationOrder: \(locationOrder)"
-//    }
+    //    var description: String {
+    //        return "locationOrder: \(locationOrder)"
+    //    }
     
     var arrivalTime: ArrivalTime?
     var breakTimeSEC: Int?
@@ -68,7 +92,7 @@ class LocationElement: NSObject, Decodable {
     var longitude: Double?
     var metadata: FluffyMetadata?
     var travelTimeSECToNext, waitingTimeSEC, workTimeSEC: Int?
-   
+    
     
     init(arrivalTime: ArrivalTime? = nil, breakTimeSEC: Int? = nil, createdAt: String? = nil, latitude: Double? = nil, loadCapacity: Int? = nil, loadSupply: Int? = nil, location: LocationLocation? = nil, locationID: Int? = nil, locationOrder: Int, longitude: Double? = nil, metadata: FluffyMetadata? = nil, travelTimeSECToNext: Int? = nil, waitingTimeSEC: Int? = nil, workTimeSEC: Int? = nil) {
         self.arrivalTime = arrivalTime
@@ -152,26 +176,26 @@ class LocationLocation: NSObject, Decodable {
 
 
 // MARK: - PurpleMetadata
-class PurpleMetadata: NSObject, Codable {
+class PurpleMetadata: NSObject, Decodable {
     var kyokyusetsubiCode: String?
     var display_data: DisplayData?
-    var operators: [String?]?
+    //    var operators: [String?]?
     
     enum CodingKeys: String, CodingKey {
         case kyokyusetsubiCode = "KYOKYUSETSUBI_CODE"
         case display_data = "display_data"
-        case operators
+        //        case operators
     }
     
-    init(kyokyusetsubiCode: String? = nil, display_data: DisplayData, operators: [String?]? = nil) {
+    init(kyokyusetsubiCode: String? = nil, display_data: DisplayData) {
         self.kyokyusetsubiCode = kyokyusetsubiCode
         self.display_data = display_data
-        self.operators = operators
+        //        self.operators = operators
     }
 }
 
 // MARK: - DisplayData
-class DisplayData: NSObject, Codable {
+class DisplayData: NSObject, Decodable {
     var delivery_history: [String: String]?
     var origin_route_id: Int?
     var excludeFirstDay: Bool? = false
@@ -184,7 +208,13 @@ class DisplayData: NSObject, Codable {
         self.moveToFirstDay = moveToFirstDay
     }
     
-    enum DeliveryHistory: String, Codable {
+    enum CodingKeys: String, CodingKey {
+        //        case delivery_history = "delivery_history"
+        case origin_route_id = "origin_route_id"
+        //        case operators
+    }
+    
+    enum DeliveryHistory: String, Decodable {
         case completed = "completed"
         case failed = "failed"
         case halfway = "halfway"
@@ -201,6 +231,7 @@ class DisplayData: NSObject, Codable {
                 arrStringDate.append(i)
             }
         }
+        
         class DataHistory {
             var date: String
             var status: String
@@ -209,6 +240,7 @@ class DisplayData: NSObject, Codable {
                 self.status = status
             }
         }
+        
         var arr: [DataHistory] = []
         
         delivery_history?.keys.forEach({ key in
@@ -217,7 +249,7 @@ class DisplayData: NSObject, Codable {
                 arr.append(data)
             }
         })
-        arr.sort{ h1, h2 in
+        arr.sort { h1, h2 in
             let df = DateFormatter()
             df.dateFormat = "yyyy-MM-dd HH:mm"
             if let d1 = df.date(from: h1.date), let d2 = df.date(from: h2.date) {
@@ -231,6 +263,9 @@ class DisplayData: NSObject, Codable {
         
         return .waiting
     }
+    
+    // xắp sếp các bản ghi tăng đần theo thời gian
+    
     
 }
 
@@ -256,7 +291,7 @@ class FluffyMetadata: NSObject, Decodable {
 }
 
 // MARK: - FacilityDatum
-class Facility_data: NSObject, Codable {
+class Facility_data: NSObject, Decodable {
     var count, type: Int?
     
     enum Count: Int {
@@ -274,7 +309,7 @@ class Facility_data: NSObject, Codable {
 }
 
 // MARK: - WorkerRoute
-class WorkerRoute: NSObject, Codable {
+class WorkerRoute: NSObject, Decodable {
     var createdAt: String?
     var id, loadRemain, routeID, totalTimeSEC: Int?
     var workDate: String?

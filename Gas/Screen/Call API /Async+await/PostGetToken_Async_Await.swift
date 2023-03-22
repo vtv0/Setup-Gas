@@ -12,7 +12,7 @@ import AlamofireImage
 class PostGetToken_Async_Await {
     
     enum AFError: Error {
-    
+        
         case wrongURL
         case tokenOutOfDate
         case wrongPassword
@@ -28,7 +28,8 @@ class PostGetToken_Async_Await {
         switch getTokenResponse.result {
         case .success(let value):
             
-            token =   getTokenResponse.value?.access_token ?? "" //  "IIGH59cpD6BiBppDEXh835uzxwIbAl6P"  
+            token = getTokenResponse.value?.access_token ?? ""
+            // token = "IIGH59cpD6BiBppDEXh835uzxwIbAl6P"  // token het han
             UserDefaults.standard.set(token, forKey: "accessToken")
             
             print(value)

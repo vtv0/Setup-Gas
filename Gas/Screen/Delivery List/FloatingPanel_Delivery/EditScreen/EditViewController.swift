@@ -16,19 +16,19 @@ class EditViewController: UIViewController {
     @IBAction func btnExit(_ sender: Any) {
         let alert = UIAlertController(title: "Thông báo", message: "Bạn chắc chắn thoát Edit", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
-            self.dismiss(animated: true)
-//            let FloatingPanel = self.storyboard?.instantiateViewController(withIdentifier: "DeliveryListController") as! DeliveryListController
-//            self.navigationController?.setViewControllers([FloatingPanel], animated: true)
+            self.navigationController?.popViewController(animated: true)
+            //             self.navigationController?.popToRootViewController(animated: true)
         }))
         alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: nil))
         self.present(alert, animated: true, completion: nil)
         
     }
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Edit Screen"
-//        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
+        //        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
         setupTabs()
         
         setupPageViewController()
