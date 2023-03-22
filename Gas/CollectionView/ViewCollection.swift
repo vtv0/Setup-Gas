@@ -17,7 +17,7 @@ class ViewCollection: UIViewController {
         super.viewDidLoad()
         
         myCollectionView.dataSource = self
-        myCollectionView.delegate = self
+        //        myCollectionView.delegate = self
         
         myCollectionView.collectionViewLayout = listSection()
     }
@@ -45,9 +45,9 @@ class ViewCollection: UIViewController {
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
                                               heightDimension: .fractionalHeight(1.0))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 8, bottom: 0, trailing: 8)
+        item.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 8, bottom: 8, trailing: 8)
         let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
-                                               heightDimension: .estimated(120))
+                                               heightDimension: .estimated(110))
         let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize,
                                                      subitems: [item])
         let section = NSCollectionLayoutSection(group: group)
@@ -57,67 +57,59 @@ class ViewCollection: UIViewController {
     }
     
     
-    
-    //    func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
-    //        let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "header", for: indexPath as IndexPath )
-    //        headerView.backgroundColor = UIColor.green
-    //        return headerView
-    //
-    //    }
-    
-    
     func textHeight(font: UIFont, text: String) -> CGFloat {
         let myText = text as NSString
-        
         let rect = CGSize(width: self.myCollectionView.frame.width, height: CGFloat.greatestFiniteMagnitude)
         let labelSize = myText.boundingRect(with: rect, options: .usesLineFragmentOrigin, attributes: [NSAttributedString.Key.font: font], context: nil)
         return ceil(labelSize.height)
     }
 }
 
-extension ViewCollection: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-    //    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-    //
-    //        let text = locationsIsCustomer[indexPath.row].asset?.properties?.values.customer_name ?? ""
-    //
-    //        let heightName = textHeight(font: .systemFont(ofSize: 17.0), text: text)
-    //        let assetID = textHeight(font: .systemFont(ofSize: 17.0), text: locationsIsCustomer[indexPath.row].elem?.location?.assetID ?? "")
-    //        let address = textHeight(font: .systemFont(ofSize: 17.0), text: locationsIsCustomer[indexPath.row].asset?.properties?.values.address ?? "")
-    //        let time = textHeight(font: .systemFont(ofSize: 17.0), text: "\(locationsIsCustomer[indexPath.row].elem?.arrivalTime?.hours ?? 0)")
-    //        return CGSize(width: self.myCollectionView.frame.width, height: heightName + assetID + address + time )
-    //
-    //    }
+extension ViewCollection: UICollectionViewDataSource {
     
+    // UICollectionViewDelegateFlowLayout
+    //        func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+    //
+    //            let text = locationsIsCustomer[indexPath.row].asset?.properties?.values.customer_name ?? ""
+    //
+    //            let heightName = textHeight(font: .systemFont(ofSize: 17.0), text: text)
+    //            let assetID = textHeight(font: .systemFont(ofSize: 17.0), text: locationsIsCustomer[indexPath.row].elem?.location?.assetID ?? "")
+    //            let address = textHeight(font: .systemFont(ofSize: 17.0), text: locationsIsCustomer[indexPath.row].asset?.properties?.values.address ?? "")
+    //            let time = textHeight(font: .systemFont(ofSize: 17.0), text: "\(locationsIsCustomer[indexPath.row].elem?.arrivalTime?.hours ?? 0)")
+    //            return CGSize(width: self.myCollectionView.frame.width, height: heightName + assetID + address + time )
+    //        }
     
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 1
-    }
+//
+//    func numberOfSections(in collectionView: UICollectionView) -> Int {
+//        return 1
+//    }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return locationsIsCustomer.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if let cell = myCollectionView.dequeueReusableCell(withReuseIdentifier: "cellCollection", for: indexPath) as? CollectionViewCell {
-            cell.lblAssetID.text = locationsIsCustomer[indexPath.row].elem?.metadata?.customer_id ?? ""
-            cell.lblName.text = locationsIsCustomer[indexPath.row].asset?.properties?.values.customer_name
-            cell.lblAddress.text = locationsIsCustomer[indexPath.row].asset?.properties?.values.address
-            
-            if let minutes = locationsIsCustomer[indexPath.row].elem?.arrivalTime?.minutes,
-               let hours = locationsIsCustomer[indexPath.row].elem?.arrivalTime?.hours {
-                if minutes < 10 {
-                    cell.lblEstimateTime?.text = "Estimate Time : \(hours):0\(minutes)"
-                } else {
-                    cell.lblEstimateTime?.text = "Estimate Time : \(hours):\(minutes)"
-                }
+        guard let cell = myCollectionView.dequeueReusableCell(withReuseIdentifier: "cellCollection", for: indexPath) as? CollectionViewCell else {  return UICollectionViewCell() }
+        cell.lblAssetID.text = locationsIsCustomer[indexPath.row].elem?.metadata?.customer_id
+        cell.lblName.text = locationsIsCustomer[indexPath.row].asset?.properties?.values.customer_name
+        cell.lblAddress.text = locationsIsCustomer[indexPath.row].asset?.properties?.values.address
+        
+        if let minutes = locationsIsCustomer[indexPath.row].elem?.arrivalTime?.minutes,
+           let hours = locationsIsCustomer[indexPath.row].elem?.arrivalTime?.hours {
+            if minutes < 10 {
+                cell.lblEstimateTime?.text = "Estimate Time : \(hours):0\(minutes)"
+            } else {
+                cell.lblEstimateTime?.text = "Estimate Time : \(hours):\(minutes)"
             }
-            return cell
         }
-        //        else if let imageCell = myCollectionView.dequeueReusableCell(withReuseIdentifier: "CellImage", for: indexPath) as? CellImage {
-        //            imageCell.imgImageCollectionCell.image = UIImage(named: "application_splash_logo")
-        //
-        //            return imageCell
-        //        }
-        return UICollectionViewCell()
+        return cell
+        
+    }
+}
+
+
+extension ViewCollection {
+    func makeDataSource() -> UICollectionViewDiffableDataSource<Section, <#ItemIdentifierType: Hashable & Sendable#>> {
+        
     }
 }
