@@ -12,9 +12,9 @@ class CollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var lblName: UILabel!
     @IBOutlet weak var lblAddress: UILabel!
     
-    @IBOutlet weak var lblAssetID: UILabel!
+   @IBOutlet weak var lblAssetID: UILabel!
     
-    @IBOutlet weak var lblEstimateTime: UILabel!
+@IBOutlet weak var lblEstimateTime: UILabel!
     override func awakeFromNib() {
         super.awakeFromNib()
         

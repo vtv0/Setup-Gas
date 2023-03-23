@@ -48,7 +48,7 @@ extension TableView: UITableViewDataSource {
         if let cellTable = tableView.dequeueReusableCell(withIdentifier: "tableViewCell") as? TableViewCell {
             cellTable.delegate = self
             
-            cellTable.lblCustomerID.text = locationsIsCustomer[indexPath.row].elem?.metadata?.customer_id ?? ""
+            cellTable.lblCustomerID.text = locationsIsCustomer[indexPath.row].elem?.metadata?.customer_id 
             cellTable.lblDeliveryDestination.text = locationsIsCustomer[indexPath.row].asset?.properties?.values.customer_name
             cellTable.lblDeliveryAddress.text = locationsIsCustomer[indexPath.row].asset?.properties?.values.address
             if let minutes = locationsIsCustomer[indexPath.row].elem?.arrivalTime?.minutes,

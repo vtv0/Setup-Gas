@@ -41,6 +41,7 @@
 		7578B3C329ADF87D007367C3 /* PageViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7578B3C229ADF87D007367C3 /* PageViewController.storyboard */; };
 		7578B3C529ADF8E7007367C3 /* PageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7578B3C429ADF8E7007367C3 /* PageViewController.swift */; };
 		7579268D299F0E6D00E7A28D /* ScreenExpland_TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7579268C299F0E6D00E7A28D /* ScreenExpland_TableViewCell.swift */; };
+		757A928F29CC3C90009F3E05 /* ViewCollection.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 757A928E29CC3C90009F3E05 /* ViewCollection.storyboard */; };
 		757BAA8229C95DED00BC69AB /* CellImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 757BAA8129C95DED00BC69AB /* CellImage.swift */; };
 		75867FEA296FAF7E005A0295 /* GetMe_Block.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75867FE9296FAF7E005A0295 /* GetMe_Block.swift */; };
 		75867FEC296FCB9E005A0295 /* GetWorkerRouteLocationList_Block.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75867FEB296FCB9E005A0295 /* GetWorkerRouteLocationList_Block.swift */; };
@@ -77,7 +78,6 @@
 		75E244D229B04F8800CC8526 /* ContainerPageVC.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 75E244D129B04F8800CC8526 /* ContainerPageVC.storyboard */; };
 		75E2940429962E5E00153A72 /* PresenterLogin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E2940329962E5E00153A72 /* PresenterLogin.swift */; };
 		75E2940A29965ADA00153A72 /* PatchStatusDelivery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E2940929965ADA00153A72 /* PatchStatusDelivery.swift */; };
-		75E466F929C46D1F00CABC32 /* ListCollectionView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 75E466F829C46D1F00CABC32 /* ListCollectionView.storyboard */; };
 		75E466FB29C4716200CABC32 /* ViewCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E466FA29C4716200CABC32 /* ViewCollection.swift */; };
 		75E466FF29C7F88F00CABC32 /* CollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E466FD29C7F88F00CABC32 /* CollectionViewCell.swift */; };
 		75EDABD9299C8F950080E1C2 /* PatchDeliveryStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75EDABD8299C8F950080E1C2 /* PatchDeliveryStatus.swift */; };
@@ -129,6 +129,7 @@
 		7578B3C229ADF87D007367C3 /* PageViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = PageViewController.storyboard; sourceTree = "<group>"; };
 		7578B3C429ADF8E7007367C3 /* PageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageViewController.swift; sourceTree = "<group>"; };
 		7579268C299F0E6D00E7A28D /* ScreenExpland_TableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenExpland_TableViewCell.swift; sourceTree = "<group>"; };
+		757A928E29CC3C90009F3E05 /* ViewCollection.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = ViewCollection.storyboard; sourceTree = "<group>"; };
 		757BAA8129C95DED00BC69AB /* CellImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellImage.swift; sourceTree = "<group>"; };
 		75867FE9296FAF7E005A0295 /* GetMe_Block.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetMe_Block.swift; sourceTree = "<group>"; };
 		75867FEB296FCB9E005A0295 /* GetWorkerRouteLocationList_Block.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetWorkerRouteLocationList_Block.swift; sourceTree = "<group>"; };
@@ -167,7 +168,6 @@
 		75E244D129B04F8800CC8526 /* ContainerPageVC.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = ContainerPageVC.storyboard; sourceTree = "<group>"; };
 		75E2940329962E5E00153A72 /* PresenterLogin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresenterLogin.swift; sourceTree = "<group>"; };
 		75E2940929965ADA00153A72 /* PatchStatusDelivery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatchStatusDelivery.swift; sourceTree = "<group>"; };
-		75E466F829C46D1F00CABC32 /* ListCollectionView.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = ListCollectionView.storyboard; sourceTree = "<group>"; };
 		75E466FA29C4716200CABC32 /* ViewCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewCollection.swift; sourceTree = "<group>"; };
 		75E466FD29C7F88F00CABC32 /* CollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewCell.swift; sourceTree = "<group>"; };
 		75EDABD8299C8F950080E1C2 /* PatchDeliveryStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatchDeliveryStatus.swift; sourceTree = "<group>"; };
@@ -654,7 +654,7 @@
 		75E466F729C46CE800CABC32 /* CollectionView */ = {
 			isa = PBXGroup;
 			children = (
-				75E466F829C46D1F00CABC32 /* ListCollectionView.storyboard */,
+				757A928E29CC3C90009F3E05 /* ViewCollection.storyboard */,
 				75E466FA29C4716200CABC32 /* ViewCollection.swift */,
 				75E466FC29C7F7A600CABC32 /* Cell CollectionView */,
 			);
@@ -784,11 +784,11 @@
 			files = (
 				75BF3A1328E161A900BC0F0C /* LaunchScreen.storyboard in Resources */,
 				7578B3C329ADF87D007367C3 /* PageViewController.storyboard in Resources */,
-				75E466F929C46D1F00CABC32 /* ListCollectionView.storyboard in Resources */,
 				75A02981299E3B140035D22B /* ViewImage.xib in Resources */,
 				75BD0BC8299DCA1A00D1B690 /* TableViewCell.xib in Resources */,
 				754B942028EAE8CB0059D4F2 /* Assets.xcassets in Resources */,
 				75ACE5EC2990D36400298D75 /* ViewRadioButton.xib in Resources */,
+				757A928F29CC3C90009F3E05 /* ViewCollection.storyboard in Resources */,
 				75BF3A0E28E161A800BC0F0C /* Main.storyboard in Resources */,
 				75D2CE8728F80F3400B51CED /* ImageLabelView.xib in Resources */,
 				75E244D229B04F8800CC8526 /* ContainerPageVC.storyboard in Resources */,

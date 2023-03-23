@@ -6,7 +6,14 @@
 
 import UIKit
 
-class Location: Decodable {
+class Location: Decodable, Hashable {
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(elem?.locationOrder)
+    }
+    static func == (lhs: Location, rhs: Location) -> Bool {
+        lhs.elem?.locationOrder == rhs.elem?.locationOrder
+    }
+    
     var type: LocationType {
         if elem?.location?.assetID == nil {
             return .supplier
