@@ -67,7 +67,6 @@ class ViewImage: UIView {
             }
             self.widthAnchor.constraint(equalTo: self.heightAnchor, multiplier: ratio).isActive = true
         }
-        
     }
     
     func saveImageLocally(image: UIImage, fileName: String) {

@@ -41,7 +41,7 @@ class Location: Decodable, Hashable {
     // tao 1 ham  vao la location ra la image
     func urls() -> [String] {
         var urls: [String] = []
-        
+        var urlsNotEmpty: [String] = []
         if let gas_location1 = asset?.properties?.values.gas_location1,
            let gas_location2 = asset?.properties?.values.gas_location2,
            let gas_location3 = asset?.properties?.values.gas_location3,
@@ -52,7 +52,6 @@ class Location: Decodable, Hashable {
            let parking_place4 = asset?.properties?.values.parking_place4 {
             
             if !gas_location1.isEmpty || !gas_location2.isEmpty || !gas_location3.isEmpty || !gas_location4.isEmpty || !parking_place1.isEmpty || !parking_place2.isEmpty || !parking_place3.isEmpty || !parking_place4.isEmpty {
-                
                 urls.append(gas_location1)
                 urls.append(gas_location2)
                 urls.append(gas_location3)
@@ -63,7 +62,10 @@ class Location: Decodable, Hashable {
                 urls.append(parking_place4)
             }
         }
-        return urls
+        for iurl in urls where !iurl.isEmpty {
+            urlsNotEmpty.append(iurl)
+        }
+        return urlsNotEmpty
     }
     
 }
