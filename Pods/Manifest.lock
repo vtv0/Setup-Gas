@@ -3,12 +3,6 @@ PODS:
   - AlamofireImage (4.2.0):
     - Alamofire (~> 5.4)
   - FloatingPanel (2.5.4)
-  - FMDB (2.7.5):
-    - FMDB/standard (= 2.7.5)
-  - FMDB/standard (2.7.5)
-  - SQLite.swift (0.14.1):
-    - SQLite.swift/standard (= 0.14.1)
-  - SQLite.swift/standard (0.14.1)
   - SwiftyJSON (5.0.1)
   - Toast-Swift (5.0.1)
 
@@ -16,8 +10,6 @@ DEPENDENCIES:
   - Alamofire
   - AlamofireImage
   - FloatingPanel
-  - FMDB
-  - SQLite.swift
   - SwiftyJSON
   - Toast-Swift
 
@@ -26,8 +18,6 @@ SPEC REPOS:
     - Alamofire
     - AlamofireImage
     - FloatingPanel
-    - FMDB
-    - SQLite.swift
     - SwiftyJSON
     - Toast-Swift
 
@@ -35,11 +25,9 @@ SPEC CHECKSUMS:
   Alamofire: d368e1ff8a298e6dde360e35a3e68e6c610e7204
   AlamofireImage: 34a2d90b0e5fe6a5605f85ae4b7b01e784c60192
   FloatingPanel: 387377aa46a9b088e5f8f5f2a8d2c00c61e67298
-  FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
-  SQLite.swift: 2992550ebf3c5b268bf4352603e3df87d2a4ed72
   SwiftyJSON: 2f33a42c6fbc52764d96f13368585094bfd8aa5e
   Toast-Swift: 9b6a70f28b3bf0b96c40d46c0c4b9d6639846711
 
-PODFILE CHECKSUM: d257dbbd3086e03c401d80681107c99642e08b25
+PODFILE CHECKSUM: 1024a55e4a94faf5c98e683ae0dbddd8546f641e
 
 COCOAPODS: 1.12.0
