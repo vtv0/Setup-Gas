@@ -34,32 +34,35 @@ class ViewCollection: UIViewController {
     @IBOutlet weak var myCollectionView: UICollectionView!
     
     
-    var imageSource: UICollectionViewDiffableDataSource< SectionImage, [String]>! = nil
+    var imageSource: UICollectionViewDiffableDataSource< SectionImage, String>! = nil
     
     var dataSource: UICollectionViewDiffableDataSource<SectionIndex, Location>! = nil
     
     override func viewDidLoad() {
         super.viewDidLoad()
         myCollectionView.collectionViewLayout = createLayout()
-        configImageSource()
-        //configureDataSource()
+       
+        configureDataSource()
        
     }
     
     func configImageSource() {
-        imageSource = UICollectionViewDiffableDataSource<SectionImage, [String]> (collectionView: myCollectionView) {
-            (collectionView: UICollectionView, indexpathImage: IndexPath, urls: [String]) -> UICollectionViewCell? in
+        imageSource = UICollectionViewDiffableDataSource<SectionImage, String> (collectionView: myCollectionView) {
+            (collectionView: UICollectionView, indexpathImage: IndexPath, iurl: String) -> UICollectionViewCell? in
             guard let cellImage = collectionView.dequeueReusableCell(withReuseIdentifier: "CellImage", for: indexpathImage) as? CellImage else { fatalError("Cannot create new cell") }
             cellImage.imgImageCollectionCell.loadImageDBorAPI(iurl: "https://52nbhwgyk0am.jp.kiiapps.com/api/x/s.11a4516c68e0-e849-de11-f532-55b150b5")
             return cellImage
         }
             
-        var snapshotImage = NSDiffableDataSourceSnapshot<SectionImage, [String]>()
-        for (ind, ilocation) in locationsIsCustomer.enumerated() {
+        var snapshotImage = NSDiffableDataSourceSnapshot<SectionImage, String>()
+        for (_, ilocation) in locationsIsCustomer.enumerated() {
             snapshotImage.appendSections([.notImage])
-            snapshotImage.appendItems([ilocation.urls()])
+            
             snapshotImage.appendSections([.hasImage])
-            snapshotImage.appendItems([ilocation.urls()])
+            for i in ilocation.urls() {
+                snapshotImage.appendItems([i])
+            }
+           
             
         }
         imageSource.apply(snapshotImage)
@@ -82,9 +85,16 @@ class ViewCollection: UIViewController {
                     cell.lblEstimateTime?.text = "Estimate Time : \(hours):\(minutes)"
                 }
             }
-            
+            if ilocation.urls().isEmpty {
+                print("location khong co anh nao")
+            } else {
+                
+                guard let cellImage = collectionView.dequeueReusableCell(withReuseIdentifier: "CellImage", for: indexPath) as? CellImage else { fatalError("Cannot create new cell") }
+                print(ilocation.urls()[indexPath.row])
+                cellImage.imgImageCollectionCell.loadImageDBorAPI(iurl: ilocation.urls()[indexPath.row])
+                return cellImage
+            }
             return cell
-            
         }
         
         // initial data
@@ -92,6 +102,11 @@ class ViewCollection: UIViewController {
         for (ind, ilocation) in locationsIsCustomer.enumerated() {
             snapshot.appendSections([.init(index: ind)])
             snapshot.appendItems([ilocation])
+            for _ in ilocation.urls() {
+//                snapshot.appendSections([.init(index: ind)])
+                snapshot.appendItems([ilocation])
+            }
+            
         }
         dataSource.apply(snapshot)
         
@@ -107,9 +122,9 @@ class ViewCollection: UIViewController {
             let imageGroup = self.imageLayout()
             
             
-            let containerGroup = NSCollectionLayoutGroup.horizontal(
-                layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
-                                                   heightDimension: .absolute(200)),
+            let containerGroup = NSCollectionLayoutGroup.vertical(
+                layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
+                                                   heightDimension: .estimated(180)),
                 subitems: [imageGroup, infoItem])
             
             let section = NSCollectionLayoutSection(group: containerGroup)
@@ -120,10 +135,10 @@ class ViewCollection: UIViewController {
     
     func listLayout() -> NSCollectionLayoutItem {
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
-                                              heightDimension: .estimated(110))
+                                              heightDimension: .fractionalHeight(0.5))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
-                item.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 8, bottom: 8, trailing: 8)
-//        item.edgeSpacing = NSCollectionLayoutEdgeSpacing(leading: nil, top: .fixed(12), trailing: nil, bottom: .fixed(12))
+//                item.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 8, bottom: 8, trailing: 8)
+        item.edgeSpacing = NSCollectionLayoutEdgeSpacing(leading: nil, top: .fixed(12), trailing: nil, bottom: .fixed(12))
 //        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
 //                                               heightDimension: .estimated(110))
 //        let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
@@ -134,12 +149,12 @@ class ViewCollection: UIViewController {
     }
     
     func imageLayout() -> NSCollectionLayoutGroup {
-        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
-                                              heightDimension: .estimated(110))
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
+                                              heightDimension: .fractionalHeight(1.0) )
         let itemImage = NSCollectionLayoutItem(layoutSize: itemSize)
         
         let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
-                                               heightDimension: .fractionalHeight(0.5))
+                                               heightDimension: .estimated(90))
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [itemImage])
         
 //        let section = NSCollectionLayoutSection(group: group)
