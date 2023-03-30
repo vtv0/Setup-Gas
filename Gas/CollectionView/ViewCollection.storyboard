@@ -21,7 +21,7 @@
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="zid-mj-g8b">
                                 <rect key="frame" x="0.0" y="59" width="393" height="759"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Tsp-qc-hR1">
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Tsp-qc-hR1">
                                     <size key="itemSize" width="128" height="128"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
@@ -29,32 +29,32 @@
                                 </collectionViewFlowLayout>
                                 <cells>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="CollectionViewCell" id="LNX-Fw-vzK" customClass="CollectionViewCell" customModule="Gas" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="22.666666666666668" width="41.333333333333336" height="82.666666666666686"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="135-e5-jky">
-                                            <rect key="frame" x="0.0" y="0.0" width="41.333333333333336" height="82.666666666666686"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1kD-cj-aPU">
-                                                    <rect key="frame" x="0.0" y="21" width="41.333333333333336" height="20.333333333333329"/>
+                                                    <rect key="frame" x="0.0" y="21" width="128" height="20.333333333333329"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vls-aX-Uir">
-                                                    <rect key="frame" x="0.0" y="41.333333333333336" width="41.333333333333336" height="20.333333333333336"/>
+                                                    <rect key="frame" x="0.0" y="41.333333333333336" width="128" height="65.666666666666657"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mY1-mB-oC4">
-                                                    <rect key="frame" x="0.0" y="61.666666666666657" width="41.333333333333336" height="21"/>
+                                                    <rect key="frame" x="0.0" y="107" width="128" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jlg-hg-OaN">
-                                                    <rect key="frame" x="0.0" y="0.0" width="41.333333333333336" height="21"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="128" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -84,22 +84,22 @@
                                         </connections>
                                     </collectionViewCell>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" reuseIdentifier="CellImage" id="uOa-Xt-zDN" customClass="CellImage" customModule="Gas" customModuleProvider="target">
-                                        <rect key="frame" x="51.333333333333336" y="0.0" width="128" height="128"/>
+                                        <rect key="frame" x="265" y="0.0" width="128" height="128"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="6ZG-qf-R1O">
                                             <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="FOH-dp-pKV">
-                                                    <rect key="frame" x="5" y="5" width="118" height="118"/>
+                                                    <rect key="frame" x="2" y="2" width="124" height="124"/>
                                                     <color key="backgroundColor" systemColor="systemGray4Color"/>
                                                 </imageView>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstAttribute="bottom" secondItem="FOH-dp-pKV" secondAttribute="bottom" constant="5" id="4UV-TA-Xcu"/>
-                                                <constraint firstAttribute="trailing" secondItem="FOH-dp-pKV" secondAttribute="trailing" constant="5" id="Ad2-iA-Cly"/>
-                                                <constraint firstItem="FOH-dp-pKV" firstAttribute="top" secondItem="6ZG-qf-R1O" secondAttribute="top" constant="5" id="PMR-Sn-5Ae"/>
-                                                <constraint firstItem="FOH-dp-pKV" firstAttribute="leading" secondItem="6ZG-qf-R1O" secondAttribute="leading" constant="5" id="yPd-aM-doX"/>
+                                                <constraint firstAttribute="bottom" secondItem="FOH-dp-pKV" secondAttribute="bottom" constant="2" id="4UV-TA-Xcu"/>
+                                                <constraint firstAttribute="trailing" secondItem="FOH-dp-pKV" secondAttribute="trailing" constant="2" id="Ad2-iA-Cly"/>
+                                                <constraint firstItem="FOH-dp-pKV" firstAttribute="top" secondItem="6ZG-qf-R1O" secondAttribute="top" constant="2" id="PMR-Sn-5Ae"/>
+                                                <constraint firstItem="FOH-dp-pKV" firstAttribute="leading" secondItem="6ZG-qf-R1O" secondAttribute="leading" constant="2" id="yPd-aM-doX"/>
                                             </constraints>
                                         </collectionViewCellContentView>
                                         <connections>

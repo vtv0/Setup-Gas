@@ -38,7 +38,7 @@ class ViewCollection: UIViewController {
     
     //    var imageSource: UICollectionViewDiffableDataSource< SectionIndex, Int>! = nil
     
-    var dataSource: UICollectionViewDiffableDataSource<SectionIndex, Int>?
+    var dataSource: UICollectionViewDiffableDataSource<SectionIndex, String>?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,96 +48,93 @@ class ViewCollection: UIViewController {
         
     }
     
-    //    func configImageSource() {
-    //        imageSource = UICollectionViewDiffableDataSource<SectionIndex, Int> (collectionView: myCollectionView) {
-    //            (collectionView: UICollectionView, indexpathImage: IndexPath, int: Int) -> UICollectionViewCell? in
-    //            guard let cellImage = collectionView.dequeueReusableCell(withReuseIdentifier: "CellImage", for: indexpathImage) as? CellImage else { fatalError("Cannot create new cell") }
-    //            cellImage.imgImageCollectionCell.loadImageDBorAPI(iurl: "https://52nbhwgyk0am.jp.kiiapps.com/api/x/s.11a4516c68e0-e849-de11-f532-55b150b5")
-    //            return cellImage
-    //        }
-    //
-    //        var snapshotImage = NSDiffableDataSourceSnapshot<SectionIndex, Int>()
-    //        for (ind, _) in locationsIsCustomer.enumerated() {
-    ////            snapshotImage.appendSections([.notImage])
-    //
-    //            snapshotImage.appendSections([.init(index: ind)])
-    //            snapshotImage.appendItems( [0,2,3,4,5,6,7,8,9] )
-    ////            for i in ilocation.urls() {
-    ////                snapshotImage.appendItems([i])
-    ////            }
-    //
-    //
-    //        }
-    //        imageSource.apply(snapshotImage)
-    //
-    //    }
-    
     func configureDataSource() {
-        dataSource = UICollectionViewDiffableDataSource<SectionIndex, Int>(collectionView: myCollectionView) { [self]
-            (collectionView: UICollectionView, indexPath: IndexPath, identifier: Int) -> UICollectionViewCell? in
-            print(indexPath.section)
-        
+        dataSource = UICollectionViewDiffableDataSource<SectionIndex, String>(collectionView: myCollectionView) { [self]
+            (collectionView: UICollectionView, indexPath: IndexPath, identifier: String) -> UICollectionViewCell? in
             switch indexPath.section % 2 == 0 {
             case true:
-            
                 guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell",for: indexPath) as? CollectionViewCell else { fatalError("Cannot create new cell") }
-                cell.backgroundColor = .cyan
                 
-                cell.lblAssetID.text = locationsIsCustomer[indexPath.section].elem?.metadata?.customer_id
-                //
-//                cell.lblName.text = ilocation.asset?.properties?.values.customer_name
-//                                cell.lblAddress.text = ilocation.asset?.properties?.values.address
-//                                if let minutes = ilocation.elem?.arrivalTime?.minutes,
-//                                   let hours = ilocation.elem?.arrivalTime?.hours {
-//                                    if minutes < 10 {
-//                                        cell.lblEstimateTime?.text = "Estimate Time : \(hours):0\(minutes)"
-//                                    } else {
-//                                        cell.lblEstimateTime?.text = "Estimate Time : \(hours):\(minutes)"
-//                                    }
-//                                }
+                let ilocation = self.locationsIsCustomer[indexPath.section / 2]
+                
+                cell.lblName.text = ilocation.asset?.properties?.values.customer_name
+                cell.lblAddress.text = ilocation.asset?.properties?.values.address
+                if let minutes = ilocation.elem?.arrivalTime?.minutes,
+                   let hours = ilocation.elem?.arrivalTime?.hours {
+                    if minutes < 10 {
+                        cell.lblEstimateTime?.text = "Estimate Time : \(hours):0\(minutes)"
+                    } else {
+                        cell.lblEstimateTime?.text = "Estimate Time : \(hours):\(minutes)"
+                    }
+                }
+                cell.lblAssetID.text = identifier
+                
                 return cell
                 
             case false:
                 guard let cellImage = collectionView.dequeueReusableCell(withReuseIdentifier: "CellImage", for: indexPath) as? CellImage else { fatalError("Cannot create new cell") }
-                cellImage.backgroundColor = .yellow
-//                let urls = locationsIsCustomer[indexPath.section].urls()
-//                for i in urls {
-//                    cellImage.imgImageCollectionCell.loadImageDBorAPI(iurl: i )
-//                }
+                cellImage.imgImageCollectionCell.loadImageDBorAPI(iurl: identifier) { [self] in
+                    var ratio: CGFloat = 0.0
+                    cellImage.backgroundColor = .red
+                    if let height = cellImage.heightImage(),
+                       let width = cellImage.widthImage() {
+                        ratio = width / height
+                    }
+                    
+                    
+                    
+//                      cellImage.widthAnchor.constraint(equalTo: cellImage.heightAnchor, multiplier: ratio).isActive = true
+//                    cellImage.frame.width = 200
+                    imageLayout().interGroupSpacing = 100
+//                    imageLayout().accessibilityElementsHidden = true
+                    self.createLayout().invalidateLayout()
+//                    self.myCollectionView.collectionViewLayout.invalidateLayout()
+                    
+                }
                 return cellImage
             }
-           
         }
         
         // initial data
-        var snapshot = NSDiffableDataSourceSnapshot<SectionIndex, Int>()
-       
-        locationsIsCustomer.enumerated() .forEach { ind, ilocation in
- 
+        var snapshot = NSDiffableDataSourceSnapshot<SectionIndex, String>()
+        
+        locationsIsCustomer.enumerated().forEach { ind, ilocation in
+            
             snapshot.appendSections([SectionIndex(index: ind * 2)])
-            snapshot.appendItems([ind])
-           
+            
+            snapshot.appendItems([(ilocation.elem?.metadata?.customer_id)! ])
             
             snapshot.appendSections([SectionIndex(index: ind * 2 + 1 )])
-            for (indImage, _) in ilocation.urls().enumerated() {
-                snapshot.appendItems([indImage])
+            for (_, i) in ilocation.urls().enumerated() {
+                
+                if ilocation.urls().isEmpty {
+                    print("Not Image")
+                    snapshot.deleteSections([SectionIndex(index: ind * 2 + 1 )])
+                } else {
+                    snapshot.appendItems([i])
+                }
             }
-            
         }
+        
         dataSource?.apply(snapshot)
         
     }
     
     
     func createLayout() -> UICollectionViewLayout {
-        return UICollectionViewCompositionalLayout { [self]  ind, env -> NSCollectionLayoutSection? in
-          //  //print(sectionNumber.)
-            switch ind % 2 == 0 {
+        return UICollectionViewCompositionalLayout { [self] indSection, env -> NSCollectionLayoutSection? in
+            switch indSection % 2 == 0 {
             case true:
                 return listLayout()
                 
             case false:
-                return imageLayout()
+                let ilocation = locationsIsCustomer[indSection / 2]
+                if ilocation.urls().isEmpty {
+                    return listLayout()
+                } else {
+                    return imageLayout()
+                }
+                
             }
         }
     }
@@ -146,7 +143,7 @@ class ViewCollection: UIViewController {
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
                                               heightDimension: .fractionalHeight(1.0))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        item.edgeSpacing = NSCollectionLayoutEdgeSpacing(leading: nil, top: .fixed(12), trailing: nil, bottom: .fixed(12))
+        //        item.edgeSpacing = NSCollectionLayoutEdgeSpacing(leading: nil, top: .fixed(12), trailing: nil, bottom: .fixed(12))
         
         let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
                                                heightDimension: .estimated(110))
@@ -154,29 +151,28 @@ class ViewCollection: UIViewController {
         
         let section = NSCollectionLayoutSection(group: group)
         
-        section.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 20, bottom: 0, trailing: 20)
-//                 let layout = UICollectionViewCompositionalLayout(section: section)
+        section.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 20, bottom: 5, trailing: 20)
+        //                 let layout = UICollectionViewCompositionalLayout(section: section)
         return section
     }
     
     func imageLayout() -> NSCollectionLayoutSection {
-        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5),
-                                              heightDimension: .fractionalHeight(1.0) )
+        let itemSize = NSCollectionLayoutSize(widthDimension: .estimated(110),
+                                              heightDimension: .absolute(165) )
         let itemImage = NSCollectionLayoutItem(layoutSize: itemSize)
         
-        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
-                                               heightDimension: .estimated(130))
-        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [itemImage])
-        
+        let groupSize = NSCollectionLayoutSize(widthDimension: .estimated(120),
+                                               heightDimension: .absolute(165))
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: itemImage, count: 1)
         
         
         let section = NSCollectionLayoutSection(group: group)
         section.orthogonalScrollingBehavior = .continuous
         section.interGroupSpacing = 10
-        //        section.contentInsets = .init(top: 0, leading: 10, bottom: 0, trailing: 10)
-        section.supplementariesFollowContentInsets = false
-        section.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 20, bottom: 0, trailing: 20)
-//                let layout = UICollectionViewCompositionalLayout(section: section)
+        section.contentInsets = .init(top: 0, leading: 10, bottom: 0, trailing: 10)
+        section.supplementariesFollowContentInsets = true
+        //        section.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 10, bottom: 5, trailing: 10)
+        //                let layout = UICollectionViewCompositionalLayout(section: section)
         return section
         
     }
