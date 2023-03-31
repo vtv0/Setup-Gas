@@ -12,9 +12,9 @@ class CellImage: UICollectionViewCell {
     @IBOutlet weak var imgImageCollectionCell: UIImageView!
     
     func heightImage() -> CGFloat? {
-       return self.imgImageCollectionCell.bounds.height
+        return self.imgImageCollectionCell.image?.size.height
     }
     func widthImage() -> CGFloat? {
-       return self.imgImageCollectionCell.bounds.width
+        return self.imgImageCollectionCell.image?.size.width
     }
 }
