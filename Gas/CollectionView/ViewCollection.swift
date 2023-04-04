@@ -49,7 +49,11 @@ class ViewCollection: UIViewController {
     
     var locationsIsCustomer: [Location] = []
     
-    var modelImage: [Int: [SizeImage] ] = [:]
+    var modelImage: [Int: [SizeImage]]  = [:]
+    
+    //    var modelImage: [Location]  = []
+    
+    
     
     @IBOutlet weak var myCollectionView: UICollectionView!
     
@@ -88,6 +92,8 @@ class ViewCollection: UIViewController {
                 return cell
                 
             case false:
+                
+                var arrSizeImage = [SizeImage]()
                 guard let cellImage = collectionView.dequeueReusableCell(withReuseIdentifier: "CellImage", for: indexPath) as? CellImage else { fatalError("Cannot create new cell") }
                 
                 cellImage.imgImageCollectionCell.loadImageDBorAPI(iurl: identifier) { [self] in
@@ -96,16 +102,19 @@ class ViewCollection: UIViewController {
                        let width = cellImage.widthImage() {
                         
                         let sizeImage: SizeImage = SizeImage(url: identifier, width: width, height: height)
-                        let key = (indexPath.section) / 2
-                        print( [sizeImage])
-                        modelImage[key] = [sizeImage]
+                        let key = (indexPath.section)
+                        //                        print(key)
+                        
+                        for iImage in arrSizeImage where iImage.url != identifier {
+                            arrSizeImage.append(sizeImage)
+                        }
+                        modelImage[key] = arrSizeImage
+                        
+//                        modelImage.updateValue([sizeImage], forKey: key)
+                        
                     }
                 }
-                
-                
-                //                 createLayout().collectionView?.reloadData()
-                self.myCollectionView.collectionViewLayout.invalidateLayout()
-                //                                myCollectionView.reloadData()
+                myCollectionView.collectionViewLayout.invalidateLayout()
                 return cellImage
             }
         }
@@ -123,7 +132,7 @@ class ViewCollection: UIViewController {
             for (_, iurl) in ilocation.urls().enumerated() {
                 if ilocation.urls().isEmpty {
                     print("Not Image")
-                    snapshot.deleteSections([SectionIndex(index: ind * 2 + 1 )])
+                    //                    snapshot.deleteSections([SectionIndex(index: ind * 2 + 1 )])
                 } else {
                     snapshot.appendItems([iurl])
                 }
@@ -147,7 +156,7 @@ class ViewCollection: UIViewController {
                     return listLayout()
                 } else {
                     
-                    return imageLayout(indexSection: indSection / 2)  //1,3,5,7
+                    return imageLayout(indexSection: indSection)  //1,3,5,7
                     
                 }
             }
@@ -175,67 +184,109 @@ class ViewCollection: UIViewController {
     
     func imageLayout(indexSection: Int) -> NSCollectionLayoutSection {
         
-        // let itemSize = NSCollectionLayoutSize(widthDimension: .absolute(150),
-        //                                       heightDimension: .absolute(150))
-        // let itemImage1 = NSCollectionLayoutItem(layoutSize: itemSize)
         
-                let itemSize2 = NSCollectionLayoutSize(widthDimension: .absolute(150),
-                                                       heightDimension: .absolute(150))
-                let itemImage2 = NSCollectionLayoutItem(layoutSize: itemSize2)
+        //        let itemImage2 = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(widthDimension: .absolute(150), heightDimension: .absolute(150) ))
+        //        let itemImage3 = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(widthDimension: .absolute(300), heightDimension: .absolute(150) ))
+        
+        
+        //
+        var itemImages: [NSCollectionLayoutItem] = []
+        
+        var arrImage: [SizeImage] = []
+        arrImage = modelImage[indexSection] ?? []
+        
+        //        modelImage[indexSection]
+        if arrImage.isEmpty {
+            print(" khong co anh trong ::> modelImage ")
+            
+            let iImageItem = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(widthDimension: .absolute(1), heightDimension: .absolute(150) ))
+            itemImages.append(iImageItem)
+            
+            
+        } else {
+            print("indSection:\(indexSection) co: \(arrImage.count)")
+            for (ind, image) in arrImage.enumerated() {
+                var ratio: CGFloat = 0.0
+                if let height = image.height, let width = image.width {
+                    ratio = width / height
+                    
+                    
+                    
+                    print("\(ind) -> (\(width) / \(height)) = \(ratio)")
+                    
+                    
+                    let iImageItem = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(widthDimension: .absolute(150 * ratio), heightDimension: .absolute(150) ))
+                    itemImages.append(iImageItem)
+                    
+                } else {
+                    let iImageItem = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(widthDimension: .absolute(1), heightDimension: .absolute(150) ))
+                    itemImages.append(iImageItem)
+                }
+                
+            }
+        }
         
         let groupSize = NSCollectionLayoutSize(widthDimension: .estimated(150),
                                                heightDimension: .absolute(150))
-        let imageGroup2 = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [itemImage2])
+        let imageGroup = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: itemImages )
         
         
-        let imageGroup = NSCollectionLayoutGroup.custom(layoutSize: groupSize) { [self] itemProvider in
-
-            let itemSize = NSCollectionLayoutSize(widthDimension: .absolute(150),
-                                                  heightDimension: .absolute(150))
-            let itemImage1 = NSCollectionLayoutItem(layoutSize: itemSize)
-            
-            var customItem: [NSCollectionLayoutGroupCustomItem] = []
-            
-            if modelImage.count == 0 {
-                print("khong co anh ")
-            } else {
-                if let arr = modelImage[indexSection] {
-                    for image in arr {
-                        var ratio: CGFloat = 1.0
-                        if let height = image.height, let width = image.width {
-                            ratio = width / height
-                        }
-                        
-                        let frame = CGRect(x: 0, y: 0, width: 150 * ratio, height: 150)
-                        customItem.append(NSCollectionLayoutGroupCustomItem(frame: frame))
-                    }
-                    
-                }
-//                for (key, arrsizeImage) in modelImage { //  images: là một mảng ảnh
-//
-//                    if key == indexSection {
-//
-//
-//
-//                    }
-//                }
-            }
-            
-            return customItem
-        }
+        //
+        //        let imageGroup1 = NSCollectionLayoutGroup.custom(layoutSize: NSCollectionLayoutSize(widthDimension: .absolute(150), heightDimension: .absolute(150))) { [self] environmentItem in
+        //            var leftMargin: CGFloat = 0.0
+        //            var yPosition: CGFloat = .zero
+        //
+        //            var customItem: [NSCollectionLayoutGroupCustomItem] = []
+        //            var frame = CGRect(x: 0, y: 0, width: 150, height: 150)
+        //
+        //            for image in modelImage {
+        //
+        //                var ratio: CGFloat = 0.0
+        //                if let height = image.height, let width = image.width {
+        //                    ratio = width / height
+        ////                    let itemSize = NSCollectionLayoutSize(widthDimension: .absolute(150),
+        ////                                                          heightDimension: .absolute(150))
+        ////                    leftMargin = environmentItem.container.effectiveContentSize.width - width
+        ////
+        ////                    yPosition = itemSize.heightDimension.dimension + 10
+        //
+        //                    print(ratio)
+        //
+        //                    frame = CGRect(x: 0 , y: 0 , width: 150 * ratio, height: 200)
+        //                }
+        //
+        //            }
+        //
+        //            customItem.append(NSCollectionLayoutGroupCustomItem(frame: frame))
+        //
+        //            return customItem
+        //        }
+        
         
         let section = NSCollectionLayoutSection(group: imageGroup)
         section.orthogonalScrollingBehavior = .continuous
         section.interGroupSpacing = 10
         section.contentInsets = .init(top: 0, leading: 10, bottom: 0, trailing: 10)
         section.supplementariesFollowContentInsets = false
-        
         return section
         
     }
     
 }
 
+
+
+extension UICollectionViewDiffableDataSource {
+    
+    func replaceItems(_ items : [ItemIdentifierType], in section: SectionIdentifierType) {
+        var currentSnapshot = snapshot()
+        let itemsOfSection = currentSnapshot.itemIdentifiers(inSection: section)
+        currentSnapshot.deleteItems(itemsOfSection)
+        currentSnapshot.appendItems(items, toSection: section)
+        currentSnapshot.reloadSections([section])
+        apply(currentSnapshot, animatingDifferences: true)
+    }
+}
 // MARK: - UICollectionViewDelegateFlowLayout
 //extension ViewCollection: UICollectionViewDelegateFlowLayout {
 //    func textHeight(font: UIFont, text: String) -> CGFloat {
