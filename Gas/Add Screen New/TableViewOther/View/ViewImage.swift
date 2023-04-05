@@ -114,6 +114,7 @@ extension UIImageView {
                     completion?()
                 }
             }
+            
         } else {
             print("FILE PATH NOT AVAILABLE")
         }

@@ -42,19 +42,43 @@ class PatchStatusDelivery {
            
             delivery_history_record.updateValue(status, forKey: timeString)
             recordNew = delivery_history_record
-            print(recordNew)
             
         } else {  // >= 10 ban ghi
-//            let listDic = deliveryHistoryASC(dicDataDeliveryHistory: delivery_history_record)
-//            var delivery_history_record10: [String: String] =  dataInfoOneCustomer.asset?.properties?.values.display_data?.delivery_history ?? [:]
-            print(delivery_history_record.count)
             // nếu có 10 bản ghi thì xoá cái cũ nhất
-            dataInfoOneCustomer.elem?.location?.metadata?.display_data?.valueDeliveryHistory()
             
+            var dateString: [String] = []
+            for irecord in delivery_history_record{
+                dateString.append(irecord.key)
+            }
+            // convert String to Date
+            var dateObjects = [Date]()
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateFormat = "yyyy-MM-dd HH:mm"
+
+                for date in dateString {
+                    let dateObject = dateFormatter.date(from: date)
+                    dateObjects.append(dateObject!)
+                }
+
+            // sort Date
+            let sort = dateObjects.sorted() { $0 < $1 }
+            let removeTime = sort.first
+            
+            
+//            convert Date to String
+            let formatter = DateFormatter()
+            formatter.dateFormat = "yyyy-MM-dd HH:mm"
+            if let removeTime = removeTime {
+                let myStringDate = formatter.string(from: removeTime)
+                
+                // remove
+                delivery_history_record.removeValue(forKey: myStringDate)
+            }
+        
             // thêm mới vào
             delivery_history_record.updateValue(status, forKey: timeString)
             recordNew = delivery_history_record
-            print(recordNew)
+            print("\(recordNew) = \(recordNew.count)")
         }
         
         

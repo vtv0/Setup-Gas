@@ -271,7 +271,6 @@ class DisplayData: Decodable {
         return .waiting
     }
     
-    // xắp sếp các bản ghi tăng đần theo thời gian
     
     
 }
