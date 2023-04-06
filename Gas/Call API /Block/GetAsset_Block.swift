@@ -22,16 +22,15 @@ class GetAsset_Block {
         return HTTPHeaders(headers)
     }
     
-    func getGetAsset_Block(iassetID: String, completion: @escaping ((GetAsset?, (CaseError?)) -> Void)) {
+    func getGetAsset_Block(ilocation: Location, completion: @escaping ((GetAsset?, (CaseError?)) -> Void)) {
         let token = UserDefaults.standard.string(forKey: "accessToken") ?? ""
         let companyCode =  UserDefaults.standard.string(forKey: "companyCode") ?? ""
-        let urlGetAsset = "https://\(companyCode).kiiapps.com/am/api/assets/\(iassetID)"
+        let urlGetAsset = "https://\(companyCode).kiiapps.com/am/api/assets/\(ilocation.elem?.location?.assetID ?? "")"
         AF.request(urlGetAsset, method: .get, parameters: nil, headers: self.makeHeaders(token: token))
             .responseDecodable(of: GetAsset.self) { response1 in
                 switch response1.result {
                 case .success( let value):
                     completion(value, nil)
-                    
                 case .failure(_):
                     if response1.response?.statusCode == 401 {
                         completion(nil, CaseError.tokenOutOfDate)

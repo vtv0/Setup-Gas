@@ -88,21 +88,26 @@ class GetWorkerRouteLocationList_Block {
                                 if let iassetDB = DBLocation.shared.selectDataAsset(ilocation: iLocationValue) {
                                     iLocationValue.asset = iassetDB
                                 } else {  // goi API
-//                                    dispatchGroup.enter()
-                                    if let assetID = iLocationValue.elem?.location?.assetID {
-                                        GetAsset_Block().getGetAsset_Block(iassetID: assetID) { iasset, err2  in
+                                   
+                                    dispatchGroup.enter()
+//                                    if let assetID = iLocationValue.elem?.location?.assetID {
+                                        GetAsset_Block().getGetAsset_Block(ilocation: iLocationValue) { iasset, err2  in
                                             if let iAsset = iasset {
-                                                iLocationValue.asset = iasset  // gan vao model
+                                                iLocationValue.asset = iAsset  // gan vao model
                                                 DBLocation.shared.insertDataAsset(iGetAsset: iAsset)  // INSERT VAO DB
                                                
                                             }
-//                                            dispatchGroup.leave()
+                                            dispatchGroup.leave()
                                         }
-                                    }
+//
+//                                    }
+                                   
                                 }
                             }
                             
+//                            dispatchGroup.enter()
                             self.dicData[iday] = arrLocationValue
+//                            dispatchGroup.leave()
                             
                             if tDay == self.dateYMD.count {
                                 dispatchGroup.notify(queue: .main) {

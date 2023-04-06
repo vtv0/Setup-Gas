@@ -12,4 +12,5 @@ target 'Gas' do
   pod 'Toast-Swift'
   pod 'SQLite.swift'
   pod 'FMDB'
+  pod "BSImagePicker", "~> 3.1"
 end

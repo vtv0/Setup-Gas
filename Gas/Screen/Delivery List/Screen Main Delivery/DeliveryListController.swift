@@ -239,7 +239,7 @@ class DeliveryListController: UIViewController, UIPickerViewDelegate, UIPickerVi
             if !dataID.isEmpty {
                 GetWorkerRouteLocationList_Block().getWorkerRouteLocationList_Block(tenantId: 0, userId: 0) { [self] dic, err1, _  in
                     if !dic.isEmpty {
-                        GetAsset_Block().getGetAsset_Block(iassetID: "") { [self] info, err2  in
+                        GetAsset_Block().getGetAsset_Block(ilocation: dataInfoOneCustomer) { [self] info, err2  in
                             dicData = dic
                             fpc = FloatingPanelController(delegate: self)
                             fpc.layout = MyFloatingPanelLayout()

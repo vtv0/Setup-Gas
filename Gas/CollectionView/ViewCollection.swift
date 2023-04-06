@@ -66,9 +66,9 @@ class ViewCollection: UIViewController {
         myCollectionView.collectionViewLayout = createLayout()
         configureDataSource()
         myCollectionView.reloadData()
-
         
-       
+        
+        
     }
     
     func configureDataSource() {
@@ -100,22 +100,37 @@ class ViewCollection: UIViewController {
                 guard let cellImage = collectionView.dequeueReusableCell(withReuseIdentifier: "CellImage", for: indexPath) as? CellImage else { fatalError("Cannot create new cell") }
                 
                 cellImage.imgImageCollectionCell.loadImageDBorAPI(iurl: identifier) {
+                    
+                    
                     var ratio: CGFloat = 1.0
+                    
                     if let width = cellImage.widthImage(), let height = cellImage.heightImage() {
                         ratio = width / height
-                        
                     }
+                    
                     self.dicRatio[identifier] = ratio
-//                    self.myCollectionView.collectionViewLayout.invalidateLayout()
-                    self.dataSource?.replaceItems(["CellImage"], in: SectionIndex(index: indexPath.section / 2))
+                    
+                    //                    self.dataSource?.replaceItems(["CellImage"], in: SectionIndex(index: indexPath.item))
+//                    DispatchQueue.main.async {
+//                        self.dataSource?.replaceItems(section: SectionIndex.init(index: indexPath.section), items: [identifier])
+                        self.myCollectionView.collectionViewLayout.invalidateLayout()
+//                    }
                 }
-//                myCollectionView.collectionViewLayout.invalidateLayout()
-              
+                
+                //
+                //                if let image = self.dataSource?.itemIdentifier(for: indexPath) {
+                //                   var image = image
+                //
+                //                    var snap = self.dataSource?.snapshot()
+                //                    snap?.reloadItems([identifier])
+                //                   self.dataSource?.apply(snap!)
+                //                }
+                
                 return cellImage
             }
             
         }
-
+        
         // initial data
         var snapshot = NSDiffableDataSourceSnapshot<SectionIndex, String>()
         
@@ -135,8 +150,9 @@ class ViewCollection: UIViewController {
                 }
             }
         }
+        
         dataSource?.apply(snapshot)
-       
+        
     }
     
     
@@ -218,12 +234,14 @@ class ViewCollection: UIViewController {
 
 extension UICollectionViewDiffableDataSource {
     
-    func replaceItems(_ items : [ItemIdentifierType], in section: SectionIdentifierType) {
+    func replaceItems(section: SectionIdentifierType , items : [ItemIdentifierType]) {
         var currentSnapshot = snapshot()
-        let itemsOfSection = currentSnapshot.itemIdentifiers(inSection: section)
-        currentSnapshot.deleteItems(itemsOfSection)
-        currentSnapshot.appendItems(items, toSection: section)
-        currentSnapshot.reloadSections([section])
+//                let itemsOfSection = currentSnapshot.itemIdentifiers(inSection: section)
+//                currentSnapshot.deleteItems(itemsOfSection)
+//        
+//                currentSnapshot.appendItems(items, toSection: section)
+                currentSnapshot.reloadSections([section])
+//        currentSnapshot.reloadItems(items)
         apply(currentSnapshot, animatingDifferences: true)
     }
 }
