@@ -2,7 +2,6 @@ PODS:
   - Alamofire (5.6.2)
   - AlamofireImage (4.2.0):
     - Alamofire (~> 5.4)
-  - BSImagePicker (3.3.1)
   - FloatingPanel (2.5.4)
   - FMDB (2.7.5):
     - FMDB/standard (= 2.7.5)
@@ -16,7 +15,6 @@ PODS:
 DEPENDENCIES:
   - Alamofire
   - AlamofireImage
-  - BSImagePicker (~> 3.1)
   - FloatingPanel
   - FMDB
   - SQLite.swift
@@ -27,7 +25,6 @@ SPEC REPOS:
   trunk:
     - Alamofire
     - AlamofireImage
-    - BSImagePicker
     - FloatingPanel
     - FMDB
     - SQLite.swift
@@ -37,13 +34,12 @@ SPEC REPOS:
 SPEC CHECKSUMS:
   Alamofire: d368e1ff8a298e6dde360e35a3e68e6c610e7204
   AlamofireImage: 34a2d90b0e5fe6a5605f85ae4b7b01e784c60192
-  BSImagePicker: 0fe04b574d4d6b81093785d2af6c26227efc8428
   FloatingPanel: 387377aa46a9b088e5f8f5f2a8d2c00c61e67298
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   SQLite.swift: 2992550ebf3c5b268bf4352603e3df87d2a4ed72
   SwiftyJSON: 2f33a42c6fbc52764d96f13368585094bfd8aa5e
   Toast-Swift: 9b6a70f28b3bf0b96c40d46c0c4b9d6639846711
 
-PODFILE CHECKSUM: a9df625fd26e535911bbb08a7ceb02487bec89d9
+PODFILE CHECKSUM: 5d276a9f22909397d455b6378d4deee67e52d90d
 
 COCOAPODS: 1.11.3

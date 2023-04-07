@@ -9,17 +9,17 @@ import Foundation
 
 enum DeliveryLocationImageType: Int {
     case facilityExterior = 1
-    case gasLocation
-    case parking
+    case gasLocation = 2
+    case parking = 3
 
     var text: String {
         switch self {
         case .facilityExterior:
-            return "factory"
+            return "factory1"
         case .gasLocation:
-            return "gas"
+            return "gas2"
         case .parking:
-            return "location"
+            return "location3"
         }
     }
     

@@ -11,6 +11,8 @@ import CoreLocation
 import MapKit
 import FloatingPanel
 import Contacts
+import Photos
+import PhotosUI
 
 class GeneralInfoController: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
     
@@ -108,11 +110,16 @@ extension GeneralInfoController: ImageLabelViewDelegate {
     
     func onTap(_ sender: ImageLabelView, number: Int, type: DeliveryLocationImageType) {
         
+        let storyboard = UIStoryboard(name: "PHAssetCollection", bundle: nil)
+        let phassetScreen = storyboard.instantiateViewController(identifier: "PHAssetCollection") as! PHAssetCollection
+        self.navigationController?.pushViewController(phassetScreen, animated: true)
+        
+        
         print("anh so: \(number)")
-        DispatchQueue.main.async {
-            let imagePickerVC = sender.instantiateImagePicker(.photoLibrary)
-            self.present(imagePickerVC, animated: true)
-        }
+//        DispatchQueue.main.async {
+//            let imagePickerVC = sender.instantiateImagePicker(.photoLibrary)
+//            self.present(imagePickerVC, animated: true)
+//        }
     }
 }
 

@@ -43,7 +43,7 @@ class PatchStatusDelivery {
             delivery_history_record.updateValue(status, forKey: timeString)
             recordNew = delivery_history_record
             
-        } else {  // >= 10 ban ghi
+        } else {  // >= 10 ban ghi               bi sai
             // nếu có 10 bản ghi thì xoá cái cũ nhất
             
             var dateString: [String] = []
@@ -62,7 +62,7 @@ class PatchStatusDelivery {
 
             // sort Date
             let sort = dateObjects.sorted() { $0 < $1 }
-            let removeTime = sort.first
+            let removeTime = sort.last
             
             
 //            convert Date to String

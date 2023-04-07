@@ -39,6 +39,7 @@ class ShippingViewController: UIViewController {
         navigationController?.popViewController(animated: true)
     }
     
+    @available(iOS 13.0, *)
     @IBAction func btnSubmit(_ sender: Any) {
         print("CLICK SUBMIT")
         Task {

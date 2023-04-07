@@ -72,6 +72,9 @@
 		75D2CE8728F80F3400B51CED /* ImageLabelView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 75D2CE8628F80F3400B51CED /* ImageLabelView.xib */; };
 		75D2CE8928F80F7200B51CED /* ImageLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75D2CE8828F80F7200B51CED /* ImageLabelView.swift */; };
 		75D2CE8B28F80FDF00B51CED /* DeliveryLocationImageType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75D2CE8A28F80FDF00B51CED /* DeliveryLocationImageType.swift */; };
+		75D7851129DFC9E20066C660 /* PHAssetCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75D7851029DFC9E20066C660 /* PHAssetCollection.swift */; };
+		75D7851329DFCA0C0066C660 /* PHAssetCollection.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 75D7851229DFCA0C0066C660 /* PHAssetCollection.storyboard */; };
+		75D7851529DFFD800066C660 /* PHAssetCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75D7851429DFFD800066C660 /* PHAssetCollectionCell.swift */; };
 		75E1681929B5D019003211A4 /* SQLite_Geoloc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E1681829B5D019003211A4 /* SQLite_Geoloc.swift */; };
 		75E1681B29B5E173003211A4 /* SQLite_Properties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E1681A29B5E173003211A4 /* SQLite_Properties.swift */; };
 		75E244D029B04C0600CC8526 /* ContainerPageVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E244CF29B04C0600CC8526 /* ContainerPageVC.swift */; };
@@ -162,6 +165,9 @@
 		75D2CE8628F80F3400B51CED /* ImageLabelView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ImageLabelView.xib; sourceTree = "<group>"; };
 		75D2CE8828F80F7200B51CED /* ImageLabelView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageLabelView.swift; sourceTree = "<group>"; };
 		75D2CE8A28F80FDF00B51CED /* DeliveryLocationImageType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeliveryLocationImageType.swift; sourceTree = "<group>"; };
+		75D7851029DFC9E20066C660 /* PHAssetCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PHAssetCollection.swift; sourceTree = "<group>"; };
+		75D7851229DFCA0C0066C660 /* PHAssetCollection.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = PHAssetCollection.storyboard; sourceTree = "<group>"; };
+		75D7851429DFFD800066C660 /* PHAssetCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PHAssetCollectionCell.swift; sourceTree = "<group>"; };
 		75E1681829B5D019003211A4 /* SQLite_Geoloc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SQLite_Geoloc.swift; sourceTree = "<group>"; };
 		75E1681A29B5E173003211A4 /* SQLite_Properties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SQLite_Properties.swift; sourceTree = "<group>"; };
 		75E244CF29B04C0600CC8526 /* ContainerPageVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerPageVC.swift; sourceTree = "<group>"; };
@@ -581,12 +587,23 @@
 		75D2CE7728F7ACDC00B51CED /* ReusableImage */ = {
 			isa = PBXGroup;
 			children = (
+				75D7850F29DFC9BD0066C660 /* PH Asset */,
 				75D2CE8A28F80FDF00B51CED /* DeliveryLocationImageType.swift */,
 				75D2CE8428F80F1C00B51CED /* FacilityImageView.swift */,
 				75D2CE8828F80F7200B51CED /* ImageLabelView.swift */,
 				75D2CE8628F80F3400B51CED /* ImageLabelView.xib */,
 			);
 			path = ReusableImage;
+			sourceTree = "<group>";
+		};
+		75D7850F29DFC9BD0066C660 /* PH Asset */ = {
+			isa = PBXGroup;
+			children = (
+				75D7851029DFC9E20066C660 /* PHAssetCollection.swift */,
+				75D7851229DFCA0C0066C660 /* PHAssetCollection.storyboard */,
+				75D7851429DFFD800066C660 /* PHAssetCollectionCell.swift */,
+			);
+			path = "PH Asset";
 			sourceTree = "<group>";
 		};
 		75DE0BB529B18D130077C884 /* DataBase */ = {
@@ -752,7 +769,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1340;
-				LastUpgradeCheck = 1340;
+				LastUpgradeCheck = 1430;
 				TargetAttributes = {
 					75BF3A0228E161A800BC0F0C = {
 						CreatedOnToolsVersion = 13.4;
@@ -791,6 +808,7 @@
 				757A928F29CC3C90009F3E05 /* ViewCollection.storyboard in Resources */,
 				75BF3A0E28E161A800BC0F0C /* Main.storyboard in Resources */,
 				75D2CE8728F80F3400B51CED /* ImageLabelView.xib in Resources */,
+				75D7851329DFCA0C0066C660 /* PHAssetCollection.storyboard in Resources */,
 				75E244D229B04F8800CC8526 /* ContainerPageVC.storyboard in Resources */,
 				7578B3C029AD9D3A007367C3 /* FullScreenImage.storyboard in Resources */,
 			);
@@ -861,6 +879,7 @@
 				75498998299B3A0900D1958E /* ScreenExpandVC.swift in Sources */,
 				75EDABD9299C8F950080E1C2 /* PatchDeliveryStatus.swift in Sources */,
 				753001A429B8269400B4A1C4 /* Delivery_history.swift in Sources */,
+				75D7851529DFFD800066C660 /* PHAssetCollectionCell.swift in Sources */,
 				75A1E17C28EFE6F200EA17A2 /* ContentReplanTableViewCell.swift in Sources */,
 				75E1681B29B5E173003211A4 /* SQLite_Properties.swift in Sources */,
 				7549899C299B3AA000D1958E /* ScreenExpland_Presenter.swift in Sources */,
@@ -869,6 +888,7 @@
 				75FDF73228EAB18400AADB99 /* TabsPageViewController.swift in Sources */,
 				75CC4589296E615E00BE203B /* PostGetToken_Block.swift in Sources */,
 				750C7E6B2908ECA0009A9E27 /* Marker+ExtensionViewController.swift in Sources */,
+				75D7851129DFC9E20066C660 /* PHAssetCollection.swift in Sources */,
 				7573ADC229530D3600E8C658 /* GetRouteList.swift in Sources */,
 				75BF3A0B28E161A800BC0F0C /* LoginController.swift in Sources */,
 				7517A0F028F660FE00994CBD /* CustomAlertReplanVC.swift in Sources */,
@@ -992,7 +1012,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -1046,7 +1066,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;

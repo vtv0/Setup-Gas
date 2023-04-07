@@ -46,8 +46,12 @@ class SettingController: UIViewController {
         super.viewDidLoad()
         switchHighway.setOn(false, animated: true)
         navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
-        Task {
-            await settingPrisenter.getVersion()  // gọi hàm thay cho btnclick
+        if #available(iOS 13.0, *) {
+            Task {
+                await settingPrisenter.getVersion()  // gọi hàm thay cho btnclick
+            }
+        } else {
+            // Fallback on earlier versions
         }
         settingPrisenter.delegateSetting = self
         
