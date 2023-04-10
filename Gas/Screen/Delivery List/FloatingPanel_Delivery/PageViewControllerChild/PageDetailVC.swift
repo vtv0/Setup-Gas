@@ -293,7 +293,7 @@ extension PageDetailVC: UICollectionViewDataSource {
             AF.request(iurl, method: .get).response { response in
                 switch response.result {
                 case .success(let responseData):
-                    cellImage.imgImage.image = UIImage(data: responseData!, scale: 1)
+                    cellImage.imgImage.image = UIImage(data: responseData!)
                 case .failure(let error):
                     print("error--->",error)
                 }

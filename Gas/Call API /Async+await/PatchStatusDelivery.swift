@@ -88,8 +88,6 @@ class PatchStatusDelivery {
         
         
         
-        
-        
         let patchStatusDelivery = AF.request(urlPatch, method: .patch, parameters: parameter, encoding: JSONEncoding.default, headers: makeHeaders(token: token)).serializingDecodable(PatchDeliveryStatus.self)
         let patchStatusResponse = await patchStatusDelivery.response
         print(patchStatusResponse.response?.statusCode )

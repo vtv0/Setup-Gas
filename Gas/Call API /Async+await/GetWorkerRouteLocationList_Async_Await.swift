@@ -30,7 +30,7 @@ class GetWorkerRouteLocationList_Async_Await {
         formatter.dateFormat = "yyyy-MM-dd"
         for dayOffset in 0...6 {
             if let date1 = calendar.date(byAdding: .day, value: dayOffset, to: anchor)?.removeTimeStamp {
-                dateYMD.append(date1)
+                 dateYMD.append(date1) // error
             }
         }
     }
