@@ -7,7 +7,6 @@
 
 import UIKit
 
-
 enum TabMode {
     case fixed
     case scrollable

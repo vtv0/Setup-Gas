@@ -9,10 +9,23 @@ import UIKit
 import Photos
 import PhotosUI
 
+protocol PassImage: AnyObject {
+    func passImage(images: [UIImage])
+}
+
 class PHAssetCollection: UIViewController, UICollectionViewDataSource {
     
-    @IBOutlet weak var collectionPhoto: UICollectionView!
+    weak var delegatePassImage: PassImage?
+    var listImage: [UIImage] = []
     
+    @IBAction func btnBack(_ sender: Any) {
+        self.navigationController?.popViewController(animated: true)
+        self.delegatePassImage?.passImage(images: listImage)
+        
+    }
+    
+    @IBOutlet weak var collectionPhoto: UICollectionView!
+    var listImageSelected  = [IndexPath]()
     var images = [PHAsset]()
     let accessLevel: PHAccessLevel = .readWrite
     
@@ -21,17 +34,18 @@ class PHAssetCollection: UIViewController, UICollectionViewDataSource {
         populatePhotos()
         
         title = "Selection Photo"
-        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.blue]
-        
+        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.systemBlue]
+        //        self.navigationItem.setHidesBackButton(true, animated: false)
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "BACK", style: .plain, target: nil, action: nil)
         collectionPhoto.dataSource = self
-    
         collectionPhoto.delegate = self
-//        var config = PHPickerConfiguration(photoLibrary: PHPhotoLibrary.shared())  //
-//        config.selectionLimit = 8
-//        config.filter = .images
-//        let picker = PHPickerViewController(configuration: config)
-//        picker.delegate = self
-//       present(picker, animated: true)
+        
+        //        var config = PHPickerConfiguration(photoLibrary: PHPhotoLibrary.shared())  //
+        //        config.selectionLimit = 8
+        //        config.filter = .images
+        //        let picker = PHPickerViewController(configuration: config)
+        //        picker.delegate = self
+        //       present(picker, animated: true)
     }
     
     func populatePhotos() {
@@ -58,50 +72,38 @@ class PHAssetCollection: UIViewController, UICollectionViewDataSource {
         guard let cellPHAsset = collectionView.dequeueReusableCell(withReuseIdentifier: "PHAssetCollectionCell", for: indexPath) as? PHAssetCollectionCell else { fatalError ("Cannot create new cell") }
         let asset = self.images[indexPath.item]
         let manager = PHImageManager.default()
-        manager.requestImage(for: asset, targetSize: CGSize(width: 120, height: 120), contentMode: .aspectFit, options: nil) { image, _ in
+        manager.requestImage(for: asset, targetSize: CGSize(width: 200, height: 200), contentMode: .aspectFit, options: nil) { image, _ in
             DispatchQueue.main.async {
                 cellPHAsset.imgCollectionCell?.image = image
-                cellPHAsset.lblNumberImage?.isHidden = true
+                cellPHAsset.imgCheck.image = UIImage(named: "ic_radio_checked")
+            }
+            
+            if self.listImageSelected.contains(indexPath) {
+                cellPHAsset.imgCheck.isHidden = false
+                
+            } else {
+                cellPHAsset.imgCheck.isHidden = true
             }
         }
         return cellPHAsset
     }
     
-var listImageSelected  = [Int]()
 }
 
 
 extension PHAssetCollection: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let cell = collectionPhoto.cellForItem(at: indexPath)
-        listImageSelected.append(indexPath.item)
         
-        
-    
-//        guard let cellPHAsset = collectionView.dequeueReusableCell(withReuseIdentifier: "PHAssetCollectionCell", for: indexPath) as? PHAssetCollectionCell else { fatalError ("Cannot create new cell") }
-        
-        if !listImageSelected.isEmpty {
-            print(indexPath.item)
-//            listImageSelected[indexPath.item]
-//            cell.lblNumberImage?.isHidden = false
-//            cellPHAsset.lblNumberImage?.text = "4"
-//            collectionPhoto.reloadData()
+        //        guard let cell = collectionPhoto.cellForItem(at: indexPath) as? PHAssetCollectionCell else { return }
+        if self.listImageSelected.contains(indexPath) {
+            self.listImageSelected.remove(at: self.listImageSelected.firstIndex(of: indexPath)!)
+            
         } else {
-            print("chua chon anh nao")
+            listImageSelected.append(indexPath)
         }
-        
-//        if cell?.isSelected == true {
-//            cell?.isHidden = true
-//        }
-//        else {
-//            cell?.backgroundColor = UIColor.clear
-//        }
+        collectionPhoto.reloadData()
     }
 }
-
-
-
-
 
 
 //extension PHAssetCollection: PHPickerViewControllerDelegate {

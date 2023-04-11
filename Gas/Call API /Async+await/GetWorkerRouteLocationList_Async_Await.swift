@@ -23,17 +23,17 @@ class GetWorkerRouteLocationList_Async_Await {
         case remain
     }
     
-    func sevenDay() {
-        let anchor = Date()
-        let calendar = Calendar.current
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd"
-        for dayOffset in 0...6 {
-            if let date1 = calendar.date(byAdding: .day, value: dayOffset, to: anchor)?.removeTimeStamp {
-                 dateYMD.append(date1) // error
-            }
-        }
-    }
+//    func sevenDay() {
+//        let anchor = Date()
+//        let calendar = Calendar.current
+//        let formatter = DateFormatter()
+//        formatter.dateFormat = "yyyy-MM-dd"
+//        for dayOffset in 0...6 {
+//            if let date1 = calendar.date(byAdding: .day, value: dayOffset, to: anchor)?.removeTimeStamp {
+//                 dateYMD.append(date1) // error
+//            }
+//        }
+//    }
     
     func makeHeaders(token: String) -> HTTPHeaders {
         var headers: [String: String] = [:]
@@ -42,7 +42,7 @@ class GetWorkerRouteLocationList_Async_Await {
     }
     
     func getLocationElem_Async_Await(iday: Date) async throws -> [Location] {
-        sevenDay()
+//        sevenDay()
         let tenantId = UserDefaults.standard.string(forKey: "tenantId") ?? ""
         let userId = UserDefaults.standard.string(forKey: "userId") ?? ""
         

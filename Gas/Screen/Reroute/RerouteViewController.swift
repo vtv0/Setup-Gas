@@ -14,14 +14,12 @@ class RerouteViewController: UIViewController {
         print("click Popup")
 //        // create the alert
 //                let alert = UIAlertController(title: "UIAlertController", message: "sdfsdfsdfsfe", preferredStyle: UIAlertController.Style.alert)
-//
 //                // add the actions (buttons)
 //                alert.addAction(UIAlertAction(title: "ok", style: UIAlertAction.Style.default, handler: nil))
 //                alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel, handler: nil))
-//
-//                // show the alert
+
+        //                // show the alert
 //                self.present(alert, animated: true, completion: nil)
-//            
         
     }
     

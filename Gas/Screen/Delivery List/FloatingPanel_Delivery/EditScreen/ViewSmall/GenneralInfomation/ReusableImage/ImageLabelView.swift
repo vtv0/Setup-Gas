@@ -48,7 +48,7 @@ class ImageLabelView: UIView, UINavigationControllerDelegate {
             } else {
                 mainImageView.contentMode = .center
                 mainImageView.image = UIImage(named: "camera")
-                isSetImage = false
+                isSetImage = true
             }
         }
     }

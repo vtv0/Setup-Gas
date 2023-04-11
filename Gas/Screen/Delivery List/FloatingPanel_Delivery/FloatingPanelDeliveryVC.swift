@@ -50,8 +50,8 @@ class FloatingPanelDeliveryVC: UIViewController, UIPageViewControllerDelegate, U
     }
     
     func setupTabs() {
-        for item in comment {
-            let tab = Tab(icon: UIImage(named: ""), title: item)
+        for _ in comment {
+            let tab = Tab(icon: UIImage(named: ""), title: "")
             if (detailsTabsView != nil) {
                 detailsTabsView.tabs.append(tab)
             }

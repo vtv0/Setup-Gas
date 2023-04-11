@@ -391,10 +391,10 @@
 		754B942128EBC6DC0059D4F2 /* GenneralInfomation */ = {
 			isa = PBXGroup;
 			children = (
+				75FDF73628EAB65800AADB99 /* GeneralInfoController.swift */,
+				75D2CE7728F7ACDC00B51CED /* ReusableImage */,
 				75FDF73828EAB69700AADB99 /* ParkingLocationController.swift */,
 				75FDF73A28EAB6B300AADB99 /* CustomerLocationController.swift */,
-				75D2CE7728F7ACDC00B51CED /* ReusableImage */,
-				75FDF73628EAB65800AADB99 /* GeneralInfoController.swift */,
 			);
 			path = GenneralInfomation;
 			sourceTree = "<group>";

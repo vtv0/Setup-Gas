@@ -112,15 +112,21 @@ class ContentReplanController: UIViewController, UITableViewDataSource, UITableV
     
     // myTable view delegate
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        
         guard let cell = myTableView.cellForRow(at: indexPath) as? ContentReplanTableViewCell else { return }
         if self.selectedRows.contains(indexPath) {
+            
             self.selectedRows.remove(at: self.selectedRows.firstIndex(of: indexPath)!)
             cell.btnCheckbox.setImage(UIImage(named: "ic_check_off"), for: .normal)
             delegatePassData?.uncheck(isCustomer: dataDidFilter_Content[indexPath.row], indexDriver: selectedIdxDriver, indexDate: selectedIdxDate, indexPath: indexPath.row)
+            
         } else {
+            
             self.selectedRows.append(indexPath)
             cell.btnCheckbox.setImage(UIImage(named: "ic_check_on"), for: .normal)
             delegatePassData?.check(isCustomer: dataDidFilter_Content[indexPath.row], indexDriver: selectedIdxDriver, indexDate: selectedIdxDate, indexPath: indexPath.row)
+            
         }
     }
 }

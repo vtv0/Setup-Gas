@@ -139,7 +139,7 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nyW-GS-hyv">
                                         <rect key="frame" x="0.0" y="0.0" width="143.33333333333334" height="56"/>
                                         <subviews>
-                                            <pickerView contentMode="scaleAspectFill" translatesAutoresizingMaskIntoConstraints="NO" id="yXb-a1-Ac5">
+                                            <pickerView clearsContextBeforeDrawing="NO" contentMode="scaleAspectFill" translatesAutoresizingMaskIntoConstraints="NO" id="yXb-a1-Ac5">
                                                 <rect key="frame" x="9.9999999999999929" y="8" width="123.33333333333331" height="40"/>
                                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                             </pickerView>
@@ -155,7 +155,7 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="phf-o6-0Og">
                                         <rect key="frame" x="143.33333333333331" y="0.0" width="143.33333333333331" height="56"/>
                                         <subviews>
-                                            <pickerView tag="1" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gzV-pr-QEL">
+                                            <pickerView clearsContextBeforeDrawing="NO" tag="1" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gzV-pr-QEL">
                                                 <rect key="frame" x="9.9999999999999929" y="8" width="123.33333333333331" height="40"/>
                                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                             </pickerView>
@@ -171,7 +171,7 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RPU-Iw-WKf">
                                         <rect key="frame" x="286.66666666666669" y="0.0" width="143.33333333333331" height="56"/>
                                         <subviews>
-                                            <pickerView tag="2" contentMode="scaleAspectFill" semanticContentAttribute="playback" translatesAutoresizingMaskIntoConstraints="NO" id="csE-na-47a">
+                                            <pickerView clearsContextBeforeDrawing="NO" tag="2" contentMode="scaleAspectFill" semanticContentAttribute="playback" translatesAutoresizingMaskIntoConstraints="NO" id="csE-na-47a">
                                                 <rect key="frame" x="9.9999999999999929" y="8" width="123.33333333333331" height="40"/>
                                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                             </pickerView>
@@ -726,7 +726,7 @@
         <!--Floating Panel DeliveryVC-->
         <scene sceneID="P02-lF-INh">
             <objects>
-                <viewController storyboardIdentifier="FloatingPanelDeliveryVC" id="ZDG-1a-Aom" customClass="FloatingPanelDeliveryVC" customModule="Gas" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="FloatingPanelDeliveryVC" id="ZDG-1a-Aom" customClass="FloatingPanelDeliveryVC" customModule="Gas" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="tB9-g5-y9J">
                         <rect key="frame" x="0.0" y="0.0" width="430" height="932"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -772,7 +772,7 @@
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lIe-7V-BvO" userLabel="ViewInfo">
                                                         <rect key="frame" x="0.0" y="0.0" width="430" height="250"/>
                                                         <subviews>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0003-001-01-00041-000" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="I6b-P4-6Ho">
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="000..........." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="I6b-P4-6Ho">
                                                                 <rect key="frame" x="15" y="40" width="207" height="20"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="207" id="a8u-Yv-qtY"/>

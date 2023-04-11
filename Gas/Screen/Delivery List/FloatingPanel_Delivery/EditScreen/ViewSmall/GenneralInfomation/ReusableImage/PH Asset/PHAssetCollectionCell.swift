@@ -10,6 +10,7 @@ import UIKit
 class PHAssetCollectionCell: UICollectionViewCell {
     
     @IBOutlet weak var imgCollectionCell: UIImageView?
-    @IBOutlet weak var lblNumberImage: UILabel?
+    
+    @IBOutlet weak var imgCheck: UIImageView!
 }
 

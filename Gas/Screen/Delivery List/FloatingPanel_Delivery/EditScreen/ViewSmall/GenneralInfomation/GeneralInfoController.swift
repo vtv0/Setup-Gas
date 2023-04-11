@@ -57,6 +57,7 @@ class GeneralInfoController: UIViewController, UINavigationControllerDelegate, U
         if let url1 = UserDefaults.standard.string(forKey: "GasLocation1") {
            
             viewGasLocation1.mainImageView.downloaded(from: url1)
+//            viewGasLocation1.mainImageView.loadImageDBorAPI(iurl: url1)
         }
         
         if let url2 = UserDefaults.standard.string(forKey: "GasLocation2") {
@@ -112,10 +113,12 @@ extension GeneralInfoController: ImageLabelViewDelegate {
         
         let storyboard = UIStoryboard(name: "PHAssetCollection", bundle: nil)
         let phassetScreen = storyboard.instantiateViewController(identifier: "PHAssetCollection") as! PHAssetCollection
+        phassetScreen.delegatePassImage = self
         self.navigationController?.pushViewController(phassetScreen, animated: true)
         
-        
         print("anh so: \(number)")
+        
+        
 //        DispatchQueue.main.async {
 //            let imagePickerVC = sender.instantiateImagePicker(.photoLibrary)
 //            self.present(imagePickerVC, animated: true)
@@ -167,3 +170,12 @@ extension GeneralInfoController: PassImageDelegateProtocol {
 }
 
 
+extension GeneralInfoController: PassImage {
+    func passImage(images: [UIImage]) {
+        print(images)
+    }
+    
+   
+    
+    
+}
