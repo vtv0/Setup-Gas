@@ -16,7 +16,6 @@ enum StatusDelivery: CaseIterable {
     
     var title: String {
         switch self {
-            
         case .inprogress:
             return "Inprogress"
         case .failed:
@@ -33,7 +32,6 @@ class ShippingViewController: UIViewController {
     
      var dataInfoOneCustomer: Location = Location(elem: LocationElement(locationOrder: 0), asset: GetAsset(assetModelID: 0), createdAt: "")
     static var infoCustomerShipping: Location = Location(elem: LocationElement(locationOrder: 0), asset: GetAsset(assetModelID: 0), createdAt: "")
-    
     
     @IBAction func btnExit(_ sender: Any) {
         navigationController?.popViewController(animated: true)
@@ -89,7 +87,6 @@ class ShippingViewController: UIViewController {
             stackView.addArrangedSubview(statusView)
         }
     }
-    
 }
 
 extension ShippingViewController: PassStatusDelivery {

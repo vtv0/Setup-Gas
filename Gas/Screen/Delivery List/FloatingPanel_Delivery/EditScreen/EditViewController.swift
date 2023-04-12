@@ -28,9 +28,8 @@ class EditViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Edit Screen"
-        //        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
+        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
         setupTabs()
-        
         setupPageViewController()
     }
     
@@ -86,6 +85,7 @@ class EditViewController: UIViewController {
             self.pageController.view.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
             self.pageController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
         ])
+        
         self.pageController.didMove(toParent: self)
     }
     
@@ -100,9 +100,7 @@ class EditViewController: UIViewController {
         if (self.tabsView.tabs.count == 0) || (index >= self.tabsView.tabs.count) {
             return nil
         }
-        
         currentIndex = index
-        
         if index == 1 {
             let contentVC = storyboard?.instantiateViewController(withIdentifier: "ParkingLocationController") as? ParkingLocationController
             contentVC?.pageIndex = index

@@ -19,18 +19,18 @@ class ImageLabelView: UIView, UINavigationControllerDelegate {
     @IBOutlet private weak var iconImageView: UIImageView!
     @IBOutlet private weak var labelView: UILabel!
     @IBOutlet private weak var numberView: UILabel!
-
     
-    enum ImageType: String {
-        case gasLocation1
-        case gasLocation2
-        case gasLocation3
-        case gasLocation4
-        case parkingPlace5
-        case parkingPlace6
-        case parkingPlace7
-        case parkingPlace8
-    }
+    
+    // enum ImageType: String {
+    //     case gasLocation1
+    //     case gasLocation2
+    //     case gasLocation3
+    //     case gasLocation4
+    //     case parkingPlace5
+    //     case parkingPlace6
+    //     case parkingPlace7
+    //     case parkingPlace8
+    // }
     
     static var delegatePassSelectedImage: ImageLabelViewDelegate?
     
@@ -48,7 +48,7 @@ class ImageLabelView: UIView, UINavigationControllerDelegate {
             } else {
                 mainImageView.contentMode = .center
                 mainImageView.image = UIImage(named: "camera")
-                isSetImage = true
+                isSetImage = false
             }
         }
     }
@@ -171,11 +171,21 @@ class ImageLabelView: UIView, UINavigationControllerDelegate {
     }
     
     @objc private func onTapView() {
-    
         ImageLabelView.delegatePassSelectedImage?.onTap(self, number: number, type: deliveryLocationType)
         print(number)
     }
 }
+
+extension ImageLabelView: ImageLabelViewDelegate {
+    func onTap(_ sender: ImageLabelView, number: Int, type: DeliveryLocationImageType) {
+        ImageLabelView.delegatePassSelectedImage?.onTap(sender, number: number, type: type)
+    }
+    
+    func didImagePick() {
+        //
+    }
+}
+
 
 extension ImageLabelView: UIImagePickerControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {

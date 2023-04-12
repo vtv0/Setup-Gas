@@ -25,7 +25,6 @@ class ReuseViewRadioButton: UIView {
         }
     }
     
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
         commonInit()
@@ -41,14 +40,17 @@ class ReuseViewRadioButton: UIView {
         lblInfo.text = status.title
     }
     
+    func loadViewFromNib() -> UIView? {
+        let nib = UINib(nibName: "ViewRadioButton", bundle: nil)
+        return nib.instantiate(withOwner: self, options: nil).first as? UIView
+    }
+    
     func commonInit() {
         guard let viewReuse = loadViewFromNib() else { return }
         viewReuse.frame = self.bounds
         viewReuse.autoresizingMask = [.flexibleWidth, .flexibleHeight] // tu dong co dan
         self.addSubview(viewReuse)
-        
         //        view.translatesAutoresizingMaskIntoConstraints = false // an thanh scroll
-        
         viewReuse.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onTapView)))
         
     }
@@ -56,11 +58,4 @@ class ReuseViewRadioButton: UIView {
     @objc func onTapView() {
         delegateStatus?.onTap(self, status: status)
     }
-    
-    
-    func loadViewFromNib() -> UIView? {
-        let nib = UINib(nibName: "ViewRadioButton", bundle: nil)
-        return nib.instantiate(withOwner: self, options: nil).first as? UIView
-    }
-    
 }

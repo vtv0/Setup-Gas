@@ -16,11 +16,11 @@ protocol PassImage: AnyObject {
 class PHAssetCollection: UIViewController, UICollectionViewDataSource {
     
     weak var delegatePassImage: PassImage?
-    var listImage: [UIImage] = []
+    var listImg: [UIImage] = []
     
     @IBAction func btnBack(_ sender: Any) {
         self.navigationController?.popViewController(animated: true)
-        self.delegatePassImage?.passImage(images: listImage)
+        self.delegatePassImage?.passImage(images: listImg)
         
     }
     
@@ -87,23 +87,31 @@ class PHAssetCollection: UIViewController, UICollectionViewDataSource {
         }
         return cellPHAsset
     }
-    
 }
 
 
 extension PHAssetCollection: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
-        //        guard let cell = collectionPhoto.cellForItem(at: indexPath) as? PHAssetCollectionCell else { return }
+        guard let cellDidSelected = collectionPhoto.cellForItem(at: indexPath) as? PHAssetCollectionCell else { return }
         if self.listImageSelected.contains(indexPath) {
             self.listImageSelected.remove(at: self.listImageSelected.firstIndex(of: indexPath)!)
+            // xoa listImg
             
         } else {
             listImageSelected.append(indexPath)
+            if let img = cellDidSelected.imgCollectionCell?.image {
+                listImg.append(img)
+            }
         }
         collectionPhoto.reloadData()
     }
 }
+
+
+
+
+
+
 
 
 //extension PHAssetCollection: PHPickerViewControllerDelegate {

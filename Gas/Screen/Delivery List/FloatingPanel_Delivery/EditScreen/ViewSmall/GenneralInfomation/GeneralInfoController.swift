@@ -18,7 +18,8 @@ class GeneralInfoController: UIViewController, UINavigationControllerDelegate, U
     
     var pageIndex: Int!
     var imagePicker = UIImagePickerController()
-    var selectedImage: UIImage!
+    var uiimage: UIImage!
+    var selectedImages: [UIImage] = []
     var elem: [LocationElement] = []
     var asset = GetAsset(assetModelID: 0, enabled: true)
     
@@ -52,46 +53,37 @@ class GeneralInfoController: UIViewController, UINavigationControllerDelegate, U
         super.viewDidLoad()
         //delegate
         ImageLabelView.delegatePassSelectedImage = self
-       
 
         if let url1 = UserDefaults.standard.string(forKey: "GasLocation1") {
-           
             viewGasLocation1.mainImageView.downloaded(from: url1)
 //            viewGasLocation1.mainImageView.loadImageDBorAPI(iurl: url1)
         }
         
         if let url2 = UserDefaults.standard.string(forKey: "GasLocation2") {
-           
             viewGasLocation2.mainImageView.downloaded(from: url2)
         }
         
         if let url3 = UserDefaults.standard.string(forKey: "GasLocation3") {
-          
             viewGasLocation3.mainImageView.downloaded(from: url3)
         }
         
         if let url4 = UserDefaults.standard.string(forKey: "GasLocation4") {
-           
             viewGasLocation4.mainImageView.downloaded(from: url4)
         }
         
         if let url5 = UserDefaults.standard.string(forKey: "ParkingPlace5") {
-         
             viewParkingLocation5.mainImageView.downloaded(from: url5)
         }
 
         if let url6 = UserDefaults.standard.string(forKey: "ParkingPlace6") {
-           
             viewParkingLocation6.mainImageView.downloaded(from: url6)
         }
 
         if let url7 = UserDefaults.standard.string(forKey: "ParkingPlace7") {
-           
             viewParkingLocation7.mainImageView.downloaded(from: url7)
         }
 
         if let url8 = UserDefaults.standard.string(forKey: "ParkingPlace8") {
-           
             viewParkingLocation8.mainImageView.downloaded(from: url8)
         }
         
@@ -115,14 +107,17 @@ extension GeneralInfoController: ImageLabelViewDelegate {
         let phassetScreen = storyboard.instantiateViewController(identifier: "PHAssetCollection") as! PHAssetCollection
         phassetScreen.delegatePassImage = self
         self.navigationController?.pushViewController(phassetScreen, animated: true)
-        
-        print("anh so: \(number)")
-        
-        
-//        DispatchQueue.main.async {
-//            let imagePickerVC = sender.instantiateImagePicker(.photoLibrary)
+      
+        DispatchQueue.main.async {
+            self.uiimage = self.selectedImages.last
+            sender.mainImageView.image = self.uiimage
+            
+//            self.selectedImages.removeAll()
+            
+//            let imagePickerVC = sender.instantiateImagePicker(.camera) // dung camera
+//            let imagePickerVC = sender.instantiateImagePicker(.photoLibrary) // dung thu vien
 //            self.present(imagePickerVC, animated: true)
-//        }
+        }
     }
 }
 
@@ -169,13 +164,23 @@ extension GeneralInfoController: PassImageDelegateProtocol {
     
 }
 
-
 extension GeneralInfoController: PassImage {
+    // hien thi anh
+    
+    
     func passImage(images: [UIImage]) {
-        print(images)
+
+        selectedImages = images
+//        if images.isEmpty {
+//            viewGasLocation4.mainImageView.image = UIImage(named: "camera")
+//        } else {
+////            viewGasLocation4.mainImageView.image = images.first
+//
+//
+//            // for
+//
+//        }
+        
     }
-    
-   
-    
     
 }

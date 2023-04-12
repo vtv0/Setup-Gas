@@ -5,12 +5,12 @@
 //  Created by steshima on 2021/02/08.
 //
 
-import Foundation
+import UIKit
 
-enum DeliveryLocationImageType: Int {
+enum DeliveryLocationImageType: Int, CaseIterable {
     case facilityExterior = 1
-    case gasLocation = 2
-    case parking = 3
+    case gasLocation
+    case parking
 
     var text: String {
         switch self {
@@ -22,5 +22,4 @@ enum DeliveryLocationImageType: Int {
             return "location3"
         }
     }
-    
 }
