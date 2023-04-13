@@ -53,7 +53,7 @@ class EditViewController: UIViewController {
         // TabView Customization
         tabsView.titleColor = .blue
         tabsView.iconColor = .blue
-        tabsView.indicatorColor = .black
+        tabsView.indicatorColor = .blue
         tabsView.titleFont = UIFont.systemFont(ofSize: 20, weight: .semibold)
         // tabsView.collectionView.backgroundColor = .cyan
         
@@ -138,7 +138,7 @@ extension EditViewController: TabsDelegate {
 extension EditViewController: UIPageViewControllerDataSource, UIPageViewControllerDelegate {
     // return ViewController when go forward
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
-        let vc = pageViewController.viewControllers?.first
+        let vc = pageViewController.viewControllers?[0]
         var index: Int
         index = getVCPageIndex(vc)
         // Don't do anything when viewpager reach the number of tabs
@@ -176,7 +176,7 @@ extension EditViewController: UIPageViewControllerDataSource, UIPageViewControll
             }
         }
     }
-    
+
     // Return the current position that is saved in the UIViewControllers we have in the UIPageViewController
     func getVCPageIndex(_ viewController: UIViewController?) -> Int {
         switch viewController {

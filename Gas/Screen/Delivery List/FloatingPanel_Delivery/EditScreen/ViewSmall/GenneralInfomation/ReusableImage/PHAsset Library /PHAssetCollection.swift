@@ -18,11 +18,15 @@ class PHAssetCollection: UIViewController, UICollectionViewDataSource {
     weak var delegatePassImage: PassImage?
     var listImg: [UIImage] = []
     
+   
+    // click de truyen [image]
     @IBAction func btnBack(_ sender: Any) {
         self.navigationController?.popViewController(animated: true)
         self.delegatePassImage?.passImage(images: listImg)
         
     }
+    
+    
     
     @IBOutlet weak var collectionPhoto: UICollectionView!
     var listImageSelected  = [IndexPath]()
@@ -46,6 +50,7 @@ class PHAssetCollection: UIViewController, UICollectionViewDataSource {
         //        let picker = PHPickerViewController(configuration: config)
         //        picker.delegate = self
         //       present(picker, animated: true)
+      
     }
     
     func populatePhotos() {
@@ -62,7 +67,6 @@ class PHAssetCollection: UIViewController, UICollectionViewDataSource {
             }
         }
     }
-    
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return images.count
@@ -90,16 +94,18 @@ class PHAssetCollection: UIViewController, UICollectionViewDataSource {
 }
 
 
-extension PHAssetCollection: UICollectionViewDelegate {
+
+extension PHAssetCollection: UICollectionViewDelegate {  // list image
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let cellDidSelected = collectionPhoto.cellForItem(at: indexPath) as? PHAssetCollectionCell else { return }
         if self.listImageSelected.contains(indexPath) {
             self.listImageSelected.remove(at: self.listImageSelected.firstIndex(of: indexPath)!)
             // xoa listImg
-            
+        
         } else {
             listImageSelected.append(indexPath)
             if let img = cellDidSelected.imgCollectionCell?.image {
+             
                 listImg.append(img)
             }
         }

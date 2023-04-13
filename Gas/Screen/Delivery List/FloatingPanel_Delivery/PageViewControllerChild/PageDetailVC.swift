@@ -91,6 +91,14 @@ class PageDetailVC: UIViewController, UIScrollViewDelegate, UICollectionViewDele
         
     }
     
+    @IBAction func btnOpenMap(_ sender: Any) {
+        
+//        let googleURL = "comgooglemaps://?daddr=\(latitude),\(longitude)&directionsmode=driving"
+//        
+        
+    }
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         lblTextNotes.isEditable = false

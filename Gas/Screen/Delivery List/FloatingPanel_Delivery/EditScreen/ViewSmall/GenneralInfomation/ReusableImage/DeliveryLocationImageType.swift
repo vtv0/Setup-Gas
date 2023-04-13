@@ -12,7 +12,7 @@ enum DeliveryLocationImageType: Int, CaseIterable {
     case gasLocation
     case parking
 
-    var text: String {
+    var text: String { 
         switch self {
         case .facilityExterior:
             return "factory1"

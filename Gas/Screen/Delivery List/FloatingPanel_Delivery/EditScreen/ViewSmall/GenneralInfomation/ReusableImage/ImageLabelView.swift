@@ -8,11 +8,12 @@ import UIKit
 
 protocol ImageLabelViewDelegate: AnyObject {
     func onTap(_ sender: ImageLabelView, number: Int, type: DeliveryLocationImageType)
-    func didImagePick()
+    func toPhassetImage()
 }
 
-
 class ImageLabelView: UIView, UINavigationControllerDelegate {
+    
+    static var delegatePassSelectedImage: ImageLabelViewDelegate?
     
     @IBOutlet private weak var mainView: UIView!
     @IBOutlet weak var mainImageView: UIImageView!
@@ -32,7 +33,7 @@ class ImageLabelView: UIView, UINavigationControllerDelegate {
     //     case parkingPlace8
     // }
     
-    static var delegatePassSelectedImage: ImageLabelViewDelegate?
+    
     
     private var deliveryLocationType: DeliveryLocationImageType = .facilityExterior
     private var isSetImage: Bool = false
@@ -42,7 +43,7 @@ class ImageLabelView: UIView, UINavigationControllerDelegate {
     @IBInspectable var image: UIImage? {
         didSet {
             if let image = image {
-                mainImageView.contentMode = .scaleToFill
+                mainImageView.contentMode = .scaleAspectFit
                 mainImageView.image = image
                 isSetImage = true
             } else {
@@ -71,7 +72,7 @@ class ImageLabelView: UIView, UINavigationControllerDelegate {
             return deliveryLocationType.rawValue
         }
         set(newValue) {
-            deliveryLocationType = DeliveryLocationImageType(rawValue: newValue) ?? .facilityExterior
+            deliveryLocationType = DeliveryLocationImageType(rawValue: newValue) ?? .gasLocation
             switch deliveryLocationType {
             case .facilityExterior:
                 iconImageView.image = UIImage(named: "factory")
@@ -171,20 +172,13 @@ class ImageLabelView: UIView, UINavigationControllerDelegate {
     }
     
     @objc private func onTapView() {
+        ImageLabelView.delegatePassSelectedImage?.toPhassetImage()
+        
         ImageLabelView.delegatePassSelectedImage?.onTap(self, number: number, type: deliveryLocationType)
-        print(number)
+        
     }
 }
 
-extension ImageLabelView: ImageLabelViewDelegate {
-    func onTap(_ sender: ImageLabelView, number: Int, type: DeliveryLocationImageType) {
-        ImageLabelView.delegatePassSelectedImage?.onTap(sender, number: number, type: type)
-    }
-    
-    func didImagePick() {
-        //
-    }
-}
 
 
 extension ImageLabelView: UIImagePickerControllerDelegate {
@@ -192,7 +186,7 @@ extension ImageLabelView: UIImagePickerControllerDelegate {
         guard let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage
         else {
             
-            ImageLabelView.delegatePassSelectedImage?.didImagePick()
+            //  delegatePassSelectedImage?.didImagePick()
             return
         }
         var fileName = ""
@@ -208,7 +202,7 @@ extension ImageLabelView: UIImagePickerControllerDelegate {
         }
         let newImage = resizeImage(image)
         changeImage(image: newImage, fileName: fileName)
-        ImageLabelView.delegatePassSelectedImage?.didImagePick()
+        // delegatePassSelectedImage?.didImagePick()
     }
     func resizeImage(_ image: UIImage) -> UIImage {
         let compressionQuality = 1.0
