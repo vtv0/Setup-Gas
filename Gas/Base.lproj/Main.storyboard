@@ -2550,19 +2550,18 @@ Cgo
                                                             <userDefinedRuntimeAttribute type="image" keyPath="image"/>
                                                         </userDefinedRuntimeAttributes>
                                                     </view>
-                                                    <view tag="1" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6bv-Cz-rgb" customClass="ImageLabelView" customModule="Gas" customModuleProvider="target">
+                                                    <view multipleTouchEnabled="YES" tag="1" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6bv-Cz-rgb" customClass="ImageLabelView" customModule="Gas" customModuleProvider="target">
                                                         <rect key="frame" x="107.66666666666669" y="0.0" width="107.33333333333331" height="120"/>
-                                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                         <userDefinedRuntimeAttributes>
                                                             <userDefinedRuntimeAttribute type="number" keyPath="number">
                                                                 <integer key="value" value="2"/>
                                                             </userDefinedRuntimeAttribute>
                                                             <userDefinedRuntimeAttribute type="string" keyPath="label" value="Gas"/>
+                                                            <userDefinedRuntimeAttribute type="image" keyPath="image"/>
                                                         </userDefinedRuntimeAttributes>
                                                     </view>
-                                                    <view clipsSubviews="YES" tag="1" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="N7M-3R-oeR" customClass="ImageLabelView" customModule="Gas" customModuleProvider="target">
+                                                    <view tag="1" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="N7M-3R-oeR" customClass="ImageLabelView" customModule="Gas" customModuleProvider="target">
                                                         <rect key="frame" x="214.99999999999997" y="0.0" width="107.66666666666666" height="120"/>
-                                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                         <userDefinedRuntimeAttributes>
                                                             <userDefinedRuntimeAttribute type="number" keyPath="number">
                                                                 <integer key="value" value="3"/>
@@ -2572,7 +2571,6 @@ Cgo
                                                     </view>
                                                     <view tag="1" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ACs-yg-fjL" customClass="ImageLabelView" customModule="Gas" customModuleProvider="target">
                                                         <rect key="frame" x="322.66666666666669" y="0.0" width="107.33333333333331" height="120"/>
-                                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                         <userDefinedRuntimeAttributes>
                                                             <userDefinedRuntimeAttribute type="number" keyPath="number">
                                                                 <integer key="value" value="4"/>
@@ -2595,7 +2593,6 @@ Cgo
                                                 <subviews>
                                                     <view tag="2" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FPq-nm-9cq" customClass="ImageLabelView" customModule="Gas" customModuleProvider="target">
                                                         <rect key="frame" x="0.0" y="0.0" width="107.66666666666667" height="120"/>
-                                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                         <edgeInsets key="layoutMargins" top="8" left="8" bottom="8" right="8"/>
                                                         <userDefinedRuntimeAttributes>
                                                             <userDefinedRuntimeAttribute type="number" keyPath="number">
@@ -2606,7 +2603,6 @@ Cgo
                                                     </view>
                                                     <view tag="2" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8Ns-lB-QD8" customClass="ImageLabelView" customModule="Gas" customModuleProvider="target">
                                                         <rect key="frame" x="107.66666666666669" y="0.0" width="107.33333333333331" height="120"/>
-                                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                         <userDefinedRuntimeAttributes>
                                                             <userDefinedRuntimeAttribute type="number" keyPath="number">
                                                                 <integer key="value" value="6"/>
@@ -2616,7 +2612,6 @@ Cgo
                                                     </view>
                                                     <view tag="2" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bKh-rr-rP0" customClass="ImageLabelView" customModule="Gas" customModuleProvider="target">
                                                         <rect key="frame" x="214.99999999999997" y="0.0" width="107.66666666666666" height="120"/>
-                                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                         <userDefinedRuntimeAttributes>
                                                             <userDefinedRuntimeAttribute type="number" keyPath="number">
                                                                 <integer key="value" value="7"/>
@@ -2626,7 +2621,6 @@ Cgo
                                                     </view>
                                                     <view tag="2" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Zzv-fN-vPE" customClass="ImageLabelView" customModule="Gas" customModuleProvider="target">
                                                         <rect key="frame" x="322.66666666666669" y="0.0" width="107.33333333333331" height="120"/>
-                                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                         <userDefinedRuntimeAttributes>
                                                             <userDefinedRuntimeAttribute type="number" keyPath="number">
                                                                 <integer key="value" value="8"/>

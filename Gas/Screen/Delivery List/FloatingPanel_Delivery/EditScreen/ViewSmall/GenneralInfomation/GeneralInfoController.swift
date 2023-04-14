@@ -23,7 +23,7 @@ class GeneralInfoController: UIViewController, UINavigationControllerDelegate, U
     var elem: [LocationElement] = []
     var asset = GetAsset(assetModelID: 0, enabled: true)
     
-    var didSender: ImageLabelView!
+    
     
     //    weak var delegatePassSelectedImage: ImageLabelViewDelegate?
     
@@ -54,15 +54,17 @@ class GeneralInfoController: UIViewController, UINavigationControllerDelegate, U
     }
     
     // tao 1 mang ImageLableView
+    var customIMGView: [ImageLabelView] = []
+    var didSender: ImageLabelView!
     
-    var customView: [ImageLabelView] = []
+    var newArrIMGView: [ImageLabelView] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
         //delegate
         ImageLabelView.delegatePassSelectedImage = self
-
-       
+        
+        customIMGView = [viewGasLocation1, viewGasLocation2, viewGasLocation3, viewGasLocation4, viewParkingLocation5, viewParkingLocation6, viewParkingLocation7, viewParkingLocation8]
         
         if let url1 = UserDefaults.standard.string(forKey: "GasLocation1") {
             viewGasLocation1.mainImageView.downloaded(from: url1)
@@ -100,6 +102,8 @@ class GeneralInfoController: UIViewController, UINavigationControllerDelegate, U
         if let notes = UserDefaults.standard.string(forKey: "Notes") {
             txtFieldNotes.text = notes
         }
+        
+        
     }
     
 }
@@ -115,22 +119,30 @@ extension GeneralInfoController: ImageLabelViewDelegate {
         }
     }
     
-    
     func onTap(_ sender: ImageLabelView, number: Int, type: DeliveryLocationImageType) {
+        newArrIMGView.removeAll()
         DispatchQueue.main.async {
-            self.didSender = sender
-            self.uiimage = self.selectedImages.last
-            sender.mainImageView.image = self.uiimage
             
-            self.customView.append(sender)
+            var indexFromSender = 0
+            // sender cho biết vị trí trong [customIMGView]  VD: 3...7 -> có 5 ảnh
+            for (ind, iIMGView) in self.customIMGView.enumerated() where sender == iIMGView {
+                indexFromSender = ind
+            }
             
-            //            self.selectedImages.removeAll()
+            // tao ra mang moi
+            var newInd = [Int]()
+            for i in indexFromSender...7 {
+                newInd.append(i)
+            }
             
-            //            let imagePickerVC = sender.instantiateImagePicker(.camera) // dung camera
-            //            let imagePickerVC = sender.instantiateImagePicker(.photoLibrary) // dung thu vien
-            //            self.present(imagePickerVC, animated: true)
+            for i in newInd {
+                for (ind, iIMGView) in self.customIMGView.enumerated() where ind == i {
+                    self.newArrIMGView.append(iIMGView)
+                }
+            }
         }
     }
+    
 }
 
 extension GeneralInfoController: PassImageDelegateProtocol {
@@ -177,15 +189,27 @@ extension GeneralInfoController: PassImageDelegateProtocol {
 }
 
 extension GeneralInfoController: PassImage {
-    
     func passImage(images: [UIImage]) {
         if images.isEmpty {
-            self.didSender.mainImageView.image = UIImage(named: "camera")
+            for isender in newArrIMGView {
+                isender.mainImageView.image = UIImage(named: "camera")
+            }
         } else {
             DispatchQueue.main.async {
-                self.didSender.mainImageView.image = images.last
+                
+                
+                
+                for (indSender, isender) in self.newArrIMGView.enumerated() {
+                    for (indexIMG,iImage) in images.enumerated() {
+                        if indSender == indexIMG {
+                            isender.mainImageView.image = iImage
+                        }
+                    }
+                }
+                
+                
+                
             }
         }
-        
     }
 }

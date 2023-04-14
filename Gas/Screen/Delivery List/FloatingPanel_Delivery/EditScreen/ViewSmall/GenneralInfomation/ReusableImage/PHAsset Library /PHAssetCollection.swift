@@ -17,14 +17,33 @@ class PHAssetCollection: UIViewController, UICollectionViewDataSource {
     
     weak var delegatePassImage: PassImage?
     var listImg: [UIImage] = []
+    var listPngData: [NSData] = []
     
-   
     // click de truyen [image]
     @IBAction func btnBack(_ sender: Any) {
         self.navigationController?.popViewController(animated: true)
-        self.delegatePassImage?.passImage(images: listImg)
         
+        listImg = getAssetThumbnail(assets: images)
+        self.delegatePassImage?.passImage(images: listImg)
     }
+    
+    
+    // Convert array of PHAsset to UIImages
+    func getAssetThumbnail(assets: [PHAsset]) -> [UIImage] {
+        var arrayOfImages = [UIImage]()
+        for asset in assets {
+            let manager = PHImageManager.default()
+            let option = PHImageRequestOptions()
+            var image = UIImage()
+            option.isSynchronous = true
+            manager.requestImage(for: asset, targetSize: CGSize(width: 100, height: 100), contentMode: .aspectFit, options: option, resultHandler: {(result, info)->Void in
+                image = result!
+                arrayOfImages.append(image)
+            })
+        }
+        return arrayOfImages
+    }
+    
     
     
     
@@ -32,6 +51,7 @@ class PHAssetCollection: UIViewController, UICollectionViewDataSource {
     var listImageSelected  = [IndexPath]()
     var images = [PHAsset]()
     let accessLevel: PHAccessLevel = .readWrite
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,7 +70,7 @@ class PHAssetCollection: UIViewController, UICollectionViewDataSource {
         //        let picker = PHPickerViewController(configuration: config)
         //        picker.delegate = self
         //       present(picker, animated: true)
-      
+        
     }
     
     func populatePhotos() {
@@ -97,28 +117,37 @@ class PHAssetCollection: UIViewController, UICollectionViewDataSource {
 
 extension PHAssetCollection: UICollectionViewDelegate {  // list image
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let cellDidSelected = collectionPhoto.cellForItem(at: indexPath) as? PHAssetCollectionCell else { return }
-        if self.listImageSelected.contains(indexPath) {
-            self.listImageSelected.remove(at: self.listImageSelected.firstIndex(of: indexPath)!)
-            // xoa listImg
+        //        guard let cellDidSelected = collectionPhoto.cellForItem(at: indexPath) as? PHAssetCollectionCell else { return }
         
+        if self.listImageSelected.contains(indexPath) {
+            
+            self.listImageSelected.remove(at: self.listImageSelected.firstIndex(of: indexPath)!)
+            
+            // xoa listImg  OK
+            
+            //            if let imgDelete = cellDidSelected.imgCollectionCell?.image {
+            //
+            //                for (idex, iImage) in listImg.enumerated() {
+            //                    print(iImage)
+            //                    print(imgDelete)
+            //                    if iImage.pngData() == imgDelete.pngData() {  // hinh bi Duplicate thi sai
+            //                        listImg.remove(at: idex)
+            //                    }
+            //                }
+            //            }
+            
         } else {
+            
             listImageSelected.append(indexPath)
-            if let img = cellDidSelected.imgCollectionCell?.image {
-             
-                listImg.append(img)
-            }
+            //            if let img = cellDidSelected.imgCollectionCell?.image {
+            //                listImg.append(img)
+            //            }
         }
-        collectionPhoto.reloadData()
+        
+        collectionPhoto.reloadItems(at: [indexPath])
     }
+    
 }
-
-
-
-
-
-
-
 
 //extension PHAssetCollection: PHPickerViewControllerDelegate {
 //    public func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
