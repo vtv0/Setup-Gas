@@ -173,9 +173,7 @@ class ImageLabelView: UIView, UINavigationControllerDelegate {
     
     @objc private func onTapView() {
         ImageLabelView.delegatePassSelectedImage?.toPhassetImage()
-        
         ImageLabelView.delegatePassSelectedImage?.onTap(self, number: number, type: deliveryLocationType)
-        
     }
 }
 

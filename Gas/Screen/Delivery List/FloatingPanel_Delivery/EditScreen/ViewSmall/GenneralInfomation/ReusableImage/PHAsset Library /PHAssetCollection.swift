@@ -16,17 +16,40 @@ protocol PassImage: AnyObject {
 class PHAssetCollection: UIViewController, UICollectionViewDataSource {
     
     weak var delegatePassImage: PassImage?
-    var listImg: [UIImage] = []
-    var listPngData: [NSData] = []
+    
+    @IBOutlet weak var collectionPhoto: UICollectionView!
     
     // click de truyen [image]
     @IBAction func btnBack(_ sender: Any) {
         self.navigationController?.popViewController(animated: true)
         
-        listImg = getAssetThumbnail(assets: images)
-        self.delegatePassImage?.passImage(images: listImg)
+        listImg = getAssetThumbnail(assets: imagesPHAsset)
+        let imagesOK = arrImageSelected(images: listImg, indexPath: listImageSelected)
+        
+        if imagesOK.isEmpty {
+            dismiss(animated: true)
+        } else {
+            self.delegatePassImage?.passImage(images: imagesOK)
+        }
     }
     
+    var listImg: [UIImage] = []
+    var listPngData: [NSData] = []
+    
+    var listImageSelected  = [IndexPath]()
+    var imagesPHAsset = [PHAsset]()
+    let accessLevel: PHAccessLevel = .readWrite
+    
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        populatePhotos()
+        title = "Selection Photo"
+        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.systemBlue]
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "BACK", style: .plain, target: nil, action: nil)
+        collectionPhoto.dataSource = self
+        collectionPhoto.delegate = self
+    }
     
     // Convert array of PHAsset to UIImages
     func getAssetThumbnail(assets: [PHAsset]) -> [UIImage] {
@@ -44,33 +67,26 @@ class PHAssetCollection: UIViewController, UICollectionViewDataSource {
         return arrayOfImages
     }
     
-    
-    
-    
-    @IBOutlet weak var collectionPhoto: UICollectionView!
-    var listImageSelected  = [IndexPath]()
-    var images = [PHAsset]()
-    let accessLevel: PHAccessLevel = .readWrite
-    
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        populatePhotos()
+    func arrImageSelected(images: [UIImage], indexPath: [IndexPath]) -> [UIImage] {
+        var listImage = [UIImage]()
         
-        title = "Selection Photo"
-        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.systemBlue]
-        //        self.navigationItem.setHidesBackButton(true, animated: false)
-        navigationItem.backBarButtonItem = UIBarButtonItem(title: "BACK", style: .plain, target: nil, action: nil)
-        collectionPhoto.dataSource = self
-        collectionPhoto.delegate = self
+        for iIndexPath in indexPath {
+            let indexPath : IndexPath = iIndexPath
+            let rowNumber : Int = indexPath.row
+            let img = images[rowNumber]
+            listImage.append(img)
+        }
         
-        //        var config = PHPickerConfiguration(photoLibrary: PHPhotoLibrary.shared())  //
-        //        config.selectionLimit = 8
-        //        config.filter = .images
-        //        let picker = PHPickerViewController(configuration: config)
-        //        picker.delegate = self
-        //       present(picker, animated: true)
         
+        return listImage
+    }
+    
+    func showAlert(title: String? = "", message: String?, completion: (() -> Void)? = nil) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction( UIAlertAction(title: "OK", style: .default, handler: { _ in
+            completion?()
+        }))
+        present(alert, animated: true)
     }
     
     func populatePhotos() {
@@ -78,9 +94,9 @@ class PHAssetCollection: UIViewController, UICollectionViewDataSource {
             if status == .authorized {
                 let assets = PHAsset.fetchAssets(with: PHAssetMediaType.image, options: nil)
                 assets.enumerateObjects { (object, _, _) in
-                    self?.images.append(object)
+                    self?.imagesPHAsset.append(object)
                 }
-                self?.images.reverse()
+                self?.imagesPHAsset.reverse()
                 DispatchQueue.main.async {
                     self?.collectionPhoto.reloadData()
                 }
@@ -89,12 +105,12 @@ class PHAssetCollection: UIViewController, UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return images.count
+        return imagesPHAsset.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cellPHAsset = collectionView.dequeueReusableCell(withReuseIdentifier: "PHAssetCollectionCell", for: indexPath) as? PHAssetCollectionCell else { fatalError ("Cannot create new cell") }
-        let asset = self.images[indexPath.item]
+        let asset = self.imagesPHAsset[indexPath.item]
         let manager = PHImageManager.default()
         manager.requestImage(for: asset, targetSize: CGSize(width: 200, height: 200), contentMode: .aspectFit, options: nil) { image, _ in
             DispatchQueue.main.async {
@@ -111,39 +127,29 @@ class PHAssetCollection: UIViewController, UICollectionViewDataSource {
         }
         return cellPHAsset
     }
+    
 }
 
 
 
 extension PHAssetCollection: UICollectionViewDelegate {  // list image
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        //        guard let cellDidSelected = collectionPhoto.cellForItem(at: indexPath) as? PHAssetCollectionCell else { return }
         
-        if self.listImageSelected.contains(indexPath) {
+        // gioi han anh duoc chon < = 8
+        
+        let shouldSelect = collectionPhoto.indexPathsForSelectedItems?.count ?? 0 < 9
+        
+        if !shouldSelect {
+            self.showAlert(message: "Quá số ảnh được chọn!")
             
-            self.listImageSelected.remove(at: self.listImageSelected.firstIndex(of: indexPath)!)
+        }  else {
             
-            // xoa listImg  OK
-            
-            //            if let imgDelete = cellDidSelected.imgCollectionCell?.image {
-            //
-            //                for (idex, iImage) in listImg.enumerated() {
-            //                    print(iImage)
-            //                    print(imgDelete)
-            //                    if iImage.pngData() == imgDelete.pngData() {  // hinh bi Duplicate thi sai
-            //                        listImg.remove(at: idex)
-            //                    }
-            //                }
-            //            }
-            
-        } else {
-            
-            listImageSelected.append(indexPath)
-            //            if let img = cellDidSelected.imgCollectionCell?.image {
-            //                listImg.append(img)
-            //            }
+            if self.listImageSelected.contains(indexPath) {
+                self.listImageSelected.remove(at: self.listImageSelected.firstIndex(of: indexPath)!)
+            } else {
+                listImageSelected.append(indexPath)
+            }
         }
-        
         collectionPhoto.reloadItems(at: [indexPath])
     }
     

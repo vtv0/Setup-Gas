@@ -81,11 +81,8 @@ class PatchStatusDelivery {
             print("\(recordNew) = \(recordNew.count)")
         }
         
-        
-        
         var delivery_history: [String: Any] = ["delivery_history": recordNew ]
         let parameter: [String: Any] = ["display_data": delivery_history]
-        
         
         
         let patchStatusDelivery = AF.request(urlPatch, method: .patch, parameters: parameter, encoding: JSONEncoding.default, headers: makeHeaders(token: token)).serializingDecodable(PatchDeliveryStatus.self)

@@ -107,6 +107,7 @@ class DeliveryListController: UIViewController, UIPickerViewDelegate, UIPickerVi
         navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
       
         showActivity()
+       
         //  callAPI_Block_Delivery()
         Task {
             await callApi_Async_Await_Deli()
@@ -122,7 +123,7 @@ class DeliveryListController: UIViewController, UIPickerViewDelegate, UIPickerVi
     func callApi_Async_Await_Deli() async {
         do {
             let responseGetMe = try await GetMe_Async_Await().getMe_Async_Await(companyCode: companyCode)
-            print(responseGetMe)
+          
             do {
                 let dicDataResponse = await GetWorkerRouteLocationList_Async_Await().loadDic(dates: dateYMD)   //.getWorkerRouteLocationList_Async_Await()
                 dicData = dicDataResponse

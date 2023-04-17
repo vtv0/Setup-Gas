@@ -23,8 +23,6 @@ class GeneralInfoController: UIViewController, UINavigationControllerDelegate, U
     var elem: [LocationElement] = []
     var asset = GetAsset(assetModelID: 0, enabled: true)
     
-    
-    
     //    weak var delegatePassSelectedImage: ImageLabelViewDelegate?
     
     @IBOutlet weak var viewGasLocation1: ImageLabelView!
@@ -102,8 +100,6 @@ class GeneralInfoController: UIViewController, UINavigationControllerDelegate, U
         if let notes = UserDefaults.standard.string(forKey: "Notes") {
             txtFieldNotes.text = notes
         }
-        
-        
     }
     
 }
@@ -196,9 +192,6 @@ extension GeneralInfoController: PassImage {
             }
         } else {
             DispatchQueue.main.async {
-                
-                
-                
                 for (indSender, isender) in self.newArrIMGView.enumerated() {
                     for (indexIMG,iImage) in images.enumerated() {
                         if indSender == indexIMG {
@@ -206,9 +199,6 @@ extension GeneralInfoController: PassImage {
                         }
                     }
                 }
-                
-                
-                
             }
         }
     }
