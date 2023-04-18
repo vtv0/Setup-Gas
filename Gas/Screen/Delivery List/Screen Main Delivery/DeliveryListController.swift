@@ -105,7 +105,8 @@ class DeliveryListController: UIViewController, UIPickerViewDelegate, UIPickerVi
         super.viewDidLoad()
         self.sevenDay()
         navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
-      
+        
+        
         showActivity()
        
         //  callAPI_Block_Delivery()
@@ -422,6 +423,12 @@ class DeliveryListController: UIViewController, UIPickerViewDelegate, UIPickerVi
             let formatter = DateFormatter()
             formatter.dateFormat = "MM/dd"
             let dateString: String = formatter.string(from: dateYMD[row])
+//            if dateYMD > 0 {
+//                btnShipping.backgroundColor = .gray
+//                btnShipping.isEnabled = false
+//                
+//            }
+            
             return dateString
         }
         return ""

@@ -8,7 +8,7 @@ import UIKit
 
 protocol ImageLabelViewDelegate: AnyObject {
     func onTap(_ sender: ImageLabelView, number: Int, type: DeliveryLocationImageType)
-    func toPhassetImage()
+    func toPhassetImage( number: Int)
 }
 
 class ImageLabelView: UIView, UINavigationControllerDelegate {
@@ -172,7 +172,7 @@ class ImageLabelView: UIView, UINavigationControllerDelegate {
     }
     
     @objc private func onTapView() {
-        ImageLabelView.delegatePassSelectedImage?.toPhassetImage()
+        ImageLabelView.delegatePassSelectedImage?.toPhassetImage(number: number)
         ImageLabelView.delegatePassSelectedImage?.onTap(self, number: number, type: deliveryLocationType)
     }
 }

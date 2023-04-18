@@ -13,7 +13,7 @@ protocol PassImage: AnyObject {
     func passImage(images: [UIImage])
 }
 
-class PHAssetCollection: UIViewController, UICollectionViewDataSource {
+class PHAssetCollection: UIViewController {
     
     weak var delegatePassImage: PassImage?
     
@@ -32,6 +32,8 @@ class PHAssetCollection: UIViewController, UICollectionViewDataSource {
             self.delegatePassImage?.passImage(images: imagesOK)
         }
     }
+    var photoIsAvailable: Int = 0
+    var clickedCellPosition: Int = 0
     
     var listImg: [UIImage] = []
     var listPngData: [NSData] = []
@@ -71,10 +73,11 @@ class PHAssetCollection: UIViewController, UICollectionViewDataSource {
         var listImage = [UIImage]()
         
         for iIndexPath in indexPath {
-            let indexPath : IndexPath = iIndexPath
-            let rowNumber : Int = indexPath.row
+            let indexPath: IndexPath = iIndexPath
+            let rowNumber: Int = indexPath.row
             let img = images[rowNumber]
             listImage.append(img)
+           
         }
         
         
@@ -104,6 +107,9 @@ class PHAssetCollection: UIViewController, UICollectionViewDataSource {
         }
     }
     
+}
+
+extension PHAssetCollection: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return imagesPHAsset.count
     }
@@ -131,24 +137,17 @@ class PHAssetCollection: UIViewController, UICollectionViewDataSource {
 }
 
 
-
 extension PHAssetCollection: UICollectionViewDelegate {  // list image
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
-        // gioi han anh duoc chon < = 8
-        
-        let shouldSelect = collectionPhoto.indexPathsForSelectedItems?.count ?? 0 < 9
-        
-        if !shouldSelect {
-            self.showAlert(message: "Quá số ảnh được chọn!")
-            
-        }  else {
-            
-            if self.listImageSelected.contains(indexPath) {
-                self.listImageSelected.remove(at: self.listImageSelected.firstIndex(of: indexPath)!)
-            } else {
+        if self.listImageSelected.contains(indexPath) {
+            self.listImageSelected.remove(at: self.listImageSelected.firstIndex(of: indexPath)!)
+        } else {
+            if listImageSelected.count < (8 - photoIsAvailable - clickedCellPosition) {
                 listImageSelected.append(indexPath)
+            } else {
+                showAlert(message: "Quá số lượng ảnh được chọn")
             }
+           
         }
         collectionPhoto.reloadItems(at: [indexPath])
     }

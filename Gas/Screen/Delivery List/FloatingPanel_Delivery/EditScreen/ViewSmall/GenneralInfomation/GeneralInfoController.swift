@@ -106,11 +106,13 @@ class GeneralInfoController: UIViewController, UINavigationControllerDelegate, U
 
 
 extension GeneralInfoController: ImageLabelViewDelegate {
-    func toPhassetImage() {
+    func toPhassetImage(number: Int) {
         DispatchQueue.main.async {
             let storyboard = UIStoryboard(name: "PHAssetCollection", bundle: nil)
             let phassetScreen = storyboard.instantiateViewController(identifier: "PHAssetCollection") as! PHAssetCollection
             phassetScreen.delegatePassImage = self
+            phassetScreen.clickedCellPosition = number - 1
+            
             self.navigationController?.pushViewController(phassetScreen, animated: true)
         }
     }
