@@ -105,7 +105,9 @@ class DeliveryListController: UIViewController, UIPickerViewDelegate, UIPickerVi
         super.viewDidLoad()
         self.sevenDay()
         navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
+        pickerDate.layer.shadowOpacity = 1.0
         
+        btnShipping.layer.cornerRadius = 10
         
         showActivity()
        
@@ -426,7 +428,7 @@ class DeliveryListController: UIViewController, UIPickerViewDelegate, UIPickerVi
 //            if dateYMD > 0 {
 //                btnShipping.backgroundColor = .gray
 //                btnShipping.isEnabled = false
-//                
+//
 //            }
             
             return dateString

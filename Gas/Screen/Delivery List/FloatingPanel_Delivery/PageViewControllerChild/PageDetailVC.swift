@@ -82,6 +82,8 @@ class PageDetailVC: UIViewController, UIScrollViewDelegate, UICollectionViewDele
     @IBOutlet weak var viewNote: UIView!
     
     
+    @IBOutlet weak var viewInfoAstimate: UIView!
+    
     @IBAction func btnEdit(_ sender: Any) {
         let screenEdit = storyboard?.instantiateViewController(withIdentifier: "EditViewController") as! EditViewController
         self.navigationController?.pushViewController(screenEdit, animated: true)
@@ -94,8 +96,6 @@ class PageDetailVC: UIViewController, UIScrollViewDelegate, UICollectionViewDele
     @IBAction func btnOpenMap(_ sender: Any) {
         
 //        let googleURL = "comgooglemaps://?daddr=\(latitude),\(longitude)&directionsmode=driving"
-//        
-        
     }
     
     
@@ -241,6 +241,10 @@ class PageDetailVC: UIViewController, UIScrollViewDelegate, UICollectionViewDele
             }
             
             lblAstimateDelivery?.text = dataInfoOneCustomer.elem?.metadata?.planned_date
+            lblAstimateDelivery.layer.cornerRadius = 10
+            viewInfoAstimate.layer.cornerRadius = 10
+            
+            viewInfoAstimate.layer.masksToBounds = true
             
             var arrDataUrlImage = [String]()
             for iUrlImage in arrImage where iUrlImage != "" {
