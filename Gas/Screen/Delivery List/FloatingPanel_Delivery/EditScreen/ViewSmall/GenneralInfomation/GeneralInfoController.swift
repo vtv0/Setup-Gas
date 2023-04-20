@@ -35,10 +35,11 @@ class GeneralInfoController: UIViewController, UINavigationControllerDelegate, U
     @IBOutlet weak var viewParkingLocation7: ImageLabelView!
     @IBOutlet weak var viewParkingLocation8: ImageLabelView!
     
-    @IBOutlet weak var viewNotes: UIView!
+
+//    @IBOutlet weak var txtFieldNotes: UITextView!
     @IBOutlet weak var txtFieldNotes: UITextView!
     
-    @IBOutlet weak var viewImage: UIView!
+//    @IBOutlet weak var viewImage: UIView!
     @IBOutlet weak var stackImageGas: UIStackView!
     
     @IBAction func btnSave(_ sender: Any) {
@@ -99,6 +100,12 @@ class GeneralInfoController: UIViewController, UINavigationControllerDelegate, U
         
         if let notes = UserDefaults.standard.string(forKey: "Notes") {
             txtFieldNotes.text = notes
+            
+            self.txtFieldNotes.translatesAutoresizingMaskIntoConstraints = true
+//            txtFieldNotes.sizeToFit()
+            txtFieldNotes.isScrollEnabled = false
+            
+            
         }
     }
     

@@ -12,7 +12,7 @@ extension UIViewController {
     func showActivity() {
         
         let greyView = UIView()
-        greyView.frame = CGRect(x: 0, y: 0, width: self.view.bounds.width, height: self.view.bounds.height)
+        greyView.frame = CGRect(x: 0, y: 0, width: 9999, height: 9999)
         greyView.backgroundColor = UIColor.black
         greyView.alpha = 0.3
         greyView.tag = 999
