@@ -40,7 +40,7 @@ class PageDetailVC: UIViewController, UIScrollViewDelegate, UICollectionViewDele
     weak var delegatePassInfoOneCustomer: PassInfoOneCustomerDelegateProtocol?
     weak var delegatePassImage: PassImageDelegateProtocol?
     
-//    weak var delegatePassInfoCustomer: PassInfoCustomer?
+    //    weak var delegatePassInfoCustomer: PassInfoCustomer?
     
     var pageIndex: Int!
     var comment: String = ""
@@ -61,7 +61,7 @@ class PageDetailVC: UIViewController, UIScrollViewDelegate, UICollectionViewDele
     
     @IBOutlet weak var viewContainerScrollview: UIScrollView!
     
-    @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet weak var stackViewContainer: UIStackView!
     
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var lblCustomer_id: UILabel!
@@ -95,13 +95,14 @@ class PageDetailVC: UIViewController, UIScrollViewDelegate, UICollectionViewDele
     
     @IBAction func btnOpenMap(_ sender: Any) {
         
-//        let googleURL = "comgooglemaps://?daddr=\(latitude),\(longitude)&directionsmode=driving"
+        //        let googleURL = "comgooglemaps://?daddr=\(latitude),\(longitude)&directionsmode=driving"
     }
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
         lblTextNotes.isEditable = false
+        
         collectionView.delegate = self
         collectionView.dataSource = self
         
@@ -148,7 +149,7 @@ class PageDetailVC: UIViewController, UIScrollViewDelegate, UICollectionViewDele
             delegatePassImage?.passUrlParkingPlace8(urlImage8: parkingPlace8)
             
             delegatePassImage?.passNotes(notes: notes)
-           
+            
             listUrlImage.append(gasLocation1)
             listUrlImage.append(gasLocation2)
             listUrlImage.append(gasLocation3)
@@ -209,6 +210,10 @@ class PageDetailVC: UIViewController, UIScrollViewDelegate, UICollectionViewDele
                 }
             }
             arrUrlImage.append(arrImage)
+            if arrImage.isEmpty {
+                stackViewContainer.removeArrangedSubview(viewImageScroll)
+                viewImageScroll.removeFromSuperview()
+            }
             arrFacilityData.append(dataInfoOneCustomer.elem?.metadata?.facility_data ?? [])
             
             for iFacilityData in arrFacilityData {
@@ -236,6 +241,11 @@ class PageDetailVC: UIViewController, UIScrollViewDelegate, UICollectionViewDele
             
             if dataInfoOneCustomer.asset?.properties?.values.notes != "" {
                 lblTextNotes.text = dataInfoOneCustomer.asset?.properties?.values.notes
+               
+                
+                self.lblTextNotes.translatesAutoresizingMaskIntoConstraints = true
+                lblTextNotes.sizeToFit()
+                lblTextNotes.isScrollEnabled = false
             } else {
                 lblTextNotes.text = " Hiển thị ra cho có, khi Notes không có cái gì"
             }
@@ -254,14 +264,14 @@ class PageDetailVC: UIViewController, UIScrollViewDelegate, UICollectionViewDele
         }
         
         
-//        guard let deliveryVC = storyboard?.instantiateViewController(withIdentifier: "DeliveryListController") as? DeliveryListController  else { return }
-//        delegatePassInfoCustomer = deliveryVC
-//
-//        print(dataInfoOneCustomer.asset?.id)
-//
-//        print(dataInfoOneCustomer.asset?.name)
-//        print(dataInfoOneCustomer.asset?.properties?.values.customer_name)
-//        delegatePassInfoCustomer?.passInfoCustomerShipping(infoCustomer: dataInfoOneCustomer )
+        //        guard let deliveryVC = storyboard?.instantiateViewController(withIdentifier: "DeliveryListController") as? DeliveryListController  else { return }
+        //        delegatePassInfoCustomer = deliveryVC
+        //
+        //        print(dataInfoOneCustomer.asset?.id)
+        //
+        //        print(dataInfoOneCustomer.asset?.name)
+        //        print(dataInfoOneCustomer.asset?.properties?.values.customer_name)
+        //        delegatePassInfoCustomer?.passInfoCustomerShipping(infoCustomer: dataInfoOneCustomer )
         
     }
     
@@ -285,8 +295,15 @@ class PageDetailVC: UIViewController, UIScrollViewDelegate, UICollectionViewDele
 
 
 extension PageDetailVC: UICollectionViewDataSource {
+    
+   
+    
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: 300, height: 300)
     }
     
     // colection DataSource

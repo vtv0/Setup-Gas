@@ -15,4 +15,6 @@ class PageDetailCollectionViewCell: UICollectionViewCell {
         super.awakeFromNib()
         // Initialization code
     }
+    
+    
 }
