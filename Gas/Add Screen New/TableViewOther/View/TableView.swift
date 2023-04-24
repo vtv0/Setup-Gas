@@ -12,6 +12,7 @@ import AlamofireImage
 class TableView: UIViewController, UITableViewDelegate {
     
     @IBOutlet weak var tableView: UITableView!
+    
     var dateSelected: Date = Date()
     var locationsIsCustomer: [Location] = [] // du lieu cua mang duoc truyen tu ScreenExpandVC (API)
     var arrImages = [UIImage]()

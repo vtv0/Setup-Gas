@@ -18,6 +18,7 @@
 		750C7E6D290FA4CE009A9E27 /* ParseJsonGetAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750C7E6C290FA4CE009A9E27 /* ParseJsonGetAsset.swift */; };
 		75123F6A29027E3D00A08972 /* PassScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75123F6929027E3D00A08972 /* PassScreenViewController.swift */; };
 		7517A0F028F660FE00994CBD /* CustomAlertReplanVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7517A0EF28F660FE00994CBD /* CustomAlertReplanVC.swift */; };
+		751DC9CA29F662F200510018 /* ViewType.xib in Resources */ = {isa = PBXBuildFile; fileRef = 751DC9C929F662F200510018 /* ViewType.xib */; };
 		7530019529B5EC8100B4A1C4 /* SQLite_valuesOFProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7530019429B5EC8100B4A1C4 /* SQLite_valuesOFProperties.swift */; };
 		7530019729B5F5B000B4A1C4 /* SQLite_delivery_history.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7530019629B5F5B000B4A1C4 /* SQLite_delivery_history.swift */; };
 		753001A129B821BD00B4A1C4 /* Facility_data_Metadata_Elem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753001A029B821BD00B4A1C4 /* Facility_data_Metadata_Elem.swift */; };
@@ -32,6 +33,7 @@
 		7549899C299B3AA000D1958E /* ScreenExpland_Presenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7549899B299B3AA000D1958E /* ScreenExpland_Presenter.swift */; };
 		754B942028EAE8CB0059D4F2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 754B941F28EAE8CB0059D4F2 /* Assets.xcassets */; };
 		754C987B29B1E19200931430 /* SQLite_DBLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754C987A29B1E19200931430 /* SQLite_DBLocation.swift */; };
+		755CCBB429F663E90038E207 /* ReuseViewType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755CCBB329F663E90038E207 /* ReuseViewType.swift */; };
 		755F185129B1ED5400C99A1D /* SQLite_Asset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755F185029B1ED5400C99A1D /* SQLite_Asset.swift */; };
 		7573ADC029530A0100E8C658 /* GetWorkerVehicleList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7573ADBF29530A0100E8C658 /* GetWorkerVehicleList.swift */; };
 		7573ADC229530D3600E8C658 /* GetRouteList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7573ADC129530D3600E8C658 /* GetRouteList.swift */; };
@@ -109,6 +111,7 @@
 		750C7E6C290FA4CE009A9E27 /* ParseJsonGetAsset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParseJsonGetAsset.swift; sourceTree = "<group>"; };
 		75123F6929027E3D00A08972 /* PassScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassScreenViewController.swift; sourceTree = "<group>"; };
 		7517A0EF28F660FE00994CBD /* CustomAlertReplanVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAlertReplanVC.swift; sourceTree = "<group>"; };
+		751DC9C929F662F200510018 /* ViewType.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ViewType.xib; sourceTree = "<group>"; };
 		7530019429B5EC8100B4A1C4 /* SQLite_valuesOFProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SQLite_valuesOFProperties.swift; sourceTree = "<group>"; };
 		7530019629B5F5B000B4A1C4 /* SQLite_delivery_history.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SQLite_delivery_history.swift; sourceTree = "<group>"; };
 		753001A029B821BD00B4A1C4 /* Facility_data_Metadata_Elem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Facility_data_Metadata_Elem.swift; sourceTree = "<group>"; };
@@ -123,6 +126,7 @@
 		7549899B299B3AA000D1958E /* ScreenExpland_Presenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenExpland_Presenter.swift; sourceTree = "<group>"; };
 		754B941F28EAE8CB0059D4F2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		754C987A29B1E19200931430 /* SQLite_DBLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SQLite_DBLocation.swift; sourceTree = "<group>"; };
+		755CCBB329F663E90038E207 /* ReuseViewType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReuseViewType.swift; sourceTree = "<group>"; };
 		755F185029B1ED5400C99A1D /* SQLite_Asset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SQLite_Asset.swift; sourceTree = "<group>"; };
 		7573ADBF29530A0100E8C658 /* GetWorkerVehicleList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetWorkerVehicleList.swift; sourceTree = "<group>"; };
 		7573ADC129530D3600E8C658 /* GetRouteList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetRouteList.swift; sourceTree = "<group>"; };
@@ -207,6 +211,8 @@
 			children = (
 				7501250728ED2272003AC9EB /* PageDetailVC.swift */,
 				7598E46028EFC4DC00EA9FA9 /* PageDetailCollectionViewCell.swift */,
+				751DC9C929F662F200510018 /* ViewType.xib */,
+				755CCBB329F663E90038E207 /* ReuseViewType.swift */,
 			);
 			path = PageViewControllerChild;
 			sourceTree = "<group>";
@@ -810,6 +816,7 @@
 				75D2CE8728F80F3400B51CED /* ImageLabelView.xib in Resources */,
 				75D7851329DFCA0C0066C660 /* PHAssetCollection.storyboard in Resources */,
 				75E244D229B04F8800CC8526 /* ContainerPageVC.storyboard in Resources */,
+				751DC9CA29F662F200510018 /* ViewType.xib in Resources */,
 				7578B3C029AD9D3A007367C3 /* FullScreenImage.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -922,6 +929,7 @@
 				75BF3A0728E161A800BC0F0C /* AppDelegate.swift in Sources */,
 				75498993299A245A00D1958E /* Presenter_Replan.swift in Sources */,
 				7573ADC4295310B400E8C658 /* GetWorkerRouteLocationList4.swift in Sources */,
+				755CCBB429F663E90038E207 /* ReuseViewType.swift in Sources */,
 				750B39D028E3036300210AB9 /* ReplanController.swift in Sources */,
 				7549898A2999E88E00D1958E /* PresenterSetting.swift in Sources */,
 				75A1E17F28F3AB6300EA17A2 /* RerouteViewController.swift in Sources */,

@@ -26,6 +26,7 @@ enum StatusDelivery: CaseIterable {
 //            return "OK"
         }
     }
+    
 }
 
 class ShippingViewController: UIViewController {
@@ -52,6 +53,7 @@ class ShippingViewController: UIViewController {
     @IBOutlet weak var lblStatus: UILabel!
     
     @IBOutlet weak var stackView: UIStackView!
+    
     static var statusDelivery: String = ""
     
     override func viewDidLoad() {

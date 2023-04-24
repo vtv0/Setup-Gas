@@ -69,14 +69,13 @@ class PageDetailVC: UIViewController, UIScrollViewDelegate, UICollectionViewDele
     @IBOutlet weak var lblAddress: UILabel!
     @IBOutlet weak var lblDeliveryTime: UILabel!
     @IBOutlet weak var lblAstimateDelivery: UILabel!
-    @IBOutlet weak var lblTypeGas: UILabel!
-    @IBOutlet weak var lblNumberGas: UILabel!
-    @IBOutlet weak var viewAutomaticInfoGas: UIView!
-    @IBOutlet weak var lblTypeGasInStackView: UILabel!
-    @IBOutlet weak var lblNumberGasInStackView: UILabel!
+    
+    @IBOutlet weak var stackViewType: UIStackView!
+    
     @IBOutlet weak var lblTextNotes: UITextView!
-    @IBOutlet weak var viewImageScroll: UIScrollView!
-    @IBOutlet weak var viewDetail: UIView!
+    @IBOutlet weak var viewImage: UIView!
+    
+    
     @IBOutlet weak var pageControl: UIPageControl!
     @IBOutlet weak var viewType: UIView!
     @IBOutlet weak var viewNote: UIView!
@@ -98,13 +97,20 @@ class PageDetailVC: UIViewController, UIScrollViewDelegate, UICollectionViewDele
         //        let googleURL = "comgooglemaps://?daddr=\(latitude),\(longitude)&directionsmode=driving"
     }
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         lblTextNotes.isEditable = false
         
+        
+//        let layout = UICollectionViewLayout()
+//        collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        
+//        collectionView = UICollectionView(frame: .zero)
+        
         collectionView.delegate = self
         collectionView.dataSource = self
+        
+        
         
         pageControl.numberOfPages = arrImage.count
         
@@ -171,9 +177,8 @@ class PageDetailVC: UIViewController, UIScrollViewDelegate, UICollectionViewDele
             lblDeliveryTime.removeFromSuperview()
             lblAstimateDelivery.removeFromSuperview()
             collectionView.removeFromSuperview()
-            viewImageScroll.removeFromSuperview()
+            viewImage.removeFromSuperview()
             viewNote.removeFromSuperview()
-            viewDetail.removeFromSuperview()
             viewType.removeFromSuperview()
             
         } else {
@@ -211,40 +216,52 @@ class PageDetailVC: UIViewController, UIScrollViewDelegate, UICollectionViewDele
             }
             arrUrlImage.append(arrImage)
             if arrImage.isEmpty {
-                stackViewContainer.removeArrangedSubview(viewImageScroll)
-                viewImageScroll.removeFromSuperview()
+                stackViewContainer.removeArrangedSubview(viewImage)
+                viewImage.removeFromSuperview()
             }
             arrFacilityData.append(dataInfoOneCustomer.elem?.metadata?.facility_data ?? [])
-            
+            print(arrFacilityData.count)
             for iFacilityData in arrFacilityData {
-                if iFacilityData.count == 1 {
-                    lblTypeGas?.text = "\(iFacilityData[0].type ?? 0)kg"
-                    lblNumberGas?.text = "\(iFacilityData[0].count  ?? 0)bottle"
-                    viewAutomaticInfoGas.removeFromSuperview()
-                    
-                } else if iFacilityData.count > 1 {
-                    self.view.addSubview(viewAutomaticInfoGas)
-                    viewAutomaticInfoGas.translatesAutoresizingMaskIntoConstraints = false
-                    NSLayoutConstraint.activate([
-                        viewAutomaticInfoGas.bottomAnchor.constraint(equalTo: viewDetail.bottomAnchor),
-                        viewAutomaticInfoGas.leftAnchor.constraint(equalTo: viewDetail.leftAnchor, constant: 40),
-                        viewAutomaticInfoGas.rightAnchor.constraint(equalTo: viewDetail.rightAnchor, constant: -40),
-                        viewAutomaticInfoGas.heightAnchor.constraint(equalToConstant: 30)
-                    ])
-                    
-                    lblTypeGas?.text = "\(iFacilityData[0].type ?? 0 )kg"
-                    lblNumberGas?.text =  "\(iFacilityData[0].count  ?? 0)bottle"
-                    lblTypeGasInStackView.text = "\(iFacilityData[1].type ?? 0 )kg"
-                    lblNumberGasInStackView.text = "\(iFacilityData[1].count  ?? 0)bottle"
-                }
+                print(iFacilityData)
+                let typeView = ReuseViewType(frame: .zero)
+                typeView.lblType?.text = "\(iFacilityData[0].type ?? 0)"
+                typeView.lblNumber?.text = "\(iFacilityData[0].count ?? 0)"
+                typeView.loadInfoViewType()
+                stackViewType.addArrangedSubview(typeView)
+                
+                
+                
+                
+                
+//                if iFacilityData.count == 1 {
+//                    lblTypeGas?.text = "\(iFacilityData[0].type ?? 0)kg"
+//                    lblNumberGas?.text = "\(iFacilityData[0].count  ?? 0)bottle"
+//                    viewAutomaticInfoGas.removeFromSuperview()
+//
+//                } else if iFacilityData.count > 1 {
+//                    self.view.addSubview(viewAutomaticInfoGas)
+//                    viewAutomaticInfoGas.translatesAutoresizingMaskIntoConstraints = false
+//                    NSLayoutConstraint.activate([
+//                        viewAutomaticInfoGas.bottomAnchor.constraint(equalTo: viewDetail.bottomAnchor),
+//                        viewAutomaticInfoGas.leftAnchor.constraint(equalTo: viewDetail.leftAnchor, constant: 40),
+//                        viewAutomaticInfoGas.rightAnchor.constraint(equalTo: viewDetail.rightAnchor, constant: -40),
+//                        viewAutomaticInfoGas.heightAnchor.constraint(equalToConstant: 30)
+//                    ])
+//
+//                    lblTypeGas?.text = "\(iFacilityData[0].type ?? 0 )kg"
+//                    lblNumberGas?.text =  "\(iFacilityData[0].count  ?? 0)bottle"
+//                    lblTypeGasInStackView.text = "\(iFacilityData[1].type ?? 0 )kg"
+//                    lblNumberGasInStackView.text = "\(iFacilityData[1].count  ?? 0)bottle"
+//                }
+                
+                
             }
             
             if dataInfoOneCustomer.asset?.properties?.values.notes != "" {
                 lblTextNotes.text = dataInfoOneCustomer.asset?.properties?.values.notes
-               
                 
-                self.lblTextNotes.translatesAutoresizingMaskIntoConstraints = true
-                lblTextNotes.sizeToFit()
+                
+                self.lblTextNotes.translatesAutoresizingMaskIntoConstraints = false
                 lblTextNotes.isScrollEnabled = false
             } else {
                 lblTextNotes.text = " Hiển thị ra cho có, khi Notes không có cái gì"
@@ -275,8 +292,10 @@ class PageDetailVC: UIViewController, UIScrollViewDelegate, UICollectionViewDele
         
     }
     
+    
+    
     func scrollViewDidEndDecelerating(scrollImage: UIScrollView) {
-        pageControl.currentPage = Int(viewImageScroll.contentOffset.x / viewImageScroll.bounds.width)
+        pageControl.currentPage = Int(viewContainerScrollview.contentOffset.x / viewContainerScrollview.bounds.width)
         //        pageControl?.currentPage = Int(scrollView.contentOffset.x) / Int(scrollView.frame.width)
     }
     
@@ -293,18 +312,22 @@ class PageDetailVC: UIViewController, UIScrollViewDelegate, UICollectionViewDele
     }
 }
 
+extension PageDetailVC: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let screenWidth = UIScreen.main.bounds.width
+        return CGSize.init(width: screenWidth, height: 250 )
+    }
+    
+}
 
 extension PageDetailVC: UICollectionViewDataSource {
     
-   
+    
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 300, height: 300)
-    }
     
     // colection DataSource
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -328,6 +351,7 @@ extension PageDetailVC: UICollectionViewDataSource {
                 }
             }
         }
+        
         cellImage.layer.shouldRasterize = true
         return cellImage
     }

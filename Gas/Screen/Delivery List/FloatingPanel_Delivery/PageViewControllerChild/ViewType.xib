@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21678"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ReuseViewType" customModule="Gas" customModuleProvider="target">
+            <connections>
+                <outlet property="lblNumber" destination="bcx-5a-yEg" id="h8C-a6-4gU"/>
+                <outlet property="lblType" destination="p6z-Yu-53H" id="afP-Dd-bbB"/>
+                <outlet property="mainViewType" destination="iN0-l3-epB" id="9V2-Wn-zIV"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="580" height="80"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="lbl Type" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="p6z-Yu-53H">
+                    <rect key="frame" x="0.0" y="0.0" width="290" height="46"/>
+                    <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="lbl Number" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bcx-5a-yEg">
+                    <rect key="frame" x="290" y="0.0" width="290" height="46"/>
+                    <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <color key="backgroundColor" name="yellowMarker"/>
+            <constraints>
+                <constraint firstItem="bcx-5a-yEg" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="Buj-za-u3P"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="p6z-Yu-53H" secondAttribute="bottom" id="EZc-gU-1IU"/>
+                <constraint firstAttribute="trailing" secondItem="bcx-5a-yEg" secondAttribute="trailing" id="MhW-yP-dbW"/>
+                <constraint firstItem="bcx-5a-yEg" firstAttribute="leading" secondItem="p6z-Yu-53H" secondAttribute="trailing" id="lIU-0E-sAB"/>
+                <constraint firstItem="p6z-Yu-53H" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="ptp-uO-l2j"/>
+                <constraint firstItem="bcx-5a-yEg" firstAttribute="width" secondItem="iN0-l3-epB" secondAttribute="width" multiplier="0.5" id="rIW-ga-sRk"/>
+                <constraint firstItem="p6z-Yu-53H" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="sXp-n3-Tj3"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="bcx-5a-yEg" secondAttribute="bottom" id="yjH-Ez-xKN"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="204.58015267175571" y="-357.74647887323948"/>
+        </view>
+    </objects>
+    <resources>
+        <namedColor name="yellowMarker">
+            <color red="1" green="0.69800001382827759" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>
