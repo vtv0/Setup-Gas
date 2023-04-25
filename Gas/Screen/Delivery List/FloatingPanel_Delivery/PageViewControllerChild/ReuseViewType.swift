@@ -13,19 +13,8 @@ class ReuseViewType: UIView {
     @IBOutlet weak var lblType: UILabel!
     @IBOutlet weak var lblNumber: UILabel!
     
-    func loadViewFromNIB() -> UIView? {
-        let nib = UINib(nibName: "ViewType", bundle: nil)
-        return nib.instantiate(withOwner: self, options: nil).first as? UIView
-    }
-    
-    
-    func commonInit() {
-        guard let viewReuseType = loadViewFromNIB() else { return }
-//        viewReuseType = self.bounds
-        viewReuseType.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        self.addSubview(viewReuseType)
-    }
-    
+    @IBOutlet weak var stackViewContainer: UIStackView!
+//    var heightContraint: NSLayoutConstraint?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -35,14 +24,29 @@ class ReuseViewType: UIView {
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         commonInit()
-        //        fatalError("init(coder:) has not been implemented")
     }
     
-    func loadInfoViewType() {
-        //        lblInfo.text = status.title
-        lblType.text = "50"
-        lblNumber.text = "20"
+    func loadViewFromNIB() -> UIView? {
+        let nib = UINib(nibName: "ViewType", bundle: nil)
+        return nib.instantiate(withOwner: self, options: nil).first as? UIView
     }
+    
+    
+    func commonInit() {
+        guard let viewReuseType = loadViewFromNIB() else { return }
+        viewReuseType.frame = self.bounds
+        viewReuseType.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        self.addSubview(viewReuseType)
+    }
+    
+    
+   
+    
+//    func loadInfoViewType() {
+//        //        lblInfo.text = status.title
+//        lblType.text = "500"
+//        lblNumber.text = "200"
+//    }
     
     
 }

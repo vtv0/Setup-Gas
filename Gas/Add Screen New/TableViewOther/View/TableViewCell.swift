@@ -56,5 +56,6 @@ class TableViewCell: UITableViewCell, PassScreen {
             reuseImageView.delegatePassScreen = self
             stackViewImages.addArrangedSubview(reuseImageView)
         }
+        
     }
 }

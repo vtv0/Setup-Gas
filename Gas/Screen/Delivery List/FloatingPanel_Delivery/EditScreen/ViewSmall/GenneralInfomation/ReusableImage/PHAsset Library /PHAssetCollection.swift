@@ -32,6 +32,7 @@ class PHAssetCollection: UIViewController {
             self.delegatePassImage?.passImage(images: imagesOK)
         }
     }
+    
     var photoIsAvailable: Int = 0
     var clickedCellPosition: Int = 0
     
@@ -147,11 +148,9 @@ extension PHAssetCollection: UICollectionViewDelegate {  // list image
             } else {
                 showAlert(message: "Quá số lượng ảnh được chọn")
             }
-           
         }
         collectionPhoto.reloadItems(at: [indexPath])
     }
-    
 }
 
 //extension PHAssetCollection: PHPickerViewControllerDelegate {

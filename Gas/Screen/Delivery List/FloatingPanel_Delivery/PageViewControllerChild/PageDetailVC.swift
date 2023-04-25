@@ -68,7 +68,9 @@ class PageDetailVC: UIViewController, UIScrollViewDelegate, UICollectionViewDele
     @IBOutlet weak var lblCustomerName: UILabel!
     @IBOutlet weak var lblAddress: UILabel!
     @IBOutlet weak var lblDeliveryTime: UILabel!
-    @IBOutlet weak var lblAstimateDelivery: UILabel!
+    
+    @IBOutlet weak var lblEstimateDeliveryDate: UILabel!
+    @IBOutlet weak var lblEstimateDelivery: UILabel!
     
     @IBOutlet weak var stackViewType: UIStackView!
     
@@ -102,10 +104,10 @@ class PageDetailVC: UIViewController, UIScrollViewDelegate, UICollectionViewDele
         lblTextNotes.isEditable = false
         
         
-//        let layout = UICollectionViewLayout()
-//        collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        //        let layout = UICollectionViewLayout()
+        //        collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         
-//        collectionView = UICollectionView(frame: .zero)
+        //        collectionView = UICollectionView(frame: .zero)
         
         collectionView.delegate = self
         collectionView.dataSource = self
@@ -175,11 +177,13 @@ class PageDetailVC: UIViewController, UIScrollViewDelegate, UICollectionViewDele
             lblCustomerName.removeFromSuperview()
             lblAddress.removeFromSuperview()
             lblDeliveryTime.removeFromSuperview()
-            lblAstimateDelivery.removeFromSuperview()
+            lblEstimateDelivery.removeFromSuperview()
+            lblEstimateDeliveryDate.removeFromSuperview()
             collectionView.removeFromSuperview()
             viewImage.removeFromSuperview()
             viewNote.removeFromSuperview()
             viewType.removeFromSuperview()
+            lblTextNotes.removeFromSuperview()
             
         } else {
             lblCustomer_id?.text = dataInfoOneCustomer.elem?.location?.comment
@@ -220,39 +224,49 @@ class PageDetailVC: UIViewController, UIScrollViewDelegate, UICollectionViewDele
                 viewImage.removeFromSuperview()
             }
             arrFacilityData.append(dataInfoOneCustomer.elem?.metadata?.facility_data ?? [])
-            print(arrFacilityData.count)
-            for iFacilityData in arrFacilityData {
-                print(iFacilityData)
+            
+            for iFacilityData in arrFacilityData {   //  phai sua lai 
+                
+                // chuyen arrFacilityData sang ReuseViewType
+                
                 let typeView = ReuseViewType(frame: .zero)
-                typeView.lblType?.text = "\(iFacilityData[0].type ?? 0)"
-                typeView.lblNumber?.text = "\(iFacilityData[0].count ?? 0)"
-                typeView.loadInfoViewType()
+                //                                typeView.loadInfoViewType()
+                if iFacilityData.count == 1 {
+                    typeView.lblType?.text = "\(iFacilityData[0].type ?? 0)"
+                    typeView.lblNumber?.text = "\(iFacilityData[0].count ?? 0)"
+                } else if iFacilityData.count > 1 {
+                    typeView.lblType?.text = "\(iFacilityData[0].type ?? 0)"
+                    typeView.lblNumber?.text = "\(iFacilityData[0].count ?? 0)"
+                    typeView.lblType?.text = "\(iFacilityData[1].type ?? 0)"
+                    typeView.lblNumber?.text = "\(iFacilityData[1].count ?? 0)"
+                }
+                
                 stackViewType.addArrangedSubview(typeView)
                 
                 
                 
                 
                 
-//                if iFacilityData.count == 1 {
-//                    lblTypeGas?.text = "\(iFacilityData[0].type ?? 0)kg"
-//                    lblNumberGas?.text = "\(iFacilityData[0].count  ?? 0)bottle"
-//                    viewAutomaticInfoGas.removeFromSuperview()
-//
-//                } else if iFacilityData.count > 1 {
-//                    self.view.addSubview(viewAutomaticInfoGas)
-//                    viewAutomaticInfoGas.translatesAutoresizingMaskIntoConstraints = false
-//                    NSLayoutConstraint.activate([
-//                        viewAutomaticInfoGas.bottomAnchor.constraint(equalTo: viewDetail.bottomAnchor),
-//                        viewAutomaticInfoGas.leftAnchor.constraint(equalTo: viewDetail.leftAnchor, constant: 40),
-//                        viewAutomaticInfoGas.rightAnchor.constraint(equalTo: viewDetail.rightAnchor, constant: -40),
-//                        viewAutomaticInfoGas.heightAnchor.constraint(equalToConstant: 30)
-//                    ])
-//
-//                    lblTypeGas?.text = "\(iFacilityData[0].type ?? 0 )kg"
-//                    lblNumberGas?.text =  "\(iFacilityData[0].count  ?? 0)bottle"
-//                    lblTypeGasInStackView.text = "\(iFacilityData[1].type ?? 0 )kg"
-//                    lblNumberGasInStackView.text = "\(iFacilityData[1].count  ?? 0)bottle"
-//                }
+                //                if iFacilityData.count == 1 {
+                //                    lblTypeGas?.text = "\(iFacilityData[0].type ?? 0)kg"
+                //                    lblNumberGas?.text = "\(iFacilityData[0].count  ?? 0)bottle"
+                //                    viewAutomaticInfoGas.removeFromSuperview()
+                //
+                //                } else if iFacilityData.count > 1 {
+                //                    self.view.addSubview(viewAutomaticInfoGas)
+                //                    viewAutomaticInfoGas.translatesAutoresizingMaskIntoConstraints = false
+                //                    NSLayoutConstraint.activate([
+                //                        viewAutomaticInfoGas.bottomAnchor.constraint(equalTo: viewDetail.bottomAnchor),
+                //                        viewAutomaticInfoGas.leftAnchor.constraint(equalTo: viewDetail.leftAnchor, constant: 40),
+                //                        viewAutomaticInfoGas.rightAnchor.constraint(equalTo: viewDetail.rightAnchor, constant: -40),
+                //                        viewAutomaticInfoGas.heightAnchor.constraint(equalToConstant: 30)
+                //                    ])
+                //
+                //                    lblTypeGas?.text = "\(iFacilityData[0].type ?? 0 )kg"
+                //                    lblNumberGas?.text =  "\(iFacilityData[0].count  ?? 0)bottle"
+                //                    lblTypeGasInStackView.text = "\(iFacilityData[1].type ?? 0 )kg"
+                //                    lblNumberGasInStackView.text = "\(iFacilityData[1].count  ?? 0)bottle"
+                //                }
                 
                 
             }
@@ -267,16 +281,18 @@ class PageDetailVC: UIViewController, UIScrollViewDelegate, UICollectionViewDele
                 lblTextNotes.text = " Hiển thị ra cho có, khi Notes không có cái gì"
             }
             
-            lblAstimateDelivery?.text = dataInfoOneCustomer.elem?.metadata?.planned_date
-            lblAstimateDelivery.layer.cornerRadius = 10
+            lblEstimateDelivery?.text = dataInfoOneCustomer.elem?.metadata?.planned_date
+            lblEstimateDelivery.layer.cornerRadius = 10
             viewInfoAstimate.layer.cornerRadius = 10
             
             viewInfoAstimate.layer.masksToBounds = true
             
             var arrDataUrlImage = [String]()
+            
             for iUrlImage in arrImage where iUrlImage != "" {
                 arrDataUrlImage.append(iUrlImage)
             }
+            
             arrImage = arrDataUrlImage
         }
         
@@ -312,7 +328,7 @@ class PageDetailVC: UIViewController, UIScrollViewDelegate, UICollectionViewDele
     }
 }
 
-extension PageDetailVC: UICollectionViewDelegateFlowLayout {
+extension PageDetailVC: UICollectionViewDelegateFlowLayout {  // resize cho item
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let screenWidth = UIScreen.main.bounds.width
         return CGSize.init(width: screenWidth, height: 250 )
@@ -322,12 +338,9 @@ extension PageDetailVC: UICollectionViewDelegateFlowLayout {
 
 extension PageDetailVC: UICollectionViewDataSource {
     
-    
-    
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
-    
     
     // colection DataSource
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -338,6 +351,7 @@ extension PageDetailVC: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cellImage = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath)  as! PageDetailCollectionViewCell
+        
         if !arrImage.isEmpty {
             let iurl = arrImage[indexPath.row]
             

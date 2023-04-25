@@ -27,6 +27,8 @@ class ViewImage: UIView {
     var indexImage1: Int = 0
     var urls1: [String] = []
     var iurlImage: String = ""
+    
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         commonInit()
@@ -55,6 +57,7 @@ class ViewImage: UIView {
         delegatePassScreen?.passListImages(urls: urls1, indexUrl: indexImage1, iurlImage: iurlImage)
     }
     
+    
     func getImage(iurl: String, indexImage: Int, urls: [String]) {
         iurlImage = iurl
         urls1 = urls
@@ -68,6 +71,7 @@ class ViewImage: UIView {
             self.widthAnchor.constraint(equalTo: self.heightAnchor, multiplier: ratio).isActive = true
         }
     }
+    
     
     func saveImageLocally(image: UIImage, fileName: String) {
         let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
@@ -101,6 +105,7 @@ extension UIImageView {
                 }
                 
                 completion?()
+                
             } else {
                 AF.request(iurl, method: .get).response { response in
                     switch response.result {
