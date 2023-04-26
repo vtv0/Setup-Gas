@@ -42,7 +42,7 @@ class PageDetailVC: UIViewController, UIScrollViewDelegate, UICollectionViewDele
     
     //    weak var delegatePassInfoCustomer: PassInfoCustomer?
     
-    var pageIndex: Int!
+     var pageIndex: Int!
     var comment: String = ""
     var arrUrlImage: [[String]] = []
     var dateYMD: [Date] = []
@@ -63,27 +63,30 @@ class PageDetailVC: UIViewController, UIScrollViewDelegate, UICollectionViewDele
     
     @IBOutlet weak var stackViewContainer: UIStackView!
     
-    @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var lblCustomer_id: UILabel!
     @IBOutlet weak var lblCustomerName: UILabel!
     @IBOutlet weak var lblAddress: UILabel!
     @IBOutlet weak var lblDeliveryTime: UILabel!
-    
-    @IBOutlet weak var lblEstimateDeliveryDate: UILabel!
-    @IBOutlet weak var lblEstimateDelivery: UILabel!
-    
-    @IBOutlet weak var stackViewType: UIStackView!
-    
-    @IBOutlet weak var lblTextNotes: UITextView!
+
     @IBOutlet weak var viewImage: UIView!
-    
-    
+    @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var pageControl: UIPageControl!
-    @IBOutlet weak var viewType: UIView!
-    @IBOutlet weak var viewNote: UIView!
     
+    @IBOutlet weak var viewType: UIView!
+    @IBOutlet weak var viewLBLType: UIView!
+    @IBOutlet weak var lblType: UIView!
+    @IBOutlet weak var lblNumber: UIView!
+    @IBOutlet weak var viewLBLNumber: UIView!
+    @IBOutlet weak var stackViewType: UIStackView!
+        
+    @IBOutlet weak var viewNote: UIView!
+    @IBOutlet weak var lblTextNotes: UITextView!
     
     @IBOutlet weak var viewInfoAstimate: UIView!
+    @IBOutlet weak var viewContain2Label: UIView!
+    @IBOutlet weak var lblEstimateDeliveryDate: UILabel!
+    @IBOutlet weak var lblEstimateDelivery: UILabel!
+
     
     @IBAction func btnEdit(_ sender: Any) {
         let screenEdit = storyboard?.instantiateViewController(withIdentifier: "EditViewController") as! EditViewController
@@ -184,6 +187,7 @@ class PageDetailVC: UIViewController, UIScrollViewDelegate, UICollectionViewDele
             viewNote.removeFromSuperview()
             viewType.removeFromSuperview()
             lblTextNotes.removeFromSuperview()
+            viewContain2Label.removeFromSuperview()
             
         } else {
             lblCustomer_id?.text = dataInfoOneCustomer.elem?.location?.comment
@@ -219,55 +223,27 @@ class PageDetailVC: UIViewController, UIScrollViewDelegate, UICollectionViewDele
                 }
             }
             arrUrlImage.append(arrImage)
-            if arrImage.isEmpty {
+            if arrImage.isEmpty {  // delete View if not Image
                 stackViewContainer.removeArrangedSubview(viewImage)
                 viewImage.removeFromSuperview()
             }
             arrFacilityData.append(dataInfoOneCustomer.elem?.metadata?.facility_data ?? [])
+            viewLBLType.layer.cornerRadius = 9
+            lblType.layer.cornerRadius = 9
+            lblType.layer.masksToBounds = true
             
-            for iFacilityData in arrFacilityData {   //  phai sua lai 
-                
-                // chuyen arrFacilityData sang ReuseViewType
-                
-                let typeView = ReuseViewType(frame: .zero)
-                //                                typeView.loadInfoViewType()
-                if iFacilityData.count == 1 {
-                    typeView.lblType?.text = "\(iFacilityData[0].type ?? 0)"
-                    typeView.lblNumber?.text = "\(iFacilityData[0].count ?? 0)"
-                } else if iFacilityData.count > 1 {
-                    typeView.lblType?.text = "\(iFacilityData[0].type ?? 0)"
-                    typeView.lblNumber?.text = "\(iFacilityData[0].count ?? 0)"
-                    typeView.lblType?.text = "\(iFacilityData[1].type ?? 0)"
-                    typeView.lblNumber?.text = "\(iFacilityData[1].count ?? 0)"
+            viewLBLNumber.layer.cornerRadius = 9
+            lblNumber.layer.cornerRadius = 9
+            lblNumber.layer.masksToBounds = true
+            
+       
+            for iFacilityData in arrFacilityData {
+                for iFacilityDataDetail in iFacilityData {
+                    let typeView = ReuseViewType(frame: self.stackViewType.bounds)
+                    typeView.loadInfoViewType(iFacilityDataDetail: iFacilityDataDetail)
+                    
+                    stackViewType.addArrangedSubview(typeView)
                 }
-                
-                stackViewType.addArrangedSubview(typeView)
-                
-                
-                
-                
-                
-                //                if iFacilityData.count == 1 {
-                //                    lblTypeGas?.text = "\(iFacilityData[0].type ?? 0)kg"
-                //                    lblNumberGas?.text = "\(iFacilityData[0].count  ?? 0)bottle"
-                //                    viewAutomaticInfoGas.removeFromSuperview()
-                //
-                //                } else if iFacilityData.count > 1 {
-                //                    self.view.addSubview(viewAutomaticInfoGas)
-                //                    viewAutomaticInfoGas.translatesAutoresizingMaskIntoConstraints = false
-                //                    NSLayoutConstraint.activate([
-                //                        viewAutomaticInfoGas.bottomAnchor.constraint(equalTo: viewDetail.bottomAnchor),
-                //                        viewAutomaticInfoGas.leftAnchor.constraint(equalTo: viewDetail.leftAnchor, constant: 40),
-                //                        viewAutomaticInfoGas.rightAnchor.constraint(equalTo: viewDetail.rightAnchor, constant: -40),
-                //                        viewAutomaticInfoGas.heightAnchor.constraint(equalToConstant: 30)
-                //                    ])
-                //
-                //                    lblTypeGas?.text = "\(iFacilityData[0].type ?? 0 )kg"
-                //                    lblNumberGas?.text =  "\(iFacilityData[0].count  ?? 0)bottle"
-                //                    lblTypeGasInStackView.text = "\(iFacilityData[1].type ?? 0 )kg"
-                //                    lblNumberGasInStackView.text = "\(iFacilityData[1].count  ?? 0)bottle"
-                //                }
-                
                 
             }
             
@@ -282,10 +258,14 @@ class PageDetailVC: UIViewController, UIScrollViewDelegate, UICollectionViewDele
             }
             
             lblEstimateDelivery?.text = dataInfoOneCustomer.elem?.metadata?.planned_date
-            lblEstimateDelivery.layer.cornerRadius = 10
-            viewInfoAstimate.layer.cornerRadius = 10
+            viewContain2Label.layer.cornerRadius = 6
+            viewContain2Label.layer.masksToBounds = true
+//            lblEstimateDeliveryDate.layer.cornerRadius = 10
+//            lblEstimateDeliveryDate.layer.masksToBounds = true
+            lblEstimateDelivery.layer.cornerRadius = 4
+//            viewInfoAstimate.layer.cornerRadius = 10
             
-            viewInfoAstimate.layer.masksToBounds = true
+//            viewInfoAstimate.layer.masksToBounds = true
             
             var arrDataUrlImage = [String]()
             
@@ -350,7 +330,7 @@ extension PageDetailVC: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cellImage = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath)  as! PageDetailCollectionViewCell
+        let cellImage = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! PageDetailCollectionViewCell
         
         if !arrImage.isEmpty {
             let iurl = arrImage[indexPath.row]

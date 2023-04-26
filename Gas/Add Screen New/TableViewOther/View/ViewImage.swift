@@ -19,6 +19,7 @@ class ViewImage: UIView {
     @IBOutlet weak var imgImage: UIImageView!
     
     weak var delegatePassScreen: PassScreen?
+    
     var widthContraint: NSLayoutConstraint?
     
     var ratioConstraint: NSLayoutConstraint?

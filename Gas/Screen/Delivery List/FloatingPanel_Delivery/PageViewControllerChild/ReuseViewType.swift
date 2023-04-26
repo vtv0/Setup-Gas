@@ -7,14 +7,16 @@
 
 import UIKit
 
+
+
+
 class ReuseViewType: UIView {
+   
     
-    @IBOutlet var mainViewType: UIView!
     @IBOutlet weak var lblType: UILabel!
     @IBOutlet weak var lblNumber: UILabel!
     
-    @IBOutlet weak var stackViewContainer: UIStackView!
-//    var heightContraint: NSLayoutConstraint?
+    @IBOutlet weak var viewContainLBL: UIView!
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -31,22 +33,19 @@ class ReuseViewType: UIView {
         return nib.instantiate(withOwner: self, options: nil).first as? UIView
     }
     
-    
     func commonInit() {
         guard let viewReuseType = loadViewFromNIB() else { return }
         viewReuseType.frame = self.bounds
         viewReuseType.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+     
         self.addSubview(viewReuseType)
     }
     
     
-   
-    
-//    func loadInfoViewType() {
-//        //        lblInfo.text = status.title
-//        lblType.text = "500"
-//        lblNumber.text = "200"
-//    }
-    
+    func loadInfoViewType(iFacilityDataDetail: Facility_data) {
+            //        lblInfo.text = status.title
+        lblType.text = "\(iFacilityDataDetail.type ?? 0)kg"
+        lblNumber.text = "\(iFacilityDataDetail.count ?? 0)"
+        }
     
 }

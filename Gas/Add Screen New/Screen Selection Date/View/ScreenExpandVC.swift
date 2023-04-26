@@ -21,7 +21,6 @@ class ScreenExpandVC: UIViewController {
         navigationController?.pushViewController(loginScreen, animated: true)
     }
     
-    
     let screenExplandPrisenter = ScreenExpland_Presenter()
     var listDate = [Date]()
     var createdAt = ""
@@ -51,6 +50,7 @@ class ScreenExpandVC: UIViewController {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
         if let vc = segue.destination as? TableView {
             let selectedRow = myTableView.indexPathForSelectedRow!.row
             if let locations = dicData[listDate[selectedRow]] { // dicData nguồn từ API
@@ -59,6 +59,7 @@ class ScreenExpandVC: UIViewController {
                 vc.locationsIsCustomer = locationsIsCustomer
                 //                vc.loadInfo_DBorAPI(dicData: dicData, createdAt: createdAt)
             }
+            
         } else if let vc = segue.destination as? ViewCollection {
             let selectedRow = myTableView.indexPathForSelectedRow!.row
             if let locations = dicData[listDate[selectedRow]] { // dicData nguồn từ API

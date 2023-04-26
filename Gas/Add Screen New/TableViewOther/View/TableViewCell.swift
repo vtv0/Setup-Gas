@@ -9,12 +9,9 @@ import UIKit
 import Alamofire
 import AlamofireImage
 
-class TableViewCell: UITableViewCell, PassScreen {
-    func passListImages(urls: [String], indexUrl: Int, iurlImage: String) {
-        delegate?.passListImages(urls: urls, indexUrl: indexUrl, iurlImage: iurlImage)
-    }
+class TableViewCell: UITableViewCell {
 
-    weak var delegate: PassScreen?
+    weak var delegate: PassScreen?  // làm trung gian để truyền đến TableView
     
     @IBOutlet weak var stachViewInfo: UIStackView!
     @IBOutlet weak var lblCustomerID: UILabel!
@@ -56,6 +53,12 @@ class TableViewCell: UITableViewCell, PassScreen {
             reuseImageView.delegatePassScreen = self
             stackViewImages.addArrangedSubview(reuseImageView)
         }
-        
+    }
+    
+}
+
+extension TableViewCell: PassScreen {
+    func passListImages(urls: [String], indexUrl: Int, iurlImage: String) {
+        delegate?.passListImages(urls: urls, indexUrl: indexUrl, iurlImage: iurlImage)
     }
 }
