@@ -39,6 +39,7 @@ class ShippingViewController: UIViewController {
     }
     
     @available(iOS 13.0, *)
+    @IBOutlet weak var btnSubmit: UIButton!
     @IBAction func btnSubmit(_ sender: Any) {
         print("CLICK SUBMIT")
         Task {
@@ -61,9 +62,11 @@ class ShippingViewController: UIViewController {
         navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.systemBlue]
         title = "Determine delivery content"
         self.navigationItem.setHidesBackButton(true, animated: false)
-        
-        lblStatus.layer.cornerRadius = 8
+       
+        lblStatus.layer.cornerRadius = 9
         lblStatus.layer.masksToBounds = true
+        
+        btnSubmit.layer.cornerRadius = 9
         
         lblCustomerName.text = dataInfoOneCustomer.asset?.properties?.values.customer_name
         lblDeliveryAddress.text = dataInfoOneCustomer.asset?.properties?.values.address

@@ -62,6 +62,13 @@ class ViewController: UIViewController, UITextFieldDelegate {
         navigationItem.hidesBackButton = true
         self.navigationItem.rightBarButtonItem?.isEnabled = false
         
+//        txtUserName.layer.cornerRadius = 5
+//        txtUserName.layer.masksToBounds = true
+//        txtPass.layer.cornerRadius = 10
+//        txtcompanyCode.layer.cornerRadius = 10
+        
+        btnLogin.layer.cornerRadius = 10
+        
         let showUserName = UserDefaults.standard.string(forKey: "userName") ?? ""           //"dev_driver1@dev2.test"
         let showPass = UserDefaults.standard.string(forKey: "pass") ?? ""                   // "dev123456"
         let showcompanyCode = UserDefaults.standard.string(forKey: "companyCode") ?? ""     // "am-stg-iw01j"
@@ -78,8 +85,6 @@ class ViewController: UIViewController, UITextFieldDelegate {
         }
         
         imgIcon.image = UIImage(named:"application_splash_logo")
-        
-        
     }
     
     
@@ -87,12 +92,12 @@ class ViewController: UIViewController, UITextFieldDelegate {
         print("name", sender.text ?? "")
         txtUserName.text = sender.text ?? ""
     }
+    
     @objc func onInputPass(_ sender: UITextField) {
         print("Pass", sender.text ?? "")
         txtPass.text = sender.text ?? ""
-       
-
     }
+    
     @objc func onInputId(_ sender: UITextField) {
         print("companyCode", sender.text ?? "")
         txtcompanyCode.text = sender.text ?? ""

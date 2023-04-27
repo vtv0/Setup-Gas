@@ -9,6 +9,8 @@ import UIKit
 import Alamofire
 import FloatingPanel
 import AlamofireImage
+import MapKit
+
 
 protocol PassInfoOneCustomerDelegateProtocol: AnyObject {
     func passiassetID(iassetID: String)
@@ -42,7 +44,7 @@ class PageDetailVC: UIViewController, UIScrollViewDelegate, UICollectionViewDele
     
     //    weak var delegatePassInfoCustomer: PassInfoCustomer?
     
-     var pageIndex: Int!
+    var pageIndex: Int!
     var comment: String = ""
     var arrUrlImage: [[String]] = []
     var dateYMD: [Date] = []
@@ -98,8 +100,22 @@ class PageDetailVC: UIViewController, UIScrollViewDelegate, UICollectionViewDele
     }
     
     @IBAction func btnOpenMap(_ sender: Any) {
+//    latitude: 35.73774428640241, longitude: 139.6194163709879
+        let latitude = 35.73774428640241
+        let longtitude =  139.6194163709879
         
-        //        let googleURL = "comgooglemaps://?daddr=\(latitude),\(longitude)&directionsmode=driving"
+        let regionDistance: CLLocationDistance = 1000
+        let coordinates = CLLocationCoordinate2DMake(latitude, longtitude)
+        let regionSpan = MKCoordinateRegion(center: coordinates, latitudinalMeters: regionDistance, longitudinalMeters: regionDistance)
+        
+        let options = [MKLaunchOptionsMapCenterKey: NSValue(mkCoordinate: regionSpan.center), MKLaunchOptionsMapSpanKey: NSValue(mkCoordinateSpan: regionSpan.span)]
+        
+        let placmark = MKPlacemark(coordinate: coordinates)
+        let mapItem = MKMapItem(placemark: placmark)
+        mapItem.name = "You are Here"
+        mapItem.openInMaps(launchOptions: options)
+        
+    
     }
     
     override func viewDidLoad() {

@@ -34,7 +34,7 @@ protocol GetIndexMarkerDelegateProtocol: AnyObject {
     func getIndexMarker(indexDidSelected: Int)
 }
 
-class DeliveryListController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource, FloatingPanelControllerDelegate {
+class DeliveryListController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource, FloatingPanelControllerDelegate, CLLocationManagerDelegate {
     
     weak var delegateGetIndex: GetIndexMarkerDelegateProtocol?
   //  weak var delegatePassInfoCustomer: PassInfoCustomer?
@@ -64,6 +64,8 @@ class DeliveryListController: UIViewController, UIPickerViewDelegate, UIPickerVi
     var arrFacilityData: [[Facility_data]] = []
     
     var dataInfoOneCustomer: Location = Location(elem: LocationElement(arrivalTime: ArrivalTime(),location: LocationLocation(), locationOrder: 0 ), asset: GetAsset(assetModelID: 0, properties: PropertiesDetail(updatedAt: "", values: ValuesDetail(customer_location: [], kyokyusetsubi_code: ""))), createdAt: "")
+    
+    let locationManager = CLLocationManager()
     
     @IBOutlet weak var lblType50kg: UILabel!
     @IBOutlet weak var lblType30kg: UILabel!
@@ -109,6 +111,20 @@ class DeliveryListController: UIViewController, UIPickerViewDelegate, UIPickerVi
         
         btnShipping.layer.cornerRadius = 10
         
+        
+        // vi trị hiện tại
+        self.locationManager.requestAlwaysAuthorization()
+        
+        self.locationManager.requestWhenInUseAuthorization()
+        
+        DispatchQueue.main.async { [self] in
+            if CLLocationManager.locationServicesEnabled() {
+                locationManager.delegate = self
+                locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
+                locationManager.startUpdatingLocation()
+            }
+            
+        }
         showActivity()
        
         //  callAPI_Block_Delivery()
@@ -120,6 +136,12 @@ class DeliveryListController: UIViewController, UIPickerViewDelegate, UIPickerVi
         let eyeCoordinate = CLLocationCoordinate2D(latitude: 35.73774428640241, longitude: 139.6194163709879)
         let mapCamera = MKMapCamera(lookingAtCenter: userCoordinate, fromEyeCoordinate: eyeCoordinate, eyeAltitude: 1000000.0)
         mapView.setCamera(mapCamera, animated: false)
+    }
+    
+   // Get coordinate
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        guard let locValue: CLLocationCoordinate2D = manager.location?.coordinate else { return }
+        print("locations = \(locValue.latitude) \(locValue.longitude)")
     }
     
     
@@ -146,7 +168,6 @@ class DeliveryListController: UIViewController, UIPickerViewDelegate, UIPickerVi
 //                    } else {  // 404
 //                        hideActivity()
 //                        showAlert(message: "Lỗi API sau 16h (404)")
-//
 //                    }
 //                }
 //            }
