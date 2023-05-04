@@ -9,6 +9,7 @@ import UIKit
 import Alamofire
 import Network
 import SystemConfiguration
+import SwiftUI
 
 class ViewController: UIViewController, UITextFieldDelegate {
     
@@ -16,6 +17,13 @@ class ViewController: UIViewController, UITextFieldDelegate {
     let expiredDate = Calendar.current.date(byAdding: .hour, value: 12, to: Date())!
     var dicData: [Date: [Location]] = [:]
     
+    @IBAction func btnShowSwiftUI(_ sender: Any) {
+        let hostingController = UIHostingController(rootView: LoginSwiftUI())
+        
+//        present(hostingController, animated: true, completion: nil)
+        self.navigationController?.pushViewController(hostingController, animated: true)
+    
+    }
     @IBOutlet weak var imgIcon: UIImageView!
     @IBOutlet weak var txtUserName: UITextField!
     @IBOutlet weak var txtPass: UITextField!
@@ -38,7 +46,6 @@ class ViewController: UIViewController, UITextFieldDelegate {
     
     @IBOutlet weak var btnLogin: UIButton!
     @IBAction func btnLogin(_ sender: UITextField) {
-        
         self.btnSaveAccount.setImage(UIImage(named: "checkmark"), for: .normal)
         if txtUserName.text!.isEmpty || txtPass.text!.isEmpty || txtcompanyCode.text!.isEmpty {
             self.showAlert(message: "Nhập đầy đủ thông tin tài khoản")
@@ -60,7 +67,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.hidesBackButton = true
-        self.navigationItem.rightBarButtonItem?.isEnabled = false
+//        self.navigationItem.rightBarButtonItem?.isEnabled = false
         
 //        txtUserName.layer.cornerRadius = 5
 //        txtUserName.layer.masksToBounds = true

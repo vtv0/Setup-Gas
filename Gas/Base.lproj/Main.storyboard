@@ -316,7 +316,13 @@
                             </mask>
                         </variation>
                     </view>
-                    <navigationItem key="navigationItem" id="Ugz-bE-Ljn"/>
+                    <navigationItem key="navigationItem" id="Ugz-bE-Ljn">
+                        <barButtonItem key="rightBarButtonItem" image="arrow.triangle.turn.up.right.circle.fill" catalog="system" id="4LY-of-2FT">
+                            <connections>
+                                <action selector="btnShowSwiftUI:" destination="BYZ-38-t0r" id="uvs-uI-o8x"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="btnLogin" destination="Lrs-3V-0nJ" id="y3z-5a-I8z"/>
                         <outlet property="btnSaveAccount" destination="uHf-fk-OVi" id="W9O-51-K3f"/>
@@ -3185,7 +3191,7 @@ Cgo
                 <navigationController storyboardIdentifier="navigationScreenExpandVC" automaticallyAdjustsScrollViewInsets="NO" id="Y7R-HD-ej4" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="eHg-kh-cgj">
-                        <rect key="frame" x="0.0" y="20" width="320" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="320" height="50"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -3200,6 +3206,7 @@ Cgo
     </scenes>
     <resources>
         <image name="application_splash_logo" width="148" height="76"/>
+        <image name="arrow.triangle.turn.up.right.circle.fill" catalog="system" width="128" height="123"/>
         <image name="checkmarkEmpty" width="15" height="15"/>
         <image name="downAnimation" width="59" height="20"/>
         <image name="figure.walk.departure" catalog="system" width="123" height="128"/>
