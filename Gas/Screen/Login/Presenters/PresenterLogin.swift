@@ -57,11 +57,11 @@ class PresenterLogin {
     func callAPI_Async_Await(name: String, pass: String, companyCode: String) async {
         do {
             let getTokenResponse = try await PostGetToken_Async_Await().getToken_Async_Await(userName: name, pass: pass, companyCode: companyCode)
-            print(getTokenResponse)
+            
             
             do {
-                let responseGetMe = try await GetMe_Async_Await().getMe_Async_Await(companyCode: companyCode)
-                print(responseGetMe)
+                let responseGetMe = try await GetMe_Async_Await().getMe_Async_Await(companyCode: companyCode, token: getTokenResponse)
+             print(responseGetMe)
                 DispatchQueue.main.async {
                     self.loginDelegate?.loginOK()
                 }

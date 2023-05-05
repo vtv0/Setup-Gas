@@ -97,12 +97,6 @@ class PatchStatusDelivery {
         }
     }
     
-    
-    
-    
-    
-    
-    
     // xắp sếp các bản ghi theo thứ tự tăng dần
     func deliveryHistoryASC(dicDataDeliveryHistory: [String: String]) -> [String: String] {
         

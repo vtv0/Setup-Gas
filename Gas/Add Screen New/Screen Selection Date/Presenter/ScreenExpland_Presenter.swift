@@ -42,7 +42,7 @@ class ScreenExpland_Presenter {
         var dicData: [Date: [Location]] = [:]
         let listDate = sevenDay()
         do {
-            let asset: [Int] = try await GetMe_Async_Await().getMe_Async_Await(companyCode: "\(companyCode)")
+            let asset: [Int] = try await GetMe_Async_Await().getMe_Async_Await(companyCode: "\(companyCode)", token: UserDefaults.standard.string(forKey: "accessToken") ?? "")
             print(asset)
             do {
                 dicData = await GetWorkerRouteLocationList_Async_Await().loadDic(dates: listDate)

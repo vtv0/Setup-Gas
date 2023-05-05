@@ -23,7 +23,7 @@ class GetMe_Async_Await {
     }
     
     
-    func getMe_Async_Await(companyCode: String) async throws -> [Int] {
+    func getMe_Async_Await(companyCode: String, token: String) async throws -> [Int] {
         var arrId: [Int] = []
         let urlGetMe = "https://\(companyCode).kiiapps.com/am/api/me"
         let token = UserDefaults.standard.string(forKey: "accessToken") ?? ""
