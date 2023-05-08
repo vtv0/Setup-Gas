@@ -14,14 +14,20 @@ struct LoginSwiftUI: View {
     @State private var companyCode: String = ""
     
     @State private var token: String = ""
+    @State private var statusCode: String = ""
+    
     @State private var arrInt: [Int] = []
+    @State private var tenantID: Int = 0
+    @State private var userID: Int = 0
     
-    @State var checked: Bool = false
+    @State var checked: Bool = true
     
-    //    @ObservedObject var ApiPost = PostGetToken_Async_Await()
     @State private var presentAlert = false
+    @State private var path = NavigationPath()
     
-//    @Binding var GotoPageDeliveryList: Bool
+    @State private var showLogin = false
+    @State private var isActivityIndicator = false
+    
     
     var body: some View {
         
@@ -29,143 +35,159 @@ struct LoginSwiftUI: View {
         @AppStorage("pass") var pass: String = pass
         @AppStorage("companyCode") var companyCode: String = companyCode
         
-//        NavigationView {
-            VStack(alignment: .center, spacing: 30) {
-                
-                Image("application_splash_logo")
-                
-                TextField("Username", text: $userName)
-                    .border(Color.black, width: 2)
-                    .cornerRadius(5)
-                    .padding(.horizontal, 30)
-                    .autocapitalization(.none)
-                
-                SecureField("Password", text: $pass)
-                    .border(Color.black, width: 2)
-                    .cornerRadius(5)
-                    .padding(.horizontal, 30)
-                    .autocapitalization(.none)
-                    .textContentType(.password)
-                
-                TextField("Companycode", text: $companyCode)
-                    .border(Color.black, width: 2)
-                    .cornerRadius(5)
-                    .padding(.horizontal, 30)
-                    .autocapitalization(.none)
-                
-                
-                Button(action: {
-                    self.checked = !self.checked
+        ZStack {
+            NavigationStack {
+                VStack(alignment: .center, spacing: 30) {
                     
-                }) {
-                    HStack(alignment: .center, spacing: 10) {
-                        Rectangle()
-                            .frame(width: 20, height: 20)
-                            .overlay {
-                                Image(systemName: checked ? "checkmark" : "checkmarkEmpty")
-                                    .frame(width: 20, height: 20)
-                                    .border(.black)
-                                    .background(Color.white)
-                            }
+                    Image("application_splash_logo")
+                    
+                    TextField("Username", text: $userName)
+                        .frame(height: 30)
+                        .border(Color.black, width: 2)
+                        .cornerRadius(5)
+                        .padding(.horizontal, 30)
+                        .autocapitalization(.none)
+                    
+                    SecureField("Password", text: $pass)
+                        .frame(height: 30)
+                        .border(Color.black, width: 2)
+                        .cornerRadius(5)
+                        .padding(.horizontal, 30)
+                        .autocapitalization(.none)
+                        .textContentType(.password)
+                    
+                    TextField("Companycode", text: $companyCode)
+                        .frame(height: 30)
+                        .border(Color.black, width: 2)
+                        .cornerRadius(5)
+                        .padding(.horizontal, 30)
+                        .autocapitalization(.none)
+                    
+                    
+                    Button(action: {
+                        self.checked = !self.checked
                         
-                        Text("Lưu đăng nhập")
-                        Spacer()
-                    }
-                    .padding(.horizontal, 30)
-                    .background(Color.white)
-                }
-                
-                NavigationLink(destination: DeliveryListSwiftUI()) {
-                    Text("Chuyển View")
-                        .frame(maxWidth: .infinity)
-                        .background(Color.blue)
-                        .tint(Color.white)
-                    
-                }
-                
-                Button(action: {
-                    // nhac toi ham call Post
-                    Task {
-                        //                    callAPI_Async_Await.
-                        do {
-                            token = try await PostGetToken_Async_Await().getToken_Async_Await(userName: userName, pass: pass, companyCode: companyCode)
+                        
+                        
+                    }) {
+                        HStack(alignment: .center, spacing: 10) {
+                            Rectangle()
+                                .frame(width: 20, height: 20)
+                                .overlay {
+                                    Image(systemName: checked ? "checkmark" : "checkmarkEmpty")
+                                        .frame(width: 20, height: 20)
+                                        .border(.black)
+                                        .background(Color.white)
+                                }
                             
-                            do {
-                                arrInt = try await GetMe_Async_Await().getMe_Async_Await(companyCode: companyCode, token: token)
-                                print(arrInt)
-                            } catch {
-                                // loi phan getMe
-                                //
-                                print(error)
-                                
-                            }
-                            
-                        } catch {
-                            print(error)
-                            // loi phan post
+                            Text("Lưu đăng nhập")
+                            Spacer()
                         }
+                        .padding(.horizontal, 30)
+                        .background(Color.white)
+                    }
+                    
+                    
+                    
+                    Button(action: {
+                        self.showLogin = !self.showLogin
+                        
+                        showActivity()
+                        // nhac toi ham call Post
+                        Task {
+                            do {
+                                token = try await PostGetToken_Async_Await().getToken_Async_Await(userName: userName, pass: pass, companyCode: companyCode)
+                                do {
+                                    arrInt = try await GetMe_Async_Await().getMe_Async_Await(companyCode: companyCode, token: token)
+                                 
+                                    tenantID = arrInt[0]
+                                    userID = arrInt[1]
+                                } catch {
+                                    print(error)
+                                    presentAlert = true
+                                    statusCode = "\(error)"
+                                }
+                            } catch {
+                                print(error)
+                                // loi phan post
+                                presentAlert = true
+                                statusCode = "\(error)"
+                            }
+                        }
+                    }) {
+                        HStack(alignment: .center) {
+                            Spacer()
+                            Text("Login")
+                                .tint(Color.white)
+                            Spacer()
+                        }
+                        .frame(height: 30)
+                        .background(Color.blue)
+                        .cornerRadius(5)
+                        .padding(.horizontal, 30 )
                         
                     }
-                    
-                    
-                }) {
-                    //                VStack {
-                    //                    ProgressView() // indicator
-                    //                }
-                    
-                    HStack(alignment: .center) {
-                        Spacer()
-                        Text("Login")
-                            .tint(Color.white)
-                        Spacer()
-                    }
-                    
-                    .background(Color.blue)
-                    .cornerRadius(5)
-                    .padding(.horizontal, 30 )
                 }
+                
+                .navigationDestination(isPresented: $showLogin) {
+                    DeliveryListSwiftUI()
+                        .background(Color.yellow)
+                        .navigationBarBackButtonHidden()
+                }
+                
             }
-//        }
-        .onChange(of: arrInt) { newValue in
+            
+            if isActivityIndicator {  // show indicator
+                LoadingView()
+            }
+            
+        }
+        
+        .onChange(of: tenantID) { newValue in
             if arrInt.isEmpty {
                 // show Alert
+                
                 print("tach tach tach")
-                presentAlert = true
-                //
-                //                }
+                isActivityIndicator = false
             } else {
                 // ham getMe
                 print("okokokokokok")
+                showLogin = true
                 
-//                NavigationLink(destination: DeliveryListSwiftUI()) {
-//                    Text("Chuyen view")
-//                        .frame(maxWidth: . infinity)
-//                }
             }
+            
         }
         
-//        .alert("sdfasdfasdfsda", isPresented: $presentAlert, actions: {
-//            Button("OK",role: .cancel, action: { })
-//        })
-//
-        .alert("g", isPresented: $presentAlert) { }
+        .alert("\(statusCode)", isPresented: $presentAlert) {}
+        
     }
     
-}
-
-struct MyCustomView: View {
-    var function: () -> Void
-    var body: some View {
-        Button(action: {
-            self.function()
-        }, label: {
-            Text("aaaaaaaaaaaaa")
-        })
+    func showActivity() {
+        isActivityIndicator = true // show Activity
+        DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
+            isActivityIndicator = false
+        }
+        
     }
 }
+
 
 struct LoginSwiftUI_Previews: PreviewProvider {
     static var previews: some View {
         LoginSwiftUI()
+    }
+}
+
+struct LoadingView: View {
+    var body: some View {
+        ZStack {
+            Color(red: 2, green: 2, blue: 1)
+                // .ignoresSafeArea()
+                .opacity(0.8)
+            ProgressView()
+                .progressViewStyle(CircularProgressViewStyle(tint: Color.black))
+                .scaleEffect(3)
+            
+        }
     }
 }
