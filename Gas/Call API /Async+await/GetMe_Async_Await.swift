@@ -44,6 +44,8 @@ class GetMe_Async_Await {
         case .failure(_):
             if getMeResponse.response?.statusCode == 401 {
                 throw AFError.tokenOutOfDate
+            } else if getMeResponse.response?.statusCode == 403 {
+                throw AFError.wrongPassword
             } else {
                 throw AFError.remain
             }

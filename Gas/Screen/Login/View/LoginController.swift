@@ -131,7 +131,7 @@ extension ViewController: LoginVCDelegateProtocol {
                 showAlert(message: "Token đã hết hạn")
                 hideActivity()
             } else if err == .wrongPassword {
-                showAlert(message: "Sai password")
+                showAlert(message: "Sai tài khoản mật khâ")
                 hideActivity()
             } else {
                 showAlert(message: "Có lỗi xảy ra")

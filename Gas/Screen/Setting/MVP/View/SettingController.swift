@@ -33,9 +33,9 @@ class SettingController: UIViewController {
             self.navigationController?.pushViewController(loginVC, animated: true)
             
             // xoa User defaultl khi Logout
-            UserDefaults.standard.removeObject(forKey: "userName")
-            UserDefaults.standard.removeObject(forKey: "pass")
-            UserDefaults.standard.removeObject(forKey: "companyCode")
+//            UserDefaults.standard.removeObject(forKey: "userName")
+//            UserDefaults.standard.removeObject(forKey: "pass")
+//            UserDefaults.standard.removeObject(forKey: "companyCode")
             UserDefaults.standard.removeObject(forKey: "accessToken")
         }))
         

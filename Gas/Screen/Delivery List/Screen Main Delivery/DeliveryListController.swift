@@ -148,7 +148,7 @@ class DeliveryListController: UIViewController, UIPickerViewDelegate, UIPickerVi
     func callApi_Async_Await_Deli() async {
         do {
             let responseGetMe = try await GetMe_Async_Await().getMe_Async_Await(companyCode: companyCode, token: UserDefaults.standard.string(forKey: "accessToken") ?? "")
-          
+                print(responseGetMe)
             do {
                 let dicDataResponse = await GetWorkerRouteLocationList_Async_Await().loadDic(dates: dateYMD)   //.getWorkerRouteLocationList_Async_Await()
                 dicData = dicDataResponse

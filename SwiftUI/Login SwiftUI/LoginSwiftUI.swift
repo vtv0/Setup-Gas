@@ -19,13 +19,14 @@ struct LoginSwiftUI: View {
     @State private var arrInt: [Int] = []
     @State private var tenantID: Int = 0
     @State private var userID: Int = 0
+    @State private var isArrInt: Bool = false
     
     @State var checked: Bool = true
     
     @State private var presentAlert = false
     @State private var path = NavigationPath()
     
-    @State private var showLogin = false
+    
     @State private var isActivityIndicator = false
     
     
@@ -43,13 +44,16 @@ struct LoginSwiftUI: View {
                     
                     TextField("Username", text: $userName)
                         .frame(height: 30)
+                        .padding(.leading, 6)
                         .border(Color.black, width: 2)
                         .cornerRadius(5)
                         .padding(.horizontal, 30)
                         .autocapitalization(.none)
+                       
                     
                     SecureField("Password", text: $pass)
                         .frame(height: 30)
+                        .padding(.leading, 6)
                         .border(Color.black, width: 2)
                         .cornerRadius(5)
                         .padding(.horizontal, 30)
@@ -58,6 +62,7 @@ struct LoginSwiftUI: View {
                     
                     TextField("Companycode", text: $companyCode)
                         .frame(height: 30)
+                        .padding(.leading, 6)
                         .border(Color.black, width: 2)
                         .cornerRadius(5)
                         .padding(.horizontal, 30)
@@ -66,9 +71,6 @@ struct LoginSwiftUI: View {
                     
                     Button(action: {
                         self.checked = !self.checked
-                        
-                        
-                        
                     }) {
                         HStack(alignment: .center, spacing: 10) {
                             Rectangle()
@@ -90,29 +92,58 @@ struct LoginSwiftUI: View {
                     
                     
                     Button(action: {
-                        self.showLogin = !self.showLogin
                         
-                        showActivity()
-                        // nhac toi ham call Post
-                        Task {
-                            do {
-                                token = try await PostGetToken_Async_Await().getToken_Async_Await(userName: userName, pass: pass, companyCode: companyCode)
+                        
+                        if userName.isEmpty || pass.isEmpty || companyCode.isEmpty {
+                            presentAlert = true
+                            statusCode = "Hãy nhập đủ thông tin tài khoản"
+                        } else {  // call Post API
+                            isActivityIndicator = true
+                            Task {
                                 do {
-                                    arrInt = try await GetMe_Async_Await().getMe_Async_Await(companyCode: companyCode, token: token)
-                                 
-                                    tenantID = arrInt[0]
-                                    userID = arrInt[1]
+                                    token = try await PostGetToken_Async_Await().getToken_Async_Await(userName: userName, pass: pass, companyCode: companyCode)
+                                    do {
+                                        arrInt = try await GetMe_Async_Await().getMe_Async_Await(companyCode: companyCode, token: token)
+                                        
+                                        //                                    tenantID = arrInt[0]
+                                        //                                    userID = arrInt[1]
+                                        isArrInt = true
+                                        UserDefaults.standard.set(userName, forKey: "username")
+                                        UserDefaults.standard.set(pass, forKey: "pass")
+                                        UserDefaults.standard.set(companyCode, forKey: "companuCode")
+                                        
+                                    } catch {
+                                        presentAlert = true
+                                        // statusCode = "\(error)"
+                                        let err = error as? GetMe_Async_Await.AFError
+                                        if err == .tokenOutOfDate {
+                                            statusCode = "Token hết hạn"
+                                        } else if err == .wrongPassword {
+                                            statusCode = "Sai password"
+                                            
+                                        } else {
+                                           
+                                            statusCode = "Có lỗi xảy ra"
+                                        }
+                                        isActivityIndicator = false
+                                    }
                                 } catch {
-                                    print(error)
+                               
+                                    // loi phan post
                                     presentAlert = true
-                                    statusCode = "\(error)"
+                                    
+                                    let err = error as? PostGetToken_Async_Await.AFError
+                                    if err == .tokenOutOfDate {
+                                        statusCode = "Token hết hạn"
+                                    } else if err == .wrongPassword {
+                                        statusCode = "Sai password"
+                                    } else {
+                                        statusCode = "Có lỗi xảy ra"
+                                    }
+                                    isActivityIndicator = false
                                 }
-                            } catch {
-                                print(error)
-                                // loi phan post
-                                presentAlert = true
-                                statusCode = "\(error)"
                             }
+                            
                         }
                     }) {
                         HStack(alignment: .center) {
@@ -129,10 +160,15 @@ struct LoginSwiftUI: View {
                     }
                 }
                 
-                .navigationDestination(isPresented: $showLogin) {
+                
+                
+                // sau khi nhan dc userID , tenantID
+                .navigationDestination(isPresented: $isArrInt) {  // chuyen man hinh  nhanh
                     DeliveryListSwiftUI()
                         .background(Color.yellow)
                         .navigationBarBackButtonHidden()
+                    // hiden activity
+                    
                 }
                 
             }
@@ -143,34 +179,21 @@ struct LoginSwiftUI: View {
             
         }
         
-        .onChange(of: tenantID) { newValue in
+        .onChange(of: arrInt) { newValue in
             if arrInt.isEmpty {
                 // show Alert
-                
-                print("tach tach tach")
                 isActivityIndicator = false
             } else {
                 // ham getMe
-                print("okokokokokok")
-                showLogin = true
-                
+                isActivityIndicator = false
             }
-            
         }
         
-        .alert("\(statusCode)", isPresented: $presentAlert) {}
-        
-    }
+        .alert("\(statusCode)", isPresented: $presentAlert) {
     
-    func showActivity() {
-        isActivityIndicator = true // show Activity
-        DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
-            isActivityIndicator = false
         }
-        
     }
 }
-
 
 struct LoginSwiftUI_Previews: PreviewProvider {
     static var previews: some View {
@@ -181,13 +204,15 @@ struct LoginSwiftUI_Previews: PreviewProvider {
 struct LoadingView: View {
     var body: some View {
         ZStack {
-            Color(red: 2, green: 2, blue: 1)
-                // .ignoresSafeArea()
-                .opacity(0.8)
+            Color("colorCustom")
+
+
             ProgressView()
                 .progressViewStyle(CircularProgressViewStyle(tint: Color.black))
                 .scaleEffect(3)
             
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }
+

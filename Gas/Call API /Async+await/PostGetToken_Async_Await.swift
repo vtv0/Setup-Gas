@@ -17,6 +17,8 @@ class PostGetToken_Async_Await {
         case tokenOutOfDate
         case wrongPassword
         case remain
+        
+        
     }
     
     func getToken_Async_Await(userName: String, pass: String, companyCode: String) async throws -> String {

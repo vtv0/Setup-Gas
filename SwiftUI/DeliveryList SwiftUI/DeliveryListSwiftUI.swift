@@ -15,9 +15,43 @@ struct DeliveryListSwiftUI: View {
     
     var body: some View {
         NavigationStack {
-            Form {
-                Section {
-                    HStack {
+            
+//            HStack {
+//                .toolbar {
+//                    ToolbarItemGroup(placement: .navigationBarLeading) {
+//                        
+//                        Button(action: {
+//                           
+//                            print("Replan")
+//                        }) {
+//                            
+//                            Image("ic_edit")
+//                                .background(Color.blue)
+//                        }
+//                        
+//                        
+//                        Button(action: {
+//                            print("reroute")
+//                        }) {
+//                            Image("point")
+//                        }
+//                    }
+//                    
+//                    
+//                    ToolbarItem(placement: .navigationBarTrailing) {
+//                        Button(action: {
+//                            print("setting")
+//                        }) {
+//                            Image("ic_setting")
+//                                .background(Color.red)
+//                        }
+//                    }
+//                }
+//            }
+            
+//            Form {
+//                Section {
+                   HStack {
                         Picker("Strength", selection: $selectedStrength) {
                             ForEach(car, id: \.self) {
                                 Text($0)
@@ -35,12 +69,22 @@ struct DeliveryListSwiftUI: View {
 //                        Picker("Strength", selection: .constant()) 
                         .pickerStyle(.wheel)
                     }
-                }
-            }
+//                }
+//            }
 //            .frame(width: self.view?.bounds.width)
+            
+            .navigationTitle("Delivery List")
+            .navigationBarTitleDisplayMode(.inline)
+            .background(Color.gray)
+            
+            
+            
+           
+           
+            
+            
         }
-        
-        
+        .background(Color.cyan)
     }
     
     mutating func sevenDay() {

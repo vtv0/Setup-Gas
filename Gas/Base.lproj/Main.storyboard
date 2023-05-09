@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="h41-sy-BzJ">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="5L7-f5-pjp">
     <device id="retina4_0" orientation="portrait" appearance="light"/>
     <accessibilityOverrides dynamicTypePreference="2"/>
     <dependencies>
@@ -2779,7 +2779,7 @@ Cgo
                             </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="rSP-mO-6mQ"/>
-                        <color key="backgroundColor" red="0.093131958836256801" green="0.093131958836256801" blue="0.093131958836256801" alpha="0.57204573675496684" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" red="0.16058382120999426" green="0.16058382120999426" blue="0.16058382120999426" alpha="0.57204573675496684" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="wc6-jc-kXi" firstAttribute="centerY" secondItem="Wx3-up-8Ra" secondAttribute="centerY" id="15d-Rg-2ow"/>
                             <constraint firstItem="wc6-jc-kXi" firstAttribute="leading" secondItem="rSP-mO-6mQ" secondAttribute="leading" constant="10" id="PTY-Ax-LpW"/>
@@ -3015,7 +3015,7 @@ Cgo
                 <navigationController storyboardIdentifier="navigationLogin" automaticallyAdjustsScrollViewInsets="NO" id="h41-sy-BzJ" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="sJS-yx-KWI">
-                        <rect key="frame" x="0.0" y="20" width="320" height="50"/>
+                        <rect key="frame" x="0.0" y="20" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -3154,7 +3154,7 @@ Cgo
                 <navigationController storyboardIdentifier="navigationPlash" automaticallyAdjustsScrollViewInsets="NO" id="5L7-f5-pjp" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="lKf-UV-jfP">
-                        <rect key="frame" x="0.0" y="20" width="320" height="50"/>
+                        <rect key="frame" x="0.0" y="20" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -3172,7 +3172,7 @@ Cgo
                 <navigationController storyboardIdentifier="navigationShippingViewController" automaticallyAdjustsScrollViewInsets="NO" id="32m-bP-EFh" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="xOk-t2-V7D">
-                        <rect key="frame" x="0.0" y="20" width="320" height="50"/>
+                        <rect key="frame" x="0.0" y="20" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="tintColor" systemColor="linkColor"/>
                     </navigationBar>
