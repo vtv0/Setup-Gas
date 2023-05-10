@@ -8,103 +8,96 @@
 import SwiftUI
 
 struct DeliveryListSwiftUI: View {
-    @State private var selectedStrength = "1"
-//    @State private var selectrdDate =
-    var car: [String] = ["1", "2", "3"]
+    var status: [String] = [ "Not_Delivery", "All"]
+    @State private var selectedStatus = "Not_Delivery"
+    
+    var car: [String] = ["Car1", "Car2", "Car3"]
+    @State private var selectedCar = "Car1"
+    
     var listDay: [Date] = []
+    var listDateString: [String] = []
+    @State private var selectedDate = ""
+
     
     var body: some View {
         NavigationStack {
-            
-//            HStack {
-//                .toolbar {
-//                    ToolbarItemGroup(placement: .navigationBarLeading) {
-//                        
-//                        Button(action: {
-//                           
-//                            print("Replan")
-//                        }) {
-//                            
-//                            Image("ic_edit")
-//                                .background(Color.blue)
-//                        }
-//                        
-//                        
-//                        Button(action: {
-//                            print("reroute")
-//                        }) {
-//                            Image("point")
-//                        }
-//                    }
-//                    
-//                    
-//                    ToolbarItem(placement: .navigationBarTrailing) {
-//                        Button(action: {
-//                            print("setting")
-//                        }) {
-//                            Image("ic_setting")
-//                                .background(Color.red)
-//                        }
-//                    }
-//                }
-//            }
-            
-//            Form {
-//                Section {
-                   HStack {
-                        Picker("Strength", selection: $selectedStrength) {
-                            ForEach(car, id: \.self) {
-                                Text($0)
-                            }
+        
+                HStack {
+                    
+                    Picker("", selection: $selectedStatus) {
+                        ForEach(status, id: \.self) { status in
+                            Text("\(status)")
                         }
-                        .pickerStyle(.wheel)
-                        
-                        Picker("Strength", selection: $selectedStrength) {
-                            ForEach(car, id: \.self) {
-                                Text($0)
-                            }
-                        }
-                        .pickerStyle(.wheel)
-                        
-//                        Picker("Strength", selection: .constant()) 
-                        .pickerStyle(.wheel)
                     }
-//                }
-//            }
-//            .frame(width: self.view?.bounds.width)
-            
-            .navigationTitle("Delivery List")
-            .navigationBarTitleDisplayMode(.inline)
-            .background(Color.gray)
-            
-            
-            
-           
-           
-            
-            
-        }
-        .background(Color.cyan)
-    }
-    
-    mutating func sevenDay() {
-        let anchor = Date()
-        let calendar = Calendar.current
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd"
-        for dayOffset in 0...6 {
-            if let date1 = calendar.date(byAdding: .day, value: dayOffset, to: anchor)?.removeTimeStamp {
-                self.listDay.append(date1) // error
+                    .pickerStyle(.wheel)
+                    
+                    Picker("", selection: $selectedCar) {
+                        ForEach(car, id: \.self) { car in
+                            Text("\(car)" )
+                        }
+                    }
+                    .pickerStyle(.wheel)
+                    
+                    //                    Picker("", selection: $selectedDate) {
+                    //                        // convert Date in String
+                    //                        ForEach(listDateString, id: \.self) {
+                    //                            Text($0)
+                    //                        }
+                    //                    }
+                    //                    .pickerStyle(.wheel)
+                }
+                
             }
+               
+                .navigationTitle("Delivery List")
+                .toolbar {
+                    ToolbarItemGroup(placement: .navigationBarLeading) {
+                        
+                        Button(action: {
+                            print("reroute")
+                        }) {
+                            Image("ic_line")
+                        }
+                        
+                        
+                        Button(action: {
+                            print("reroute")
+                        }) {
+                            Image("point")
+                        }
+                    }
+                    
+                    
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        Button(action: {
+                            print("setting")
+                        }) {
+                            Image("ic_setting")
+                            
+                        }
+                    }
+                }
+            
+                .background(.yellow)
+                .frame(height: 60)
+                .padding(.top, 2)
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbarBackground(.visible, for: .navigationBar)
+                .toolbarBackground(.cyan, for: .navigationBar)
+//                .safeAreaInset(edge: .top) {}
+                .alignmentGuide(.bottom, computeValue: { d in
+                    d.height
+                })
         }
-    }
+    
     
 }
 
-    
+
 
 struct DeliveryListSwiftUI_Previews: PreviewProvider {
     static var previews: some View {
+        
         DeliveryListSwiftUI()
     }
 }
