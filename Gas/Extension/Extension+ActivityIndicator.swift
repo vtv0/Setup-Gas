@@ -20,6 +20,7 @@ extension UIViewController {
         self.navigationController?.view.addSubview(greyView)
         greyView.layer.zPosition = 1
         self.view.addSubview(greyView)
+       
         //self.view.bringSubviewToFront(greyView)
 //    self.view.layer.zPosition
         

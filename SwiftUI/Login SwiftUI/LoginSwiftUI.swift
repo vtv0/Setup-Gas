@@ -143,7 +143,6 @@ struct LoginSwiftUI: View {
                                     isActivityIndicator = false
                                 }
                             }
-                            
                         }
                     }) {
                         HStack(alignment: .center) {
@@ -155,28 +154,23 @@ struct LoginSwiftUI: View {
                         .frame(height: 30)
                         .background(Color.blue)
                         .cornerRadius(5)
-                        .padding(.horizontal, 30 )
+                        .padding(.horizontal, 30)
                         
                     }
                 }
                 
-                
-                
                 // sau khi nhan dc userID , tenantID
                 .navigationDestination(isPresented: $isArrInt) {  // chuyen man hinh  nhanh
                     DeliveryListSwiftUI()
-                        .background(Color.yellow)
+                    
                         .navigationBarBackButtonHidden()
                     // hiden activity
-                    
                 }
-                
             }
             
             if isActivityIndicator {  // show indicator
                 LoadingView()
             }
-            
         }
         
         .onChange(of: arrInt) { newValue in
@@ -205,14 +199,12 @@ struct LoadingView: View {
     var body: some View {
         ZStack {
             Color("colorCustom")
-
-
             ProgressView()
                 .progressViewStyle(CircularProgressViewStyle(tint: Color.black))
                 .scaleEffect(3)
-            
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .ignoresSafeArea()
     }
 }
 
