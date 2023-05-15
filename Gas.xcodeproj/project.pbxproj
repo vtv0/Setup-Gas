@@ -68,6 +68,9 @@
 		75BF3A1328E161A900BC0F0C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 75BF3A1128E161A900BC0F0C /* LaunchScreen.storyboard */; };
 		75BF3A1E28E2883100BC0F0C /* DeliveryListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BF3A1D28E2883100BC0F0C /* DeliveryListController.swift */; };
 		75C0F47628F425A50091FB84 /* CustomAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75C0F47528F425A50091FB84 /* CustomAlertViewController.swift */; };
+		75C56FC72A11E28200BBB6FF /* FloatingPanelSwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75C56FC62A11E28200BBB6FF /* FloatingPanelSwiftUI.swift */; };
+		75C56FC92A11EE6300BBB6FF /* Handle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75C56FC82A11EE6300BBB6FF /* Handle.swift */; };
+		75C56FCB2A12144F00BBB6FF /* ConvertFloatingPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75C56FCA2A12144F00BBB6FF /* ConvertFloatingPanel.swift */; };
 		75CC4584296D1F7F00BE203B /* PostGetToken_Async_Await.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75CC4583296D1F7F00BE203B /* PostGetToken_Async_Await.swift */; };
 		75CC4589296E615E00BE203B /* PostGetToken_Block.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75CC4588296E615E00BE203B /* PostGetToken_Block.swift */; };
 		75D2CE8528F80F1C00B51CED /* FacilityImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75D2CE8428F80F1C00B51CED /* FacilityImageView.swift */; };
@@ -165,6 +168,9 @@
 		75BF3A1428E161A900BC0F0C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		75BF3A1D28E2883100BC0F0C /* DeliveryListController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeliveryListController.swift; sourceTree = "<group>"; };
 		75C0F47528F425A50091FB84 /* CustomAlertViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAlertViewController.swift; sourceTree = "<group>"; };
+		75C56FC62A11E28200BBB6FF /* FloatingPanelSwiftUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingPanelSwiftUI.swift; sourceTree = "<group>"; };
+		75C56FC82A11EE6300BBB6FF /* Handle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Handle.swift; sourceTree = "<group>"; };
+		75C56FCA2A12144F00BBB6FF /* ConvertFloatingPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConvertFloatingPanel.swift; sourceTree = "<group>"; };
 		75CC4583296D1F7F00BE203B /* PostGetToken_Async_Await.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostGetToken_Async_Await.swift; sourceTree = "<group>"; };
 		75CC4588296E615E00BE203B /* PostGetToken_Block.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostGetToken_Block.swift; sourceTree = "<group>"; };
 		75D2CE8428F80F1C00B51CED /* FacilityImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacilityImageView.swift; sourceTree = "<group>"; };
@@ -570,6 +576,23 @@
 			path = "Delivery List";
 			sourceTree = "<group>";
 		};
+		75C56FC42A11E22800BBB6FF /* FloatingPanel SwiftUI */ = {
+			isa = PBXGroup;
+			children = (
+				75C56FCA2A12144F00BBB6FF /* ConvertFloatingPanel.swift */,
+				75C56FC62A11E28200BBB6FF /* FloatingPanelSwiftUI.swift */,
+				75C56FC52A11E24300BBB6FF /* PageDetail SwiftUI */,
+			);
+			path = "FloatingPanel SwiftUI";
+			sourceTree = "<group>";
+		};
+		75C56FC52A11E24300BBB6FF /* PageDetail SwiftUI */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "PageDetail SwiftUI";
+			sourceTree = "<group>";
+		};
 		75CC4585296E5E2800BE203B /* Block */ = {
 			isa = PBXGroup;
 			children = (
@@ -728,6 +751,8 @@
 			isa = PBXGroup;
 			children = (
 				75F692BD2A04ED85007A858A /* DeliveryListSwiftUI.swift */,
+				75C56FC82A11EE6300BBB6FF /* Handle.swift */,
+				75C56FC42A11E22800BBB6FF /* FloatingPanel SwiftUI */,
 			);
 			path = "DeliveryList SwiftUI";
 			sourceTree = "<group>";
@@ -962,6 +987,8 @@
 				75498993299A245A00D1958E /* Presenter_Replan.swift in Sources */,
 				7573ADC4295310B400E8C658 /* GetWorkerRouteLocationList4.swift in Sources */,
 				755CCBB429F663E90038E207 /* ReuseViewType.swift in Sources */,
+				75C56FC72A11E28200BBB6FF /* FloatingPanelSwiftUI.swift in Sources */,
+				75C56FC92A11EE6300BBB6FF /* Handle.swift in Sources */,
 				750B39D028E3036300210AB9 /* ReplanController.swift in Sources */,
 				7549898A2999E88E00D1958E /* PresenterSetting.swift in Sources */,
 				75A1E17F28F3AB6300EA17A2 /* RerouteViewController.swift in Sources */,
@@ -972,6 +999,7 @@
 				753BA388296BB1D100C7136F /* GetAsset_Async_Await.swift in Sources */,
 				7573ADC029530A0100E8C658 /* GetWorkerVehicleList.swift in Sources */,
 				75FDF73028EAB0F700AADB99 /* TabsView.swift in Sources */,
+				75C56FCB2A12144F00BBB6FF /* ConvertFloatingPanel.swift in Sources */,
 				75E2940A29965ADA00153A72 /* PatchStatusDelivery.swift in Sources */,
 				75FDF73728EAB65800AADB99 /* GeneralInfoController.swift in Sources */,
 				75E2940429962E5E00153A72 /* PresenterLogin.swift in Sources */,

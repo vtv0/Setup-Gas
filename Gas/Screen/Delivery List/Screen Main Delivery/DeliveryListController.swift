@@ -83,9 +83,7 @@ class DeliveryListController: UIViewController, UIPickerViewDelegate, UIPickerVi
     @IBAction func btnShipping(_ sender: Any) {
         let shipingVC = storyboard?.instantiateViewController(withIdentifier: "ShippingViewController") as! ShippingViewController
         self.navigationController?.pushViewController(shipingVC, animated: true)
-        
         shipingVC.dataInfoOneCustomer = dataInfoOneCustomer
-        
     }
     
     @IBAction func btnSetting(_ sender: Any) {

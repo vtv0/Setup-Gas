@@ -46,7 +46,6 @@ class FloatingPanelDeliveryVC: UIViewController, UIPageViewControllerDelegate, U
         setupTabs()
         setupPageViewController()
         
-        
     }
     
     func setupTabs() {

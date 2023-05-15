@@ -29,7 +29,6 @@ struct LoginSwiftUI: View {
     
     @State private var isActivityIndicator = false
     
-    
     var body: some View {
         
         @AppStorage("username") var userName: String = userName
@@ -110,7 +109,7 @@ struct LoginSwiftUI: View {
                                         isArrInt = true
                                         UserDefaults.standard.set(userName, forKey: "username")
                                         UserDefaults.standard.set(pass, forKey: "pass")
-                                        UserDefaults.standard.set(companyCode, forKey: "companuCode")
+                                        UserDefaults.standard.set(companyCode, forKey: "companyCode")
                                         
                                     } catch {
                                         presentAlert = true
