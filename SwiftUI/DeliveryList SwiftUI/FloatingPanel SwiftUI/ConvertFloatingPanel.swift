@@ -7,16 +7,21 @@
 
 import SwiftUI
 import UIKit
+import FloatingPanel
+
 
 struct ConvertFloatingPanel: View {
+    
+    
+    typealias UIViewControllerType = FloatingPanelLayout
+    
     var body: some View {
         VStack {
             Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-            FloatingPanel()
-//            FloatingPanelDeliveryVC()
+            
+            //            FloatingPanelDeliveryVC()
         }
         .ignoresSafeArea(.all)
-      
     }
 }
 
@@ -26,18 +31,28 @@ struct ConvertFloatingPanel_Previews: PreviewProvider {
     }
 }
 
-
-struct FloatingPanel: UIViewRepresentable {
+struct FloatingPanel: UIViewControllerRepresentable {
+    //    typealias UIViewControllerType = MyFloatingPanelLayout
     
-    func makeUIView(context: Context) -> some UIView {
-        var view = UIView()
-        view.backgroundColor = .yellow
-        view = PageDetailVC()
+    func makeUIViewController(context: Context) -> some UIViewController {
+        let floatingPanel = MyFloatingPanelLayout()
+        let vc = UIViewController()
+        //        floatingPanel.btnShipping.backgroundColor = .red
+//        vc.addChild(floatingPanel)
         
-        return view
+        //        floatingPanel.mapView?.translatesAutoresizingMaskIntoConstraints = false
+        //        floatingPanel.translatesAutoresizingMaskIntoConstraints = false
+        //        NSLayoutConstraint.activate([
+        //            floatingPanel.leadingAnchor.constraint(equalTo: viewController.view.leadingAnchor),
+        //            floatingPanel.trailingAnchor.constraint(equalTo: viewController.view.trailingAnchor),
+        //            floatingPanel.topAnchor.constraint(equalTo: viewController.view.topAnchor),
+        //            floatingPanel.bottomAnchor.constraint(equalTo: viewController.view.bottomAnchor),
+        //                ])
+        return vc
     }
     
-    func updateUIView(_ uiView: UIViewType, context: Context) {
-  
+    func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) {
+        //
     }
+    
 }

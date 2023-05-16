@@ -27,6 +27,8 @@ struct DeliveryListSwiftUI: View {
         center: CLLocationCoordinate2D(latitude: 35.6762, longitude: 139.6503),
         span: MKCoordinateSpan(latitudeDelta: 0.5, longitudeDelta: 0.5))
     
+    @State var isPresented = false
+    
     var body: some View {
         
         NavigationStack {
@@ -111,7 +113,6 @@ struct DeliveryListSwiftUI: View {
                     }
                     
                     
-                    
                 }
                 
                 .navigationTitle("Delivery List")
@@ -165,13 +166,13 @@ struct DeliveryListSwiftUI: View {
                         } catch {
                             if let err = error as? GetMe_Async_Await.AFError {
                                 if err == .tokenOutOfDate {
-                                    //                    hideActivity()
-                                    //                    let scr = storyboard?.instantiateViewController(withIdentifier: "LoginViewController") as! ViewController
-                                    //                    self.navigationController?.pushViewController(scr, animated: true)
-                                    //                    showAlert(message: "Token đã hết hạn -> Login lại")
+                                    //  hideActivity()
+                                    //  let scr = storyboard?.instantiateViewController(withIdentifier: "LoginViewController") as! ViewController
+                                    //  self.navigationController?.pushViewController(scr, animated: true)
+                                    //  showAlert(message: "Token đã hết hạn -> Login lại")
                                 } else if err == .remain {
-                                    //                    hideActivity()
-                                    //                    showAlert(message: "Có lỗi xảy ra")
+                                    // hideActivity()
+                                    // showAlert(message: "Có lỗi xảy ra")
                                 }
                             }
                         }
@@ -179,7 +180,7 @@ struct DeliveryListSwiftUI: View {
                     }
                 }
                 
-                ConvertFloatingPanel()
+             
                 
 //                SlideOverCard {
 //                    VStack {
@@ -191,7 +192,7 @@ struct DeliveryListSwiftUI: View {
                 
                 Button(action: {
                     print("shipping")
-                    
+                    isPresented = true
                 }) {
                     HStack {
                         Spacer()
@@ -203,8 +204,13 @@ struct DeliveryListSwiftUI: View {
                             .tint(Color.white)
                         Spacer()
                     }
+                    
+                    .sheet(isPresented: $isPresented) {
+                        ConvertFloatingPanel()
+                    }
+                    
+                    
                 } .frame(maxHeight: .infinity, alignment: .bottom)
-                
                 
             }
             
