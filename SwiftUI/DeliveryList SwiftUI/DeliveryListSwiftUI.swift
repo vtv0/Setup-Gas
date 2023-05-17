@@ -11,210 +11,218 @@ import MapKit
 
 struct DeliveryListSwiftUI: View {
     
-    var status: [String] = [ "Not_Delivery", "All"]
-    @State private var selectedStatus = "Not_Delivery"
     
+    var status: [String] = ["Not_Delivery", "All"]
+    @State private var selectedStatus = "Not_Delivery"
     var car: [String] = ["Car1", "Car2", "Car3"]
     @State private var selectedCar = "Car1"
-    
-    
     @State var listDateString: [String] = []
     @State private var listDay: [Date] = []
     @State private var selectedDate = ""
+    
     @State private var dicData: [Date: [Location]] = [:]
     
     @State var coordinateRegion = MKCoordinateRegion(
         center: CLLocationCoordinate2D(latitude: 35.6762, longitude: 139.6503),
         span: MKCoordinateSpan(latitudeDelta: 0.5, longitudeDelta: 0.5))
     
-    @State var isPresented = false
+    @State private var showSheet = false
+    
+    @State private var isActivityIndicator = false
     
     var body: some View {
         
         NavigationStack {
             ZStack {
-                
                 Map(coordinateRegion: $coordinateRegion)
                     .edgesIgnoringSafeArea(.all)
                 
-                HStack(alignment: .top) {
-                    Picker("", selection: $selectedStatus) {
-                        ForEach(status, id: \.self) { status in
-                            Text("\(status)")
-                        }
-                    }
-                    .pickerStyle(.wheel)
-                    .border(.black)
-                    .cornerRadius(3)
-                    
-                    Picker("", selection: $selectedCar) {
-                        ForEach(car, id: \.self) { car in
-                            Text("\(car)" )
-                        }
-                    }
-                    .pickerStyle(.wheel)
-                    .border(.black)
-                    .cornerRadius(3)
-                    
-                    Picker("", selection: $selectedDate) {
-                        // convert Date in String
-                        ForEach(listDateString, id: \.self) {
-                            Text($0)
-                        }
-                    }
-                    .pickerStyle(.wheel)
-                    .border(.black)
-                    .cornerRadius(3)
-                    
-                }
-                .frame(height: 45.0)
-//                .alignment
-                .background(Color.gray)
-                
-                
-                HStack(alignment: .top) {
-                    
+                VStack {
                     HStack(alignment: .top) {
-                        VStack {
-                            Label("50kg", image: "")
-                            Label("5", image: "")
+                        Picker("", selection: $selectedStatus) {
+                            ForEach(status, id: \.self) { status in
+                                Text("\(status)")
+                            }
                         }
-                        .frame(maxWidth: .infinity)
+                        .pickerStyle(.wheel)
                         .border(.black)
+                        .cornerRadius(3)
                         
-                        VStack {
-                            Label("30kg", image: "")
-                            Label("3", image: "")
+                        Picker("", selection: $selectedCar) {
+                            ForEach(car, id: \.self) { car in
+                                Text("\(car)" )
+                            }
                         }
-                        .frame(maxWidth: .infinity)
+                        .pickerStyle(.wheel)
                         .border(.black)
+                        .cornerRadius(3)
                         
-                        VStack {
-                            Label("25kg", image: "")
-                            Label("2", image: "")
+                        Picker("", selection: $selectedDate) {
+                            // convert Date in String
+                            ForEach(listDateString, id: \.self) {
+                                Text($0)
+                            }
                         }
-                        .frame(maxWidth: .infinity)
+                        .pickerStyle(.wheel)
                         .border(.black)
-                        
-                        VStack {
-                            Label("20kg", image: "")
-                            Label("1", image: "")
-                        }
-                        .frame(maxWidth: .infinity)
-                        .border(.black)
-                        
-                        VStack {
-                            Label("other", image: "")
-                            Label("0", image: "")
-                        }
-                        .frame(maxWidth: .infinity)
-                        .border(.black)
+                        .cornerRadius(3)
                         
                     }
                     
+                    .frame(height: 45.0)
+                    //                .alignment
+                    .background(Color.gray)
+                    
+                    //                    Spacer()
+                    HStack(alignment: .top) {
+                        
+                        HStack(alignment: .top) {
+                            VStack {
+                                Label("50kg", image: "")
+                                Label("5", image: "")
+                            }
+                            .frame(maxWidth: .infinity)
+                            .border(.black)
+                            
+                            VStack {
+                                Label("30kg", image: "")
+                                Label("3", image: "")
+                            }
+                            .frame(maxWidth: .infinity)
+                            .border(.black)
+                            
+                            VStack {
+                                Label("25kg", image: "")
+                                Label("2", image: "")
+                            }
+                            .frame(maxWidth: .infinity)
+                            .border(.black)
+                            
+                            VStack {
+                                Label("20kg", image: "")
+                                Label("1", image: "")
+                            }
+                            .frame(maxWidth: .infinity)
+                            .border(.black)
+                            
+                            VStack {
+                                Label("other", image: "")
+                                Label("0", image: "")
+                            }
+                            .frame(maxWidth: .infinity)
+                            .border(.black)
+                            
+                        }
+                        .background(Color.white)
+                        .border(.black)
+                    }
+                    
+                    .navigationBarTitle("Delivery List SwiftUI")
+//                    .toolbar {
+//                        ToolbarItemGroup(placement: .navigationBarLeading) {
+//                            Button(action: {
+//                                print("reroute")
+//                            }) {
+//                                Image("ic_line")
+//                            }
+//
+//                            Button(action: {
+//                                print("reroute")
+//                            }) {
+//                                Image("point")
+//                            }
+//                        }
+//
+//                        ToolbarItem(placement: .navigationBarTrailing) {
+//                            Button(action: {
+//                                print("setting")
+//                            }) {
+//                                Image("ic_setting")
+//                            }
+//                        }
+//                    }
+                    
+                    
+                    
+                    .onAppear {
+//                        isActivityIndicator = true
+                        sevenDay()
+                        convertDateToString()
+                        
+                        // floating panel
+                        
+                        Task {
+                            do {
+                                // getMe
+                                let companyCode = UserDefaults.standard.string(forKey: "companyCode") ?? ""
+                                let responseGetMe_SwiftUI = try await GetMe_Async_Await().getMe_Async_Await(companyCode: companyCode, token: UserDefaults.standard.string(forKey: "accessToken") ?? "")
+                                print(responseGetMe_SwiftUI)
+                                do {
+                                    // getLast...
+                                    let dicDataResponse_SwiftUI = await GetWorkerRouteLocationList_Async_Await().loadDic(dates: listDay)   //.getWorkerRouteLocationList_Async_Await()
+                                    dicData = dicDataResponse_SwiftUI
+                                    showSheet = true
+                                    isActivityIndicator = false
+                                    print(dicData)
+                                }
+                                
+                            } catch {
+                                if let err = error as? GetMe_Async_Await.AFError {
+                                    if err == .tokenOutOfDate {
+                                        //  hideActivity()
+                                        //  let scr = storyboard?.instantiateViewController(withIdentifier: "LoginViewController") as! ViewController
+                                        //  self.navigationController?.pushViewController(scr, animated: true)
+                                        //  showAlert(message: "Token đã hết hạn -> Login lại")
+                                    } else if err == .remain {
+                                        // hideActivity()
+                                        // showAlert(message: "Có lỗi xảy ra")
+                                    }
+                                }
+                            }
+                            
+                        }
+                    }
+                    
+                   
+                    
+                    
+                    Button(action: {
+                        print("shipping")
+                        
+                    }) {
+                        HStack {
+                            Spacer()
+                            Text("Shiping")
+                                .frame(maxWidth: 250)
+                                .frame(height:40)
+                                .background(Color.blue)
+                                .cornerRadius(10)
+                                .tint(Color.white)
+                            Spacer()
+                        }
+                        
+//                        .sheet(isPresented: $showSheet) {
+//                            Text("Hello cac bon")
+//                                .presentationDetents([ .custom(CustomSheets.self), .height(550)])
+//                                .interactiveDismissDisabled()
+//                        }
+                        
+                        
+                    }
+                    .frame(maxHeight: .infinity, alignment: .bottom)
                     
                 }
-                
-                .navigationTitle("Delivery List")
-                .toolbar {
-                    ToolbarItemGroup(placement: .navigationBarLeading) {
-                        Button(action: {
-                            print("reroute")
-                        }) {
-                            Image("ic_line")
-                        }
-                        
-                        Button(action: {
-                            print("reroute")
-                        }) {
-                            Image("point")
-                        }
-                    }
-                    
-                    ToolbarItem(placement: .navigationBarTrailing) {
-                        Button(action: {
-                            print("setting")
-                        }) {
-                            Image("ic_setting")
-                        }
-                    }
-                }
-                
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbarBackground(.visible, for: .navigationBar)
                 .toolbarBackground(.cyan, for: .navigationBar)
                 
-                .onAppear {
-                    sevenDay()
-                    convertDateToString()
-                    
-                    // floating panel
-                    
-                    Task {
-                        do {
-                            // getMe
-                            let companyCode = UserDefaults.standard.string(forKey: "companyCode") ?? ""
-                            let responseGetMe_SwiftUI = try await GetMe_Async_Await().getMe_Async_Await(companyCode: companyCode, token: UserDefaults.standard.string(forKey: "accessToken") ?? "")
-                            print(responseGetMe_SwiftUI)
-                            do {
-                                // getLast...
-                                let dicDataResponse_SwiftUI = await GetWorkerRouteLocationList_Async_Await().loadDic(dates: listDay)   //.getWorkerRouteLocationList_Async_Await()
-                                dicData = dicDataResponse_SwiftUI
-                                print(dicData)
-                            }
-                            
-                        } catch {
-                            if let err = error as? GetMe_Async_Await.AFError {
-                                if err == .tokenOutOfDate {
-                                    //  hideActivity()
-                                    //  let scr = storyboard?.instantiateViewController(withIdentifier: "LoginViewController") as! ViewController
-                                    //  self.navigationController?.pushViewController(scr, animated: true)
-                                    //  showAlert(message: "Token đã hết hạn -> Login lại")
-                                } else if err == .remain {
-                                    // hideActivity()
-                                    // showAlert(message: "Có lỗi xảy ra")
-                                }
-                            }
-                        }
-                        
-                    }
+                if isActivityIndicator {  // show indicator
+                    LoadingView()
                 }
-                
-             
-                
-//                SlideOverCard {
-//                    VStack {
-//                        Text("view Detail")
-//                            .font(.headline)
-//                    }
-//                }
-                
-                
-                Button(action: {
-                    print("shipping")
-                    isPresented = true
-                }) {
-                    HStack {
-                        Spacer()
-                        Text("Shiping")
-                            .frame(maxWidth: 250)
-                            .frame(height:40)
-                            .background(Color.blue)
-                            .cornerRadius(10)
-                            .tint(Color.white)
-                        Spacer()
-                    }
-                    
-                    .sheet(isPresented: $isPresented) {
-                        ConvertFloatingPanel()
-                    }
-                    
-                    
-                } .frame(maxHeight: .infinity, alignment: .bottom)
-                
             }
             
         }
+        
     }
     
     func sevenDay() {
@@ -225,11 +233,9 @@ struct DeliveryListSwiftUI: View {
         for dayOffset in 0...6 {
             if let date1 = calendar.date(byAdding: .day, value: dayOffset, to: anchor)?.removeTimeStamp {
                 listDay.append(date1)
-                
             }
         }
     }
-    
     
     func convertDateToString() {
         let formatter = DateFormatter()
@@ -237,18 +243,13 @@ struct DeliveryListSwiftUI: View {
         for idate in listDay {
             let dateString: String = formatter.string(from: idate)
             listDateString.append(dateString)
-            
         }
-        
     }
-    
-    
 }
 
 
 struct DeliveryListSwiftUI_Previews: PreviewProvider {
     static var previews: some View {
-        
         DeliveryListSwiftUI()
     }
 }

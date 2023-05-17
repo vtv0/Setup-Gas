@@ -88,8 +88,6 @@ struct LoginSwiftUI: View {
                         .background(Color.white)
                     }
                     
-                    
-                    
                     Button(action: {
                         
                         
