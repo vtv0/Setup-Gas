@@ -71,7 +71,6 @@
 		75C56FC72A11E28200BBB6FF /* FloatingPanelSwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75C56FC62A11E28200BBB6FF /* FloatingPanelSwiftUI.swift */; };
 		75C56FC92A11EE6300BBB6FF /* Handle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75C56FC82A11EE6300BBB6FF /* Handle.swift */; };
 		75C56FCB2A12144F00BBB6FF /* ConvertFloatingPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75C56FCA2A12144F00BBB6FF /* ConvertFloatingPanel.swift */; };
-		75C56FCF2A1374E000BBB6FF /* UISheetSwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75C56FCE2A1374E000BBB6FF /* UISheetSwiftUI.swift */; };
 		75CC4584296D1F7F00BE203B /* PostGetToken_Async_Await.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75CC4583296D1F7F00BE203B /* PostGetToken_Async_Await.swift */; };
 		75CC4589296E615E00BE203B /* PostGetToken_Block.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75CC4588296E615E00BE203B /* PostGetToken_Block.swift */; };
 		75D2CE8528F80F1C00B51CED /* FacilityImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75D2CE8428F80F1C00B51CED /* FacilityImageView.swift */; };
@@ -172,7 +171,6 @@
 		75C56FC62A11E28200BBB6FF /* FloatingPanelSwiftUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingPanelSwiftUI.swift; sourceTree = "<group>"; };
 		75C56FC82A11EE6300BBB6FF /* Handle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Handle.swift; sourceTree = "<group>"; };
 		75C56FCA2A12144F00BBB6FF /* ConvertFloatingPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConvertFloatingPanel.swift; sourceTree = "<group>"; };
-		75C56FCE2A1374E000BBB6FF /* UISheetSwiftUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISheetSwiftUI.swift; sourceTree = "<group>"; };
 		75CC4583296D1F7F00BE203B /* PostGetToken_Async_Await.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostGetToken_Async_Await.swift; sourceTree = "<group>"; };
 		75CC4588296E615E00BE203B /* PostGetToken_Block.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostGetToken_Block.swift; sourceTree = "<group>"; };
 		75D2CE8428F80F1C00B51CED /* FacilityImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacilityImageView.swift; sourceTree = "<group>"; };
@@ -595,14 +593,6 @@
 			path = "PageDetail SwiftUI";
 			sourceTree = "<group>";
 		};
-		75C56FCC2A13742100BBB6FF /* UISheetSwiftUI */ = {
-			isa = PBXGroup;
-			children = (
-				75C56FCE2A1374E000BBB6FF /* UISheetSwiftUI.swift */,
-			);
-			path = UISheetSwiftUI;
-			sourceTree = "<group>";
-		};
 		75CC4585296E5E2800BE203B /* Block */ = {
 			isa = PBXGroup;
 			children = (
@@ -760,7 +750,6 @@
 		75F692BC2A04ED36007A858A /* DeliveryList SwiftUI */ = {
 			isa = PBXGroup;
 			children = (
-				75C56FCC2A13742100BBB6FF /* UISheetSwiftUI */,
 				75F692BD2A04ED85007A858A /* DeliveryListSwiftUI.swift */,
 				75C56FC82A11EE6300BBB6FF /* Handle.swift */,
 				75C56FC42A11E22800BBB6FF /* FloatingPanel SwiftUI */,
@@ -997,7 +986,6 @@
 				75BF3A0728E161A800BC0F0C /* AppDelegate.swift in Sources */,
 				75498993299A245A00D1958E /* Presenter_Replan.swift in Sources */,
 				7573ADC4295310B400E8C658 /* GetWorkerRouteLocationList4.swift in Sources */,
-				75C56FCF2A1374E000BBB6FF /* UISheetSwiftUI.swift in Sources */,
 				755CCBB429F663E90038E207 /* ReuseViewType.swift in Sources */,
 				75C56FC72A11E28200BBB6FF /* FloatingPanelSwiftUI.swift in Sources */,
 				75C56FC92A11EE6300BBB6FF /* Handle.swift in Sources */,

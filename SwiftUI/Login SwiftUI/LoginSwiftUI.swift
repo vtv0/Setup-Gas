@@ -24,7 +24,7 @@ struct LoginSwiftUI: View {
     @State var checked: Bool = true
     
     @State private var presentAlert = false
-    @State private var path = NavigationPath()
+
     
     
     @State private var isActivityIndicator = false
@@ -152,7 +152,6 @@ struct LoginSwiftUI: View {
                         .background(Color.blue)
                         .cornerRadius(5)
                         .padding(.horizontal, 30)
-                        
                     }
                 }
                 
@@ -201,7 +200,7 @@ struct LoadingView: View {
                 .scaleEffect(3)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .ignoresSafeArea()
+        .ignoresSafeArea(.all)
     }
 }
 
