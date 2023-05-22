@@ -21,6 +21,7 @@ struct DeliveryListSwiftUI: View {
     @State private var selectedDate = ""
     
     @State private var dicData: [Date: [Location]] = [:]
+    @State private var listLocation: [Location] = []
     
     @State var coordinateRegion = MKCoordinateRegion(
         center: CLLocationCoordinate2D(latitude: 35.6762, longitude: 139.6503),
@@ -167,6 +168,19 @@ struct DeliveryListSwiftUI: View {
                                         isActivityIndicator = false
                                         print(dicData)
                                         
+                                        //creata list listLocationLocation
+                                        
+                                        for idic in dicData {
+                                            //                                            for locations in idic.value {
+                                            ////                                                listLocation = locations
+                                            //                                                print(locations)
+                                            //                                            }
+                                            
+                                            
+                                            print("\(idic.key)" + "\(idic.value)" )
+                                        }
+                                        
+                                        
                                     }
                                     
                                 } catch {
@@ -189,43 +203,86 @@ struct DeliveryListSwiftUI: View {
                         .sheet(isPresented: $showSheet) {    // Floating panel
                             
                             TabView {
-//                                for iLocation in Location
-                              
-                                Text("1")
-                                Text("2")
-                                Text("3")
-                                Text("4")
-                                Text("5")
-                                
+                                //                                for iLocation in listLocation
                                 VStack {
                                     ScrollView(showsIndicators: false) {
-                                        VStack(spacing: 5) { //  to remove spacing between rows
-                                            ForEach(1..<3) { i in
-                                                ZStack{
-                                                    Text(String(i))
-                                                    Circle()
-                                                } .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
-                                                    .background(Color.yellow)
+                                        VStack(spacing: 3) { //  to remove spacing between rows
+                                            //                                            ForEach(1..<6) { i in
+                                            VStack(alignment: .leading) {
+                                                Label("ID", image: "")
+                                                Label("CustomerName", image: "")
+                                                Label("Address", image: "")
+                                                Label("Estimate", image: "")
+
+                                                Button(action: {
+                                                    print("555555")
+                                                }) {
+                                                    Label("Map", image: "ic_launch_app")
+                                                }
+                                                
+                                                
                                             }
+                                            //  .frame(maxWidth: UIScreen.main.bounds.width, height: 250)
+                                           
+                                            .frame(maxWidth: .infinity, maxHeight: 350)
+                                            .background(Color.yellow)
+                                            
+                                            
+                                            
+                                            VStack {
+                                                Text(String("3sdvvrvfevsdc fdvsdvgdfntfgbvasdvasrterfdsvbfgvrvx rgrevrvcdfberbvds bgsbhewrvdSvsE3sdvvrvfevsdc fdvsdvgdfntfgbvasdvasrterfdsvbfgvrvx rgrevrvcdfberbvds bgsbhewrvdSvsE3sdvvrvfevsdc fdvsdvgdfntfgbvasdvasrterfdsvbfgvrvx rgrevrvcdfberbvds bgsbhewrvdSvsE3sdvvrvfevsdc fdvsdvgdfntfgbvasdvasrterfdsvbfgvrvx rgrevrvcdfberbvds bgsbhewrvdSvsE3sdvvrvfevsdc fdvsdvgdfntfgbvasdvasrterfdsvbfgvrvx rgrevrvcdfberbvds bgsbhewrvdSvsE3sdvvrvfevsdc fdvsdvgdfntfgbvasdvasrterfdsvbfgvrvx rgrevrvcdfberbvds bgsbhewrvdSvsE3sdvvrvfevsdc fdvsdvgdfntfgbvasdvasrterfdsvbfgvrvx rgrevrvcdfberbvds bgsbhewrvdSvsE3sdvvrvfevsdc fdvsdvgdfntfgbvasdvasrterfdsvbfgvrvx rgrevrvcdfberbvds bgsbhewrvdSvsE3sdvvrvfevsdc fdvsdvgdfntfgbvasdvasrterfdsvbfgvrvx rgrevrvcdfberbvds bgsbhewrvdSvsE3sdvvrvfevsdc "))
+                                                
+                                            } .frame(maxWidth: .infinity, maxHeight: 700)
+                                            .background(Color.gray)
+                                            
+                                            HStack {
+                                                VStack(alignment: .leading) {
+                                                    Text("Type")
+                                                }
+                                                
+                                                VStack(alignment: .trailing) {
+                                                    Text("Count")
+                                                }
+                                                
+                                            } .frame(maxHeight: 350)
+                                                .background(Color.gray)
+                                            
+                                            
+                                            VStack {
+                                                Label("Estimate Time", image: "")
+                                                    .font(.system(size: 23))
+                                                Label("2023-05-22", image: "")
+                                                    .font(.system(size: 20))
+                                            }
+                                           
+                                            .frame(maxWidth: .infinity, maxHeight: 200)
+                                            .background(Color.green)
+                                            .border(.black)
+                                            .cornerRadius(18)
+                                            
+//                                        }
+                                            
+                                            
                                             
                                         }
+                                        
+                                        
+                                        
                                     }
-//                                    .onAppear {
-//                                        UIScrollView.appearance().isPagingEnabled = true
-//                                    }
-//                                    .onDisappear {
-//                                        UIScrollView.appearance().isPagingEnabled = false
-//                                    }
+                                    
+                                    .onAppear {
+                                        UIScrollView.appearance().isPagingEnabled = true
+                                    }
+                                    .onDisappear {
+                                        UIScrollView.appearance().isPagingEnabled = false
+                                    }
                                 }
                                 
                                 
                             }
-                            .background(Color.blue)
+                            
+//                            .background(Color.blue)
                             .tabViewStyle(.page(indexDisplayMode: .never))
-                            
-                            
-                            
-                            
                             .presentationDetents([ .custom(CustomSheets.self), .height(650)])
                             .interactiveDismissDisabled()
                             .presentationBackgroundInteraction(.enabled)
