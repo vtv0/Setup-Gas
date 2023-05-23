@@ -16,9 +16,10 @@ struct DeliveryListSwiftUI: View {
     @State private var selectedStatus = "Not_Delivery"
     var car: [String] = ["Car1", "Car2", "Car3"]
     @State private var selectedCar = "Car1"
+    
     @State var listDateString: [String] = []
     @State private var listDay: [Date] = []
-    @State private var selectedDate = ""
+    @State private var selectedDate = Date()
     
     @State private var dicData: [Date: [Location]] = [:]
     @State private var listLocation: [Location] = []
@@ -61,9 +62,13 @@ struct DeliveryListSwiftUI: View {
                         
                         Picker("", selection: $selectedDate) {
                             // convert Date in String
-                            ForEach(listDateString, id: \.self) {
-                                Text($0)
+                            ForEach(self.listDay, id: \.self) { _ in
+                                // convert date in String
+                                let stringDate = convertDateToString(idate: selectedDate)
+                                Text("\(stringDate)")
+                           
                             }
+                            
                         }
                         .pickerStyle(.wheel)
                         .border(.black)
@@ -150,7 +155,7 @@ struct DeliveryListSwiftUI: View {
                         .onAppear {
                             isActivityIndicator = true
                             sevenDay()
-                            convertDateToString()
+                            //                            convertDateToString()
                             
                             // floating panel
                             
@@ -161,8 +166,8 @@ struct DeliveryListSwiftUI: View {
                                     let responseGetMe_SwiftUI = try await GetMe_Async_Await().getMe_Async_Await(companyCode: companyCode, token: UserDefaults.standard.string(forKey: "accessToken") ?? "")
                                     print(responseGetMe_SwiftUI)
                                     do {
-                                        // getLast...
-                                        let dicDataResponse_SwiftUI = await GetWorkerRouteLocationList_Async_Await().loadDic(dates: listDay)   //.getWorkerRouteLocationList_Async_Await()
+                                        // getWorkerRouteLocationList_Async_Await()
+                                        let dicDataResponse_SwiftUI = await GetWorkerRouteLocationList_Async_Await().loadDic(dates: listDay)
                                         dicData = dicDataResponse_SwiftUI
                                         showSheet = true
                                         isActivityIndicator = false
@@ -170,16 +175,12 @@ struct DeliveryListSwiftUI: View {
                                         
                                         //creata list listLocationLocation
                                         
-                                        for idic in dicData {
-                                            //                                            for locations in idic.value {
-                                            ////                                                listLocation = locations
-                                            //                                                print(locations)
-                                            //                                            }
-                                            
-                                            
-                                            print("\(idic.key)" + "\(idic.value)" )
-                                        }
                                         
+                                        listLocation =  DeliveryListController().getDataFiltered(date: selectedDate, driver: 0, status: 0)
+                                        
+                                       
+                                        print(selectedDate.removeTimeStamp!)
+                                        print(listLocation)
                                         
                                     }
                                     
@@ -197,93 +198,95 @@ struct DeliveryListSwiftUI: View {
                                     }
                                 }
                                 
+                                
                             }
                         }
                     
-                        .sheet(isPresented: $showSheet) {    // Floating panel
+                        .sheet(isPresented: $showSheet) {  // Floating panel
                             
                             TabView {
-                                //                                for iLocation in listLocation
-                                VStack {
-                                    ScrollView(showsIndicators: false) {
-                                        VStack(spacing: 3) { //  to remove spacing between rows
-                                            //                                            ForEach(1..<6) { i in
-                                            VStack(alignment: .leading) {
-                                                Label("ID", image: "")
-                                                Label("CustomerName", image: "")
-                                                Label("Address", image: "")
-                                                Label("Estimate", image: "")
-
-                                                Button(action: {
-                                                    print("555555")
-                                                }) {
-                                                    Label("Map", image: "ic_launch_app")
-                                                }
-                                                
-                                                
-                                            }
-                                            //  .frame(maxWidth: UIScreen.main.bounds.width, height: 250)
-                                           
-                                            .frame(maxWidth: .infinity, maxHeight: 350)
-                                            .background(Color.yellow)
-                                            
-                                            
-                                            
-                                            VStack {
-                                                Text(String("3sdvvrvfevsdc fdvsdvgdfntfgbvasdvasrterfdsvbfgvrvx rgrevrvcdfberbvds bgsbhewrvdSvsE3sdvvrvfevsdc fdvsdvgdfntfgbvasdvasrterfdsvbfgvrvx rgrevrvcdfberbvds bgsbhewrvdSvsE3sdvvrvfevsdc fdvsdvgdfntfgbvasdvasrterfdsvbfgvrvx rgrevrvcdfberbvds bgsbhewrvdSvsE3sdvvrvfevsdc fdvsdvgdfntfgbvasdvasrterfdsvbfgvrvx rgrevrvcdfberbvds bgsbhewrvdSvsE3sdvvrvfevsdc fdvsdvgdfntfgbvasdvasrterfdsvbfgvrvx rgrevrvcdfberbvds bgsbhewrvdSvsE3sdvvrvfevsdc fdvsdvgdfntfgbvasdvasrterfdsvbfgvrvx rgrevrvcdfberbvds bgsbhewrvdSvsE3sdvvrvfevsdc fdvsdvgdfntfgbvasdvasrterfdsvbfgvrvx rgrevrvcdfberbvds bgsbhewrvdSvsE3sdvvrvfevsdc fdvsdvgdfntfgbvasdvasrterfdsvbfgvrvx rgrevrvcdfberbvds bgsbhewrvdSvsE3sdvvrvfevsdc fdvsdvgdfntfgbvasdvasrterfdsvbfgvrvx rgrevrvcdfberbvds bgsbhewrvdSvsE3sdvvrvfevsdc "))
-                                                
-                                            } .frame(maxWidth: .infinity, maxHeight: 700)
-                                            .background(Color.gray)
-                                            
-                                            HStack {
+                                ForEach(self.listLocation, id: \.self)  { ilocation in
+                                    Text(ilocation.elem?.location?.assetID ?? "")
+                                    VStack {
+                                        ScrollView(showsIndicators: false) {
+                                            VStack(spacing: 50) { //  to remove spacing between rows
+                                                //                                            ForEach(1..<6) { i in
                                                 VStack(alignment: .leading) {
-                                                    Text("Type")
+                                                    Label("ID", image: "")
+                                                    Label("CustomerName", image: "")
+                                                    Label("Address", image: "")
+                                                    Label("Estimate", image: "")
+                                                    
+                                                    Button(action: {
+                                                        print("open map")
+                                                    }) {
+                                                        Label("Map", image: "ic_launch_app")
+                                                    }
+                                                    
+                                                    Divider()
+                                                    //                                                    .padding([.leading, .trailing], 30)
+                                                    
+                                                }
+                                                //                                            .frame(maxWidth: .infinity, maxHeight: 350)
+                                                .background(Color.yellow)
+                                                
+                                                VStack {
+                                                    Text(String("3sdvvrvfevsdc fdvsdvgdfntfgbvasdvasrterfdsvbfgvrvx rgrevrvcdfberbvds bgsbhewrvdSvsE3sdvvrvfevsdc fdvsdvgdfntfgbvasdvasrterfdsvbfgvrvx rgrevrvcdfberbvds bgsbhewrvdSvsE3sdvvrvfevsdc fdvsdvgdfntfgbvasdvasrterfdsvbfgvrvx rgrevrvcdfberbvds bgsbhewrvdSvsE3sdvvrvfevsdc fdvsdvgdfntfgbvasdvasrterfdsvbfgvrvx rgrevrvcdfberbvds bgsbhewrvdSvsE3sdvvrvfevsdc fdvsdvgdfntfgbvasdvasrterfdsvbfgvrvx rgrevrvcdfberbvds bgsbhewrvdSvsE3sdvvrvfevsdc fdvsdvgdfntfgbvasdvasrterfdsvbfgvrvx rgrevrvcdfberbvds bgsbhewrvdSvsE3sdvvrvfevsdc fdvsdvgdfntfgbvasdvasrterfdsvbfgvrvx rgrevrvcdfberbvds bgsbhewrvdSvsE3sdvvrvfevsdc fdvsdvgdfntfgbvasdvasrterfdsvbfgvrvx rgrevrvcdfberbvds bgsbhewrvdSvsE3sdvvrvfevsdc fdvsdvgdfntfgbvasdvasrterfdsvbfgvrvx rgrevrvcdfberbvds bgsbhewrvdSvsE3sdvvrvfevsdc "))
+                                                    
+                                                } .frame(maxWidth: .infinity, maxHeight: 700)
+                                                    .background(Color.gray)
+                                                
+                                                HStack {
+                                                    
+                                                    HStack {
+                                                        Spacer()
+                                                        Text("Type")
+                                                        Spacer()
+                                                        
+                                                        Spacer()
+                                                        Text("Count")
+                                                        Spacer()
+                                                    }
+                                                    
+                                                    // Label 50kg, 30kg, 25kg, ....
+                                                    //                                                Label(<#T##SwiftUI.LocalizedStringKey#>, image: <#T##String#>)
+                                                    // Label count: 1, 4, 5, ...
+                                                    
+                                                    
+                                                } .frame(maxHeight: 350)
+                                                    .background(Color.red)
+                                                
+                                                
+                                                VStack {
+                                                    Label("Estimate Time", image: "")
+                                                        .font(.system(size: 23))
+                                                    Label("2023-05-22", image: "")
+                                                        .font(.system(size: 20))
                                                 }
                                                 
-                                                VStack(alignment: .trailing) {
-                                                    Text("Count")
-                                                }
+                                                .frame(maxWidth: .infinity * 0.7, maxHeight: 200)
+                                                .background(Color.green)
+                                                .border(.black)
+                                                .cornerRadius(18)
                                                 
-                                            } .frame(maxHeight: 350)
-                                                .background(Color.gray)
-                                            
-                                            
-                                            VStack {
-                                                Label("Estimate Time", image: "")
-                                                    .font(.system(size: 23))
-                                                Label("2023-05-22", image: "")
-                                                    .font(.system(size: 20))
+                                                //                                        }
                                             }
-                                           
-                                            .frame(maxWidth: .infinity, maxHeight: 200)
-                                            .background(Color.green)
-                                            .border(.black)
-                                            .cornerRadius(18)
-                                            
-//                                        }
-                                            
-                                            
-                                            
                                         }
                                         
-                                        
-                                        
+                                        .onAppear {
+                                            UIScrollView.appearance().isPagingEnabled = true
+                                        }
+                                        .onDisappear {
+                                            UIScrollView.appearance().isPagingEnabled = false
+                                        }
                                     }
                                     
-                                    .onAppear {
-                                        UIScrollView.appearance().isPagingEnabled = true
-                                    }
-                                    .onDisappear {
-                                        UIScrollView.appearance().isPagingEnabled = false
-                                    }
                                 }
-                                
-                                
                             }
                             
-//                            .background(Color.blue)
+                            .background(Color.clear)
                             .tabViewStyle(.page(indexDisplayMode: .never))
-                            .presentationDetents([ .custom(CustomSheets.self), .height(650)])
+                            .presentationDetents([.custom(CustomSheets.self), .height(650)])
                             .interactiveDismissDisabled()
                             .presentationBackgroundInteraction(.enabled)
                             .zIndex(-100)
@@ -296,7 +299,6 @@ struct DeliveryListSwiftUI: View {
                     }) {
                         
                         HStack {
-                            
                             Spacer()
                             
                             Text("Shiping")
@@ -311,8 +313,6 @@ struct DeliveryListSwiftUI: View {
                         }
                         
                     } .frame(maxHeight: .infinity, alignment: .bottom)
-                    
-                    
                     
                 }
                 
@@ -334,18 +334,21 @@ struct DeliveryListSwiftUI: View {
         for dayOffset in 0...6 {
             if let date1 = calendar.date(byAdding: .day, value: dayOffset, to: anchor)?.removeTimeStamp {
                 listDay.append(date1)
+               
             }
         }
     }
     
-    func convertDateToString() {
+    func convertDateToString(idate: Date) -> String {
         let formatter = DateFormatter()
         formatter.dateFormat = "MM/dd"
-        for idate in listDay {
-            let dateString: String = formatter.string(from: idate)
-            listDateString.append(dateString)
-        }
+        let dateString: String = formatter.string(from: idate)
+        return dateString
     }
+    
+//    func filterLocation() -> Location {
+//        
+//    }
     
 }
 

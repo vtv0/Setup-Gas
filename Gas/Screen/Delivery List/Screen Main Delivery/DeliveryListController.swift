@@ -459,7 +459,6 @@ class DeliveryListController: UIViewController, UIPickerViewDelegate, UIPickerVi
         self.indxes = []
         var locationsByDriver: [Int: [Location]] = [:]
         var elemLocationADay = [Location]()
-        
         var dataOneDate: [Location] = dicData[date] ?? []
         
         if dataOneDate.count > 0 && dataOneDate[0].type == .supplier && dataOneDate[0].elem?.locationOrder == 1 {
@@ -475,6 +474,7 @@ class DeliveryListController: UIViewController, UIPickerViewDelegate, UIPickerVi
                 indxes.append(vehicleIdx)
             }
         }
+        
         indxes.enumerated().forEach { idx, item in
             if Array(elemLocationADay).count > 0 {
                 if idx == 0 && indxes[0] > 0 {

@@ -10,7 +10,7 @@ import Alamofire
 
 class GetWorkerRouteLocationList_Async_Await {
     
-    var dateYMD: [Date] = []
+ 
     var dicData: [Date: [Location]] = [:]
     var arrLocationElem : [LocationElement] = []
     var arrLocation: [Location] = []
@@ -22,18 +22,7 @@ class GetWorkerRouteLocationList_Async_Await {
         case wrong
         case remain
     }
-    
-//    func sevenDay() {
-//        let anchor = Date()
-//        let calendar = Calendar.current
-//        let formatter = DateFormatter()
-//        formatter.dateFormat = "yyyy-MM-dd"
-//        for dayOffset in 0...6 {
-//            if let date1 = calendar.date(byAdding: .day, value: dayOffset, to: anchor)?.removeTimeStamp {
-//                 dateYMD.append(date1) // error
-//            }
-//        }
-//    }
+
     
     func makeHeaders(token: String) -> HTTPHeaders {
         var headers: [String: String] = [:]
@@ -42,7 +31,7 @@ class GetWorkerRouteLocationList_Async_Await {
     }
     
     func getLocationElem_Async_Await(iday: Date) async throws -> [Location] {
-//        sevenDay()
+
         let tenantId = UserDefaults.standard.string(forKey: "tenantId") ?? ""
         let userId = UserDefaults.standard.string(forKey: "userId") ?? ""
         
@@ -53,7 +42,7 @@ class GetWorkerRouteLocationList_Async_Await {
         
         let dateString: String = formatter.string(from: iday)
         let url: String = "https://\(companyCode).kiiapps.com/am/exapi/vrp/tenants/\(tenantId)/latest_route/worker_users/\(userId)?workDate=\(dateString)"
-        
+
         let getWorkerRouteLocationList = AF.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: self.makeHeaders(token: token)).validate(statusCode: (200...299))
             .serializingDecodable(GetLatestWorkerRouteLocationListInfo.self)
         let getWorkerRouteLocationListResponse =  await getWorkerRouteLocationList.response
