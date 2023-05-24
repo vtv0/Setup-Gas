@@ -3172,7 +3172,7 @@ Cgo
                 <navigationController storyboardIdentifier="navigationShippingViewController" automaticallyAdjustsScrollViewInsets="NO" id="32m-bP-EFh" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="xOk-t2-V7D">
-                        <rect key="frame" x="0.0" y="20" width="320" height="50"/>
+                        <rect key="frame" x="0.0" y="20" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="tintColor" systemColor="linkColor"/>
                     </navigationBar>
@@ -3191,7 +3191,7 @@ Cgo
                 <navigationController storyboardIdentifier="navigationScreenExpandVC" automaticallyAdjustsScrollViewInsets="NO" id="Y7R-HD-ej4" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="eHg-kh-cgj">
-                        <rect key="frame" x="0.0" y="20" width="320" height="50"/>
+                        <rect key="frame" x="0.0" y="20" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>

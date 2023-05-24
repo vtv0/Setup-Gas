@@ -13,9 +13,14 @@ struct DeliveryListSwiftUI: View {
     
     
     var status: [String] = ["Not_Delivery", "All"]
-    @State private var selectedStatus = "Not_Delivery"
-    var car: [String] = ["Car1", "Car2", "Car3"]
-    @State private var selectedCar = "Car1"
+    //    @State private var selectedStatus = "Not_Delivery"
+    @State private var selectedStatus: Int = 0
+    
+    var car: [String] = []
+    //    @State private var selectedCar = "Car1"
+    @State private var selectedDriver: Int = 0
+    @State private var indxes: [Int] = []
+    
     
     @State var listDateString: [String] = []
     @State private var listDay: [Date] = []
@@ -32,6 +37,13 @@ struct DeliveryListSwiftUI: View {
     
     @State private var isActivityIndicator = false
     
+    @State private var number50kg = 0
+    @State private var number30kg = 0
+    @State private var number25kg = 0
+    @State private var number20kg = 0
+    @State private var other = 0
+    
+    @State private var notes: String = ""
     var body: some View {
         
         NavigationStack {
@@ -50,25 +62,37 @@ struct DeliveryListSwiftUI: View {
                         .pickerStyle(.wheel)
                         .border(.black)
                         .cornerRadius(3)
+                        .onChange(of: selectedStatus) { istatus in
+                         print(istatus)
+                        }
                         
-                        Picker("", selection: $selectedCar) {
-                            ForEach(car, id: \.self) { car in
-                                Text("\(car)" )
+                        
+                        Picker("", selection: $selectedDriver) {
+                            ForEach(Array(zip(indxes.indices, indxes)), id: \.0) { (ind, car)  in
+                                Text("CAR\(ind+1)" )
                             }
                         }
                         .pickerStyle(.wheel)
                         .border(.black)
                         .cornerRadius(3)
+                        .onChange(of: selectedDriver) { idriver in
+                            print(idriver)
+                        }
+                        
                         
                         Picker("", selection: $selectedDate) {
                             // convert Date in String
-                            ForEach(self.listDay, id: \.self) { _ in
+                            ForEach(self.listDay, id: \.self) { idate in
                                 // convert date in String
-                                let stringDate = convertDateToString(idate: selectedDate)
+                                let stringDate = convertDateToString(idate: idate.removeTimeStamp!)
                                 Text("\(stringDate)")
-                           
+                                
                             }
-                            
+                         
+                        }
+                        .onChange(of: selectedDate) { idate in
+//                            listLocation = dicData[idate] ?? []
+                            listLocation = getDataFiltered(date: idate, driver: selectedDriver, status: selectedStatus)
                         }
                         .pickerStyle(.wheel)
                         .border(.black)
@@ -84,36 +108,36 @@ struct DeliveryListSwiftUI: View {
                     
                     HStack(alignment: .top) {
                         VStack {
-                            Label("50kg", image: "")
-                            Label("5", image: "")
+                            Text("50kg")
+                            Text("\(number50kg)")
                         }
                         .frame(maxWidth: .infinity)
                         .border(.black)
                         
                         VStack {
-                            Label("30kg", image: "")
-                            Label("3", image: "")
+                            Text("30kg")
+                            Text("\(number30kg)")
                         }
                         .frame(maxWidth: .infinity)
                         .border(.black)
                         
                         VStack {
-                            Label("25kg", image: "")
-                            Label("2", image: "")
+                            Text("25kg")
+                            Text("\(number25kg)")
                         }
                         .frame(maxWidth: .infinity)
                         .border(.black)
                         
                         VStack {
-                            Label("20kg", image: "")
-                            Label("1", image: "")
+                            Text("20kg")
+                            Text("\(number20kg)")
                         }
                         .frame(maxWidth: .infinity)
                         .border(.black)
                         
                         VStack {
-                            Label("other", image: "")
-                            Label("0", image: "")
+                            Text("other")
+                            Text("\(other)")
                         }
                         .frame(maxWidth: .infinity)
                         .border(.black)
@@ -174,12 +198,8 @@ struct DeliveryListSwiftUI: View {
                                         print(dicData)
                                         
                                         //creata list listLocationLocation
-                                        
-                                        
-                                        listLocation =  DeliveryListController().getDataFiltered(date: selectedDate, driver: 0, status: 0)
-                                        
-                                       
-                                        print(selectedDate.removeTimeStamp!)
+                                        //                                        listLocation = dicData[selectedDate.removeTimeStamp!] ?? []
+                                        listLocation = getDataFiltered(date: selectedDate, driver: selectedDriver, status: selectedStatus)
                                         print(listLocation)
                                         
                                     }
@@ -206,34 +226,49 @@ struct DeliveryListSwiftUI: View {
                             
                             TabView {
                                 ForEach(self.listLocation, id: \.self)  { ilocation in
-                                    Text(ilocation.elem?.location?.assetID ?? "")
+                                    
                                     VStack {
                                         ScrollView(showsIndicators: false) {
                                             VStack(spacing: 50) { //  to remove spacing between rows
                                                 //                                            ForEach(1..<6) { i in
                                                 VStack(alignment: .leading) {
-                                                    Label("ID", image: "")
-                                                    Label("CustomerName", image: "")
-                                                    Label("Address", image: "")
-                                                    Label("Estimate", image: "")
-                                                    
-                                                    Button(action: {
-                                                        print("open map")
-                                                    }) {
-                                                        Label("Map", image: "ic_launch_app")
+                                                    if ilocation.type == .supplier {
+                                                        
+                                                    } else {
+                                                        
+                                                        Text(ilocation.elem?.location?.comment ?? "")
+                                                            .padding(.top, 15)
+                                                        Text(ilocation.asset?.properties?.values.customer_name ?? "")
+                                                        Text(ilocation.asset?.properties?.values.address ?? "")
+                                                        
+                                                        if let minutes = ilocation.elem?.arrivalTime?.minutes,
+                                                           let hours = ilocation.elem?.arrivalTime?.hours {
+                                                            if minutes < 10 {
+                                                                Text("Estimate Time : \(hours):0\(minutes)")
+                                                            } else {
+                                                                Text("Estimate Time : \(hours):\(minutes)")
+                                                            }
+                                                        }
+                                                        
+                                                        Button(action: {
+                                                            print("open map")
+                                                        }) {
+                                                            Label("Map", image: "ic_launch_app")
+                                                        }
+//                                                        Divider()
                                                     }
-                                                    
-                                                    Divider()
-                                                    //                                                    .padding([.leading, .trailing], 30)
+                                                }
+                                                .frame(maxWidth: .infinity)
+                                                .background(Color.yellow)
+//                                                .padding(.leading, 10)
+                                                
+                                                // page Image
+                                                // page
+                                                VStack {
+                                                    Text(String(""))
                                                     
                                                 }
-                                                //                                            .frame(maxWidth: .infinity, maxHeight: 350)
-                                                .background(Color.yellow)
-                                                
-                                                VStack {
-                                                    Text(String("3sdvvrvfevsdc fdvsdvgdfntfgbvasdvasrterfdsvbfgvrvx rgrevrvcdfberbvds bgsbhewrvdSvsE3sdvvrvfevsdc fdvsdvgdfntfgbvasdvasrterfdsvbfgvrvx rgrevrvcdfberbvds bgsbhewrvdSvsE3sdvvrvfevsdc fdvsdvgdfntfgbvasdvasrterfdsvbfgvrvx rgrevrvcdfberbvds bgsbhewrvdSvsE3sdvvrvfevsdc fdvsdvgdfntfgbvasdvasrterfdsvbfgvrvx rgrevrvcdfberbvds bgsbhewrvdSvsE3sdvvrvfevsdc fdvsdvgdfntfgbvasdvasrterfdsvbfgvrvx rgrevrvcdfberbvds bgsbhewrvdSvsE3sdvvrvfevsdc fdvsdvgdfntfgbvasdvasrterfdsvbfgvrvx rgrevrvcdfberbvds bgsbhewrvdSvsE3sdvvrvfevsdc fdvsdvgdfntfgbvasdvasrterfdsvbfgvrvx rgrevrvcdfberbvds bgsbhewrvdSvsE3sdvvrvfevsdc fdvsdvgdfntfgbvasdvasrterfdsvbfgvrvx rgrevrvcdfberbvds bgsbhewrvdSvsE3sdvvrvfevsdc fdvsdvgdfntfgbvasdvasrterfdsvbfgvrvx rgrevrvcdfberbvds bgsbhewrvdSvsE3sdvvrvfevsdc "))
-                                                    
-                                                } .frame(maxWidth: .infinity, maxHeight: 700)
+                                                .frame(maxWidth: .infinity)
                                                     .background(Color.gray)
                                                 
                                                 HStack {
@@ -249,36 +284,48 @@ struct DeliveryListSwiftUI: View {
                                                     }
                                                     
                                                     // Label 50kg, 30kg, 25kg, ....
-                                                    //                                                Label(<#T##SwiftUI.LocalizedStringKey#>, image: <#T##String#>)
+                                                    // Label(<#T##SwiftUI.LocalizedStringKey#>, image: <#T##String#>)
                                                     // Label count: 1, 4, 5, ...
                                                     
                                                     
                                                 } .frame(maxHeight: 350)
                                                     .background(Color.red)
                                                 
+                                                VStack(alignment: .leading) {
+                                                    HStack {
+                                                        Text("Note")
+                                                        
+                                                        Spacer()
+                                                        Button(action: {
+                                                            print("rrrrrrrrr")
+                                                        }) {
+                                                            Image("ic_edit")
+                                                        }
+                                                       
+                                                    }
+                                                    .padding( .horizontal, 10)
+                                                    TextField("Hiện ra khi không có ghi chú nào ? ?? ??? ???? ", text: $notes)
+                                                    
+                                                }
                                                 
                                                 VStack {
-                                                    Label("Estimate Time", image: "")
+                                                    Text("Estimate Time")
                                                         .font(.system(size: 23))
-                                                    Label("2023-05-22", image: "")
+                                                    Text(ilocation.elem?.metadata?.planned_date ?? "")
                                                         .font(.system(size: 20))
                                                 }
                                                 
-                                                .frame(maxWidth: .infinity * 0.7, maxHeight: 200)
+                                                .frame(maxWidth: .infinity, maxHeight: 200)
                                                 .background(Color.green)
                                                 .border(.black)
                                                 .cornerRadius(18)
                                                 
                                                 //                                        }
                                             }
+                                            .padding(.horizontal, 10)
                                         }
                                         
-                                        .onAppear {
-                                            UIScrollView.appearance().isPagingEnabled = true
-                                        }
-                                        .onDisappear {
-                                            UIScrollView.appearance().isPagingEnabled = false
-                                        }
+                                        
                                     }
                                     
                                 }
@@ -334,7 +381,7 @@ struct DeliveryListSwiftUI: View {
         for dayOffset in 0...6 {
             if let date1 = calendar.date(byAdding: .day, value: dayOffset, to: anchor)?.removeTimeStamp {
                 listDay.append(date1)
-               
+                
             }
         }
     }
@@ -346,9 +393,119 @@ struct DeliveryListSwiftUI: View {
         return dateString
     }
     
-//    func filterLocation() -> Location {
-//        
-//    }
+    
+    func getDataFiltered(date: Date, driver: Int, status: Int) -> [Location] {
+        indxes = []
+        var locations: [Location] = []
+        var locationsByDriver: [Int: [Location]] = [:]
+        var elemLocationADay = [Location]()
+        var dataOneDate: [Location] = dicData[date.removeTimeStamp!] ?? []
+        
+        if dataOneDate.count > 0 && dataOneDate[0].type == .supplier && dataOneDate[0].elem?.locationOrder == 1 {
+            dataOneDate.remove(at: 0)
+        }
+        dataOneDate.forEach() { idataADay in
+            elemLocationADay.append(idataADay)
+        }
+        locations = elemLocationADay
+        print(locations)
+        
+        elemLocationADay.enumerated().forEach { vehicleIdx, vehicle in
+            if (vehicle.elem?.location?.locationType?.rawValue == "supplier") {
+                indxes.append(vehicleIdx)
+            }
+        }
+        
+        indxes.enumerated().forEach { idx, item in
+            if Array(elemLocationADay).count > 0 {
+                if idx == 0 && indxes[0] > 0 {
+                    locationsByDriver[idx] = Array(elemLocationADay[0...indxes[idx]])
+                } else if indxes[idx-1]+1 < indxes[idx] {
+                    locationsByDriver[idx] = Array(elemLocationADay[indxes[idx-1]+1...indxes[idx]])
+                }
+            }
+        }
+        self.selectedDriver = driver
+        self.selectedStatus = status
+        
+        if driver+1 < indxes.count+1 {
+            var dataStatus: [Location] = locationsByDriver[driver] ?? []
+            
+            for statusShipping in dataStatus {
+                if statusShipping.elem?.location?.metadata?.display_data?.valueDeliveryHistory() == .waiting
+                    && statusShipping.elem?.location?.metadata?.display_data?.valueDeliveryHistory() == .failed &&
+                    statusShipping.elem?.location?.metadata?.display_data?.valueDeliveryHistory() == .inprogress {
+                    
+                    dataStatus.removeAll()
+                    dataStatus.append(statusShipping)
+                    listLocation = dataStatus
+                } else {
+                    listLocation = dataStatus
+                }
+            }
+            
+            //            self.totalType()
+            
+        } else if driver+1 == indxes.count+1 {
+            var dataStatus: [Location] = dataOneDate
+            for statusShipping in dataOneDate {
+                if statusShipping.elem?.location?.metadata?.display_data?.valueDeliveryHistory() == .waiting
+                    && statusShipping.elem?.location?.metadata?.display_data?.valueDeliveryHistory() == .failed &&
+                    statusShipping.elem?.location?.metadata?.display_data?.valueDeliveryHistory() == .inprogress {
+                    
+                    dataStatus.removeAll()
+                    dataStatus.append(statusShipping)
+                    listLocation = dataStatus
+                } else {
+                    listLocation = dataStatus
+                }
+            }
+            //            self.pickerStatus.reloadAllComponents()
+            
+            
+            
+        }
+        //        customFloatingPanel()
+        
+        self.totalType_SwiftUI()
+        
+        
+        return listLocation
+    }
+    
+    func totalType_SwiftUI() {
+        var arrFacilityData: [[Facility_data]] = []
+        var numberType50: Int = 0
+        var numberType30: Int = 0
+        var numberType25: Int = 0
+        var numberType20: Int = 0
+        var numberTypeOther: Int = 0
+        for facilityData in listLocation {
+            arrFacilityData.append(facilityData.elem?.metadata?.facility_data ?? [])
+            
+        }
+        for iFacilityData in arrFacilityData {
+            for detailFacilityData in iFacilityData {
+                if detailFacilityData.type == 50 {
+                    numberType50 = numberType50 + (detailFacilityData.count ?? 0)
+                } else if detailFacilityData.type == 30 {
+                    numberType30 = numberType30 + (detailFacilityData.count ?? 0)
+                } else if detailFacilityData.type == 25 {
+                    numberType25 = numberType25 + (detailFacilityData.count ?? 0)
+                } else if detailFacilityData.type == 20 {
+                    numberType20 = numberType20 + (detailFacilityData.count ?? 0)
+                } else {
+                    numberTypeOther = numberTypeOther + (detailFacilityData.count ?? 0)
+                }
+                
+            }
+        }
+        self.number50kg = numberType50
+        self.number30kg = numberType30
+        self.number25kg = numberType25
+        self.number20kg = numberType20
+        self.other = numberTypeOther
+    }
     
 }
 

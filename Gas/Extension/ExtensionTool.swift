@@ -30,10 +30,8 @@ extension UIImageView {
 }
 
 extension Date {
-    public var removeTimeStamp : Date? {
-        guard let date = Calendar.current.date(from: Calendar.current.dateComponents([.year, .month, .day], from: self)) else {
-            return nil
-        }
+    public var removeTimeStamp: Date? {
+        guard let date = Calendar.current.date(from: Calendar.current.dateComponents([.year, .month, .day], from: self)) else { return nil }
         return date
     }
 }
