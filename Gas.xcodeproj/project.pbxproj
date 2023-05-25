@@ -35,6 +35,8 @@
 		754C987B29B1E19200931430 /* SQLite_DBLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754C987A29B1E19200931430 /* SQLite_DBLocation.swift */; };
 		755CCBB429F663E90038E207 /* ReuseViewType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755CCBB329F663E90038E207 /* ReuseViewType.swift */; };
 		755F185129B1ED5400C99A1D /* SQLite_Asset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755F185029B1ED5400C99A1D /* SQLite_Asset.swift */; };
+		756B1A302A1EFDCE00BC415B /* ViewTypeAndCount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756B1A2F2A1EFDCE00BC415B /* ViewTypeAndCount.swift */; };
+		756B1A342A1F43C600BC415B /* ViewImageSwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756B1A332A1F43C600BC415B /* ViewImageSwiftUI.swift */; };
 		7573ADC029530A0100E8C658 /* GetWorkerVehicleList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7573ADBF29530A0100E8C658 /* GetWorkerVehicleList.swift */; };
 		7573ADC229530D3600E8C658 /* GetRouteList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7573ADC129530D3600E8C658 /* GetRouteList.swift */; };
 		7573ADC4295310B400E8C658 /* GetWorkerRouteLocationList4.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7573ADC3295310B400E8C658 /* GetWorkerRouteLocationList4.swift */; };
@@ -133,6 +135,8 @@
 		754C987A29B1E19200931430 /* SQLite_DBLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SQLite_DBLocation.swift; sourceTree = "<group>"; };
 		755CCBB329F663E90038E207 /* ReuseViewType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReuseViewType.swift; sourceTree = "<group>"; };
 		755F185029B1ED5400C99A1D /* SQLite_Asset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SQLite_Asset.swift; sourceTree = "<group>"; };
+		756B1A2F2A1EFDCE00BC415B /* ViewTypeAndCount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewTypeAndCount.swift; sourceTree = "<group>"; };
+		756B1A332A1F43C600BC415B /* ViewImageSwiftUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewImageSwiftUI.swift; sourceTree = "<group>"; };
 		7573ADBF29530A0100E8C658 /* GetWorkerVehicleList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetWorkerVehicleList.swift; sourceTree = "<group>"; };
 		7573ADC129530D3600E8C658 /* GetRouteList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetRouteList.swift; sourceTree = "<group>"; };
 		7573ADC3295310B400E8C658 /* GetWorkerRouteLocationList4.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetWorkerRouteLocationList4.swift; sourceTree = "<group>"; };
@@ -422,6 +426,15 @@
 				759AF855296BC80D003138CF /* ShippingVC */,
 			);
 			path = "Screen Main Delivery";
+			sourceTree = "<group>";
+		};
+		756B1A2E2A1EFD9300BC415B /* ViewDetail */ = {
+			isa = PBXGroup;
+			children = (
+				756B1A2F2A1EFDCE00BC415B /* ViewTypeAndCount.swift */,
+				756B1A332A1F43C600BC415B /* ViewImageSwiftUI.swift */,
+			);
+			path = ViewDetail;
 			sourceTree = "<group>";
 		};
 		7578B3BA29ACC1C4007367C3 /* Full Screen */ = {
@@ -751,6 +764,7 @@
 			isa = PBXGroup;
 			children = (
 				75F692BD2A04ED85007A858A /* DeliveryListSwiftUI.swift */,
+				756B1A2E2A1EFD9300BC415B /* ViewDetail */,
 				75C56FC82A11EE6300BBB6FF /* Handle.swift */,
 				75C56FC42A11E22800BBB6FF /* FloatingPanel SwiftUI */,
 			);
@@ -965,6 +979,7 @@
 				75867FF22970FD88005A0295 /* GetMe_Async_Await.swift in Sources */,
 				75123F6A29027E3D00A08972 /* PassScreenViewController.swift in Sources */,
 				75F745402990A58F00B17423 /* ExtensionTool.swift in Sources */,
+				756B1A302A1EFDCE00BC415B /* ViewTypeAndCount.swift in Sources */,
 				75BD0BC4299DC9A700D1B690 /* TableView.swift in Sources */,
 				75FDF73D28EABABA00AADB99 /* EditViewController.swift in Sources */,
 				75FDF73928EAB69700AADB99 /* ParkingLocationController.swift in Sources */,
@@ -996,6 +1011,7 @@
 				7578B3C529ADF8E7007367C3 /* PageViewController.swift in Sources */,
 				7579268D299F0E6D00E7A28D /* ScreenExpland_TableViewCell.swift in Sources */,
 				754C987B29B1E19200931430 /* SQLite_DBLocation.swift in Sources */,
+				756B1A342A1F43C600BC415B /* ViewImageSwiftUI.swift in Sources */,
 				753BA388296BB1D100C7136F /* GetAsset_Async_Await.swift in Sources */,
 				7573ADC029530A0100E8C658 /* GetWorkerVehicleList.swift in Sources */,
 				75FDF73028EAB0F700AADB99 /* TabsView.swift in Sources */,

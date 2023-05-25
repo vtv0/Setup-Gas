@@ -265,8 +265,6 @@ class PageDetailVC: UIViewController, UIScrollViewDelegate, UICollectionViewDele
             
             if dataInfoOneCustomer.asset?.properties?.values.notes != "" {
                 lblTextNotes.text = dataInfoOneCustomer.asset?.properties?.values.notes
-                
-                
                 self.lblTextNotes.translatesAutoresizingMaskIntoConstraints = false
                 lblTextNotes.isScrollEnabled = false
             } else {

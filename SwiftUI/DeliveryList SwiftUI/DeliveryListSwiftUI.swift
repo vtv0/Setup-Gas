@@ -43,6 +43,12 @@ struct DeliveryListSwiftUI: View {
     @State private var number20kg = 0
     @State private var other = 0
     
+    
+    
+    @State private var typeGas = 0
+    @State private var countGas = 0
+    
+    
     @State private var notes: String = ""
     var body: some View {
         
@@ -64,19 +70,25 @@ struct DeliveryListSwiftUI: View {
                         .cornerRadius(3)
                         .onChange(of: selectedStatus) { istatus in
                          print(istatus)
+                            listLocation = getDataFiltered(date: selectedDate, driver: selectedDriver, status: istatus)
                         }
                         
                         
                         Picker("", selection: $selectedDriver) {
-                            ForEach(Array(zip(indxes.indices, indxes)), id: \.0) { (ind, car)  in
-                                Text("CAR\(ind+1)" )
+                            if !indxes.isEmpty {
+                                ForEach(Array(zip(indxes.indices, indxes)), id: \.0) { (ind, car)  in
+                                    Text("Car\(ind+1)" )
+                                }
+                                
+                            } else  {
+                                Text("Car1")
                             }
                         }
                         .pickerStyle(.wheel)
                         .border(.black)
                         .cornerRadius(3)
                         .onChange(of: selectedDriver) { idriver in
-                            print(idriver)
+                            listLocation = getDataFiltered(date: selectedDate, driver: idriver, status: selectedStatus)
                         }
                         
                         
@@ -86,18 +98,15 @@ struct DeliveryListSwiftUI: View {
                                 // convert date in String
                                 let stringDate = convertDateToString(idate: idate.removeTimeStamp!)
                                 Text("\(stringDate)")
-                                
                             }
-                         
                         }
                         .onChange(of: selectedDate) { idate in
 //                            listLocation = dicData[idate] ?? []
-                            listLocation = getDataFiltered(date: idate, driver: selectedDriver, status: selectedStatus)
+                            listLocation = getDataFiltered(date: idate, driver: 0, status: 0)
                         }
                         .pickerStyle(.wheel)
                         .border(.black)
                         .cornerRadius(3)
-                        
                     }
                     
                     .frame(height: 45.0)
@@ -178,12 +187,13 @@ struct DeliveryListSwiftUI: View {
                     
                         .onAppear {
                             isActivityIndicator = true
-                            sevenDay()
+                      
                             //                            convertDateToString()
                             
                             // floating panel
                             
                             Task {
+                                sevenDay()
                                 do {
                                     // getMe
                                     let companyCode = UserDefaults.standard.string(forKey: "companyCode") ?? ""
@@ -195,12 +205,11 @@ struct DeliveryListSwiftUI: View {
                                         dicData = dicDataResponse_SwiftUI
                                         showSheet = true
                                         isActivityIndicator = false
-                                        print(dicData)
                                         
                                         //creata list listLocationLocation
                                         //                                        listLocation = dicData[selectedDate.removeTimeStamp!] ?? []
                                         listLocation = getDataFiltered(date: selectedDate, driver: selectedDriver, status: selectedStatus)
-                                        print(listLocation)
+                                      
                                         
                                     }
                                     
@@ -264,15 +273,16 @@ struct DeliveryListSwiftUI: View {
                                                 
                                                 // page Image
                                                 // page
-                                                VStack {
-                                                    Text(String(""))
-                                                    
+                                                HStack {
+                                                    ViewImageSwiftUI()
                                                 }
-                                                .frame(maxWidth: .infinity)
-                                                    .background(Color.gray)
+                                                .frame(maxWidth: .infinity, maxHeight: 350)
+                                                
+                                                .background(Color.gray)
+                                                
+                                                
                                                 
                                                 HStack {
-                                                    
                                                     HStack {
                                                         Spacer()
                                                         Text("Type")
@@ -287,6 +297,13 @@ struct DeliveryListSwiftUI: View {
                                                     // Label(<#T##SwiftUI.LocalizedStringKey#>, image: <#T##String#>)
                                                     // Label count: 1, 4, 5, ...
                                                     
+//                                                    HStack {
+//                                                        ViewTypeAndCount(typeGas: 0, countGas: 0)
+//                                                        ForEach() { _ in
+//
+//                                                        }
+//                                                    }
+//                                                    
                                                     
                                                 } .frame(maxHeight: 350)
                                                     .background(Color.red)
