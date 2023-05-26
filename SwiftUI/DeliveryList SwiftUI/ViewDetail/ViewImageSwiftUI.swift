@@ -9,38 +9,22 @@ import SwiftUI
 
 
 struct ViewImageSwiftUI: View {
-    @State private var listImage: [UIImage] = []
+    
+//    @Binding var elementsImageSwiftUI: [String]
+    
+    
     var body: some View {
         TabView {
-            var listUrlImage = Location(elem: LocationElement(locationOrder: 0), asset: GetAsset(), createdAt: "").urls()
             
-            
-            ForEach(listImage, id: \.self) { iImageSwiftUI in
-               
-                Image(uiImage: iImageSwiftUI)
-            }
-            Image("application_splash_logo")
-          
-        }
-       // .onChange(of: listImage) { newValue in
-           
-        //    print(listUrlImage)
-         //   let imageSwiftUI: UIImageView!
-//            ForEach(listUrlImage, id: \.self) { iurlImageSwiftUI in
-//
-//                print(iurlImageSwiftUI)
-////                imageSwiftUI.downloaded(from: iurlImageSwiftUI)
-////
-////                listUrlImage.append(imageSwiftUI)
-//
+//            ForEach(elementsImageSwiftUI, id: \.self) { iImageSwiftUI in
+//                Text(iImageSwiftUI)
+////                Image(uiImage: iImageSwiftUI)
 //            }
-            
-   //     }
+        }
+        //        .frame(maxWidth: .infinity, maxHeight: 350)
         .tabViewStyle(.page)
         .background(Color.gray)
     }
-    
-    
 }
 
 struct ViewImageSwiftUI_Previews: PreviewProvider {

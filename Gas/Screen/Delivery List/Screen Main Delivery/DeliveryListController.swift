@@ -596,7 +596,6 @@ class DeliveryListController: UIViewController, UIPickerViewDelegate, UIPickerVi
         var numberType20: Int = 0
         var numberTypeOther: Int = 0
         
-        
         for facilityData in dataDidFilter {
             arrFacilityData.append(facilityData.elem?.metadata?.facility_data ?? [])
         }

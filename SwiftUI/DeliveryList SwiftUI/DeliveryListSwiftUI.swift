@@ -43,13 +43,15 @@ struct DeliveryListSwiftUI: View {
     @State private var number20kg = 0
     @State private var other = 0
     
-    
-    
     @State private var typeGas = 0
     @State private var countGas = 0
     
+    @State private var listImage: [String] = []
     
     @State private var notes: String = ""
+    
+    @State private var listImageSwiftUI: [UIImage] = []
+    
     var body: some View {
         
         NavigationStack {
@@ -69,7 +71,7 @@ struct DeliveryListSwiftUI: View {
                         .border(.black)
                         .cornerRadius(3)
                         .onChange(of: selectedStatus) { istatus in
-                         print(istatus)
+                            print(istatus)
                             listLocation = getDataFiltered(date: selectedDate, driver: selectedDriver, status: istatus)
                         }
                         
@@ -101,7 +103,7 @@ struct DeliveryListSwiftUI: View {
                             }
                         }
                         .onChange(of: selectedDate) { idate in
-//                            listLocation = dicData[idate] ?? []
+                            //                            listLocation = dicData[idate] ?? []
                             listLocation = getDataFiltered(date: idate, driver: 0, status: 0)
                         }
                         .pickerStyle(.wheel)
@@ -187,48 +189,9 @@ struct DeliveryListSwiftUI: View {
                     
                         .onAppear {
                             isActivityIndicator = true
-                      
-                            //                            convertDateToString()
-                            
                             // floating panel
-                            
-                            Task {
-                                sevenDay()
-                                do {
-                                    // getMe
-                                    let companyCode = UserDefaults.standard.string(forKey: "companyCode") ?? ""
-                                    let responseGetMe_SwiftUI = try await GetMe_Async_Await().getMe_Async_Await(companyCode: companyCode, token: UserDefaults.standard.string(forKey: "accessToken") ?? "")
-                                    print(responseGetMe_SwiftUI)
-                                    do {
-                                        // getWorkerRouteLocationList_Async_Await()
-                                        let dicDataResponse_SwiftUI = await GetWorkerRouteLocationList_Async_Await().loadDic(dates: listDay)
-                                        dicData = dicDataResponse_SwiftUI
-                                        showSheet = true
-                                        isActivityIndicator = false
-                                        
-                                        //creata list listLocationLocation
-                                        //                                        listLocation = dicData[selectedDate.removeTimeStamp!] ?? []
-                                        listLocation = getDataFiltered(date: selectedDate, driver: selectedDriver, status: selectedStatus)
-                                      
-                                        
-                                    }
-                                    
-                                } catch {
-                                    if let err = error as? GetMe_Async_Await.AFError {
-                                        if err == .tokenOutOfDate {
-                                            //  hideActivity()
-                                            //  let scr = storyboard?.instantiateViewController(withIdentifier: "LoginViewController") as! ViewController
-                                            //  self.navigationController?.pushViewController(scr, animated: true)
-                                            //  showAlert(message: "Token đã hết hạn -> Login lại")
-                                        } else if err == .remain {
-                                            // hideActivity()
-                                            // showAlert(message: "Có lỗi xảy ra")
-                                        }
-                                    }
-                                }
-                                
-                                
-                            }
+                            func callApi()
+
                         }
                     
                         .sheet(isPresented: $showSheet) {  // Floating panel
@@ -238,11 +201,11 @@ struct DeliveryListSwiftUI: View {
                                     
                                     VStack {
                                         ScrollView(showsIndicators: false) {
-                                            VStack(spacing: 50) { //  to remove spacing between rows
+                                            VStack(spacing: 5) { //  to remove spacing between rows
                                                 //                                            ForEach(1..<6) { i in
                                                 VStack(alignment: .leading) {
                                                     if ilocation.type == .supplier {
-                                                        
+//                                                       print("fffffffff")
                                                     } else {
                                                         
                                                         Text(ilocation.elem?.location?.comment ?? "")
@@ -258,31 +221,39 @@ struct DeliveryListSwiftUI: View {
                                                                 Text("Estimate Time : \(hours):\(minutes)")
                                                             }
                                                         }
+                                                       
                                                         
                                                         Button(action: {
                                                             print("open map")
                                                         }) {
                                                             Label("Map", image: "ic_launch_app")
                                                         }
-//                                                        Divider()
+                                                        //                                                        Divider()
                                                     }
                                                 }
                                                 .frame(maxWidth: .infinity)
                                                 .background(Color.yellow)
-//                                                .padding(.leading, 10)
                                                 
                                                 // page Image
                                                 // page
-                                                HStack {
-                                                    ViewImageSwiftUI()
+                                                VStack {
+                                                    // truyen UIViewImage -> ViewImageSwiftUI
+                                                    let viewImage: UIImageView!
+                                                    var urlImage: [String] = ilocation.urls()
+//
+                                                    ForEach(of: urlImage) { iurl in
+                                                        viewImage.downloaded(from: iurl)
+                                                        listImageSwiftUI.append(viewImage)
+                                                    }
+                                                    
+//                                                    ViewImageSwiftUI1(elementsImageSwiftUI: listImageSwiftUI)
                                                 }
-                                                .frame(maxWidth: .infinity, maxHeight: 350)
-                                                
+                                                .frame(maxWidth: .infinity)
+                                                .frame(height: 350)
                                                 .background(Color.gray)
+
                                                 
-                                                
-                                                
-                                                HStack {
+                                                VStack {
                                                     HStack {
                                                         Spacer()
                                                         Text("Type")
@@ -292,18 +263,9 @@ struct DeliveryListSwiftUI: View {
                                                         Text("Count")
                                                         Spacer()
                                                     }
-                                                    
-                                                    // Label 50kg, 30kg, 25kg, ....
-                                                    // Label(<#T##SwiftUI.LocalizedStringKey#>, image: <#T##String#>)
-                                                    // Label count: 1, 4, 5, ...
-                                                    
-//                                                    HStack {
-//                                                        ViewTypeAndCount(typeGas: 0, countGas: 0)
-//                                                        ForEach() { _ in
-//
-//                                                        }
-//                                                    }
-//                                                    
+                                                    // pass data Facility
+                                                    ViewTypeAndCount()
+                                           
                                                     
                                                 } .frame(maxHeight: 350)
                                                     .background(Color.red)
@@ -318,7 +280,7 @@ struct DeliveryListSwiftUI: View {
                                                         }) {
                                                             Image("ic_edit")
                                                         }
-                                                       
+                                                        
                                                     }
                                                     .padding( .horizontal, 10)
                                                     TextField("Hiện ra khi không có ghi chú nào ? ?? ??? ???? ", text: $notes)
@@ -337,7 +299,7 @@ struct DeliveryListSwiftUI: View {
                                                 .border(.black)
                                                 .cornerRadius(18)
                                                 
-                                                //                                        }
+                                                // }
                                             }
                                             .padding(.horizontal, 10)
                                         }
@@ -359,12 +321,9 @@ struct DeliveryListSwiftUI: View {
                     
                     Button(action: {
                         print("shipping")
-                        
                     }) {
-                        
                         HStack {
                             Spacer()
-                            
                             Text("Shiping")
                                 .frame(maxWidth: 250)
                                 .frame(height:40)
@@ -373,11 +332,8 @@ struct DeliveryListSwiftUI: View {
                                 .tint(Color.white)
                                 .zIndex(100)
                             Spacer()
-                            
                         }
-                        
                     } .frame(maxHeight: .infinity, alignment: .bottom)
-                    
                 }
                 
                 if isActivityIndicator {  // show indicator
@@ -490,6 +446,46 @@ struct DeliveryListSwiftUI: View {
         return listLocation
     }
     
+    
+    func callApi() {
+        Task {
+            sevenDay()
+            do {
+                // getMe
+                let companyCode = UserDefaults.standard.string(forKey: "companyCode") ?? ""
+                let responseGetMe_SwiftUI = try await GetMe_Async_Await().getMe_Async_Await(companyCode: companyCode, token: UserDefaults.standard.string(forKey: "accessToken") ?? "")
+                print(responseGetMe_SwiftUI)
+                do {
+                    // getWorkerRouteLocationList_Async_Await()
+                    let dicDataResponse_SwiftUI = await GetWorkerRouteLocationList_Async_Await().loadDic(dates: listDay)
+                    dicData = dicDataResponse_SwiftUI
+                    showSheet = true
+                    isActivityIndicator = false
+                    
+                    //creata list listLocationLocation
+                    //                                        listLocation = dicData[selectedDate.removeTimeStamp!] ?? []
+                    listLocation = getDataFiltered(date: selectedDate, driver: selectedDriver, status: selectedStatus)
+                    
+                }
+                
+            } catch {
+                if let err = error as? GetMe_Async_Await.AFError {
+                    if err == .tokenOutOfDate {
+                        //  hideActivity()
+                        //  let scr = storyboard?.instantiateViewController(withIdentifier: "LoginViewController") as! ViewController
+                        //  self.navigationController?.pushViewController(scr, animated: true)
+                        //  showAlert(message: "Token đã hết hạn -> Login lại")
+                    } else if err == .remain {
+                        // hideActivity()
+                        // showAlert(message: "Có lỗi xảy ra")
+                    }
+                }
+            }
+            
+            
+        }
+    }
+    
     func totalType_SwiftUI() {
         var arrFacilityData: [[Facility_data]] = []
         var numberType50: Int = 0
@@ -543,3 +539,15 @@ struct DeliveryListSwiftUI_Previews: PreviewProvider {
 }
 
 
+//struct ViewImageSwiftUI1: View {
+//    @Binding var elementsImageSwiftUI: [UIImage]
+//    var body: some View {
+//        TabView {
+//            ForEach(elementsImageSwiftUI, id: \.self) { iImageSwiftUI in
+//                Image(uiImage: iImageSwiftUI)
+//            }
+//        }
+//        .tabViewStyle(.page)
+//        .background(Color.gray)
+//    }
+//}
