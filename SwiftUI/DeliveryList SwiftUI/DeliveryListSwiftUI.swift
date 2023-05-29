@@ -50,8 +50,8 @@ struct DeliveryListSwiftUI: View {
     
     @State private var notes: String = ""
     
-    @State private var listImageSwiftUI: [UIImage] = []
-    
+    //    @State private var listImageSwiftUI: [UIImage] = []
+//    @SceneStorage var urlImage: [String] = []
     var body: some View {
         
         NavigationStack {
@@ -104,7 +104,7 @@ struct DeliveryListSwiftUI: View {
                         }
                         .onChange(of: selectedDate) { idate in
                             //                            listLocation = dicData[idate] ?? []
-                            listLocation = getDataFiltered(date: idate, driver: 0, status: 0)
+                            listLocation = getDataFiltered(date: idate, driver: selectedDriver, status: selectedStatus)
                         }
                         .pickerStyle(.wheel)
                         .border(.black)
@@ -190,8 +190,8 @@ struct DeliveryListSwiftUI: View {
                         .onAppear {
                             isActivityIndicator = true
                             // floating panel
-                            func callApi()
-
+                            callApi()
+                            
                         }
                     
                         .sheet(isPresented: $showSheet) {  // Floating panel
@@ -205,7 +205,7 @@ struct DeliveryListSwiftUI: View {
                                                 //                                            ForEach(1..<6) { i in
                                                 VStack(alignment: .leading) {
                                                     if ilocation.type == .supplier {
-//                                                       print("fffffffff")
+                                                        //                                                       print("fffffffff")
                                                     } else {
                                                         
                                                         Text(ilocation.elem?.location?.comment ?? "")
@@ -221,37 +221,39 @@ struct DeliveryListSwiftUI: View {
                                                                 Text("Estimate Time : \(hours):\(minutes)")
                                                             }
                                                         }
-                                                       
+                                                        
                                                         
                                                         Button(action: {
                                                             print("open map")
                                                         }) {
                                                             Label("Map", image: "ic_launch_app")
                                                         }
-                                                        //                                                        Divider()
                                                     }
                                                 }
                                                 .frame(maxWidth: .infinity)
                                                 .background(Color.yellow)
                                                 
                                                 // page Image
-                                                // page
                                                 VStack {
-                                                    // truyen UIViewImage -> ViewImageSwiftUI
-                                                    let viewImage: UIImageView!
-                                                    var urlImage: [String] = ilocation.urls()
-//
-                                                    ForEach(of: urlImage) { iurl in
-                                                        viewImage.downloaded(from: iurl)
-                                                        listImageSwiftUI.append(viewImage)
-                                                    }
-                                                    
-//                                                    ViewImageSwiftUI1(elementsImageSwiftUI: listImageSwiftUI)
+                                                    NavigationLink(destination: ViewImageSwiftUI(elementsImageSwiftUI: ilocation.urls() ))
+//                                                    TabView {
+                                                        // var viewImageSwiftUI: UIImageView!
+                                                        // Image("gas")
+                                                        // Image("parking")
+                                                        
+//                                                        ForEach(of: ilocation.urls()) { iurlImageSwiftUI in
+//                                                            Text(iurlImageSwiftUI)
+                                                            // viewImageSwiftUI.downloaded(from: iurlImageSwiftUI)
+                                                            
+                                                        
+////                                                        }
+//                                                    }
+//                                                    .tabViewStyle(.page)
+//                                                    .background(Color.gray)
                                                 }
                                                 .frame(maxWidth: .infinity)
                                                 .frame(height: 350)
                                                 .background(Color.gray)
-
                                                 
                                                 VStack {
                                                     HStack {
@@ -265,7 +267,7 @@ struct DeliveryListSwiftUI: View {
                                                     }
                                                     // pass data Facility
                                                     ViewTypeAndCount()
-                                           
+                                                    
                                                     
                                                 } .frame(maxHeight: 350)
                                                     .background(Color.red)
@@ -303,8 +305,6 @@ struct DeliveryListSwiftUI: View {
                                             }
                                             .padding(.horizontal, 10)
                                         }
-                                        
-                                        
                                     }
                                     
                                 }
@@ -342,8 +342,6 @@ struct DeliveryListSwiftUI: View {
             }
             
         }
-        
-        
     }
     
     func sevenDay() {
@@ -382,7 +380,6 @@ struct DeliveryListSwiftUI: View {
         }
         locations = elemLocationADay
         print(locations)
-        
         elemLocationADay.enumerated().forEach { vehicleIdx, vehicle in
             if (vehicle.elem?.location?.locationType?.rawValue == "supplier") {
                 indxes.append(vehicleIdx)
@@ -441,8 +438,6 @@ struct DeliveryListSwiftUI: View {
         //        customFloatingPanel()
         
         self.totalType_SwiftUI()
-        
-        
         return listLocation
     }
     
@@ -481,8 +476,6 @@ struct DeliveryListSwiftUI: View {
                     }
                 }
             }
-            
-            
         }
     }
     
@@ -539,15 +532,3 @@ struct DeliveryListSwiftUI_Previews: PreviewProvider {
 }
 
 
-//struct ViewImageSwiftUI1: View {
-//    @Binding var elementsImageSwiftUI: [UIImage]
-//    var body: some View {
-//        TabView {
-//            ForEach(elementsImageSwiftUI, id: \.self) { iImageSwiftUI in
-//                Image(uiImage: iImageSwiftUI)
-//            }
-//        }
-//        .tabViewStyle(.page)
-//        .background(Color.gray)
-//    }
-//}

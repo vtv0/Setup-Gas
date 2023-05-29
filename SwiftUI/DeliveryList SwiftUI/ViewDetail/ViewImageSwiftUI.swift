@@ -10,25 +10,27 @@ import SwiftUI
 
 struct ViewImageSwiftUI: View {
     
-//    @Binding var elementsImageSwiftUI: [String]
-    
-    
+    @Binding var elementsImageSwiftUI: [String]
+  
     var body: some View {
         TabView {
-            
-//            ForEach(elementsImageSwiftUI, id: \.self) { iImageSwiftUI in
-//                Text(iImageSwiftUI)
-////                Image(uiImage: iImageSwiftUI)
-//            }
+            var viewImageSwiftUI: UIImageView!
+                ForEach(elementsImageSwiftUI, id: \.self) { iImageSwiftUI in
+           
+           
+                viewImageSwiftUI.downloaded(from: iImageSwiftUI)
+            }
         }
         //        .frame(maxWidth: .infinity, maxHeight: 350)
+   
         .tabViewStyle(.page)
         .background(Color.gray)
     }
 }
 
 struct ViewImageSwiftUI_Previews: PreviewProvider {
+    @State static var elementsImageSwiftUI: [String] = []
     static var previews: some View {
-        ViewImageSwiftUI()
+        ViewImageSwiftUI(elementsImageSwiftUI: $elementsImageSwiftUI)
     }
 }
