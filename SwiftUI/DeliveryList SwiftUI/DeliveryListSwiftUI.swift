@@ -51,7 +51,9 @@ struct DeliveryListSwiftUI: View {
     @State private var notes: String = ""
     
     //    @State private var listImageSwiftUI: [UIImage] = []
-//    @SceneStorage var urlImage: [String] = []
+    @State var urlImage: [String] = ["1", "2"," 3"]
+    @State var passUrlImage: Bool = true
+    
     var body: some View {
         
         NavigationStack {
@@ -222,6 +224,19 @@ struct DeliveryListSwiftUI: View {
                                                             }
                                                         }
                                                         
+                                                        //                                                        urlImage = ilocation.urls() ////////////////////
+                                                        
+                                                        //                                                        ForEach(ilocation.urls()) { iurl in
+                                                        //                                                            Text(iurl)
+                                                        //                                                        }
+//                                                        if !ilocation.urls().isEmpty {
+//                                                            Text(ilocation.urls())
+//                                                        }
+//                                                        } else {
+//                                                            Text("khong co anh")
+//                                                        }
+                                                        
+                                                       
                                                         
                                                         Button(action: {
                                                             print("open map")
@@ -235,22 +250,30 @@ struct DeliveryListSwiftUI: View {
                                                 
                                                 // page Image
                                                 VStack {
-                                                    NavigationLink(destination: ViewImageSwiftUI(elementsImageSwiftUI: ilocation.urls() ))
-//                                                    TabView {
-                                                        // var viewImageSwiftUI: UIImageView!
-                                                        // Image("gas")
-                                                        // Image("parking")
-                                                        
-//                                                        ForEach(of: ilocation.urls()) { iurlImageSwiftUI in
-//                                                            Text(iurlImageSwiftUI)
-                                                            // viewImageSwiftUI.downloaded(from: iurlImageSwiftUI)
-                                                            
-                                                        
-////                                                        }
-//                                                    }
-//                                                    .tabViewStyle(.page)
-//                                                    .background(Color.gray)
+                                                    
+                                                    // NavigationLink(
+                                                    // isActive: $passUrlImage,
+                                                    // destination: {
+                                                    //                                                            ViewImageSwiftUI(elementsImageSwiftUI: ilocation.urls())
+                                                    //      }, label: {
+                                                    //          Text("push")
+                                                    //      }
+                                                    //  )
+                                                    
+                                                    
+//                                                    urlImage =
+                                                    ViewImageSwiftUI(elementsImageSwiftUI:  ilocation.urls())
+                                                    
                                                 }
+                                                //                                                .onChange(of: $listImage) {
+                                                //                                                    // passUrlImage(urls: ilocation.urls())
+                                                ////                                                    self.listImage = ilocation.urls()
+                                                //                                                    NavigationLink(destination: ViewImageSwiftUI(elementsImageSwiftUI: ilocation.urls()), isActive: self.passUrlImage = true)
+                                                //
+                                                //                                                    // ForEach($listImage) { iurl in
+                                                //                                                    //     Text( iurl)
+                                                //                                                    // }
+                                                //                                                }
                                                 .frame(maxWidth: .infinity)
                                                 .frame(height: 350)
                                                 .background(Color.gray)
@@ -512,6 +535,41 @@ struct DeliveryListSwiftUI: View {
         self.number20kg = numberType20
         self.other = numberTypeOther
     }
+    
+    
+    func passUrlImage(urls: [String]) {
+        for iurl in urls {
+            print(iurl)
+        }
+    }
+    
+//    func createUrlImageSwiftUI() {
+//        var arrImage: [String] = []
+//        ForEach(of: listLocation) { ilocation in
+//            if let gasLocation1 = ilocation.asset?.properties?.values.gas_location1,
+//               let gasLocation2 = ilocation.asset?.properties?.values.gas_location2,
+//               let gasLocation3 = ilocation.asset?.properties?.values.gas_location3,
+//               let gasLocation4 = ilocation.asset?.properties?.values.gas_location4,
+//               let parkingPlace1 = ilocation.asset?.properties?.values.parking_place1,
+//               let parkingPlace2 = ilocation.asset?.properties?.values.parking_place2,
+//               let parkingPlace3 = ilocation.asset?.properties?.values.parking_place3,
+//               let parkingPlace4 = ilocation.asset?.properties?.values.parking_place4 {
+//
+//                if !gasLocation1.isEmpty || !gasLocation2.isEmpty || !gasLocation3.isEmpty || !gasLocation4.isEmpty || !parkingPlace1.isEmpty || !parkingPlace2.isEmpty || !parkingPlace3.isEmpty || !parkingPlace4.isEmpty {
+//                    arrImage.append(gasLocation1)
+//                    arrImage.append(gasLocation2)
+//                    arrImage.append(gasLocation3)
+//                    arrImage.append(gasLocation4)
+//                    arrImage.append(parkingPlace1)
+//                    arrImage.append(parkingPlace2)
+//                    arrImage.append(parkingPlace3)
+//                    arrImage.append(parkingPlace4)
+//                }
+//
+//            }
+//        }
+//    }
+    
     
 }
 

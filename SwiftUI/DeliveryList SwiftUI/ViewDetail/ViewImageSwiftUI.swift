@@ -7,17 +7,17 @@
 
 import SwiftUI
 
-
 struct ViewImageSwiftUI: View {
     
-    @Binding var elementsImageSwiftUI: [String]
-  
+    var elementsImageSwiftUI: [String]
+   static   var viewImageSwiftUI: UIImageView!
+    
     var body: some View {
         TabView {
-            var viewImageSwiftUI: UIImageView!
-                ForEach(elementsImageSwiftUI, id: \.self) { iImageSwiftUI in
            
+            ForEach(self.elementsImageSwiftUI, id: \.self) { iImageSwiftUI in
            
+//           Text(iImageSwiftUI)
                 viewImageSwiftUI.downloaded(from: iImageSwiftUI)
             }
         }
@@ -29,8 +29,8 @@ struct ViewImageSwiftUI: View {
 }
 
 struct ViewImageSwiftUI_Previews: PreviewProvider {
-    @State static var elementsImageSwiftUI: [String] = []
+    static var elementsImageSwiftUI: [String] = []
     static var previews: some View {
-        ViewImageSwiftUI(elementsImageSwiftUI: $elementsImageSwiftUI)
+        ViewImageSwiftUI(elementsImageSwiftUI: elementsImageSwiftUI)
     }
 }
