@@ -249,31 +249,10 @@ struct DeliveryListSwiftUI: View {
                                                 .background(Color.yellow)
                                                 
                                                 // page Image
-                                                VStack {
-                                                    
-                                                    // NavigationLink(
-                                                    // isActive: $passUrlImage,
-                                                    // destination: {
-                                                    //                                                            ViewImageSwiftUI(elementsImageSwiftUI: ilocation.urls())
-                                                    //      }, label: {
-                                                    //          Text("push")
-                                                    //      }
-                                                    //  )
-                                                    
-                                                    
-//                                                    urlImage =
-                                                    ViewImageSwiftUI(elementsImageSwiftUI:  ilocation.urls())
-                                                    
-                                                }
-                                                //                                                .onChange(of: $listImage) {
-                                                //                                                    // passUrlImage(urls: ilocation.urls())
-                                                ////                                                    self.listImage = ilocation.urls()
-                                                //                                                    NavigationLink(destination: ViewImageSwiftUI(elementsImageSwiftUI: ilocation.urls()), isActive: self.passUrlImage = true)
-                                                //
-                                                //                                                    // ForEach($listImage) { iurl in
-                                                //                                                    //     Text( iurl)
-                                                //                                                    // }
-                                                //                                                }
+                                                    VStack {
+                                                        ViewImageSwiftUI(elementsImageSwiftUI: ilocation.urls())
+                                                    }
+                                                
                                                 .frame(maxWidth: .infinity)
                                                 .frame(height: 350)
                                                 .background(Color.gray)

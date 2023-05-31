@@ -10,19 +10,14 @@ import SwiftUI
 struct ViewImageSwiftUI: View {
     
     var elementsImageSwiftUI: [String]
-   static   var viewImageSwiftUI: UIImageView!
+   
     
     var body: some View {
         TabView {
-           
             ForEach(self.elementsImageSwiftUI, id: \.self) { iImageSwiftUI in
-           
-//           Text(iImageSwiftUI)
-                viewImageSwiftUI.downloaded(from: iImageSwiftUI)
+                AsyncImage(url: URL(string: iImageSwiftUI))
             }
         }
-        //        .frame(maxWidth: .infinity, maxHeight: 350)
-   
         .tabViewStyle(.page)
         .background(Color.gray)
     }
