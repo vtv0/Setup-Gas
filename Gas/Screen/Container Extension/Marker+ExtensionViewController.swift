@@ -16,10 +16,13 @@ class MyPinView: MKPinAnnotationView {
         
         super.init(annotation: annotation, reuseIdentifier: reuseIdentifier)
         
-        frame = CGRect(x: 0, y: 0, width: 50, height: 50)
-        imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
-        lblView = UILabel(frame: CGRect(x: 11, y: 11, width: 25, height: 25))
+        //frame = CGRect(x: 0, y: 0, width: 50, height: 50)
+        imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 35, height: 35))
+//        print(imageView.frame.size.width )
+        lblView = UILabel(frame: CGRect(x: 0, y: 0, width: (imageView.frame.size.width - 1), height: (imageView.frame.size.height - 1 )  ))
+                          
         imageView.image = UIImage(named: "marker")
+//        imageView.backgroundColor = .green
         lblView.textAlignment = .center
 //        lblView.backgroundColor = .red
         lblView.layer.cornerRadius = lblView.frame.size.width / 2
@@ -42,5 +45,13 @@ class MyPinView: MKPinAnnotationView {
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+}
+
+extension MyPinView {
+    func resized(to size: CGSize) -> UIImage {
+        return UIGraphicsImageRenderer(size: size).image { _ in
+            draw(CGRect(origin: .zero, size: size))
+        }
     }
 }

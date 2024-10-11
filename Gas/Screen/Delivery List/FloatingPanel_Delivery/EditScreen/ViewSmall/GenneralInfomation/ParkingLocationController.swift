@@ -70,7 +70,7 @@ class ParkingLocationController: UIViewController, MKMapViewDelegate, CLLocation
     func addAnnotation() {
         coordinateParking = UserDefaults.standard.value(forKey: "coordinate") as! [Double]
         
-        let locationOfParking = CustomPin(title: 0 , coordinate: CLLocationCoordinate2D(latitude: coordinateParking[1], longitude: coordinateParking[0]))
+        let locationOfParking = CustomPin(title: 0 , coordinate: CLLocationCoordinate2D(latitude: coordinateParking[1], longitude: coordinateParking[0]), topIdOrder: 0)
         mapView.addAnnotation(locationOfParking)
     }
     

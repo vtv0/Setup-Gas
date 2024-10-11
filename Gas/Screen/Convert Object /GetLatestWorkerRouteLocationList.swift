@@ -294,7 +294,7 @@ class FluffyMetadata: NSObject, Decodable {
 class Facility_data: NSObject, Decodable {
     var count, type: Int?
     
-    enum Count: Int {
+    enum TypeOfGas: Int, Codable, CaseIterable {
         case kg50 = 50
         case kg30 = 30
         case kg25 = 25
@@ -306,6 +306,28 @@ class Facility_data: NSObject, Decodable {
         self.count = count
         self.type = type
     }
+    
+    
+    
+    var facility_Data: [Facility_data]?
+    
+//    var typeOfGas: TypeOfGas {
+//
+//    }
+    // tạo hàm lấy ra những đơn lớn -> Int: là locationOrder
+    func bigestOrder () -> [Int]? {
+        var arrBigOrder: [Int] = []
+        // select data faccility: count, type
+        facility_Data?.forEach({ typeOfGas in
+            print(typeOfGas.count)
+            print(typeOfGas.type)
+            
+        })
+        
+        return arrBigOrder
+    }
+    
+
 }
 
 // MARK: - WorkerRoute

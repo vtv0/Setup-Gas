@@ -58,7 +58,7 @@ class CustomerLocationController: UIViewController, MKMapViewDelegate, PassInfoO
     }
     
     func addAnnotation() {
-        let locationOfCustomer = CustomPin(title: 0 , coordinate: CLLocationCoordinate2D(latitude: coordinateCustomer[1], longitude: coordinateCustomer[0]))
+        let locationOfCustomer = CustomPin(title: 0 , coordinate: CLLocationCoordinate2D(latitude: coordinateCustomer[1], longitude: coordinateCustomer[0]), topIdOrder: 0)
         mapView.addAnnotation(locationOfCustomer)
     }
     

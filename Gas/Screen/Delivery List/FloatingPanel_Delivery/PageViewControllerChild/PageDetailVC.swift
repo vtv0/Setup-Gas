@@ -225,6 +225,10 @@ class PageDetailVC: UIViewController, UIScrollViewDelegate, UICollectionViewDele
                     lblNumberGas?.text =  "\(iFacilityData[0].count  ?? 0)bottle"
                     lblTypeGasInStackView.text = "\(iFacilityData[1].type ?? 0 )kg"
                     lblNumberGasInStackView.text = "\(iFacilityData[1].count  ?? 0)bottle"
+                } else {
+                    print("đơn hàng không có số liệu loại và số lượng")
+//                    lblTypeGas.removeFromSuperview()
+//                    lblNumberGas.removeFromSuperview()
                 }
             }
             

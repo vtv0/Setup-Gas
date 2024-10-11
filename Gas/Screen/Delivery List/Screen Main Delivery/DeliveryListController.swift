@@ -14,9 +14,13 @@ import MapKit
 class CustomPin: NSObject, MKAnnotation {
     let title: Int
     let coordinate: CLLocationCoordinate2D
-    init(title: Int, coordinate: CLLocationCoordinate2D) {
+//    let weightEachOrder: [Int: Int]
+        let topIdOrder: Int
+    init(title: Int, coordinate: CLLocationCoordinate2D, topIdOrder: Int) { //  weightEachOrder: [Int: [Facility_data]?]?)
         self.title = title
         self.coordinate = coordinate
+//        self.weightEachOrder = weightEachOrder
+                self.topIdOrder = topIdOrder
         super.init()
     }
 }
@@ -62,6 +66,7 @@ class DeliveryListController: UIViewController, UIPickerViewDelegate, UIPickerVi
     var assetAday: [GetAsset] = []
     var locations: [Location] = []
     var arrFacilityData: [[Facility_data]] = []
+    var topLargeOrder: [Int] = []
     static var dataInfoOneCustomer: Location = Location(elem: LocationElement(locationOrder: 0), asset: GetAsset(assetModelID: 0))
     
     @IBOutlet weak var lblType50kg: UILabel!
@@ -99,7 +104,7 @@ class DeliveryListController: UIViewController, UIPickerViewDelegate, UIPickerVi
     @IBAction func btnReplan(_ sender: Any) {
         let screenReplan = storyboard?.instantiateViewController(withIdentifier: "ReplanController") as! ReplanController
         screenReplan.dicData = self.dicData
-        screenReplan.dateYMD = dateYMD
+        //        screenReplan.dateYMD = dateYMD
         self.navigationController?.pushViewController(screenReplan, animated: true)
     }
     @IBAction func btnReroute(_ sender: Any) {
@@ -111,7 +116,7 @@ class DeliveryListController: UIViewController, UIPickerViewDelegate, UIPickerVi
         super.viewDidLoad()
         self.sevenDay()
         navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
-
+        
         //MARK: - Use Block
         showActivity()
         
@@ -184,6 +189,7 @@ class DeliveryListController: UIViewController, UIPickerViewDelegate, UIPickerVi
         pickerDate.dataSource = self
         pickerDate.delegate = self
         
+        // ghim location Screen
         navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
         let userCoordinate = CLLocationCoordinate2D(latitude: 35.73774428640241, longitude: 139.6194163709879)
         let eyeCoordinate = CLLocationCoordinate2D(latitude: 35.73774428640241, longitude: 139.6194163709879)
@@ -193,6 +199,7 @@ class DeliveryListController: UIViewController, UIPickerViewDelegate, UIPickerVi
         
         self.hideActivity()
         self.reDrawMarkers()
+        
         
     }
     
@@ -566,7 +573,7 @@ class DeliveryListController: UIViewController, UIPickerViewDelegate, UIPickerVi
             arrFacilityData.removeAll()
             fpc.addPanel(toParent: self)
             fpc.set(contentViewController: contentDeliveryVC)
-            guard let scrollview = contentDeliveryVC.pageController.viewControllers?[0] as? PageDetailVC else { return }
+            guard let scrollview = contentDeliveryVC.pageController.viewControllers?.first as? PageDetailVC else { return }
             fpc.track(scrollView: scrollview.viewContainerScrollview)
         }
         var value: [ValuesDetail] = []
@@ -653,6 +660,7 @@ class DeliveryListController: UIViewController, UIPickerViewDelegate, UIPickerVi
         dataDidFilter.removeAll()
         arrLocationOrder.removeAll()
         
+        
         if mapView != nil {
             mapView.removeAnnotations(mapView.annotations)
         }
@@ -664,17 +672,77 @@ class DeliveryListController: UIViewController, UIPickerViewDelegate, UIPickerVi
             
             // dataDidFilter = dataDidFilter.sorted(by: { $0.elem?.locationOrder ?? 0 > $1.elem?.locationOrder ?? 0 })
             for picker in dataDidFilter {
-                if let lat = picker.elem?.latitude, let long = picker.elem?.longitude, let locationOrder = picker.elem?.locationOrder {
-                    let locationOfCustomer = CustomPin(title: locationOrder , coordinate: CLLocationCoordinate2D(latitude: lat, longitude: long))
+                if let lat = picker.elem?.latitude,
+                   let long = picker.elem?.longitude,
+                   let locationOrder = picker.elem?.locationOrder {
+                    let locationOfCustomer = CustomPin(title: locationOrder, coordinate: CLLocationCoordinate2D(latitude: lat, longitude: long), topIdOrder: bigestOrder(locations: dataDidFilter))
+                    print(locationOfCustomer.title)
                     arrLocationOrder.append(locationOfCustomer.title)
                     mapView.addAnnotation(locationOfCustomer)
                 }
             }
-            
+            print(arrLocationOrder)
+            let _ = bigestOrder(locations: dataDidFilter)
         }
+        
+
         passIndexSelectedMarker = 0
+        
+        
     }
-    
+    func bigestOrder(locations: [Location]) -> Int {
+        var idBigestOrder: Int = 0
+        let dicBigOrder: [Int:Int] = [:]
+        var weightEachOrderCustom: [Int: [[Facility_data]]?]? = [:]
+        var weightEachOrder: [Int: [Facility_data]?]? = [:]
+        
+        var filterOK: [Int: Int] = [:]
+        var arrWeight: [Int] = []
+        
+        for i in locations {
+//            weightEachOrder?.updateValue(i.elem?.locationOrder, forKey: i.elem?.metadata?.facility_data)
+            weightEachOrder?.updateValue(i.elem?.metadata?.facility_data, forKey: i.elem?.locationOrder ?? 1)
+        }
+        weightEachOrderCustom?.removeAll()
+        // loai bo cac dic co value  la rong
+        let weightEachOrderFilter = weightEachOrder?.compactMapValues({ $0 }) // bo xe cuoi cung
+        
+        weightEachOrderFilter?.forEach({ ikey, ivalue  in
+            // tao mang [loai,so luong]
+            var arr: [Facility_data] = []
+            arr.append(contentsOf: ivalue)
+            weightEachOrderCustom?.updateValue([arr], forKey: ikey)
+        })
+        
+        weightEachOrderCustom?.forEach({ ikeyCustom, ivalueCustom in
+            ivalueCustom?.forEach({ iDetailValue in
+                if iDetailValue.count == 1 {
+                    let weight = (iDetailValue[0].count ?? 1) * (iDetailValue[0].type ?? 1)
+                    arrWeight.append(weight)
+                    filterOK.updateValue(weight, forKey: ikeyCustom)
+                } else if iDetailValue.count > 1 {
+                    let weight = (iDetailValue[0].count ?? 1) * (iDetailValue[0].type ?? 1) + ( iDetailValue[1].count ?? 1) * (iDetailValue[1].type ?? 1)
+                    arrWeight.append(weight)
+                    filterOK.updateValue(weight, forKey: ikeyCustom)
+                }
+            })
+            
+        })
+        
+        // sap xep gia tri lon -> be (top 5)
+        var dicFilterValue = filterOK.sorted { $0.1 > $1.1 }.prefix(5)
+        print(dicFilterValue)
+        // xep ngay
+        var sortedFilterValue = Array(filterOK.keys).sorted(by: { filterOK[$0]! > filterOK[$1]! })
+        print("\(sortedFilterValue):\(sortedFilterValue.count)")
+        for (ind, ivalue) in sortedFilterValue.enumerated() {
+            idBigestOrder = ivalue
+        }
+        
+        print(dicBigOrder)
+        print(idBigestOrder)
+        return idBigestOrder
+    }
 }
 
 
@@ -693,7 +761,7 @@ extension DeliveryListController: MKMapViewDelegate, ShowIndexPageDelegateProtoc
                 if let lat = picker.elem?.latitude,
                    let long = picker.elem?.longitude,
                    let locationOrder = picker.elem?.locationOrder {
-                    let locationOfCustomer = CustomPin(title: locationOrder , coordinate: CLLocationCoordinate2D(latitude: lat, longitude: long))
+                    let locationOfCustomer = CustomPin(title: locationOrder , coordinate: CLLocationCoordinate2D(latitude: lat, longitude: long), topIdOrder: bigestOrder(locations: dataDidFilter))
                     mapView.addAnnotation(locationOfCustomer)
                 }
             }
@@ -701,6 +769,7 @@ extension DeliveryListController: MKMapViewDelegate, ShowIndexPageDelegateProtoc
     }
     
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        
         guard let annotation = annotation as? CustomPin else { return nil }
         let identifier = "Annotation"
         var view: MyPinView
@@ -711,9 +780,16 @@ extension DeliveryListController: MKMapViewDelegate, ShowIndexPageDelegateProtoc
                 dequeuedView.image = UIImage(named: "marker_yellow")
                 dequeuedView.zPriority = MKAnnotationViewZPriority.max
             } else {
-                dequeuedView.lblView.text = "\(annotation.title - 1)"
-                dequeuedView.image = UIImage(named: "marker")
-                dequeuedView.zPriority = MKAnnotationViewZPriority.init(rawValue: 999 - Float(annotation.title))
+              
+                if  annotation.title == annotation.topIdOrder - 1 {
+                    dequeuedView.lblView.text = "\(annotation.title - 1)"
+                    dequeuedView.image = UIImage(named: "marker_blue_bigger")
+                    dequeuedView.zPriority = MKAnnotationViewZPriority.max  // init(rawValue: 999 - Float(annotation.title))
+                } else {
+                    dequeuedView.lblView.text = "\(annotation.title - 1)"
+                    dequeuedView.image = UIImage(named: "marker")
+                    dequeuedView.zPriority = MKAnnotationViewZPriority.init(rawValue: 999 - Float(annotation.title))
+                }
                 
             }
             dequeuedView.reloadInputViews()
@@ -722,18 +798,41 @@ extension DeliveryListController: MKMapViewDelegate, ShowIndexPageDelegateProtoc
             view = MyPinView(annotation: annotation, reuseIdentifier: identifier)
             var arrTitle = [Int]()
             arrTitle.append(annotation.title)
+            var arrtopIdOrder: [Int] = []
+            
+            print("\(arrtopIdOrder)")
+            print("\(arrtopIdOrder.sorted().first)")
+            print("\(arrTitle))")
+            arrtopIdOrder.append(annotation.topIdOrder)
             if arrLocationOrder[0] == arrTitle.sorted().first {
                 view.lblView.text = "\(annotation.title - 1)"
                 view.zPriority = MKAnnotationViewZPriority.max
                 view.image = UIImage(named: "marker_yellow")
             } else {
-                view.lblView.text = "\(annotation.title - 1)"
-                view.zPriority = MKAnnotationViewZPriority.init(rawValue: 999 - Float(annotation.title))
-                view.image = UIImage(named: "marker")
+               
+                if annotation.title == arrtopIdOrder.sorted().first {
+                    view.lblView.text = "\(annotation.title - 1)"
+                    view.zPriority = MKAnnotationViewZPriority.max//init(rawValue: 999 - Float(annotation.title))
+                    view.image = UIImage(named: "marker_blue_bigger")
+                    
+                    //                        view.imageView.frame.size.width = CGFloat(80)
+                    //                        view.imageView.frame.size.height = CGFloat(80)
+                    //                        view.lblView = UILabel(frame: CGRect(x: 0, y: 0, width: (view.imageView.frame.size.width - 1), height: (view.imageView.frame.size.height - 1 )  ))
+                    //                        view.lblView.backgroundColor = .red
+                    //                        view.lblView.textAlignment = .center
+                    //                        view.lblView.layer.cornerRadius = view.lblView.frame.size.width / 2
+                    //                        view.lblView.layer.masksToBounds = true
+                } else {
+                    view.lblView.text = "\(annotation.title - 1)"
+                    view.zPriority = MKAnnotationViewZPriority.init(rawValue: 999 - Float(annotation.title))
+                    view.image = UIImage(named: "marker")
+                }
+                
             }
         }
         view.reloadInputViews()
         mapView.reloadInputViews()
+        
         return view
     }
     
@@ -757,7 +856,7 @@ extension DeliveryListController: MKMapViewDelegate, ShowIndexPageDelegateProtoc
             } else {
                 for picker in dataDidFilter {
                     if let lat = picker.elem?.latitude, let long = picker.elem?.longitude, let locationOrder = picker.elem?.locationOrder {
-                        let locationOfCustomer = CustomPin(title: locationOrder , coordinate: CLLocationCoordinate2D(latitude: lat, longitude: long))
+                        let locationOfCustomer = CustomPin(title: locationOrder , coordinate: CLLocationCoordinate2D(latitude: lat, longitude: long), topIdOrder: bigestOrder(locations: dataDidFilter))
                         mapView.addAnnotation(locationOfCustomer)
                     }
                 }
@@ -771,6 +870,7 @@ extension DeliveryListController: MKMapViewDelegate, ShowIndexPageDelegateProtoc
 extension DeliveryListController: PassScrollView {
     func passScrollView(scrollView: UIScrollView) {
         fpc.track(scrollView: scrollView)
+        fpc.surfaceView.bringSubviewToFront(scrollView)
     }
 }
 

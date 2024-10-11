@@ -28,6 +28,7 @@ class PatchStatusDelivery {
         let companyCode = UserDefaults.standard.string(forKey: "companyCode") ?? ""
         
         let urlPatch: String = "https://\(companyCode).kiiapps.com/am/api/assets/\(iassetID)/properties"
+        print(urlPatch)
         
         let token = UserDefaults.standard.string(forKey: "accessToken") ?? ""
         

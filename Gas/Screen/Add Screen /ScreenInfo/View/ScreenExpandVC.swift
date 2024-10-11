@@ -24,12 +24,12 @@ class ScreenExpandVC: UIViewController {
         
         self.navigationItem.setHidesBackButton(true, animated: false)
         
-        listDate = screenExpland.sevenDay()
+       // listDate = screenExpland.sevenDay()
         screenExpland.loadDataDelegate = self
-        Task {
-            showActivity()
-            await screenExpland.requestAPI()
-        }
+//        Task {
+//            showActivity()
+//            await screenExpland.requestAPI()
+//        }
     }
     
     

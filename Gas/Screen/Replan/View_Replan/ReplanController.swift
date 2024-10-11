@@ -465,59 +465,60 @@ extension ReplanController: MKMapViewDelegate {
     //        }
     
     
-    func displayMarker(arrMoveToIsTrue: [Location], dataDidFilter_Replan: [Location], indxes: [Int]) {
-        
-        print(dataDidFilter_Replan)
-        print(arrMoveToIsTrue)
-        for picker in dataDidFilter_Replan where picker.type == .customer {
-            // EXCLUDE
-            if selectedIdxDriver+1 < indxes.count+1 && picker.elem?.location?.metadata?.display_data?.excludeFirstDay != true {
-                if !arrMoveToIsTrue.isEmpty {
-                    if selectedIdxDate == 0 && picker.elem?.location?.metadata?.display_data?.moveToFirstDay == true {
-                        if let lat = picker.elem?.latitude, let long = picker.elem?.longitude, let locationOrder = picker.elem?.locationOrder {
-                            let locationOfCustomer = CustomPin(title: locationOrder , coordinate: CLLocationCoordinate2D(latitude: lat, longitude: long))
-                            arrLocationOrder.append(locationOfCustomer.title)
-                            mapView.addAnnotation(locationOfCustomer)
-                        }
-                    } else if picker.elem?.location?.metadata?.display_data?.moveToFirstDay != true {
-                        if let lat = picker.elem?.latitude, let long = picker.elem?.longitude, let locationOrder = picker.elem?.locationOrder {
-                            let locationOfCustomer = CustomPin(title: locationOrder , coordinate: CLLocationCoordinate2D(latitude: lat, longitude: long))
-                            arrLocationOrder.append(locationOfCustomer.title)
-                            mapView.addAnnotation(locationOfCustomer)
-                        }
-                    }
-                    
-                } else if arrMoveToIsTrue.isEmpty  {
-                    if let lat = picker.elem?.latitude, let long = picker.elem?.longitude, let locationOrder = picker.elem?.locationOrder {
-                        let locationOfCustomer = CustomPin(title: locationOrder , coordinate: CLLocationCoordinate2D(latitude: lat, longitude: long))
-                        arrLocationOrder.append(locationOfCustomer.title)
-                        mapView.addAnnotation(locationOfCustomer)
-                    }
-                }
-                
-            } else if selectedIdxDate == 0 && selectedIdxDriver+1 == indxes.count+1 && picker.elem?.location?.metadata?.display_data?.excludeFirstDay == true {
-                if let lat = picker.elem?.latitude, let long = picker.elem?.longitude, let locationOrder = picker.elem?.locationOrder {
-                    let locationOfCustomer = CustomPin(title: locationOrder , coordinate: CLLocationCoordinate2D(latitude: lat, longitude: long))
-                    arrLocationOrder.append(locationOfCustomer.title)
-                    mapView.addAnnotation(locationOfCustomer)
-                }
-                
-                // MoveTo FirstDay
-            } else if selectedIdxDate == 0 && selectedIdxDriver+1 == indxes.count && picker.elem?.location?.metadata?.display_data?.moveToFirstDay == true {
-                if let lat = picker.elem?.latitude, let long = picker.elem?.longitude, let locationOrder = picker.elem?.locationOrder  {
-                    let locationOfCustomer = CustomPin(title: locationOrder, coordinate: CLLocationCoordinate2D(latitude: lat, longitude: long))
-                    arrLocationOrder.append(locationOfCustomer.title)
-                    mapView.addAnnotation(locationOfCustomer)
-                }
-            } else if selectedIdxDate > 0 && !arrMoveToIsTrue.isEmpty && picker.elem?.location?.metadata?.display_data?.moveToFirstDay != true {
-                if let lat = picker.elem?.latitude, let long = picker.elem?.longitude, let locationOrder = picker.elem?.locationOrder {
-                    let locationOfCustomer = CustomPin(title: locationOrder, coordinate: CLLocationCoordinate2D(latitude: lat, longitude: long))
-                    arrLocationOrder.append(locationOfCustomer.title)
-                    mapView.addAnnotation(locationOfCustomer)
-                }
-            }
-        }
-    }
+//    func displayMarker(arrMoveToIsTrue: [Location], dataDidFilter_Replan: [Location], indxes: [Int]) {
+//        
+//        print(dataDidFilter_Replan)
+//        print(arrMoveToIsTrue)
+//        var weightEachOrderTest = [3,4,5]
+//        for picker in dataDidFilter_Replan where picker.type == .customer {
+//            // EXCLUDE
+//            if selectedIdxDriver+1 < indxes.count+1 && picker.elem?.location?.metadata?.display_data?.excludeFirstDay != true {
+//                if !arrMoveToIsTrue.isEmpty {
+//                    if selectedIdxDate == 0 && picker.elem?.location?.metadata?.display_data?.moveToFirstDay == true {
+//                        if let lat = picker.elem?.latitude, let long = picker.elem?.longitude, let locationOrder = picker.elem?.locationOrder {
+//                            let locationOfCustomer = CustomPin(title: locationOrder , coordinate: CLLocationCoordinate2D(latitude: lat, longitude: long))
+//                            arrLocationOrder.append(locationOfCustomer.title)
+//                            mapView.addAnnotation(locationOfCustomer)
+//                        }
+//                    } else if picker.elem?.location?.metadata?.display_data?.moveToFirstDay != true {
+//                        if let lat = picker.elem?.latitude, let long = picker.elem?.longitude, let locationOrder = picker.elem?.locationOrder {
+//                            let locationOfCustomer = CustomPin(title: locationOrder , coordinate: CLLocationCoordinate2D(latitude: lat, longitude: long))
+//                            arrLocationOrder.append(locationOfCustomer.title)
+//                            mapView.addAnnotation(locationOfCustomer)
+//                        }
+//                    }
+//                    
+//                } else if arrMoveToIsTrue.isEmpty  {
+//                    if let lat = picker.elem?.latitude, let long = picker.elem?.longitude, let locationOrder = picker.elem?.locationOrder {
+//                        let locationOfCustomer = CustomPin(title: locationOrder , coordinate: CLLocationCoordinate2D(latitude: lat, longitude: long))
+//                        arrLocationOrder.append(locationOfCustomer.title)
+//                        mapView.addAnnotation(locationOfCustomer)
+//                    }
+//                }
+//                
+//            } else if selectedIdxDate == 0 && selectedIdxDriver+1 == indxes.count+1 && picker.elem?.location?.metadata?.display_data?.excludeFirstDay == true {
+//                if let lat = picker.elem?.latitude, let long = picker.elem?.longitude, let locationOrder = picker.elem?.locationOrder {
+//                    let locationOfCustomer = CustomPin(title: locationOrder , coordinate: CLLocationCoordinate2D(latitude: lat, longitude: long))
+//                    arrLocationOrder.append(locationOfCustomer.title)
+//                    mapView.addAnnotation(locationOfCustomer)
+//                }
+//                
+//                // MoveTo FirstDay
+//            } else if selectedIdxDate == 0 && selectedIdxDriver+1 == indxes.count && picker.elem?.location?.metadata?.display_data?.moveToFirstDay == true {
+//                if let lat = picker.elem?.latitude, let long = picker.elem?.longitude, let locationOrder = picker.elem?.locationOrder  {
+//                    let locationOfCustomer = CustomPin(title: locationOrder, coordinate: CLLocationCoordinate2D(latitude: lat, longitude: long))
+//                    arrLocationOrder.append(locationOfCustomer.title)
+//                    mapView.addAnnotation(locationOfCustomer)
+//                }
+//            } else if selectedIdxDate > 0 && !arrMoveToIsTrue.isEmpty && picker.elem?.location?.metadata?.display_data?.moveToFirstDay != true {
+//                if let lat = picker.elem?.latitude, let long = picker.elem?.longitude, let locationOrder = picker.elem?.locationOrder {
+//                    let locationOfCustomer = CustomPin(title: locationOrder, coordinate: CLLocationCoordinate2D(latitude: lat, longitude: long))
+//                    arrLocationOrder.append(locationOfCustomer.title)
+//                    mapView.addAnnotation(locationOfCustomer)
+//                }
+//            }
+//        }
+//    }
     
     // display marker
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {

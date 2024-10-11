@@ -23,6 +23,7 @@ class GetWorkerRouteLocationList_Async_Await {
         case remain
     }
     
+    // bug
     func sevenDay() {
         let anchor = Date()
         let calendar = Calendar.current
@@ -42,7 +43,7 @@ class GetWorkerRouteLocationList_Async_Await {
     }
     
     func getLocationElem_Async_Await(iday: Date) async throws -> [Location] {
-        sevenDay()
+//        sevenDay()
         let tenantId = UserDefaults.standard.string(forKey: "tenantId") ?? ""
         let userId = UserDefaults.standard.string(forKey: "userId") ?? ""
         

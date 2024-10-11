@@ -25,15 +25,15 @@ class ScreenExpland_Presenter {
     
     func sevenDay() -> [Date] {
         var listDate: [Date] = []
-        let anchor = Date()
-        let calendar = Calendar.current
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd"
-        for dayOffset in 0...6 {
-            if let date1 = calendar.date(byAdding: .day, value: dayOffset, to: anchor)?.removeTimeStamp {
-                listDate.append(date1)
-            }
-        }
+//        let anchor = Date()
+//        let calendar = Calendar.current
+//        let formatter = DateFormatter()
+//        formatter.dateFormat = "yyyy-MM-dd"
+//        for dayOffset in 0...6 {
+//            if let date1 = calendar.date(byAdding: .day, value: dayOffset, to: anchor)?.removeTimeStamp {
+//                listDate.append(date1)
+//            }
+//        }
         return listDate
     }
     
